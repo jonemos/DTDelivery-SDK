@@ -5,7 +5,7 @@ SDK 버전, 청크 계약 버전, 애드온 버전은 다릅니다. package.json
 Git에 새 버전을 올려도 외부 프로그램은 자동으로 바뀌지 않습니다. 새 태그가 게시되면 외부 프로젝트에서 다음처럼 변경하고 검사·재빌드·배포합니다. 예시 태그는 실제로 게시한 값으로 바꾸세요.
 
 ```sh
-pnpm add "https://github.com/jonemos/DTWebEditor_SDK.git#v0.2.9"
+pnpm add "https://github.com/jonemos/DTWebEditor_SDK.git#v0.2.10"
 pnpm build
 ```
 

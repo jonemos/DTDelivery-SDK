@@ -42,7 +42,7 @@ pnpm --version
 이 GitHub 페이지에서 **Code → Download ZIP**으로 받아 압축을 풀거나, 다음 명령으로 clone합니다.
 
 ```sh
-git clone --branch v0.2.9 https://github.com/jonemos/DTWebEditor_SDK.git
+git clone --branch v0.2.10 https://github.com/jonemos/DTWebEditor_SDK.git
 cd DTWebEditor_SDK
 ```
 
@@ -113,13 +113,13 @@ http://127.0.0.1:5183/
 
 ### ④ 화면에서 모델 열기
 
-기본 설정이라면 다음 값을 입력합니다. 설정을 바꾼 경우에는 API 창에 표시된 주소·scope와 토큰 경로를 따릅니다.
+화면의 **청크 위치 → 로컬 폴더**를 선택합니다. 처음 열면 로컬이 선택되어 있고 API 주소·scope가 기본값으로 채워집니다. **API 토큰만 파일에서 복사해 입력**하세요. 설정을 바꾼 경우에는 API 창에 표시된 주소·scope와 토큰 경로를 따릅니다.
 
 | 화면 입력란 | 입력할 값 |
 |---|---|
-| 조회 API 주소 | `http://127.0.0.1:18849/` |
+| 조회 API 주소 | 자동 입력: `http://127.0.0.1:18849/` |
 | API 토큰 | `delivery-data-local/.api-token` 파일의 내용 |
-| 게시 구역(scope) | `development` |
+| 게시 구역(scope) | 자동 입력: `development` |
 
 **목록 조회 → 통합레벨 선택 → 게시본 열기**를 누릅니다. 로컬 일반 청크의 통합레벨 ID는 API가 파일에서 읽으므로 별도로 입력할 필요 없습니다. 운영자가 API 토큰을 환경변수로 따로 지정했다면 그 토큰을 입력합니다. 여기서 모델이 보이면 [기존 웹프로젝트에 SDK 연결](#project)로 진행할 수 있습니다.
 
@@ -193,15 +193,17 @@ API 창을 유지한 채 **`examples/test-server.cmd`**를 실행합니다. 브�
 
 ### ⑤ 화면에서 모델 열기
 
-기본 설정이라면 다음 값을 입력합니다. 설정이 다르면 API 창에 표시된 값을 사용하세요.
+화면의 **청크 위치 → 원격 저장소**를 선택합니다. API 주소·scope는 기본값으로 채워집니다. **API 토큰을 파일에서 복사해 입력**하고 설정이 다르면 API 창에 표시된 주소·scope를 사용하세요. 원격 청크를 읽는 API도 같은 PC에서 실행하면 주소는 `http://127.0.0.1:18849/`입니다.
 
 | 화면 입력란 | 입력할 값 |
 |---|---|
-| 조회 API 주소 | `http://127.0.0.1:18849/` |
+| 조회 API 주소 | 자동 입력: `http://127.0.0.1:18849/` |
 | API 토큰 | `delivery-data/.api-token` 파일의 내용 |
 | 게시 구역(scope) | 에디터와 API에서 사용하는 값. 기본은 `development` |
 
 **목록 조회 → 통합레벨 선택 → 게시본 열기**를 누릅니다. 화면에는 API 토큰을 입력하며 S3 접속 키는 입력하지 않습니다. API 토큰을 서버 환경변수로 따로 지정했다면 운영자가 제공한 토큰을 사용합니다.
+
+화면의 청크 위치 선택은 실행 방법과 토큰 위치를 안내합니다. 실제 저장소는 먼저 실행한 `local-server.cmd` 또는 `remote-server.cmd`의 설정으로 결정됩니다. 방식을 바꾸려면 API를 종료하고 해당 CMD를 실행한 뒤 화면에서도 같은 위치를 선택하세요. 선택을 바꾸면 이전 목록·화면·토큰은 지워집니다.
 
 다른 PC의 API에 연결하는 경우에는 그 PC에서 접근 가능한 API 주소를 사용합니다. 기본 `127.0.0.1`은 같은 PC에서만 접속하는 주소입니다. 외부 접속·HTTPS·조직 로그인은 [서버 운영 안내](docs/SERVER.md)를 따릅니다.
 
@@ -211,7 +213,7 @@ API 창을 유지한 채 **`examples/test-server.cmd`**를 실행합니다. 브�
 로컬 또는 원격 테스트 화면에서 모델 표시를 확인한 뒤, **외부 웹프로젝트 루트**에서 SDK를 설치합니다.
 
 ```sh
-pnpm add "https://github.com/jonemos/DTWebEditor_SDK.git#v0.2.9"
+pnpm add "https://github.com/jonemos/DTWebEditor_SDK.git#v0.2.10"
 ```
 
 API 서버는 계속 별도 프로세스로 실행합니다. 이미 실행 중인 API를 사용한다면 웹프로젝트에서 API 설정을 다시 만들 필요 없습니다.

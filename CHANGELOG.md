@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.10
+
+Add local-folder and remote-storage selection to the shipped web example. Supply the loopback API/scope defaults and matching launcher/token guidance, validate connection inputs, clear old connections on setting changes and ignore stale asynchronous responses. Align both beginner setup paths.
+
 ## 0.2.9
 
 Rewrite the beginner README into complete local-folder and remote-storage setup paths. Clarify folder selection, prepared remote configuration, API tokens, test-page startup, project integration and model updates. Align example navigation; preserve SDK/API behavior.
