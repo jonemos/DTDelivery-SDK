@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.5
+
+Validate and reflect remote publications once at API startup. Configure composition IDs once; restart after republishing without a new job JSON. No periodic monitoring; preserve previous verified releases on failure.
+
 ## 0.2.4
 
 Fix registration prerequisites and missing completed-job diagnostics; document actual editor JSON download and remote/local execution order.

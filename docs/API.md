@@ -28,4 +28,4 @@
 
 애드온 제어에는 등록된 appId와 release pin이 필요합니다. GET `/api/apps/<app>/addons`, `/schema`, `/values`; POST `/sessions`, `/properties`; WS `/events`를 사용합니다. 목록/스키마/현재값은 releaseHash query, 실행 임시값은 executionId, 한 인스턴스는 URL 인코딩한 target JSON을 사용합니다. AddonPropertiesClient가 인증과 알림 세션을 처리합니다. WebSocket 토큰을 URL에 넣지 않습니다.
 
-필요한 호스트 설정은 API 주소, 로그인/테스트 인증, scope, compositionId, 애드온 제어용 appId입니다. scope는 게시 구역 이름이며 S3 access key와 다릅니다. Node 조회 API 서버는 같은 패키지의 `server/`에 포함됩니다. 원격 저장소는 `pnpm exec dt-delivery-api init` → 실제 설정 작성 → 제작자의 실제 게시 완료 JSON 수령·존재 확인 → `register --job` → `start`로 실행합니다. init은 완료 JSON을 만들지 않으며 로컬 게시 저장소는 register를 건너뜁니다. [서버 안내](SERVER.md)를 참고하세요. 실제 모델·키·운영 로그인/HTTPS 설정은 외부 프로젝트에서 공급합니다.
+필요한 호스트 설정은 API 주소, 로그인/테스트 인증, scope, compositionId, 애드온 제어용 appId입니다. scope는 게시 구역 이름이며 S3 access key와 다릅니다. Node 조회 API 서버는 같은 패키지의 `server/`에 포함됩니다. SDK0.2.5의 원격 연결은 `pnpm exec dt-delivery-api init` → 실제 설정·키 작성 → config의 compositionIds에 실제 통합레벨 ID 설정 → `start`입니다. 시작할 때 새 게시본을 검증·자동 등록하고 주기 감시는 하지 않습니다. 재업로드 후 API를 재시작하고 화면의 목록 갱신·게시본 다시 열기를 진행합니다. JSON 수동 register도 유지됩니다. [서버 안내](SERVER.md)를 참고하세요. 실제 모델·키·운영 로그인/HTTPS 설정은 외부 프로젝트에서 공급합니다.

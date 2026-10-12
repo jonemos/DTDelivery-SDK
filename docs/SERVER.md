@@ -14,7 +14,7 @@ pnpm exec dt-delivery-api init
 
 현재 폴더에 세 파일이 생깁니다. 기존 파일이 하나라도 있으면 덮어쓰지 않습니다.
 
-**init은 `completed-job.json`을 만들지 않습니다.** 이 파일은 제작자가 실제 원격 게시를 완료한 후 전달하는 결과입니다. 파일을 받기 전에는 register를 실행할 수 없습니다. 로컬 게시 저장소는 6절을 따라 설정하고 register를 건너뜁니다.
+SDK0.2.5부터 실제 통합레벨 ID를 config의 `compositionIds`에 한 번 설정하고 start를 실행하면 서버가 시작 시 게시 상태를 확인·검증하여 자동 등록합니다. 주기 감시는 없습니다. **JSON 전달/register는 선택적인 수동 방식**입니다. init은 `completed-job.json`을 만들지 않습니다. 로컬 게시 저장소는 6절을 따릅니다.
 
 | 파일 | 작성할 내용 |
 |---|---|
@@ -34,7 +34,15 @@ pnpm exec dt-delivery-api init
 
 `.env`의 `DT_DELIVERY_REMOTE_ACCESS_KEY_ID`, `DT_DELIVERY_REMOTE_SECRET_ACCESS_KEY`에 실제 서버용 저장소 키를 작성합니다. 임시 인증은 `DT_DELIVERY_REMOTE_SESSION_TOKEN`도 사용합니다. 기존 운영자 프로필의 다른 접두사를 유지하면 그 접두사의 환경변수 이름을 사용합니다. 등록/조회는 GET/HEAD만 사용하며 저장소에 모델을 업로드·삭제하지 않습니다.
 
-## 4. 게시 완료 정보 등록
+## 4. 시작 시 게시본 자동 등록
+
+최신 에디터 **청크 제작 및 업로드 → 원격 저장소 → API 연결용 통합레벨 ID**에서 실제 ID를 복사합니다. `delivery-api.config.json`의 `compositionIds: []` 안에 큰따옴표로 감싸 넣습니다. 여러 ID는 쉼표로 구분하며 최대256개입니다. 같은 통합레벨의 재업로드에서는 ID가 유지됩니다. 기존에 JSON으로 등록한 레벨도 기존 catalog의 ID로 함께 확인합니다.
+
+API는 시작할 때 정확한 저장소·scope·ID의 `delivery-head.json`을 읽고 새 게시 버전이면 전체 참조 파일/hash·레벨 ID를 검증합니다. 검증 후 현재 head를 다시 확인하고 catalog를 원자적으로 갱신합니다. 업로드 중인 청크만으로는 게시로 처리하지 않습니다. 잘못된 새 게시본/누락/손상/접속 실패면 이전 검증된 게시본을 유지하며 시작 로그의 실패 ID/코드를 확인합니다.
+
+기존 catalog와 업무 DB·API 토큰은 유지합니다. 과거 게시본도 보존하며 과거 버전으로 게시 상태를 되돌렸을 때 그 검증된 버전을 다시 선택할 수 있습니다. 버전이 같으면 작은 head 파일만 읽고 전체 청크를 다시 검증하지 않습니다. 버킷 목록 조회 없이 설정·기존 catalog의 ID만 확인하므로 새 통합레벨은 ID를 추가해야 합니다. 새 ID를 원격 데이터가 임의로 지정하지 못합니다.
+
+### 선택 사항: 게시 완료 JSON으로 수동 등록
 
 제작자는 최신 에디터의 **청크 제작 및 업로드 → 원격 저장소 → 업로드 및 게시**에서 게시 완료를 확인한 뒤 **작업 이력 → 해당 게시 완료 작업 → 게시 완료 JSON 받기**로 실제 파일을 받습니다. 이 기능이 없는 기존 에디터는 최신 앱으로 업데이트하거나 해당 앱 채널의 `delivery-publication/jobs/`에 있는 실제 published 작업 파일을 전달합니다. 실패하거나 진행 중인 작업은 등록할 수 없습니다. 파일 속 `compositionId`가 통합레벨의 연결 ID입니다.
 
@@ -44,7 +52,7 @@ API 운영자는 전달받은 파일을 서버 실행 폴더에 `completed-job.j
 pnpm exec dt-delivery-api register --job ./completed-job.json
 ```
 
-등록 명령은 published 상태, 정확한 프로필, release hash, 통합레벨 ID, 전체 파일 참조·hash와 현재 저장소 head를 확인한 뒤 `delivery-data/catalog.json`을 원자적으로 갱신합니다. 실패하면 기존 목록을 유지합니다. 대형 레벨의 전체 파일 검증에는 시간이 걸릴 수 있습니다. 같은 게시본은 중복 등록하지 않고 새 게시본 등록 후 API 재시작도 필요하지 않습니다.
+수동 명령은 published 상태, 정확한 프로필, release hash, 통합레벨 ID, 전체 파일 참조·hash와 현재 저장소 head를 확인한 뒤 `delivery-data/catalog.json`을 원자적으로 갱신합니다. 실패하면 기존 목록을 유지합니다. 대형 레벨의 전체 파일 검증에는 시간이 걸릴 수 있습니다. 같은 게시본은 중복 등록하지 않습니다. 이 선택적인 수동 등록은 실행 중 API에서도 목록에 반영됩니다.
 
 등록은 운영자의 CLI 명령입니다. 브라우저에서 임의 job/hash를 등록하는 HTTP 기능은 제공하지 않습니다. 동시 등록은 거부하므로 한 번에 하나씩 실행하세요. 강제 종료 후 catalog.lock이 남으면 다른 등록 프로세스가 없는지 확인하고 그 잠금 파일만 제거한 후 재시도합니다.
 
@@ -55,6 +63,8 @@ pnpm exec dt-delivery-api start
 ```
 
 기본 API는 `http://127.0.0.1:18849/`입니다. 실행 창을 유지하세요. 로컬 API 토큰은 `delivery-data/.api-token`에서 확인해 화면에 입력합니다. API 토큰은 S3 키와 별개이며 로그에 출력하지 않습니다. 종료는 Ctrl+C입니다.
+
+원격 저장소는 시작 시 검증이 끝난 뒤 `Delivery API listening`을 표시합니다. **실행 중에 새 게시본을 주기적으로 확인하지 않습니다.** 청크를 재업로드하고 게시 완료를 확인하면 API를 Ctrl+C로 종료한 뒤 같은 start 명령을 다시 실행합니다. JSON 수령·수동 register·SDK 갱신 없이 새 게시본을 검증·반영합니다. 그 후 화면의 목록 갱신·게시본 다시 열기를 진행합니다. 승인/업무 적용 버전은 기존 계약대로 별도 관리합니다.
 
 SDK 저장소의 별도 터미널에서 `examples/web`으로 이동한 후:
 

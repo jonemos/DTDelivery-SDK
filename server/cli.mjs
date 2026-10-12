@@ -28,7 +28,7 @@ try {
     try {
       for (const [target, source] of targets) { await copyFile(join(templates, source), target, constants.COPYFILE_EXCL); created.push(target); }
     } catch (error) { for (const target of created) await unlink(target); throw error; }
-    process.stdout.write('Created delivery-api.config.json, s3-profiles.json and .env. Edit these private files, then register the completed editor job. See docs/SERVER.md.\n');
+    process.stdout.write('Created delivery-api.config.json, s3-profiles.json and .env. Set the actual storage configuration and compositionIds, then start the API. Remote publications are checked automatically; no completed-job download is required. See docs/SERVER.md.\n');
   } else {
     let jobPath;
     if (command === 'register') {
@@ -46,10 +46,15 @@ try {
       process.stdout.write(JSON.stringify(result) + '\n');
     } else {
       stage = 'startup';
-      const host = await startDeliveryApi(config, { token: process.env.DT_DELIVERY_API_TOKEN });
+      if (config.s3Profiles) process.stdout.write('Checking remote publications once before API startup; new releases are fully validated before registration…\n');
+      const host = await startDeliveryApi(config, { token: process.env.DT_DELIVERY_API_TOKEN, onPublicationSync: status => {
+        process.stdout.write(`Startup publication check: ${JSON.stringify({ checked: status.checked, registered: status.registered, failureCount: status.failures.length, failures: status.failures.slice(0, 5) })}\n`);
+        if (!status.checked && !status.failures.length) process.stdout.write('No composition IDs configured or registered yet. Set compositionIds in delivery-api.config.json and restart to connect your model.\n');
+      } });
       const address = host.server.address(), port = typeof address === 'object' ? address.port : config.port;
       const name = config.host.includes(':') ? `[${config.host}]` : config.host;
       process.stdout.write(`Delivery API listening: http://${name}:${port}/\nAllowed web origin: ${config.origin}\nScope: ${config.scope}\n`);
+      if (config.s3Profiles) process.stdout.write('Remote publication check completed. No periodic monitoring. Restart the API after publishing changes.\n');
       if (host.tokenFile) process.stdout.write(`Local API token file (value not printed): ${host.tokenFile}\n`);
       else process.stdout.write('Authorization supplied by DT_DELIVERY_API_TOKEN.\n');
       for (const signal of ['SIGINT', 'SIGTERM']) process.once(signal, () => { void host.close().catch(() => { process.exitCode = 1; }); });
@@ -66,7 +71,7 @@ try {
     EADDRINUSE: 'API port is already in use. Stop the existing API or choose another port.',
   };
   const message = stage === 'job' && error.code === 'ENOENT'
-    ? 'Completed job file not found. api:init does not create completed-job.json. In the editor, publish to remote storage, then open 작업 이력 → 게시 완료 JSON 받기. Place the downloaded file at the --job path before registering. See README step 5.'
+    ? 'Completed job file not found. api:init does not create completed-job.json. For automatic updates, set compositionIds in delivery-api.config.json and start the API. For manual registration, open 작업 이력 → 게시 완료 JSON 받기 in the editor and place the file at the --job path. See README step 5.'
     : stage === 'job' ? 'Cannot read the --job file. Check its path and file read permission.'
     : error.code === 'ENOENT' ? `A required file is missing during ${stage}. Check delivery-api.config.json, s3-profiles.json and the configured storage paths.`
     : ['EACCES', 'EPERM'].includes(error.code) ? `File access denied during ${stage}. Check file and directory permissions.`

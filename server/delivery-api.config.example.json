@@ -7,5 +7,6 @@
   "allowWrites": false,
   "dataDirectory": "./delivery-data",
   "localStore": null,
-  "s3Profiles": "./s3-profiles.json"
+  "s3Profiles": "./s3-profiles.json",
+  "compositionIds": []
 }

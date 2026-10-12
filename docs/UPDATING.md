@@ -5,7 +5,7 @@ SDK 버전, 청크 계약 버전, 애드온 버전은 다릅니다. package.json
 Git에 새 버전을 올려도 외부 프로그램은 자동으로 바뀌지 않습니다. 새 태그가 게시되면 외부 프로젝트에서 다음처럼 변경하고 검사·재빌드·배포합니다. 예시 태그는 실제로 게시한 값으로 바꾸세요.
 
 ```sh
-pnpm add "https://github.com/jonemos/DTWebEditor_SDK.git#v0.2.4"
+pnpm add "https://github.com/jonemos/DTWebEditor_SDK.git#v0.2.5"
 pnpm build
 ```
 
@@ -18,3 +18,5 @@ package.json과 pnpm-lock.yaml을 함께 커밋합니다. 문제가 있으면 �
 0.2.3부터 Node 조회 API가 패키지에 포함됩니다. 서버 설정과 delivery-data는 설치 폴더 밖에 보관하세요. SDK 교체 후 서버 프로세스를 다시 실행하며 기존 catalog·업무 DB를 초기화하지 않습니다. 새 원격 게시본은 제작자로부터 실제 게시 완료 JSON을 받은 뒤 `dt-delivery-api register --job`로 검증·등록합니다.
 
 0.2.4는 완료 JSON을 받기 전에 등록을 실행하게 했던 안내를 수정하고, 파일 누락·저장소 검증 오류를 구체적으로 표시합니다. **SDK 업데이트가 게시 완료 JSON을 생성하지는 않습니다.** 제작자의 최신 에디터에서 작업 이력의 게시 완료 JSON 받기를 사용합니다. 기존 개인 설정을 보관하고 업데이트 후에도 유지하세요. init을 다시 실행할 필요는 없습니다.
+
+0.2.5는 API 시작 시 새 게시본을 확인·검증하고 자동 등록합니다. 신규 연결은 config의 compositionIds에 실제 통합레벨 ID를 한 번 작성합니다. 기존 수동 등록 catalog의 ID는 그대로 재사용합니다. 재업로드마다 JSON을 받을 필요가 없으며, 게시 완료 후 API 재시작·화면 다시 열기로 반영합니다. 주기 감시는 없습니다. 이 기능을 적용할 때 SDK/API를0.2.5로 한 번 갱신하고 이후 모델 변경만으로 SDK를 계속 업데이트하지 않습니다.

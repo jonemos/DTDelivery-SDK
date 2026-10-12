@@ -2,7 +2,7 @@
 
 DTWebEditor에서 제작한 통합레벨을 외부 웹프로젝트의 3D 화면에 표시하는 패키지입니다. **브라우저 SDK, Node.js 조회 API 서버, 설정 예제, 웹 화면 예제**가 함께 들어 있습니다. 실제 모델은 에디터에서 별도 저장소에 게시합니다.
 
-이 안내의 **1 → 2 → 3 → 4 → 5 → 6 → 7**은 원격 S3 저장소 연결 순서입니다. 제작자가 원격 게시를 완료하고 필요한 파일을 전달한 뒤 외부 개발자가 진행합니다. **SDK 다운로드와 `api:init`만으로 5번 등록을 실행할 수는 없습니다.** 로컬 게시 저장소를 쓰는 경우는 [서버 안내 6절](docs/SERVER.md#6-로컬-저장소--다른-pc)을 따라 설정하고 5번 등록을 건너뜁니다.
+이 안내의 **1 → 2 → 3 → 4 → 5 → 6 → 7**은 원격 S3 저장소 연결 순서입니다. **SDK 0.2.5부터 API 서버가 시작할 때 새 게시본을 확인·검증하고 자동 등록합니다.** 통합레벨 ID를 처음에 한 번 설정하면 매번 완료 JSON을 받거나 register 명령을 실행할 필요가 없습니다. 주기 감시는 하지 않습니다. 로컬 게시 저장소는 [서버 안내 6절](docs/SERVER.md#6-로컬-저장소--다른-pc)을 따릅니다.
 
 ## 전체 연결 구조
 
@@ -27,7 +27,7 @@ GitHub 저장소 → SDK + API 서버 + 실행 안내 다운로드
 
 - Node.js **24.16 이상**, pnpm, Git
 - S3 호환 저장소의 주소·버킷·읽기 권한
-- 에디터에서 게시 완료한 통합레벨과 완료 작업 JSON
+- 에디터에서 게시 완료한 통합레벨의 ID
 
 | 값 | 의미 |
 |---|---|
@@ -44,7 +44,7 @@ S3 키와 API 토큰은 별개입니다. 실제 키·설정·모델·API 토큰�
 
 에디터의 **SDK → 버전 관리**에서 기존 SDK 전용 저장소를 연결한 뒤 **업데이트 검사 → 업데이트 커밋 → Git에 업데이트(Push)**를 진행합니다. GitHub Desktop의 Push origin도 사용할 수 있습니다.
 
-GitHub의 Tags에서 사용할 버전이 올라왔는지 확인하고 그 버전을 개발자에게 전달하세요. 아래 설치 명령은 `v0.2.4` 태그 기준입니다. 버전 고정에는 실제 태그 또는 commit을 사용합니다. 자세한 방법은 [GitHub Desktop 안내](docs/GITHUB_DESKTOP.md)를 참고하세요.
+GitHub의 Tags에서 사용할 버전이 올라왔는지 확인하고 그 버전을 개발자에게 전달하세요. 아래 설치 명령은 `v0.2.5` 태그 기준입니다. 버전 고정에는 실제 태그 또는 commit을 사용합니다. 자세한 방법은 [GitHub Desktop 안내](docs/GITHUB_DESKTOP.md)를 참고하세요.
 
 ## 2. 제작자 — 청크를 업로드하고 완료 정보를 전달
 
@@ -53,15 +53,15 @@ GitHub의 Tags에서 사용할 버전이 올라왔는지 확인하고 그 버전
 3. 이름 옆 **청크 제작 및 업로드 → 원격 저장소**를 엽니다.
 4. 저장소 주소·버킷·scope·업로드 키를 입력하고 **연결 확인 및 저장**을 누릅니다.
 5. **업로드 및 게시**를 누르고 **게시 완료**를 확인합니다.
-6. 같은 화면의 **작업 이력 → 해당 게시 완료 작업 → 게시 완료 JSON 받기**를 누릅니다. 받은 파일 이름은 `completed-job.json`입니다. 이 버튼은 이 기능이 포함된 최신 에디터에서 사용할 수 있습니다.
+6. 같은 화면의 **API 연결용 통합레벨 ID**를 복사해 개발자에게 전달합니다. ID 표시가 없는 이전 앱에서는 해당 작업의 JSON 속 `compositionId`를 한 번 확인할 수 있습니다.
 
 개발자에게 아래 자료를 전달하세요.
 
 - SDK Git 주소와 사용할 버전
 - 에디터 연결의 **공개 configuration**: 저장소 주소·버킷·scope·region·프로필 이름·환경변수 접두사·HTTP/조건부 쓰기 설정
-- 실제 **게시 완료 작업 JSON**: `compositionId`, 게시 버전, 프로필 연결 정보 포함
+- **통합레벨 ID**: API 설정의 `compositionIds`에 넣을 값
 
-`completed-job.json`은 **실제 원격 게시 완료 결과**입니다. SDK에 들어 있는 예제나 init으로 생성하는 설정 파일이 아닙니다. 실패·진행 중인 작업으로 만들거나 내용을 직접 채우지 마세요. 새 버튼이 없는 기존 에디터에서는 제작자가 해당 앱 채널의 `delivery-publication/jobs/`에 있는 실제 `published` 작업 파일을 전달하거나 최신 에디터로 업데이트해야 합니다. API 서버의 저장소 읽기 키는 운영 환경에 별도로 설정합니다. OS 암호화된 에디터 키 파일 전체를 복사하지 않습니다.
+완료 JSON은 **수동 등록을 선택하는 경우**에만 받습니다. 최신 앱의 **작업 이력 → 게시 완료 JSON 받기**에서 받을 수 있고 init이 생성하는 파일은 아닙니다. 자동 연결은 이 파일 없이 통합레벨 ID로 진행합니다. API 서버의 저장소 읽기 키는 운영 환경에 별도로 설정합니다. OS 암호화된 에디터 키 파일 전체를 복사하지 않습니다.
 
 ## 3. 개발자 — SDK와 API 서버 다운로드
 
@@ -70,7 +70,7 @@ GitHub의 Tags에서 사용할 버전이 올라왔는지 확인하고 그 버전
 에디터가 버전 관리하는 배포 폴더와 별개로 개발용 사본을 만듭니다.
 
 ```sh
-git clone --branch v0.2.4 https://github.com/jonemos/DTWebEditor_SDK.git
+git clone --branch v0.2.5 https://github.com/jonemos/DTWebEditor_SDK.git
 cd DTWebEditor_SDK
 pnpm --ignore-workspace install --ignore-scripts
 pnpm api:init
@@ -81,7 +81,7 @@ pnpm api:init
 외부 프로젝트 루트에서:
 
 ```sh
-pnpm add "https://github.com/jonemos/DTWebEditor_SDK.git#v0.2.4"
+pnpm add "https://github.com/jonemos/DTWebEditor_SDK.git#v0.2.5"
 pnpm exec dt-delivery-api init
 ```
 
@@ -90,7 +90,7 @@ API 서버와 웹 화면이 서로 다른 프로젝트라면 필요한 프로젝
 | 실행할 작업 | clone한 SDK 폴더 | SDK를 설치한 기존 프로젝트 |
 |---|---|---|
 | 개인 설정 생성 | `pnpm api:init` | `pnpm exec dt-delivery-api init` |
-| 실제 완료 JSON을 받은 뒤 원격 게시본 등록 | `pnpm api:register --job ./completed-job.json` | `pnpm exec dt-delivery-api register --job ./completed-job.json` |
+| 선택 사항: 완료 JSON으로 수동 등록 | `pnpm api:register --job ./completed-job.json` | `pnpm exec dt-delivery-api register --job ./completed-job.json` |
 | API 실행 | `pnpm api:start` | `pnpm exec dt-delivery-api start` |
 
 ## 4. 개발자 — 저장소와 화면 주소 설정
@@ -115,7 +115,8 @@ init 명령이 아래 파일을 만듭니다. 이미 있는 설정은 덮어쓰�
   "allowWrites": false,
   "dataDirectory": "./delivery-data",
   "localStore": null,
-  "s3Profiles": "./s3-profiles.json"
+  "s3Profiles": "./s3-profiles.json",
+  "compositionIds": []
 }
 ```
 
@@ -132,19 +133,19 @@ DT_DELIVERY_REMOTE_SECRET_ACCESS_KEY=
 
 외부 프로젝트의 `.gitignore`에 실제 설정 파일·`.env`·완료 작업 JSON·`delivery-data/`를 추가합니다. `allowWrites: false`는 모델 조회용이며 검토·적용·애드온 변경을 사용하려면 별도 권한 설정이 필요합니다.
 
-## 5. 개발자 — 업로드한 게시본을 API 목록에 등록
+## 5. 개발자 — 처음에 통합레벨 ID 한 번 설정
 
-**먼저 제작자로부터 2번에서 받은 실제 `completed-job.json`을 전달받아야 합니다.** 그 파일을 `delivery-api.config.json`이 있는 실행 폴더에 넣으세요. 아직 파일을 받지 못했으면 등록 명령을 실행하지 말고 제작자에게 원격 게시 완료 JSON을 요청합니다. `pnpm api:init`을 다시 실행해도 이 파일은 생기지 않습니다.
+`delivery-api.config.json`의 `compositionIds`에 제작자가 전달한 실제 통합레벨 ID를 넣습니다. 빈 배열 `[]` 안에 ID를 큰따옴표로 감싸 넣으세요. 여러 레벨이면 쉼표로 구분합니다. SDK 버전은 0.2.5 이상이어야 합니다.
 
-Windows PowerShell에서 현재 실행 폴더에 파일이 있는지 확인합니다.
+ID는 최신 에디터의 **청크 제작 및 업로드 → 원격 저장소 → API 연결용 통합레벨 ID**에 표시됩니다. 모델 이름이나 원본 레벨 ID를 넣지 않습니다. 기존에 수동 등록한 통합레벨 ID도 서버가 시작할 때 함께 확인하므로 다시 JSON을 받을 필요가 없습니다.
 
-```powershell
-Test-Path ./completed-job.json
-```
+설정한 ID의 현재 게시 상태만 읽습니다. 저장소의 모든 폴더를 검색하지 않으므로 **새 통합레벨을 추가할 때는 새 ID를 설정에 추가**합니다. 같은 통합레벨을 재업로드할 때는 ID를 바꾸지 않습니다.
 
-`True`이고 4번의 실제 원격 설정·서버용 키까지 작성한 뒤 아래 명령을 실행합니다. `False`이면 받은 파일을 이 폴더에 복사하거나 `--job`에 받은 파일의 전체 경로를 지정하세요. 브라우저가 파일 이름 뒤에 `(1)` 등을 붙였다면 실제 이름에 맞춰야 합니다.
+설정을 저장한 뒤 6번의 API 실행으로 진행하세요. 최초 흐름은 **init → 실제 저장소 설정·키 작성 → 통합레벨 ID 설정 → start**입니다.
 
-기존 프로젝트에서:
+### 선택 사항: JSON으로 수동 등록
+
+수동 등록도 유지됩니다. 제작자의 실제 원격 게시 완료 `completed-job.json`을 받아 실행 폴더에 넣고 PowerShell의 `Test-Path ./completed-job.json`이 True인지 확인한 뒤 실행합니다. init은 이 파일을 만들지 않습니다.
 
 ```sh
 pnpm exec dt-delivery-api register --job ./completed-job.json
@@ -152,9 +153,9 @@ pnpm exec dt-delivery-api register --job ./completed-job.json
 
 clone한 SDK 폴더에서는 `pnpm api:register --job ./completed-job.json`을 사용합니다.
 
-SDK 설치 폴더 안에서 실행하는 경우의 순서는 **init → 실제 설정 작성 → 제작자에게 받은 파일 배치·존재 확인 → register → start**입니다. 청크 폴더의 경로를 `--job`에 넣는 명령이 아닙니다. 로컬 게시 저장소는 5번을 건너뜁니다.
+자동 연결을 사용하는 경우 이 수동 명령은 실행하지 않습니다. 로컬 게시 저장소도 수동 등록이 필요하지 않습니다.
 
-**청크가 저장소에 올라가도 API 목록에는 자동 등록되지 않습니다.** 이 명령은 완료 상태·프로필·통합레벨 ID·현재 게시 버전·전체 참조 파일의 hash를 확인한 후 목록에 등록합니다. 실패하면 기존 목록을 유지합니다.
+수동 명령은 완료 상태·프로필·통합레벨 ID·현재 게시 버전·전체 참조 파일의 hash를 확인합니다. 실패하면 기존 목록을 유지합니다.
 
 ## 6. 개발자 — API 서버 실행
 
@@ -165,6 +166,10 @@ pnpm exec dt-delivery-api start
 ```
 
 clone한 SDK 폴더에서는 `pnpm api:start`를 사용합니다. 실행 창을 유지하고 종료할 때 Ctrl+C를 누릅니다.
+
+**서버는 시작할 때 한 번 현재 게시 상태를 확인**합니다. 변경된 게시본은 전체 참조 파일·hash·통합레벨 ID와 게시 상태를 검증한 뒤 목록에 반영합니다. 검증 중 게시 상태가 바뀌거나 파일이 손상·누락되면 기존 검증된 게시본을 유지하고 실패 ID/코드를 표시합니다. 큰 레벨은 첫 검증에 시간이 걸릴 수 있습니다. `Delivery API listening`이 나오면 시작이 완료된 것입니다.
+
+실행 중에는 주기 감시를 하지 않습니다. 재업로드 후 새 버전을 반영하려면 **Ctrl+C → `pnpm api:start` 다시 실행**합니다. 같은 ID라면 JSON 다운로드·수동 등록·SDK 업데이트는 필요하지 않습니다.
 
 - 기본 조회 API 주소: `http://127.0.0.1:18849/`
 - 기본 로컬 API 토큰 파일: `delivery-data/.api-token`
@@ -267,15 +272,15 @@ GET /api/delivery/<scope>/<id>/<hash>/objects/<chunkHash>
 **모델 데이터가 바뀔 때마다 SDK를 업데이트할 필요는 없습니다.**
 
 ```text
-제작자: 원본 저장 → 통합 참조 갱신·저장 → 청크 재업로드 → 새 완료 작업 전달
-개발자: 새 완료 작업을 register로 등록 → 화면에서 목록 갱신·모델 다시 열기
+제작자: 원본 저장 → 통합 참조 갱신·저장 → 청크 재업로드·게시 완료
+개발자: API 서버 재시작 → 시작 시 변경 확인·검증·자동 반영 → 화면에서 목록 갱신·모델 다시 열기
 ```
 
-에디터의 청크 제작·업로드 코드가 내용의 hash를 확인하여 동일한 청크는 재사용하고 새 청크를 추가합니다. 등록 후 API 서버를 재시작할 필요는 없습니다. 이미 열린 화면은 이전 releaseHash에 고정되므로 다시 열어 새 버전을 선택합니다. 검토·승인 방식 서비스는 새 게시본의 승인·적용도 별도로 진행합니다.
+에디터의 청크 제작·업로드 코드가 내용의 hash를 확인하여 동일한 청크는 재사용하고 새 청크를 추가합니다. API는 재시작할 때 새 게시 상태를 확인합니다. 이미 열린 화면은 이전 releaseHash에 고정되므로 다시 열어 새 버전을 선택합니다. 검토·승인 방식 서비스는 새 게시본의 승인·적용도 별도로 진행합니다.
 
 | 변경 내용 | 필요한 작업 |
 |---|---|
-| 모델·배치·재질·레벨 내용·지원되는 애드온 설정 | 청크 재업로드 → 새 게시본 등록 → 화면 다시 열기 |
+| 모델·배치·재질·레벨 내용·지원되는 애드온 설정 | 청크 재업로드·게시 → API 재시작 → 화면 다시 열기 |
 | SDK/API 기능·버그 수정·지원 계약 | SDK/API 버전 갱신·검사·재배포 |
 
 SDK 업데이트는 [업데이트 안내](docs/UPDATING.md)를 따르세요. 외부 프로젝트의 package.json과 pnpm-lock.yaml을 함께 저장하고 배포에는 `pnpm install --frozen-lockfile`을 사용합니다.
@@ -288,11 +293,11 @@ SDK 업데이트는 [업데이트 안내](docs/UPDATING.md)를 따르세요. 외
 | `Completed job file not found` / 등록 파일 없음 | 제작자의 실제 원격 게시 완료 JSON을 받은 뒤 `Test-Path` 확인. init은 이 파일을 만들지 않음 |
 | 0.2.3의 `Cannot read configuration or start API…` | `--job` 파일 누락도 이 메시지로 표시되었음. 먼저 파일 존재 확인. 0.2.4부터 구체적인 오류를 표시 |
 | API 연결 실패 | 서버 실행 여부, API 주소, 사내망/VPN·방화벽 |
-| 목록이 비어 있음 | 동일 scope 사용 여부와 완료 작업 register 여부 |
+| 목록이 비어 있음 | 동일 scope·실제 compositionIds·게시 완료 여부·서버 시작 시 검증 결과 |
 | 401 | API 토큰·로그인 상태 |
 | 403 | 웹 origin과 scope/쓰기 권한 |
 | 프로필 불일치 | 에디터와 서버의 공개 configuration 전체 필드 |
-| 새 모델이 보이지 않음 | 새 작업 등록, 목록 갱신·게시본 재열기, 서비스 승인·적용 |
+| 새 모델이 보이지 않음 | 게시 완료 후 API 재시작·시작 시 검증 결과, 목록 갱신·게시본 재열기, 서비스 승인·적용 |
 | 화면이 비거나 크기가 없음 | canvas·부모 영역의 실제 크기와 로딩 오류 |
 
 ## 패키지 구성과 참고 문서

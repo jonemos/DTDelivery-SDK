@@ -33662,10 +33662,25 @@ async function loadDeliveryApiConfiguration(path) {
 	const input = await jsonFile(path, 16384);
 	if (!input || typeof input !== "object" || Array.isArray(input)) throw new Error("Invalid API configuration");
 	const c = input;
-	if (Object.keys(c).sort().join() !== "allowWrites,dataDirectory,host,localStore,origin,port,s3Profiles,scope,version" || c.version !== 1 || typeof c.host !== "string" || !(isIP(c.host) || c.host === "localhost") || !Number.isInteger(c.port) || c.port < 0 || c.port > 65535 || typeof c.allowWrites !== "boolean" || typeof c.origin !== "string" || typeof c.dataDirectory !== "string" || !c.dataDirectory.trim() || ![c.localStore, c.s3Profiles].every((value) => value === null || typeof value === "string" && !!value.trim()) || c.localStore === null === (c.s3Profiles === null)) throw new Error("Invalid API configuration; choose exactly one localStore or s3Profiles");
+	const required = [
+		"allowWrites",
+		"dataDirectory",
+		"host",
+		"localStore",
+		"origin",
+		"port",
+		"s3Profiles",
+		"scope",
+		"version"
+	];
+	if (required.some((key) => !Object.hasOwn(c, key)) || Object.keys(c).some((key) => ![...required, "compositionIds"].includes(key)) || c.version !== 1 || typeof c.host !== "string" || !(isIP(c.host) || c.host === "localhost") || !Number.isInteger(c.port) || c.port < 0 || c.port > 65535 || typeof c.allowWrites !== "boolean" || typeof c.origin !== "string" || typeof c.dataDirectory !== "string" || !c.dataDirectory.trim() || ![c.localStore, c.s3Profiles].every((value) => value === null || typeof value === "string" && !!value.trim()) || c.localStore === null === (c.s3Profiles === null)) throw new Error("Invalid API configuration; choose exactly one localStore or s3Profiles");
 	const origin = new URL(c.origin);
 	if (!["http:", "https:"].includes(origin.protocol) || origin.origin !== c.origin) throw new Error("origin must be the exact web page origin, without a trailing slash");
 	publicationSegment(c.scope);
+	if (c.compositionIds !== void 0) {
+		if (!Array.isArray(c.compositionIds) || c.compositionIds.length > 256 || new Set(c.compositionIds).size !== c.compositionIds.length || c.localStore && c.compositionIds.length) throw new Error("Invalid compositionIds; choose unique remote composition IDs");
+		c.compositionIds.forEach(publicationSegment);
+	}
 	const base = dirname(resolve(path));
 	return {
 		...c,
@@ -33698,9 +33713,20 @@ async function registerDeliveryPublication(c, jobPath) {
 	const configured = await s3Configuration(c);
 	if (job.state !== "published" || job.error !== null || job.profile.kind !== "s3" || job.profile.scope !== c.scope || job.profile.id !== configured.profile.id || job.profile.name !== configured.profile.name) throw new Error("Completed job and editor/server profile do not match");
 	const adapter = configured.adapter(), signal = AbortSignal.timeout(6e5);
+	await verifyPublication(adapter, job, signal);
+	return commitPublication(c, job, () => verifyHead(adapter, job, signal), signal);
+}
+async function verifyHead(adapter, job, signal) {
+	if ((await adapter.readPublishedHead(job, signal)).hash !== job.target) throw new Error("Storage head has changed; retry with the latest publication");
+}
+async function verifyPublication(adapter, job, signal) {
 	if ((await new ChunkReader({ read: (path, _limit, signal) => adapter.readObject(path, signal) }).manifest(job.target, signal)).id !== job.compositionId) throw new Error("Composition identity does not match the release");
 	await adapter.verifyClosure(job.target, signal);
-	if ((await adapter.readPublishedHead(job, signal)).hash !== job.target) throw new Error("Storage head has changed; obtain the latest completed job");
+	await verifyHead(adapter, job, signal);
+}
+/** One validated snapshot becomes visible atomically; retain all earlier authorized releases. */
+async function commitPublication(c, job, checkHead, signal) {
+	signal.throwIfAborted();
 	await mkdir(c.dataDirectory, { recursive: true });
 	const catalogPath = join(c.dataDirectory, "catalog.json"), lockPath = join(c.dataDirectory, "catalog.lock");
 	let lock;
@@ -33712,12 +33738,15 @@ async function registerDeliveryPublication(c, jobPath) {
 	try {
 		const rows = await readCatalog(catalogPath), sameId = rows.find((row) => row.id === job.id);
 		if (sameId && publicationIdentity(sameId) !== publicationIdentity(job)) throw new Error("Job ID is already bound to another publication");
-		if (rows.some((row) => row.profile.id === job.profile.id && row.compositionId === job.compositionId && row.target === job.target)) return {
+		const matches = rows.filter((row) => row.profile.id === job.profile.id && row.compositionId === job.compositionId);
+		if (matches.at(-1)?.target === job.target) return {
 			registered: false,
 			compositionId: job.compositionId,
 			releaseHash: job.target
 		};
-		const next = [...rows, job];
+		await checkHead();
+		signal.throwIfAborted();
+		const existing = matches.find((row) => row.target === job.target), next = [...rows.filter((row) => row !== existing), existing ?? job];
 		if (next.length > 1e4 || Buffer$1.byteLength(JSON.stringify(next)) > 16 * 1024 ** 2) throw new Error("Publication catalog limit exceeded");
 		await atomicPublicationJSON(catalogPath, next);
 		return {
@@ -33729,6 +33758,83 @@ async function registerDeliveryPublication(c, jobPath) {
 		await lock.close();
 		await unlink(lockPath);
 	}
+}
+/** Follow exact operator-approved head paths. Remote input never expands the list of IDs. */
+function publicationSynchronizer(c, configured, onStatus) {
+	const controller = new AbortController();
+	let status = {
+		enabled: !!configured,
+		checking: false,
+		lastCheckedAt: null,
+		checked: 0,
+		registered: 0,
+		failures: []
+	};
+	let pending;
+	const snapshot = () => structuredClone(status);
+	const synchronize = () => {
+		if (!status.enabled || controller.signal.aborted) return Promise.resolve(snapshot());
+		if (pending) return pending;
+		status = {
+			...status,
+			checking: true,
+			checked: 0,
+			registered: 0,
+			failures: []
+		};
+		pending = (async () => {
+			const signal = AbortSignal.any([controller.signal, AbortSignal.timeout(6e5)]);
+			try {
+				const rows = (await readCatalog(join(c.dataDirectory, "catalog.json"))).filter((row) => row.state === "published" && row.error === null && row.profile.id === configured.profile.id && row.profile.name === configured.profile.name && row.profile.scope === c.scope && row.profile.kind === "s3");
+				const ids = /* @__PURE__ */ new Set([...c.compositionIds ?? [], ...rows.map((row) => row.compositionId)]), adapter = configured.adapter();
+				for (const compositionId of ids) {
+					if (signal.aborted) break;
+					status.checked++;
+					try {
+						const probe = createPublicationJob(configured.profile, compositionId, "0".repeat(64)), head = await adapter.readPublishedHead(probe, signal);
+						if (!head.hash) continue;
+						if (rows.filter((row) => row.compositionId === compositionId).at(-1)?.target === head.hash) continue;
+						const job = createPublicationJob(configured.profile, compositionId, head.hash);
+						await verifyPublication(adapter, job, signal);
+						job.id = "auto-" + createHash("sha256").update(`${job.profile.id}\n${compositionId}\n${head.hash}`).digest("hex");
+						job.state = "published";
+						if ((await commitPublication(c, job, () => verifyHead(adapter, job, signal), signal)).registered) status.registered++;
+					} catch (error) {
+						if (!signal.aborted) status.failures.push({
+							compositionId,
+							code: error instanceof PublicationError ? error.code : "invalid"
+						});
+					}
+				}
+			} catch (error) {
+				if (!controller.signal.aborted) status.failures.push({
+					compositionId: null,
+					code: error instanceof PublicationError ? error.code : "unavailable"
+				});
+			} finally {
+				if (signal.aborted && !controller.signal.aborted) status.failures.push({
+					compositionId: null,
+					code: "cancelled"
+				});
+				status.checking = false;
+				status.lastCheckedAt = (/* @__PURE__ */ new Date()).toISOString();
+				pending = void 0;
+				try {
+					onStatus?.(snapshot());
+				} catch {}
+			}
+			return snapshot();
+		})();
+		return pending;
+	};
+	return {
+		snapshot,
+		synchronize,
+		close: async () => {
+			controller.abort();
+			await pending;
+		}
+	};
 }
 async function apiToken(c, supplied) {
 	if (supplied !== void 0) {
@@ -33756,10 +33862,11 @@ async function apiToken(c, supplied) {
 /** Standalone starter, or replace authorization with the external project's own login adapter. */
 async function startDeliveryApi(c, options = {}) {
 	await mkdir(c.dataDirectory, { recursive: true });
-	let backend;
+	let backend, configured = null;
 	if (c.localStore) backend = await PublicationRepository.create(c.localStore);
 	else {
-		const configured = await s3Configuration(c), catalogPath = join(c.dataDirectory, "catalog.json");
+		configured = await s3Configuration(c);
+		const catalogPath = join(c.dataDirectory, "catalog.json");
 		await readCatalog(catalogPath);
 		try {
 			await writeFile(catalogPath, "[]", {
@@ -33769,7 +33876,17 @@ async function startDeliveryApi(c, options = {}) {
 		} catch (error) {
 			if (error.code !== "EEXIST") throw error;
 		}
-		backend = await loadS3HostBackend(c.s3Profiles, configured.profile.id, catalogPath);
+		const remote = await loadS3HostBackend(c.s3Profiles, configured.profile.id, catalogPath);
+		backend = {
+			objects: remote.objects,
+			catalog: (scope) => remote.catalog(scope),
+			readPublishedHead: async (job) => {
+				return {
+					hash: (await remote.catalog(job.profile.scope)).filter((row) => row.compositionId === job.compositionId).at(-1)?.target ?? null,
+					token: null
+				};
+			}
+		};
 	}
 	const token = options.authorize ? null : await apiToken(c, options.token);
 	const authorization = options.authorize ?? (async (request) => {
@@ -33829,7 +33946,9 @@ async function startDeliveryApi(c, options = {}) {
 		socket.on("close", () => sockets.delete(socket));
 	});
 	installAddonWebSocket(server, api, c.origin);
+	const sync = publicationSynchronizer(c, configured, options.onPublicationSync);
 	try {
+		await sync.synchronize();
 		await new Promise((accept, reject) => {
 			server.once("error", reject);
 			server.listen(c.port, c.host, () => {
@@ -33838,6 +33957,7 @@ async function startDeliveryApi(c, options = {}) {
 			});
 		});
 	} catch (error) {
+		await sync.close();
 		addons.close();
 		store.close();
 		throw error;
@@ -33847,9 +33967,12 @@ async function startDeliveryApi(c, options = {}) {
 		server,
 		api,
 		tokenFile: token && options.token === void 0 ? join(c.dataDirectory, ".api-token") : null,
+		publicationSyncStatus: sync.snapshot,
+		synchronizePublications: sync.synchronize,
 		close: async () => {
 			if (closed) return;
 			closed = true;
+			await sync.close();
 			await new Promise((accept, reject) => {
 				server.close((error) => error ? reject(error) : accept());
 				for (const socket of sockets) socket.destroy();
