@@ -1,0 +1,31 @@
+{
+  "name": "@dt/delivery-sdk",
+  "version": "0.2.1",
+  "type": "module",
+  "license": "MIT",
+  "description": "Browser SDK for chunked digital twin publications and version-bound addons",
+  "exports": {
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./runtime/index.js"
+    },
+    "./viewport.css": {
+      "types": "./types/viewport.css.d.ts",
+      "default": "./runtime/viewport.css"
+    }
+  },
+  "files": [
+    "runtime",
+    "types",
+    "docs",
+    "examples",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE",
+    "THIRD_PARTY_LICENSES.txt",
+    "sdk-manifest.json"
+  ],
+  "dependencies": {
+    "@types/three": "0.186.0"
+  }
+}

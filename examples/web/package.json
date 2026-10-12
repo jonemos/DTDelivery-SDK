@@ -1,0 +1,8 @@
+{
+  "name": "dt-sdk-browser-example",
+  "private": true,
+  "type": "module",
+  "scripts": { "dev": "vite --host 127.0.0.1", "build": "tsc --noEmit && vite build" },
+  "dependencies": { "@dt/delivery-sdk": "file:../.." },
+  "devDependencies": { "typescript": "6.0.2", "vite": "8.3.0" }
+}

@@ -1,0 +1,12 @@
+node_modules/
+dist/
+*.local
+.env*
+*.sqlite*
+*.db
+.api-token
+remote-connections.json
+s3-profiles.json
+saved/
+store/
+coverage/
