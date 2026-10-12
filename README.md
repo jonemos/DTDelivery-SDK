@@ -42,7 +42,7 @@ pnpm --version
 이 GitHub 페이지에서 **Code → Download ZIP**으로 받아 압축을 풀거나, 다음 명령으로 clone합니다.
 
 ```sh
-git clone --branch v0.2.11 https://github.com/jonemos/DTWebEditor_SDK.git
+git clone --branch v0.2.12 https://github.com/jonemos/DTWebEditor_SDK.git
 cd DTWebEditor_SDK
 ```
 
@@ -82,6 +82,17 @@ D:\wxx/
 ```
 
 **일반 청크 폴더에는 `receipts`가 없어도 정상입니다.** `objects`나 `releases` 안으로 들어가지 말고, 세 항목을 포함하는 상위 폴더 `D:\wxx`를 사용합니다. 청크 폴더는 SDK 폴더 밖에 두어도 됩니다. API를 실행하는 PC에서 해당 폴더를 읽을 수 있어야 합니다.
+
+현재 에디터의 청크 생성·게시에서는 `equipment/`를 만들거나 업로드하지 않습니다. 기존 폴더에 이미 있는 설비 파일은 자동 삭제하지 않으며, 최신 SDK/API는 그 파일 없이도 모델을 읽습니다. 예제 ZIP의 확인용 JSON에서도 `equipment.json`은 생성하지 않습니다.
+
+| 항목 | 역할 |
+|---|---|
+| `objects/` | 모델·텍스처·레벨 정보 등을 나눈 실제 데이터 조각. 같은 내용은 재사용 |
+| `releases/` | 저장 버전별 레벨 배치와 필요한 파일·청크의 구성표 |
+| `deltas/` | 변경분 저장 시 추가·재사용·제외된 청크의 비교 정보 |
+| `delivery-head.json` | 전체 검증·저장이 완료된 현재 버전을 가리키는 파일 |
+
+`deltas/`는 변경분 저장 때 생깁니다. 기존 설비 메타데이터는 원본 저장본 안에 보존하며 호환 읽기 API로만 사용합니다. 새 구조를 확인하려면 최신 에디터에서 **새 빈 폴더에 전체 저장**하세요.
 
 ### ② 로컬 API 실행
 
@@ -175,6 +186,8 @@ Git에서 받은 공개 설정은 예제입니다. `storage.example.com`은 실�
 
 ### ③ 원격 API 실행
 
+설비 파일이 없는 새 청크를 원격으로 연결할 때는 **SDK/API 0.2.12 이상**을 사용합니다. 이전 API의 원격 검증은 `equipment/` 파일을 요구할 수 있습니다. 제작자도 최신 에디터를 사용해야 새 청크의 설비 파일 생성·업로드가 중단됩니다.
+
 SDK 루트의 **`remote-server.cmd`**를 실행합니다. 질문 없이 **루트의 `delivery-api.config.json`**을 읽어 서버를 시작합니다.
 
 서버는 시작할 때 현재 원격 게시본을 한 번 확인합니다. 새 게시본의 파일·hash·통합레벨 ID를 검증한 뒤 API 목록에 반영합니다. 검증이 실패하면 기존 검증된 게시본을 보존하고 로그에 실패를 표시합니다.
@@ -213,7 +226,7 @@ API 창을 유지한 채 **`examples/test-server.cmd`**를 실행합니다. 브�
 로컬 또는 원격 테스트 화면에서 모델 표시를 확인한 뒤, **외부 웹프로젝트 루트**에서 SDK를 설치합니다.
 
 ```sh
-pnpm add "https://github.com/jonemos/DTWebEditor_SDK.git#v0.2.11"
+pnpm add "https://github.com/jonemos/DTWebEditor_SDK.git#v0.2.12"
 ```
 
 API 서버는 계속 별도 프로세스로 실행합니다. 이미 실행 중인 API를 사용한다면 웹프로젝트에서 API 설정을 다시 만들 필요 없습니다.

@@ -7,7 +7,7 @@ export declare class ChunkExportDirectory {
     read(path: string): Promise<Uint8Array>;
     put(path: string, bytes: Uint8Array): Promise<void>;
     finish(hash: string, expected: string | null): Promise<void>;
-    /** Checks the complete closure without changing any published head. Also derives the legacy sidecar. */
+    /** Checks the complete closure without changing the head or creating auxiliary files. Legacy sidecars are ignored. */
     verify(hash: string): Promise<import("./m58f4c922e436.js").DeliveryManifest>;
     private serial;
     private atomic;

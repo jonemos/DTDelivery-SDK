@@ -38,5 +38,4 @@ export declare function packComposition(input: CompositionDocument, storage: Pic
     hash: string;
     delta: import("./m58f4c922e436.js").DeliveryDelta | undefined;
     writtenBytes: number;
-    equipment: import("./mac96c8d05045.js").EquipmentIndex;
 }>;

@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.12
+
+Stop generating and publishing equipment sidecar files. Verify local and remote chunk closures without equipment files, omit equipment.json from portable readable output, preserve existing source metadata/releases and legacy SDK read APIs, and document the current folder structure and upgrade order.
+
 ## 0.2.11
 
 Restyle the example with a compact dark top toolbar, grouped API/model controls, a mint primary action, keyboard-accessible collapsible startup help and responsive layouts. Preserve local/remote connection behavior and server configuration.

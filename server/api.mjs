@@ -24049,17 +24049,12 @@ async function runPublication(input, source, adapter, save, signal = new AbortCo
 		await record("probing");
 		job.expected ??= await adapter.readPublishedHead(job, signal);
 		await record("uploading");
-		const equipment = `equipment/${job.target}.json`, equipmentBytes = await source.read(equipment);
 		const entries = [...deliveryChunks(manifest)].map(([hash, length]) => ({
 			path: objectPath(hash),
 			hash,
 			length
 		}));
 		entries.push({
-			path: equipment,
-			hash: await sha256(equipmentBytes),
-			length: equipmentBytes.length
-		}, {
 			path: releasePath(job.target),
 			hash: job.target,
 			length: bytes.length
@@ -24097,7 +24092,7 @@ function publicationKey(scope, compositionId, path) {
 	publicationSegment(scope);
 	publicationSegment(compositionId);
 	if (path === "delivery-head.json") return `levels/${scope}/${compositionId}/${path}`;
-	if (!/^(objects\/[a-f0-9]{64}|(releases|equipment)\/[a-f0-9]{64}\.json|deltas\/[a-f0-9]{64}-[a-f0-9]{64}\.json)$/.test(path)) throw new PublicationError("invalid");
+	if (!/^(objects\/[a-f0-9]{64}|releases\/[a-f0-9]{64}\.json|deltas\/[a-f0-9]{64}-[a-f0-9]{64}\.json)$/.test(path)) throw new PublicationError("invalid");
 	return `levels/${path}`;
 }
 var publicationIdentity = (job) => new TextDecoder().decode(canonicalBytes({
@@ -32908,7 +32903,7 @@ var ChunkExportDirectory = class ChunkExportDirectory {
 		return new Uint8Array(await readFile(full));
 	}
 	async put(path, bytes) {
-		if (path === "delivery-head.json" || !(bytes instanceof Uint8Array) || bytes.length > DELIVERY_LIMITS.manifest || path.startsWith("objects/") && bytes.length > 4 * 1024 ** 2) throw new Error("Invalid export write");
+		if (path === "delivery-head.json" || path.startsWith("equipment/") || !(bytes instanceof Uint8Array) || bytes.length > DELIVERY_LIMITS.manifest || path.startsWith("objects/") && bytes.length > 4 * 1024 ** 2) throw new Error("Invalid export write");
 		const copy = bytes.slice();
 		return this.serial(async () => {
 			const full = await this.path(path, true);
@@ -32940,7 +32935,7 @@ var ChunkExportDirectory = class ChunkExportDirectory {
 			await this.atomic(await this.path("delivery-head.json", true), canonicalBytes({ hash }));
 		});
 	}
-	/** Checks the complete closure without changing any published head. Also derives the legacy sidecar. */
+	/** Checks the complete closure without changing the head or creating auxiliary files. Legacy sidecars are ignored. */
 	async verify(hash) {
 		const bytes = await this.read(releasePath(hash));
 		if (await sha256(bytes) !== hash) throw new Error("Invalid completed release");
@@ -32965,8 +32960,7 @@ var ChunkExportDirectory = class ChunkExportDirectory {
 			}
 			await mergeScriptAddons(JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(bytes)));
 		}
-		const scenes = /* @__PURE__ */ new Map();
-		if (manifest.levels.reduce((n, l) => n + files.get(l.hash).bytes, 0) > 64 * 1024 ** 2) throw new Error("Equipment metadata exceeds 64 MiB");
+		if (manifest.levels.reduce((n, l) => n + files.get(l.hash).bytes, 0) > 64 * 1024 ** 2) throw new Error("Level metadata exceeds 64 MiB");
 		for (const level of manifest.levels) {
 			const file = files.get(level.hash), bytes = new Uint8Array(file.bytes);
 			let offset = 0;
@@ -32975,18 +32969,7 @@ var ChunkExportDirectory = class ChunkExportDirectory {
 				bytes.set(part, offset);
 				offset += part.length;
 			}
-			scenes.set(level.hash, validateLevelMetadata(JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(bytes)), level, files).envelope.payload);
-		}
-		const indexBytes = canonicalBytes(createEquipmentIndex(manifest, hash, scenes)), indexPath = equipmentPath(hash);
-		try {
-			if (await sha256(await this.read(indexPath)) !== await sha256(indexBytes)) throw new Error("Immutable equipment index collision");
-		} catch (error) {
-			if (error.code !== "ENOENT") throw error;
-			try {
-				await this.atomic(await this.path(indexPath, true), indexBytes, true);
-			} catch (collision) {
-				if (collision.code !== "EEXIST" || await sha256(await this.read(indexPath)) !== await sha256(indexBytes)) throw collision;
-			}
+			validateLevelMetadata(JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(bytes)), level, files);
 		}
 		return manifest;
 	}
@@ -33340,8 +33323,7 @@ var S3Publication = class {
 		const reader = new ChunkReader({ read: async (path, limit, signal) => this.read(await this.call("GET", publicationKey("verify", "verify", path), signal), limit) }, new MemoryChunkCache(0));
 		const manifest = await reader.manifest(hash, signal);
 		for (const file of manifest.files) await reader.file(file, signal);
-		const equipment = canonicalBytes(await reader.equipment(hash, signal));
-		if (await this.inspectObject(`equipment/${hash}.json`, equipment.length, digest(equipment), signal) !== "present") throw new PublicationError("missing");
+		await reader.actors(hash, signal, manifest);
 	}
 	async publish(job) {
 		if (!this.config.conditionalWritesVerified || !job.expected || job.expected.hash !== null && !job.expected.token) throw new PublicationError("invalid");
