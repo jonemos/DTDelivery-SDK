@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "host": "127.0.0.1",
+  "port": 18849,
+  "origin": "http://127.0.0.1:5183",
+  "scope": "development",
+  "allowWrites": false,
+  "dataDirectory": "./delivery-data",
+  "localStore": null,
+  "s3Profiles": "./s3-profiles.json"
+}

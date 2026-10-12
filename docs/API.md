@@ -28,4 +28,4 @@
 
 애드온 제어에는 등록된 appId와 release pin이 필요합니다. GET `/api/apps/<app>/addons`, `/schema`, `/values`; POST `/sessions`, `/properties`; WS `/events`를 사용합니다. 목록/스키마/현재값은 releaseHash query, 실행 임시값은 executionId, 한 인스턴스는 URL 인코딩한 target JSON을 사용합니다. AddonPropertiesClient가 인증과 알림 세션을 처리합니다. WebSocket 토큰을 URL에 넣지 않습니다.
 
-필요한 호스트 설정은 API 주소, 로그인/테스트 인증, scope, compositionId, 애드온 제어용 appId입니다. scope는 게시 구역 이름이며 S3 access key와 다릅니다. 이 저장소는 조회 API 서버를 자동 설치하거나 모델을 제공하지 않습니다.
+필요한 호스트 설정은 API 주소, 로그인/테스트 인증, scope, compositionId, 애드온 제어용 appId입니다. scope는 게시 구역 이름이며 S3 access key와 다릅니다. Node 조회 API 서버는 같은 패키지의 `server/`에 포함됩니다. `pnpm exec dt-delivery-api init` → 설정 작성 → `register --job` → `start`로 실행합니다. [서버 안내](SERVER.md)를 참고하세요. 실제 모델·키·운영 로그인/HTTPS 설정은 외부 프로젝트에서 공급합니다.

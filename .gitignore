@@ -2,6 +2,10 @@ node_modules/
 dist/
 *.local
 .env*
+delivery-api.config.json
+delivery-data/
+catalog.json
+catalog.lock
 *.sqlite*
 *.db
 .api-token
