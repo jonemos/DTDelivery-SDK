@@ -1,6 +1,6 @@
 {
   "name": "@dt/delivery-sdk",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "type": "module",
   "license": "MIT",
   "description": "Browser SDK and Node API server for chunked digital twin publications",

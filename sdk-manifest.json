@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "version": "0.2.3",
-  "baseVersion": "0.2.3",
+  "version": "0.2.4",
+  "baseVersion": "0.2.4",
   "license": "MIT",
   "addonSdkVersion": 5,
   "contracts": [
@@ -24,13 +24,13 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 209,
-      "sha256": "7df679e0837bf2108adda29acabcbe5329ece8660fd3cde710adff0fa25d5a45"
+      "bytes": 361,
+      "sha256": "7f5b0b40395509eb319a968f53f42ce2a2ac1378ce283fe44aa7a2465804d5fc"
     },
     {
       "path": "docs/API.md",
-      "bytes": 2881,
-      "sha256": "34ae55f18d4f6be51925197e9b0e44730550e41a62992cf113269c97c0908fc1"
+      "bytes": 3072,
+      "sha256": "01eae0f751f37c3ae47a9d4ff4f3e8d10410fb498e5b5ae2e1ef1fc39406786b"
     },
     {
       "path": "docs/GITHUB_DESKTOP.md",
@@ -39,13 +39,13 @@
     },
     {
       "path": "docs/SERVER.md",
-      "bytes": 7531,
-      "sha256": "62220d8bfaac5b1c268efa79f58e4807d81ca0c0834cb039fd5d6146ec8f8f7e"
+      "bytes": 8531,
+      "sha256": "dbeed5196dcff189e08c5693e672069af93c7d1b9bae37cc63e56d7d8abbbca4"
     },
     {
       "path": "docs/UPDATING.md",
-      "bytes": 2105,
-      "sha256": "63db60c106d4e96608bf6ed2ec3a9d6c37e5079c6f9871455fbc27ff4bb57674"
+      "bytes": 2640,
+      "sha256": "a59c4e8f75c8aa67d68b6d551beb5ce14362fb92197b13b7a2ac9c2651b36323"
     },
     {
       "path": "examples/web/index.html",
@@ -64,8 +64,8 @@
     },
     {
       "path": "examples/web/README.md",
-      "bytes": 1568,
-      "sha256": "e3129e79e9c9812d841cf44d74c6ee083cdab15c281df7f4fda4e232981faa1c"
+      "bytes": 1808,
+      "sha256": "0f1415413c05e68eb3889dcaf1c6205cdc583afe0f8cbd736ab8caf34ea0ed64"
     },
     {
       "path": "examples/web/style.css",
@@ -85,17 +85,17 @@
     {
       "path": "package.json",
       "bytes": 1052,
-      "sha256": "af83bc49edc8a11c696abaf7ecaa6cd2b5f5d95a89ad31ea3134ac135efe0310"
+      "sha256": "1bb57c8404e4669e7fa0ea25013f63174e416ec4c4ec16a0c625e10932a1fb33"
     },
     {
       "path": "README.md",
-      "bytes": 15391,
-      "sha256": "e5064986b1a9ac773d6b9464f17e079afb15e780cfe5c4669ee68d4513afe283"
+      "bytes": 17804,
+      "sha256": "2c23ff42f8fbaf34ee7c6e8521bc8758adeb91eceff454befbbe40b593cbe477"
     },
     {
       "path": "runtime/index.js",
       "bytes": 71,
-      "sha256": "ea567c00ee6eeefa2bd9740fd1243f49f995659c903e43804fd31b04fa7dfbff"
+      "sha256": "18da96f761a1e4708c60a02d502acd1b247a7aa9338922003e40a376ff1d2158"
     },
     {
       "path": "runtime/RenderQualityPipeline-BQGbF9IG.js",
@@ -110,7 +110,7 @@
     {
       "path": "runtime/sdk.js",
       "bytes": 940513,
-      "sha256": "895ce94364e81e1f287fb3bb607d67bad0dff4b5ef60912a52408d6b420ae768"
+      "sha256": "a6db27929fc6928dcaebbb340c7d35a48d8a42ac9bf15b39e494a8c62511a52c"
     },
     {
       "path": "runtime/viewport.css",
@@ -124,8 +124,8 @@
     },
     {
       "path": "server/cli.mjs",
-      "bytes": 3731,
-      "sha256": "0372f3fbc69aee1fd69d8ae90fe016c5162f14eaf21f50b9a0a6461142a74a88"
+      "bytes": 5421,
+      "sha256": "1af81fe395a9829893e6fd91e624fca85081a511ba6e86edbc30813214323072"
     },
     {
       "path": "server/delivery-api.config.example.json",

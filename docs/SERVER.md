@@ -14,6 +14,8 @@ pnpm exec dt-delivery-api init
 
 현재 폴더에 세 파일이 생깁니다. 기존 파일이 하나라도 있으면 덮어쓰지 않습니다.
 
+**init은 `completed-job.json`을 만들지 않습니다.** 이 파일은 제작자가 실제 원격 게시를 완료한 후 전달하는 결과입니다. 파일을 받기 전에는 register를 실행할 수 없습니다. 로컬 게시 저장소는 6절을 따라 설정하고 register를 건너뜁니다.
+
 | 파일 | 작성할 내용 |
 |---|---|
 | delivery-api.config.json | 화면 origin, scope, API 포트, 저장소 설정 파일 위치 |
@@ -34,7 +36,9 @@ pnpm exec dt-delivery-api init
 
 ## 4. 게시 완료 정보 등록
 
-에디터에서 **업로드 및 게시 → 게시 완료**를 확인합니다. 완료 작업 JSON은 앱 채널의 `delivery-publication/jobs/` 아래에 있습니다. 그 실제 파일을 API 운영자에게 전달하세요. 파일 속 `compositionId`가 통합레벨의 연결 ID입니다.
+제작자는 최신 에디터의 **청크 제작 및 업로드 → 원격 저장소 → 업로드 및 게시**에서 게시 완료를 확인한 뒤 **작업 이력 → 해당 게시 완료 작업 → 게시 완료 JSON 받기**로 실제 파일을 받습니다. 이 기능이 없는 기존 에디터는 최신 앱으로 업데이트하거나 해당 앱 채널의 `delivery-publication/jobs/`에 있는 실제 published 작업 파일을 전달합니다. 실패하거나 진행 중인 작업은 등록할 수 없습니다. 파일 속 `compositionId`가 통합레벨의 연결 ID입니다.
+
+API 운영자는 전달받은 파일을 서버 실행 폴더에 `completed-job.json`으로 두고 실제 S3 설정과 읽기 키를 작성합니다. PowerShell의 `Test-Path ./completed-job.json`이 True인지 확인한 후 실행하세요. 다른 경로에 받았다면 `--job`에 실제 파일 경로를 지정합니다. 파일을 직접 만들거나 청크 폴더를 지정하지 않습니다.
 
 ```sh
 pnpm exec dt-delivery-api register --job ./completed-job.json

@@ -2,7 +2,7 @@
 
 DTWebEditor에서 제작한 통합레벨을 외부 웹프로젝트의 3D 화면에 표시하는 패키지입니다. **브라우저 SDK, Node.js 조회 API 서버, 설정 예제, 웹 화면 예제**가 함께 들어 있습니다. 실제 모델은 에디터에서 별도 저장소에 게시합니다.
 
-처음에는 이 README의 **1 → 2 → 3 → 4 → 5 → 6 → 7** 순서로 진행하세요. 제작자가 SDK와 청크를 준비하고, 외부 개발자가 API 서버와 페이지를 연결합니다.
+이 안내의 **1 → 2 → 3 → 4 → 5 → 6 → 7**은 원격 S3 저장소 연결 순서입니다. 제작자가 원격 게시를 완료하고 필요한 파일을 전달한 뒤 외부 개발자가 진행합니다. **SDK 다운로드와 `api:init`만으로 5번 등록을 실행할 수는 없습니다.** 로컬 게시 저장소를 쓰는 경우는 [서버 안내 6절](docs/SERVER.md#6-로컬-저장소--다른-pc)을 따라 설정하고 5번 등록을 건너뜁니다.
 
 ## 전체 연결 구조
 
@@ -44,7 +44,7 @@ S3 키와 API 토큰은 별개입니다. 실제 키·설정·모델·API 토큰�
 
 에디터의 **SDK → 버전 관리**에서 기존 SDK 전용 저장소를 연결한 뒤 **업데이트 검사 → 업데이트 커밋 → Git에 업데이트(Push)**를 진행합니다. GitHub Desktop의 Push origin도 사용할 수 있습니다.
 
-GitHub의 Tags에서 사용할 버전이 올라왔는지 확인하고 그 버전을 개발자에게 전달하세요. 아래 설치 명령은 `v0.2.3` 태그 기준입니다. 버전 고정에는 실제 태그 또는 commit을 사용합니다. 자세한 방법은 [GitHub Desktop 안내](docs/GITHUB_DESKTOP.md)를 참고하세요.
+GitHub의 Tags에서 사용할 버전이 올라왔는지 확인하고 그 버전을 개발자에게 전달하세요. 아래 설치 명령은 `v0.2.4` 태그 기준입니다. 버전 고정에는 실제 태그 또는 commit을 사용합니다. 자세한 방법은 [GitHub Desktop 안내](docs/GITHUB_DESKTOP.md)를 참고하세요.
 
 ## 2. 제작자 — 청크를 업로드하고 완료 정보를 전달
 
@@ -53,6 +53,7 @@ GitHub의 Tags에서 사용할 버전이 올라왔는지 확인하고 그 버전
 3. 이름 옆 **청크 제작 및 업로드 → 원격 저장소**를 엽니다.
 4. 저장소 주소·버킷·scope·업로드 키를 입력하고 **연결 확인 및 저장**을 누릅니다.
 5. **업로드 및 게시**를 누르고 **게시 완료**를 확인합니다.
+6. 같은 화면의 **작업 이력 → 해당 게시 완료 작업 → 게시 완료 JSON 받기**를 누릅니다. 받은 파일 이름은 `completed-job.json`입니다. 이 버튼은 이 기능이 포함된 최신 에디터에서 사용할 수 있습니다.
 
 개발자에게 아래 자료를 전달하세요.
 
@@ -60,7 +61,7 @@ GitHub의 Tags에서 사용할 버전이 올라왔는지 확인하고 그 버전
 - 에디터 연결의 **공개 configuration**: 저장소 주소·버킷·scope·region·프로필 이름·환경변수 접두사·HTTP/조건부 쓰기 설정
 - 실제 **게시 완료 작업 JSON**: `compositionId`, 게시 버전, 프로필 연결 정보 포함
 
-완료 JSON은 에디터 앱 채널의 `delivery-publication/jobs/` 아래에 있습니다. 예제의 `completed-job.json`은 전달받은 실제 파일을 가리킵니다. API 서버의 저장소 읽기 키는 운영 환경에 별도로 설정합니다. OS 암호화된 에디터 키 파일 전체를 복사하지 않습니다.
+`completed-job.json`은 **실제 원격 게시 완료 결과**입니다. SDK에 들어 있는 예제나 init으로 생성하는 설정 파일이 아닙니다. 실패·진행 중인 작업으로 만들거나 내용을 직접 채우지 마세요. 새 버튼이 없는 기존 에디터에서는 제작자가 해당 앱 채널의 `delivery-publication/jobs/`에 있는 실제 `published` 작업 파일을 전달하거나 최신 에디터로 업데이트해야 합니다. API 서버의 저장소 읽기 키는 운영 환경에 별도로 설정합니다. OS 암호화된 에디터 키 파일 전체를 복사하지 않습니다.
 
 ## 3. 개발자 — SDK와 API 서버 다운로드
 
@@ -69,7 +70,7 @@ GitHub의 Tags에서 사용할 버전이 올라왔는지 확인하고 그 버전
 에디터가 버전 관리하는 배포 폴더와 별개로 개발용 사본을 만듭니다.
 
 ```sh
-git clone --branch v0.2.3 https://github.com/jonemos/DTWebEditor_SDK.git
+git clone --branch v0.2.4 https://github.com/jonemos/DTWebEditor_SDK.git
 cd DTWebEditor_SDK
 pnpm --ignore-workspace install --ignore-scripts
 pnpm api:init
@@ -80,7 +81,7 @@ pnpm api:init
 외부 프로젝트 루트에서:
 
 ```sh
-pnpm add "https://github.com/jonemos/DTWebEditor_SDK.git#v0.2.3"
+pnpm add "https://github.com/jonemos/DTWebEditor_SDK.git#v0.2.4"
 pnpm exec dt-delivery-api init
 ```
 
@@ -89,7 +90,7 @@ API 서버와 웹 화면이 서로 다른 프로젝트라면 필요한 프로젝
 | 실행할 작업 | clone한 SDK 폴더 | SDK를 설치한 기존 프로젝트 |
 |---|---|---|
 | 개인 설정 생성 | `pnpm api:init` | `pnpm exec dt-delivery-api init` |
-| 게시본 등록 | `pnpm api:register --job ./completed-job.json` | `pnpm exec dt-delivery-api register --job ./completed-job.json` |
+| 실제 완료 JSON을 받은 뒤 원격 게시본 등록 | `pnpm api:register --job ./completed-job.json` | `pnpm exec dt-delivery-api register --job ./completed-job.json` |
 | API 실행 | `pnpm api:start` | `pnpm exec dt-delivery-api start` |
 
 ## 4. 개발자 — 저장소와 화면 주소 설정
@@ -133,6 +134,16 @@ DT_DELIVERY_REMOTE_SECRET_ACCESS_KEY=
 
 ## 5. 개발자 — 업로드한 게시본을 API 목록에 등록
 
+**먼저 제작자로부터 2번에서 받은 실제 `completed-job.json`을 전달받아야 합니다.** 그 파일을 `delivery-api.config.json`이 있는 실행 폴더에 넣으세요. 아직 파일을 받지 못했으면 등록 명령을 실행하지 말고 제작자에게 원격 게시 완료 JSON을 요청합니다. `pnpm api:init`을 다시 실행해도 이 파일은 생기지 않습니다.
+
+Windows PowerShell에서 현재 실행 폴더에 파일이 있는지 확인합니다.
+
+```powershell
+Test-Path ./completed-job.json
+```
+
+`True`이고 4번의 실제 원격 설정·서버용 키까지 작성한 뒤 아래 명령을 실행합니다. `False`이면 받은 파일을 이 폴더에 복사하거나 `--job`에 받은 파일의 전체 경로를 지정하세요. 브라우저가 파일 이름 뒤에 `(1)` 등을 붙였다면 실제 이름에 맞춰야 합니다.
+
 기존 프로젝트에서:
 
 ```sh
@@ -140,6 +151,8 @@ pnpm exec dt-delivery-api register --job ./completed-job.json
 ```
 
 clone한 SDK 폴더에서는 `pnpm api:register --job ./completed-job.json`을 사용합니다.
+
+SDK 설치 폴더 안에서 실행하는 경우의 순서는 **init → 실제 설정 작성 → 제작자에게 받은 파일 배치·존재 확인 → register → start**입니다. 청크 폴더의 경로를 `--job`에 넣는 명령이 아닙니다. 로컬 게시 저장소는 5번을 건너뜁니다.
 
 **청크가 저장소에 올라가도 API 목록에는 자동 등록되지 않습니다.** 이 명령은 완료 상태·프로필·통합레벨 ID·현재 게시 버전·전체 참조 파일의 hash를 확인한 후 목록에 등록합니다. 실패하면 기존 목록을 유지합니다.
 
@@ -272,6 +285,8 @@ SDK 업데이트는 [업데이트 안내](docs/UPDATING.md)를 따르세요. 외
 | 증상 | 먼저 확인할 것 |
 |---|---|
 | 설치할 태그가 없거나 서버 명령이 없음 | GitHub의 실제 SDK 버전·태그와 설치 버전 |
+| `Completed job file not found` / 등록 파일 없음 | 제작자의 실제 원격 게시 완료 JSON을 받은 뒤 `Test-Path` 확인. init은 이 파일을 만들지 않음 |
+| 0.2.3의 `Cannot read configuration or start API…` | `--job` 파일 누락도 이 메시지로 표시되었음. 먼저 파일 존재 확인. 0.2.4부터 구체적인 오류를 표시 |
 | API 연결 실패 | 서버 실행 여부, API 주소, 사내망/VPN·방화벽 |
 | 목록이 비어 있음 | 동일 scope 사용 여부와 완료 작업 register 여부 |
 | 401 | API 토큰·로그인 상태 |
