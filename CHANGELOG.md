@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.8
+
+Support ordinary local chunk export folders directly without publisher receipts. Fully validate the head, chunks, reconstructed files and level metadata before API catalog registration; keep source files read-only and apply saved changes on API restart. Preserve existing publication-store and remote workflows.
+
 ## 0.2.7
 
 Add Windows API launchers: local folder input only and remote startup from the root delivery-api.config.json without prompts or credential changes. Include public configuration files and a test-page launcher that installs dependencies, starts the server and opens the browser.

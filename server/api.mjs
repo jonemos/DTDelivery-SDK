@@ -33426,6 +33426,73 @@ async function loadS3HostBackend(profilesPath, profileId, catalogPath) {
 	});
 }
 //#endregion
+//#region desktop/LocalChunkBackend.ts
+/** API-owned verified catalog entry for an operator-selected export. No publisher receipt is fabricated or written. */
+async function localChunkBackend(c, register, catalog) {
+	const root = await realpath(c.localStore), source = await ChunkExportDirectory.create(root);
+	const readHead = async () => {
+		const bytes = await source.read("delivery-head.json");
+		if (bytes.length > 1024) throw new Error("Local chunk head is too large");
+		let head;
+		try {
+			head = JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(bytes));
+		} catch {
+			throw new Error("Invalid local chunk head");
+		}
+		if (!head || Object.keys(head).join() !== "hash" || !isHash(head.hash)) throw new Error("Invalid local chunk head");
+		return head.hash;
+	};
+	let hash;
+	try {
+		hash = await readHead();
+	} catch (error) {
+		if (error.code === "ENOENT") return null;
+		throw error;
+	}
+	const signal = AbortSignal.timeout(6e5), reader = new ChunkReader({ read: async (path, limit, signal) => {
+		signal.throwIfAborted();
+		const bytes = await source.read(path);
+		if (bytes.length > limit) throw new Error("Local chunk read limit exceeded");
+		return bytes;
+	} });
+	const manifest = await reader.manifest(hash, signal);
+	for (const file of manifest.files) {
+		const digest = createHash("sha256");
+		for (const chunk of file.chunks) {
+			signal.throwIfAborted();
+			const bytes = await source.read(objectPath(chunk.hash));
+			if (bytes.length !== chunk.bytes || createHash("sha256").update(bytes).digest("hex") !== chunk.hash) throw new Error("Local chunk hash or size mismatch");
+			digest.update(bytes);
+		}
+		if (digest.digest("hex") !== file.hash) throw new Error("Local reconstructed file hash mismatch");
+	}
+	await reader.equipment(hash, signal, manifest);
+	const checkHead = async () => {
+		signal.throwIfAborted();
+		if (await readHead() !== hash) throw new Error("Local chunk head changed during validation; restart the API");
+	};
+	const profile = {
+		id: "local-api-" + createHash("sha256").update(root + "\n" + c.scope).digest("hex"),
+		name: "Local chunk folder",
+		scope: c.scope,
+		kind: "local"
+	};
+	const job = createPublicationJob(profile, manifest.id, hash);
+	job.id = "local-api-" + createHash("sha256").update(profile.id + "\n" + hash).digest("hex");
+	job.state = "published";
+	validatePublicationJob(job);
+	await checkHead();
+	await register(job, checkHead, signal);
+	return {
+		objects: source,
+		catalog: async (scope) => (await catalog()).filter((row) => row.profile.id === profile.id && row.profile.scope === scope && row.state === "published" && row.error === null),
+		readPublishedHead: async (job) => ({
+			hash: job.profile.id === profile.id && job.compositionId === manifest.id ? hash : null,
+			token: hash
+		})
+	};
+}
+//#endregion
 //#region desktop/PublicationService.ts
 var localKey = (row) => `${process.platform === "win32" ? resolve(row.root).toLowerCase() : resolve(row.root)}\n${row.profile.scope}`;
 /** Main-process service: persistent paths never come from renderer payloads. */
@@ -33801,19 +33868,31 @@ async function configureDeliveryApi(path, templates, prompt, output = () => {}) 
 		...previous ?? remote ?? defaults,
 		dataDirectory: previous?.dataDirectory ?? "./delivery-data-local"
 	};
-	output("levels와 receipts가 들어 있는 로컬 게시 저장소의 상위 폴더를 입력하세요. SDK 밖의 폴더도 가능합니다.");
+	output("delivery-head.json·objects·releases가 들어 있는 청크 폴더를 입력하세요. 기존 levels·receipts 게시 저장소도 사용할 수 있습니다.");
 	for (;;) {
-		const folder = (await prompt(`로컬 게시 저장소 폴더${previous?.localStore ? ` [Enter: ${previous.localStore}]` : ""}: `)).trim() || previous?.localStore || "";
+		const folder = (await prompt(`로컬 청크 폴더${previous?.localStore ? ` [Enter: ${previous.localStore}]` : ""}: `)).trim() || previous?.localStore || "";
 		const normalized = folder.startsWith("\"") && folder.endsWith("\"") ? folder.slice(1, -1) : folder;
 		try {
 			const target = resolve(root, normalized);
-			if (!normalized || !(await lstat(target)).isDirectory() || !(await lstat(join(target, "levels"))).isDirectory() || !(await lstat(join(target, "receipts"))).isDirectory()) throw new Error("missing");
+			if (!normalized || !(await lstat(target)).isDirectory()) throw new Error("missing");
+			const entry = async (name, file = false) => {
+				try {
+					const stat = await lstat(join(target, name));
+					return file ? stat.isFile() : stat.isDirectory();
+				} catch (error) {
+					if (missing$1(error)) return false;
+					throw error;
+				}
+			};
+			const chunks = await entry("delivery-head.json", true) && await entry("objects") && await entry("releases");
+			const publication = await entry("levels") && await entry("receipts");
+			if (!chunks && !publication) throw new Error("missing");
 			c.localStore = target.replaceAll("\\", "/");
 			c.s3Profiles = null;
 			c.compositionIds = [];
 			break;
 		} catch {
-			output("로컬 게시 저장소를 찾을 수 없습니다. 로컬 저장소에 업로드 및 게시를 완료하고 levels·receipts의 상위 폴더를 선택하세요.");
+			output("폴더 경로·읽기 권한·청크 구조를 확인하세요. 일반 청크는 delivery-head.json·objects·releases의 상위 폴더를, 기존 게시 저장소는 levels·receipts의 상위 폴더를 선택합니다.");
 		}
 	}
 	validateDeliveryApiConfiguration(c, path);
@@ -34051,7 +34130,7 @@ async function apiToken(c, supplied) {
 async function startDeliveryApi(c, options = {}) {
 	await mkdir(c.dataDirectory, { recursive: true });
 	let backend, configured = null;
-	if (c.localStore) backend = await PublicationRepository.create(c.localStore);
+	if (c.localStore) backend = await localChunkBackend(c, (job, check, signal) => commitPublication(c, job, check, signal), () => readCatalog(join(c.dataDirectory, "catalog.json"))) ?? await PublicationRepository.create(c.localStore);
 	else {
 		configured = await s3Configuration(c);
 		const catalogPath = join(c.dataDirectory, "catalog.json");

@@ -5,7 +5,7 @@ SDK 버전, 청크 계약 버전, 애드온 버전은 다릅니다. package.json
 Git에 새 버전을 올려도 외부 프로그램은 자동으로 바뀌지 않습니다. 새 태그가 게시되면 외부 프로젝트에서 다음처럼 변경하고 검사·재빌드·배포합니다. 예시 태그는 실제로 게시한 값으로 바꾸세요.
 
 ```sh
-pnpm add "https://github.com/jonemos/DTWebEditor_SDK.git#v0.2.7"
+pnpm add "https://github.com/jonemos/DTWebEditor_SDK.git#v0.2.8"
 pnpm build
 ```
 
@@ -24,3 +24,5 @@ package.json과 pnpm-lock.yaml을 함께 커밋합니다. 문제가 있으면 �
 0.2.6은 함께 제공하는 PublicationService의 로컬 연결 재사용·연결 해제·작업 이력 정리를 추가합니다. 기존 프로필 ID와 게시된 청크/receipt를 보존합니다. 에디터의 경로 표시와 이력 삭제 버튼은 최신 에디터에서 사용할 수 있습니다. 이력 삭제는 앱의 표시 목록을 정리하며 원본 journal과 게시 파일은 내부에 보관합니다.
 
 0.2.7은 local-server.cmd·remote-server.cmd·examples/test-server.cmd와 공개 설정 파일2개를 포함합니다. clone/ZIP에서는 init을 생략합니다. 원격 CMD는 루트 delivery-api.config.json을 그대로 사용하고 로컬 CMD는 폴더만 입력받아 별도 delivery-api.local.config.json을 저장합니다. 키 입력이나 .env 변경은 없습니다. 기존 개인 설정을 사용 중인 clone을 갱신할 때는 해당 설정을 보관하고 실제 저장소 값·ID를 유지하세요. 의존성으로 설치한 프로젝트의 루트 개인 설정은 SDK 설치로 변경되지 않습니다.
+
+0.2.8은 일반 청크 출력 폴더를 local-server.cmd/API에서 직접 읽습니다. delivery-head.json·objects·releases가 있으면 receipts 없이 연결되며, 시작 시 전체 hash/레벨 검증과 head 재확인 후 API 자체 catalog에 등록합니다. 원본 폴더는 읽기만 합니다. 청크 변경 후 API 재시작으로 반영하며 기존 게시 저장소·원격 동작은 유지합니다. 이 수정 이전의 receipts 필수 안내는 일반 청크에 적용되지 않습니다.

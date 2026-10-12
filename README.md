@@ -10,11 +10,11 @@ SDK를 clone하거나 ZIP을 풀고 Node.js **24.16 이상**과 pnpm을 설치�
 
 | 실행 파일 | 동작 |
 |---|---|
-| [`local-server.cmd`](local-server.cmd) | **로컬 게시 저장소 폴더만 입력** → 로컬 설정 저장 → API 실행 |
+| [`local-server.cmd`](local-server.cmd) | **로컬 청크 폴더만 입력** → 파일 검증 → API 실행 |
 | [`remote-server.cmd`](remote-server.cmd) | **입력 없이** SDK 루트의 `delivery-api.config.json`을 그대로 읽어 API 실행 |
 | [`examples/test-server.cmd`](examples/test-server.cmd) | 웹 예제 의존성 설치 → 테스트 서버 실행 → 브라우저 자동 열기 |
 
-로컬은 `levels`와 `receipts`가 들어 있는 상위 폴더를 입력합니다. 예를 들어 `D:/wxx`를 입력하면 별도 `delivery-api.local.config.json`에 `"localStore": "D:/wxx"`, `"s3Profiles": null`로 저장합니다. 다음 실행에서는 Enter로 이전 폴더를 사용합니다. 원격 설정 파일과 접속 키는 변경하지 않습니다. 청크 제작의 전체/변경분 저장만 한 폴더는 게시 저장소가 아닙니다.
+로컬은 **`delivery-head.json`, `objects`, `releases`가 들어 있는 청크 폴더**를 입력합니다. 전체 저장/변경분 저장으로 만든 일반 청크에는 `receipts`가 없어도 됩니다. 예를 들어 `D:/wxx`를 입력하면 별도 `delivery-api.local.config.json`에 `"localStore": "D:/wxx"`, `"s3Profiles": null`로 저장합니다. 다음 실행에서는 Enter로 이전 폴더를 사용합니다. API는 시작할 때 현재 head와 전체 청크·파일 hash·레벨 정보를 검증하고, API 데이터 폴더에 검증된 목록을 보관합니다. 원본 청크 폴더에는 기록을 만들거나 파일을 옮기지 않습니다. 변경분 저장 후 API를 재시작하고 화면을 다시 열면 새 버전을 반영합니다. 기존 `levels`·`receipts` 게시 저장소도 지원합니다.
 
 원격은 `delivery-api.config.json`이 지정한 `s3-profiles.json`과 기존 `.env`/서버 환경변수를 사용합니다. **설정 질문이나 접속 키 입력은 없습니다.** 공개 패키지의 S3 주소는 예제이고 `compositionIds`는 빈 배열입니다. 배포 담당자가 실제 공개 저장소 설정과 통합레벨 ID를 구성해야 실제 모델이 조회됩니다. 키는 공개 Git에 넣지 않습니다.
 
@@ -88,7 +88,7 @@ GitHub의 Tags에서 사용할 버전이 올라왔는지 확인하고 그 버전
 에디터가 버전 관리하는 배포 폴더와 별개로 개발용 사본을 만듭니다.
 
 ```sh
-git clone --branch v0.2.7 https://github.com/jonemos/DTWebEditor_SDK.git
+git clone --branch v0.2.8 https://github.com/jonemos/DTWebEditor_SDK.git
 cd DTWebEditor_SDK
 pnpm --ignore-workspace install --ignore-scripts
 ```
@@ -98,7 +98,7 @@ pnpm --ignore-workspace install --ignore-scripts
 외부 프로젝트 루트에서:
 
 ```sh
-pnpm add "https://github.com/jonemos/DTWebEditor_SDK.git#v0.2.7"
+pnpm add "https://github.com/jonemos/DTWebEditor_SDK.git#v0.2.8"
 pnpm exec dt-delivery-api init
 ```
 

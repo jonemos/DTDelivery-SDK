@@ -81,7 +81,9 @@ pnpm dev -- --port 5183
 
 ## 6. 로컬 저장소 / 다른 PC
 
-같은 PC의 로컬 시험은 config의 s3Profiles를 null로, localStore를 에디터에 등록한 **로컬 게시 저장소** 폴더로 바꿉니다. scope도 일치해야 합니다. 청크 출력 폴더와 게시 저장소는 다릅니다. 로컬 게시본은 검증된 receipt를 사용하므로 register 명령이 필요하지 않습니다.
+SDK0.2.8부터 같은 PC에서는 일반 청크 출력 폴더도 직접 사용할 수 있습니다. `local-server.cmd`에 **delivery-head.json·objects·releases가 들어 있는 폴더**를 입력하세요. config의 localStore에 해당 경로, s3Profiles에 null이 저장됩니다. 일반 전체/변경분 저장 결과에는 receipts가 없어도 됩니다. API가 시작할 때 현재 head·전체 청크/파일 hash·레벨 정보를 검증하고 자체 데이터 폴더의 catalog를 갱신합니다. 원본 청크 폴더는 읽기만 하며 receipts·levels를 만들거나 파일을 이동하지 않습니다. 검증 중 head가 바뀌거나 청크가 손상/누락되면 시작을 거부하고 기존 검증 목록을 보존합니다. 같은 폴더의 변경분 저장 후 API를 재시작하고 페이지를 다시 열면 새 버전을 반영합니다. 주기 감시는 없습니다.
+
+기존 levels·receipts 구조의 로컬 게시 저장소도 그대로 지원하며 이 방식에서는 에디터와 scope가 같아야 합니다. 두 로컬 방식 모두 register 명령은 필요하지 않습니다. 일반 청크 하나의 manifest ID는 API가 검증해서 읽으므로 compositionIds를 따로 입력하지 않습니다.
 
 다른 PC에서는 그 PC가 접근할 수 있는 서버에서 실행하세요. 기본 127.0.0.1은 같은 PC만 접속합니다. 권장 구성은 API 앞에 HTTPS 역방향 프록시를 두고 HTTP와 애드온 WebSocket을 함께 전달하는 것입니다. origin은 실제 웹페이지 주소로 설정합니다. host를 외부 수신 주소로 지정하면 `DT_DELIVERY_API_TOKEN`을 별도로 설정해야 합니다(32–512자의 영문·숫자·`.`·`_`·`~`·`-`). HTTPS/WSS·조직 로그인·방화벽은 외부 프로젝트 운영 환경에 맞게 배치합니다.
 

@@ -58,6 +58,7 @@ try {
       process.stdout.write(JSON.stringify(result) + '\n');
     } else {
       stage = 'startup';
+      if (config.localStore) process.stdout.write('Checking the local chunk folder or publication store before API startup…\n');
       if (config.s3Profiles) process.stdout.write('Checking remote publications once before API startup; new releases are fully validated before registration…\n');
       const host = await startDeliveryApi(config, { token: process.env.DT_DELIVERY_API_TOKEN, onPublicationSync: status => {
         process.stdout.write(`Startup publication check: ${JSON.stringify({ checked: status.checked, registered: status.registered, failureCount: status.failures.length, failures: status.failures.slice(0, 5) })}\n`);
