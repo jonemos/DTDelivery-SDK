@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.13
+
+Automatically fill same-PC example connection settings and API tokens for local and remote configurations. Show actual download and preparation progress, loading cancellation and immediate failures. Reuse bounded immutable release parsing and membership indexes while rechecking current authorization, catalog grants and stored release hashes on every API request.
+
 ## 0.2.12
 
 Stop generating and publishing equipment sidecar files. Verify local and remote chunk closures without equipment files, omit equipment.json from portable readable output, preserve existing source metadata/releases and legacy SDK read APIs, and document the current folder structure and upgrade order.

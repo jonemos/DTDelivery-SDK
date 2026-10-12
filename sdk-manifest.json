@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "version": "0.2.12",
-  "baseVersion": "0.2.12",
+  "version": "0.2.13",
+  "baseVersion": "0.2.13",
   "license": "MIT",
   "addonSdkVersion": 5,
   "contracts": [
@@ -24,8 +24,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 2552,
-      "sha256": "2286ea6d1e41f1659750dbcb44ed5e5c8c20fb7f7ebfa6898c04fae0aa359bd1"
+      "bytes": 2929,
+      "sha256": "f011cede8654c557a53ed34de0c0ac2daa2963047a527ce5af71b3412bab4298"
     },
     {
       "path": "delivery-api.config.json",
@@ -50,7 +50,7 @@
     {
       "path": "docs/UPDATING.md",
       "bytes": 4749,
-      "sha256": "b13c8460222cfbd0a3d14056073313e68aaff837dd7fd472ff31dd948fd2ced5"
+      "sha256": "bfa157c3d7f0082652fccf79544f6f62a45a09abaaae5eeeb2376ddb4273c344"
     },
     {
       "path": "examples/test-server.cmd",
@@ -59,13 +59,13 @@
     },
     {
       "path": "examples/web/index.html",
-      "bytes": 2459,
-      "sha256": "3504982f9163c3c46a8d05e291b2ac419f290d556e2783221751b374e861d876"
+      "bytes": 2450,
+      "sha256": "56444d8453775403deb1fb5f8262aeb5f56b87a767fd41780f4a1cd0b977dc19"
     },
     {
       "path": "examples/web/main.ts",
-      "bytes": 6760,
-      "sha256": "9cc4f0729d1887158020be4aa351c7d6686ef222e3cb5fdf52e45121132daf7f"
+      "bytes": 10275,
+      "sha256": "7359b6a26b4f7071758aa105eadab83f2de9f0930a1211d64c30bcbba3bf6396"
     },
     {
       "path": "examples/web/package.json",
@@ -74,8 +74,8 @@
     },
     {
       "path": "examples/web/README.md",
-      "bytes": 4315,
-      "sha256": "712ac13bd9293d5376000ed6bf2dbec00a1a008cb3e32ffe4f9ef11718f005cf"
+      "bytes": 5074,
+      "sha256": "c54877cc0b2943f81299f750b89eedbb6f373515e28bd092e96fce012120efa7"
     },
     {
       "path": "examples/web/style.css",
@@ -86,6 +86,11 @@
       "path": "examples/web/tsconfig.json",
       "bytes": 220,
       "sha256": "822345f575ad8cbc3ae0fbfcc777f0c486e3534ce1abcf7c4a87e2ff98836672"
+    },
+    {
+      "path": "examples/web/vite.config.mjs",
+      "bytes": 4340,
+      "sha256": "0d259a83a1bb7a36891327b44850e5c25a927b72aa04cacf4a951fae0ffa0121"
     },
     {
       "path": "LICENSE",
@@ -100,12 +105,12 @@
     {
       "path": "package.json",
       "bytes": 1158,
-      "sha256": "24f3a63784dfe554d53f55d2a260cd8ced18baebc0c48615b4ac95975ba7ff3c"
+      "sha256": "eedd5bbd907b03bcfd61d6bfb72e7cc71aba08ece41bfab1cac5e33840925a40"
     },
     {
       "path": "README.md",
-      "bytes": 19699,
-      "sha256": "a2144908cad143b82ebe3cc65d05f9a061a8d0411de069b20bc73227fb5bd1aa"
+      "bytes": 20322,
+      "sha256": "052f4844f398aa66c818aae28f0ac4f65f034b4df0683ab5145ec0c596674994"
     },
     {
       "path": "remote-server.cmd",
@@ -115,7 +120,7 @@
     {
       "path": "runtime/index.js",
       "bytes": 72,
-      "sha256": "d6ff5e50d965ed376e93983b58185976ab8fbc5dcd86518ef4cb561e9ad808c6"
+      "sha256": "8bf0b9025f7ef433b9479d96acba2d35c960cc26baf4baa120edaf47266ddb21"
     },
     {
       "path": "runtime/RenderQualityPipeline-BQGbF9IG.js",
@@ -130,7 +135,7 @@
     {
       "path": "runtime/sdk.js",
       "bytes": 940514,
-      "sha256": "b44a79702844f41200e51131fe4e1a904253995739fc1f6dae24f00334ae8edf"
+      "sha256": "3e8cb36e141dcdaea7a879944601fe8341639e8363900701224740c89c981985"
     },
     {
       "path": "runtime/viewport.css",
@@ -144,8 +149,8 @@
     },
     {
       "path": "server/api.mjs",
-      "bytes": 1402373,
-      "sha256": "9a6c53520f2d291322319743716863b87394faa8d00cfb0d53dfa7209b06df76"
+      "bytes": 1403297,
+      "sha256": "1e587c9230df69550cb45ee852cc0a0257752642964645045b6a00372d6a003d"
     },
     {
       "path": "server/cli.mjs",
@@ -694,8 +699,8 @@
     },
     {
       "path": "types/modules/me9be7fced53f.d.ts",
-      "bytes": 1835,
-      "sha256": "bae03ef3d62197d08db70337b84808358dedf35df9bfbba02fac4464f7d097a9"
+      "bytes": 1909,
+      "sha256": "88bf244947e2174dd66e1c6b07f902819c45eaf45fb2eb9288e965311273ece2"
     },
     {
       "path": "types/modules/mec05efbb93a1.d.ts",

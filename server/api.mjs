@@ -32362,6 +32362,8 @@ var CollaborationApi = class {
 	authorize;
 	store;
 	addonControls;
+	releases = /* @__PURE__ */ new Map();
+	releaseBytes = 0;
 	constructor(repository, authorize, store, addonControls) {
 		this.repository = repository;
 		this.authorize = authorize;
@@ -32627,13 +32629,38 @@ var CollaborationApi = class {
 		}
 		return jobs;
 	}
-	async release(scope, compositionId, hash) {
+	async releaseEntry(scope, compositionId, hash) {
 		if (!isHash(hash) || !(await this.catalog(scope)).some((j) => j.compositionId === compositionId && j.target === hash)) throw new Error("Release not authorized");
 		const bytes = await this.repository.objects.read(releasePath(hash));
 		if (createHash("sha256").update(bytes).digest("hex") !== hash) throw new Error("Corrupt release");
-		const manifest = validateDelivery(JSON.parse(new TextDecoder().decode(bytes)));
-		if (manifest.id !== compositionId) throw new Error("Composition mismatch");
-		return manifest;
+		let entry = this.releases.get(hash);
+		if (!entry) {
+			const manifest = validateDelivery(JSON.parse(new TextDecoder().decode(bytes)));
+			if (manifest.id !== compositionId) throw new Error("Composition mismatch");
+			const chunks = new Set(deliveryChunks(manifest).keys());
+			entry = {
+				manifest,
+				chunks,
+				bytes: bytes.length + chunks.size * 128
+			};
+			if (entry.bytes <= 32 * 1024 ** 2) {
+				while (this.releases.size >= 16 || this.releaseBytes + entry.bytes > 32 * 1024 ** 2) {
+					const oldest = this.releases.keys().next().value;
+					this.releaseBytes -= this.releases.get(oldest).bytes;
+					this.releases.delete(oldest);
+				}
+				this.releaseBytes += entry.bytes;
+				this.releases.set(hash, entry);
+			}
+		} else {
+			this.releases.delete(hash);
+			this.releases.set(hash, entry);
+		}
+		if (entry.manifest.id !== compositionId) throw new Error("Composition mismatch");
+		return entry;
+	}
+	async release(scope, compositionId, hash) {
+		return structuredClone((await this.releaseEntry(scope, compositionId, hash)).manifest);
 	}
 	reader() {
 		return new ChunkReader({ read: async (path, limit, signal) => {
@@ -32670,12 +32697,12 @@ var CollaborationApi = class {
 				const [, , , id, hash, ...suffix] = parts;
 				publicationSegment(id);
 				if (!hash) throw new Error("Missing hash");
-				const manifest = await this.release(scope, id, hash), path = suffix.join("/");
+				const entry = await this.releaseEntry(scope, id, hash), path = suffix.join("/");
 				if (path === "authorize") return apiJSON({
 					subject: principal.subject,
 					releaseHash: hash
 				});
-				if (path !== releasePath(hash) && !(path.startsWith("objects/") && deliveryChunks(manifest).has(path.slice(8)))) return apiJSON({ error: "membership" }, 403);
+				if (path !== releasePath(hash) && !(path.startsWith("objects/") && entry.chunks.has(path.slice(8)))) return apiJSON({ error: "membership" }, 403);
 				const bytes = await this.repository.objects.read(path);
 				return new Response(bytes.slice().buffer, { headers: {
 					"content-type": "application/octet-stream",

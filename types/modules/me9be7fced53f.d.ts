@@ -28,12 +28,15 @@ export declare class CollaborationApi {
     readonly authorize: CollaborationAuthorization;
     readonly store?: CollaborationStore | undefined;
     readonly addonControls?: AddonControlStore | undefined;
+    private releases;
+    private releaseBytes;
     constructor(repository: CollaborationBackend, authorize: CollaborationAuthorization, store?: CollaborationStore | undefined, addonControls?: AddonControlStore | undefined);
     private addonCatalog;
     private addonRequest;
     private body;
     private apps;
     catalog(scope: string): Promise<PublicationJob[]>;
+    private releaseEntry;
     release(scope: string, compositionId: string, hash: string): Promise<import("./m58f4c922e436.js").DeliveryManifest>;
     reader(): ChunkReader;
     handle(request: Request): Promise<Response>;
