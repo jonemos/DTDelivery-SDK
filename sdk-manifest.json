@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "version": "0.2.10",
-  "baseVersion": "0.2.10",
+  "version": "0.2.11",
+  "baseVersion": "0.2.11",
   "license": "MIT",
   "addonSdkVersion": 5,
   "contracts": [
@@ -24,8 +24,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 1986,
-      "sha256": "7dca330d64cd9e3cb108afea9c308ab80551a5d864336aa596d0d4665f3f9a0b"
+      "bytes": 2239,
+      "sha256": "6209e94ef7505b4ed5824294f62205816cdeeb25b57215947bd88c71582ede98"
     },
     {
       "path": "delivery-api.config.json",
@@ -50,7 +50,7 @@
     {
       "path": "docs/UPDATING.md",
       "bytes": 4749,
-      "sha256": "95c6f410369c3a12616b9d139b8744e01bdd9ab7aaad33034f2842b52c635cc4"
+      "sha256": "59c10949e8f53359be9b3d75043446507e89d6bf357a14d20913f41a438d1def"
     },
     {
       "path": "examples/test-server.cmd",
@@ -59,8 +59,8 @@
     },
     {
       "path": "examples/web/index.html",
-      "bytes": 1293,
-      "sha256": "2a19e2632ffeb9375142c515b93c493d4302908f75e4f7ce9a93b88eca5e6cf1"
+      "bytes": 2459,
+      "sha256": "3504982f9163c3c46a8d05e291b2ac419f290d556e2783221751b374e861d876"
     },
     {
       "path": "examples/web/main.ts",
@@ -74,13 +74,13 @@
     },
     {
       "path": "examples/web/README.md",
-      "bytes": 3994,
-      "sha256": "46654e86e1ce412a075dc576f4f9b097d754fe0bd491dae790f5fcca6867fb21"
+      "bytes": 4315,
+      "sha256": "712ac13bd9293d5376000ed6bf2dbec00a1a008cb3e32ffe4f9ef11718f005cf"
     },
     {
       "path": "examples/web/style.css",
-      "bytes": 692,
-      "sha256": "bdc8e1a5b1f21eff9424af6deb8c39b9b7e6d6adc5ac12a52a7c7344b35d3a4d"
+      "bytes": 5038,
+      "sha256": "9df1c221d56296aa6dd79e67e5d44b059d44aab4dd973ec34510ba7af67239c1"
     },
     {
       "path": "examples/web/tsconfig.json",
@@ -100,12 +100,12 @@
     {
       "path": "package.json",
       "bytes": 1158,
-      "sha256": "9a70440b29ae37f7f22ce56e6a2644487ea2562e69cc4978a3df4bb476332f36"
+      "sha256": "709883261e0b607fc5f987b9c5cae6dca92d473d9d1e5b6d2d87ca4b5800a928"
     },
     {
       "path": "README.md",
       "bytes": 18367,
-      "sha256": "6a351f0036e2790b71a87aa4d01b4724404951bba2526d8f8c60d5d78270d7b3"
+      "sha256": "32f36b8060944323c723ce60c13634193e6321abcc90da46f60aca83bdc6443f"
     },
     {
       "path": "remote-server.cmd",
@@ -115,7 +115,7 @@
     {
       "path": "runtime/index.js",
       "bytes": 72,
-      "sha256": "e1c1f98a82433042903539a54bc3e7222e9f491d32cf96047f5a827ffee2ad02"
+      "sha256": "c529f99382c3b04c61b44faca97ae64d46871471eb554265a0dd192f4f32ddba"
     },
     {
       "path": "runtime/RenderQualityPipeline-BQGbF9IG.js",
@@ -130,7 +130,7 @@
     {
       "path": "runtime/sdk.js",
       "bytes": 940514,
-      "sha256": "88657b6c3f5d76297a9696477ac408916eb2766d8932d1e3f915ad3b49220f88"
+      "sha256": "626c47f6e7c63fdebcc54c82b863f3118aca26dc8b6eabbe6079ceb53d8bce84"
     },
     {
       "path": "runtime/viewport.css",

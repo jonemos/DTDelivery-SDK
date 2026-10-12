@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.11
+
+Restyle the example with a compact dark top toolbar, grouped API/model controls, a mint primary action, keyboard-accessible collapsible startup help and responsive layouts. Preserve local/remote connection behavior and server configuration.
+
 ## 0.2.10
 
 Add local-folder and remote-storage selection to the shipped web example. Supply the loopback API/scope defaults and matching launcher/token guidance, validate connection inputs, clear old connections on setting changes and ignore stale asynchronous responses. Align both beginner setup paths.

@@ -1,2 +1,2 @@
 export * from './sdk.js';
-export const DELIVERY_SDK_VERSION = "0.2.10";
+export const DELIVERY_SDK_VERSION = "0.2.11";
