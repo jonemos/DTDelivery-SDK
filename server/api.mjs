@@ -33768,6 +33768,70 @@ var PublicationService = class {
 	}
 };
 //#endregion
+//#region desktop/PublicDeliverySetup.ts
+var missing$1 = (error) => error.code === "ENOENT";
+async function configurationFile(path) {
+	try {
+		const info = await lstat(path);
+		if (!info.isFile() || info.isSymbolicLink() || info.size > 16384) throw new Error("설정 파일의 종류나 크기를 확인하세요.");
+		return await readFile(path);
+	} catch (error) {
+		if (missing$1(error)) return null;
+		throw error;
+	}
+}
+function configuration(bytes, path) {
+	if (!bytes) return null;
+	try {
+		const value = JSON.parse(bytes.toString("utf8"));
+		validateDeliveryApiConfiguration(value, path);
+		return value;
+	} catch {
+		throw new Error("API 설정 파일이 올바르지 않습니다. 파일 형식과 지원 버전을 확인하세요.");
+	}
+}
+/** Input remains data, never shell command text. Only the separate local configuration is written. */
+async function configureDeliveryApi(path, templates, prompt, output = () => {}) {
+	const root = dirname(resolve(path)), original = await configurationFile(path), own = configuration(original, path);
+	const remotePath = join(root, "delivery-api.config.json"), remote = configuration(await configurationFile(remotePath), remotePath);
+	const templatePath = join(templates, "delivery-api.config.example.json"), defaults = configuration(await configurationFile(templatePath), templatePath);
+	if (!defaults) throw new Error("SDK에 포함된 API 기본 설정을 찾을 수 없습니다.");
+	const previous = own?.localStore ? own : remote?.localStore ? remote : null;
+	const c = {
+		...previous ?? remote ?? defaults,
+		dataDirectory: previous?.dataDirectory ?? "./delivery-data-local"
+	};
+	output("levels와 receipts가 들어 있는 로컬 게시 저장소의 상위 폴더를 입력하세요. SDK 밖의 폴더도 가능합니다.");
+	for (;;) {
+		const folder = (await prompt(`로컬 게시 저장소 폴더${previous?.localStore ? ` [Enter: ${previous.localStore}]` : ""}: `)).trim() || previous?.localStore || "";
+		const normalized = folder.startsWith("\"") && folder.endsWith("\"") ? folder.slice(1, -1) : folder;
+		try {
+			const target = resolve(root, normalized);
+			if (!normalized || !(await lstat(target)).isDirectory() || !(await lstat(join(target, "levels"))).isDirectory() || !(await lstat(join(target, "receipts"))).isDirectory()) throw new Error("missing");
+			c.localStore = target.replaceAll("\\", "/");
+			c.s3Profiles = null;
+			c.compositionIds = [];
+			break;
+		} catch {
+			output("로컬 게시 저장소를 찾을 수 없습니다. 로컬 저장소에 업로드 및 게시를 완료하고 levels·receipts의 상위 폴더를 선택하세요.");
+		}
+	}
+	validateDeliveryApiConfiguration(c, path);
+	if (Buffer.byteLength(JSON.stringify(c)) > 16384) throw new Error("API 설정 크기 제한을 초과합니다.");
+	const lockPath = path + ".setup.lock";
+	await mkdir(dirname(path), { recursive: true });
+	const lock = await open(lockPath, "wx", 384);
+	try {
+		const current = await configurationFile(path);
+		if (current === null ? original !== null : original === null || !current.equals(original)) throw new Error("설정이 다른 프로그램에서 변경되었습니다. 다시 실행하세요.");
+		await atomicPublicationJSON(path, c);
+	} finally {
+		await lock.close();
+		await unlink(lockPath);
+	}
+	output("로컬 설정을 저장했습니다. API 서버를 시작합니다.");
+}
+//#endregion
 //#region desktop/PublicDeliveryServer.ts
 var missing = (error) => error.code === "ENOENT";
 async function jsonFile(path, limit) {
@@ -33781,7 +33845,9 @@ async function jsonFile(path, limit) {
 }
 /** Paths belong to the config file's directory, independent of the caller's working directory. */
 async function loadDeliveryApiConfiguration(path) {
-	const input = await jsonFile(path, 16384);
+	return validateDeliveryApiConfiguration(await jsonFile(path, 16384), path);
+}
+function validateDeliveryApiConfiguration(input, path) {
 	if (!input || typeof input !== "object" || Array.isArray(input)) throw new Error("Invalid API configuration");
 	const c = input;
 	const required = [
@@ -34105,4 +34171,4 @@ async function startDeliveryApi(c, options = {}) {
 	};
 }
 //#endregion
-export { AddonControlStore, CollaborationApi, CollaborationStore, PublicationRepository, PublicationService, S3CollaborationBackend, S3Publication, installAddonWebSocket, loadDeliveryApiConfiguration, loadS3HostBackend, registerDeliveryPublication, startDeliveryApi };
+export { AddonControlStore, CollaborationApi, CollaborationStore, PublicationRepository, PublicationService, S3CollaborationBackend, S3Publication, configureDeliveryApi, installAddonWebSocket, loadDeliveryApiConfiguration, loadS3HostBackend, registerDeliveryPublication, startDeliveryApi, validateDeliveryApiConfiguration };

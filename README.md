@@ -4,6 +4,24 @@ DTWebEditor에서 제작한 통합레벨을 외부 웹프로젝트의 3D 화면�
 
 이 안내의 **1 → 2 → 3 → 4 → 5 → 6 → 7**은 원격 S3 저장소 연결 순서입니다. **SDK 0.2.5부터 API 서버가 시작할 때 새 게시본을 확인·검증하고 자동 등록합니다.** 통합레벨 ID를 처음에 한 번 설정하면 매번 완료 JSON을 받거나 register 명령을 실행할 필요가 없습니다. 주기 감시는 하지 않습니다. 로컬 게시 저장소는 [서버 안내 6절](docs/SERVER.md#6-로컬-저장소--다른-pc)을 따릅니다.
 
+## Windows에서 CMD로 실행하기
+
+SDK를 clone하거나 ZIP을 풀고 Node.js **24.16 이상**과 pnpm을 설치한 뒤 아래 파일을 실행하세요. API와 테스트 화면은 각각의 창에서 실행합니다.
+
+| 실행 파일 | 동작 |
+|---|---|
+| [`local-server.cmd`](local-server.cmd) | **로컬 게시 저장소 폴더만 입력** → 로컬 설정 저장 → API 실행 |
+| [`remote-server.cmd`](remote-server.cmd) | **입력 없이** SDK 루트의 `delivery-api.config.json`을 그대로 읽어 API 실행 |
+| [`examples/test-server.cmd`](examples/test-server.cmd) | 웹 예제 의존성 설치 → 테스트 서버 실행 → 브라우저 자동 열기 |
+
+로컬은 `levels`와 `receipts`가 들어 있는 상위 폴더를 입력합니다. 예를 들어 `D:/wxx`를 입력하면 별도 `delivery-api.local.config.json`에 `"localStore": "D:/wxx"`, `"s3Profiles": null`로 저장합니다. 다음 실행에서는 Enter로 이전 폴더를 사용합니다. 원격 설정 파일과 접속 키는 변경하지 않습니다. 청크 제작의 전체/변경분 저장만 한 폴더는 게시 저장소가 아닙니다.
+
+원격은 `delivery-api.config.json`이 지정한 `s3-profiles.json`과 기존 `.env`/서버 환경변수를 사용합니다. **설정 질문이나 접속 키 입력은 없습니다.** 공개 패키지의 S3 주소는 예제이고 `compositionIds`는 빈 배열입니다. 배포 담당자가 실제 공개 저장소 설정과 통합레벨 ID를 구성해야 실제 모델이 조회됩니다. 키는 공개 Git에 넣지 않습니다.
+
+API의 `Delivery API listening`을 확인한 뒤 `examples/test-server.cmd`를 실행합니다. `http://127.0.0.1:5183/`이 열리면 API 주소·API 토큰·scope 입력 → 목록 조회 → 게시본 열기를 누릅니다. 원격 기본 토큰은 `delivery-data/.api-token`, 로컬 기본 토큰은 `delivery-data-local/.api-token`에 있습니다. 포트5183을 이미 쓰고 있으면 오류를 표시합니다. API의 origin도 해당 주소와 같아야 합니다. 종료는 각 실행 창에서 Ctrl+C입니다.
+
+앱에서 SDK 게시·버전 관리용으로 연결한 폴더와 별도로 **외부 개발용 clone/ZIP 사본**에서 실행하세요.
+
 ## 전체 연결 구조
 
 ```text
@@ -70,10 +88,9 @@ GitHub의 Tags에서 사용할 버전이 올라왔는지 확인하고 그 버전
 에디터가 버전 관리하는 배포 폴더와 별개로 개발용 사본을 만듭니다.
 
 ```sh
-git clone --branch v0.2.6 https://github.com/jonemos/DTWebEditor_SDK.git
+git clone --branch v0.2.7 https://github.com/jonemos/DTWebEditor_SDK.git
 cd DTWebEditor_SDK
 pnpm --ignore-workspace install --ignore-scripts
-pnpm api:init
 ```
 
 ### 기존 외부 프로젝트에 직접 설치하기
@@ -81,7 +98,7 @@ pnpm api:init
 외부 프로젝트 루트에서:
 
 ```sh
-pnpm add "https://github.com/jonemos/DTWebEditor_SDK.git#v0.2.6"
+pnpm add "https://github.com/jonemos/DTWebEditor_SDK.git#v0.2.7"
 pnpm exec dt-delivery-api init
 ```
 
@@ -89,13 +106,13 @@ API 서버와 웹 화면이 서로 다른 프로젝트라면 필요한 프로젝
 
 | 실행할 작업 | clone한 SDK 폴더 | SDK를 설치한 기존 프로젝트 |
 |---|---|---|
-| 개인 설정 생성 | `pnpm api:init` | `pnpm exec dt-delivery-api init` |
+| API 설정 준비 | 포함된 `delivery-api.config.json`·`s3-profiles.json` 사용; init 생략 | `pnpm exec dt-delivery-api init` |
 | 선택 사항: 완료 JSON으로 수동 등록 | `pnpm api:register --job ./completed-job.json` | `pnpm exec dt-delivery-api register --job ./completed-job.json` |
 | API 실행 | `pnpm api:start` | `pnpm exec dt-delivery-api start` |
 
 ## 4. 개발자 — 저장소와 화면 주소 설정
 
-init 명령이 아래 파일을 만듭니다. 이미 있는 설정은 덮어쓰지 않습니다.
+SDK를 clone하면 `delivery-api.config.json`·`s3-profiles.json`이 이미 포함되어 있습니다. **clone한 SDK에서는 init을 실행하지 않습니다.** 기존 외부 프로젝트에 의존성으로 설치한 경우에만 프로젝트 루트에서 init으로 설정 파일을 만듭니다. 이미 있는 설정은 덮어쓰지 않습니다. 접속 키는 운영자가 별도 `.env` 또는 서버 환경변수로 공급합니다.
 
 | 파일 | 작성할 내용 |
 |---|---|
@@ -178,7 +195,7 @@ clone한 SDK 폴더에서는 `pnpm api:start`를 사용합니다. 실행 창을 
 
 ## 7. 개발자 — 제공 화면 예제 열기
 
-clone한 SDK의 **별도 터미널**에서:
+Windows에서는 `examples/test-server.cmd`를 실행하면 설치·서버 실행·브라우저 열기가 함께 진행됩니다. 수동 실행은 clone한 SDK의 **별도 터미널**에서:
 
 ```sh
 cd examples/web

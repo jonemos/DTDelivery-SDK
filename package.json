@@ -1,6 +1,6 @@
 {
   "name": "@dt/delivery-sdk",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "type": "module",
   "license": "MIT",
   "description": "Browser SDK and Node API server for chunked digital twin publications",
@@ -35,6 +35,10 @@
     "types",
     "docs",
     "examples",
+    "local-server.cmd",
+    "remote-server.cmd",
+    "delivery-api.config.json",
+    "s3-profiles.json",
     "README.md",
     "CHANGELOG.md",
     "LICENSE",

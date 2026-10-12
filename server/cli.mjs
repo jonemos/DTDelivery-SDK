@@ -1,12 +1,13 @@
 #!/usr/bin/env node
+/* global AbortController */
 import { access, copyFile, mkdir, unlink } from 'node:fs/promises';
 import { constants } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import process from 'node:process';
-import { loadDeliveryApiConfiguration, registerDeliveryPublication, startDeliveryApi } from './api.mjs';
+import { createInterface } from 'node:readline/promises';
 
-const usage = 'dt-delivery-api init | start | register --job <completed-job.json> [--config <delivery-api.config.json>]';
+const usage = 'dt-delivery-api init | start | local | register --job <completed-job.json> [--config <delivery-api.config.json>]';
 let stage = 'arguments';
 try {
   const [command = 'help', ...args] = process.argv.slice(2), flags = new Map();
@@ -14,8 +15,11 @@ try {
     if (!['--config', '--job'].includes(args[i]) || !args[i + 1] || flags.has(args[i])) throw new Error(usage);
     flags.set(args[i], args[i + 1]);
   }
-  if (!['init', 'start', 'register', 'help', '--help', '-h'].includes(command) || flags.has('--job') && command !== 'register') throw new Error(usage);
-  const configPath = resolve(flags.get('--config') ?? 'delivery-api.config.json'), root = dirname(configPath);
+  if (!['init', 'start', 'local', 'register', 'help', '--help', '-h'].includes(command) || flags.has('--job') && command !== 'register') throw new Error(usage);
+  const [major, minor] = process.versions.node.split('.').map(Number);
+  if (major < 24 || major === 24 && minor < 16) throw new Error('Node.js 24.16 이상을 설치한 뒤 다시 실행하세요.');
+  const { configureDeliveryApi, loadDeliveryApiConfiguration, registerDeliveryPublication, startDeliveryApi } = await import('./api.mjs');
+  const configPath = resolve(flags.get('--config') ?? (command === 'local' ? 'delivery-api.local.config.json' : 'delivery-api.config.json')), root = dirname(configPath);
   if (['help', '--help', '-h'].includes(command)) process.stdout.write(usage + '\nNode.js 24.16+ · SDK browser import and API server execution are separate.\n');
   else if (command === 'init') {
     const templates = dirname(fileURLToPath(import.meta.url));
@@ -30,6 +34,14 @@ try {
     } catch (error) { for (const target of created) await unlink(target); throw error; }
     process.stdout.write('Created delivery-api.config.json, s3-profiles.json and .env. Set the actual storage configuration and compositionIds, then start the API. Remote publications are checked automatically; no completed-job download is required. See docs/SERVER.md.\n');
   } else {
+    if (command === 'local') {
+      stage = 'setup';
+      const templates = dirname(fileURLToPath(import.meta.url)), output = message => process.stdout.write(message + '\n');
+      const input = createInterface({ input: process.stdin, output: process.stdout }), controller = new AbortController();
+      input.once('SIGINT', () => controller.abort()); input.once('close', () => controller.abort());
+      try { await configureDeliveryApi(configPath, templates, question => input.question(question, { signal: controller.signal }), output); }
+      finally { input.close(); }
+    }
     let jobPath;
     if (command === 'register') {
       if (!flags.has('--job')) throw new Error(usage);
@@ -70,7 +82,9 @@ try {
     conflict: 'Publication conflict. Obtain the latest completed job from the editor.',
     EADDRINUSE: 'API port is already in use. Stop the existing API or choose another port.',
   };
-  const message = stage === 'job' && error.code === 'ENOENT'
+  const message = stage === 'setup' && error.code === 'ABORT_ERR' ? '설정 입력을 취소했습니다. 기존 설정은 유지됩니다.'
+    : stage === 'setup' && error.code === 'EEXIST' ? '다른 설정 작업이 실행 중입니다. 중단된 작업이라면 해당 config의 .setup.lock을 확인하세요.'
+    : stage === 'job' && error.code === 'ENOENT'
     ? 'Completed job file not found. api:init does not create completed-job.json. For automatic updates, set compositionIds in delivery-api.config.json and start the API. For manual registration, open 작업 이력 → 게시 완료 JSON 받기 in the editor and place the file at the --job path. See README step 5.'
     : stage === 'job' ? 'Cannot read the --job file. Check its path and file read permission.'
     : error.code === 'ENOENT' ? `A required file is missing during ${stage}. Check delivery-api.config.json, s3-profiles.json and the configured storage paths.`

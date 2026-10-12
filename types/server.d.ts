@@ -2,6 +2,7 @@
 import { CollaborationApi, type CollaborationAuthorization } from './modules/me9be7fced53f.js';
 import { type PublicationErrorCode } from './modules/mb7a9935c0a43.js';
 export * from './modules/m4a6e328669ee.js';
+export { configureDeliveryApi } from './modules/mcadb08233965.js';
 export interface DeliveryApiConfiguration {
     version: 1;
     host: string;
@@ -17,6 +18,7 @@ export interface DeliveryApiConfiguration {
 }
 /** Paths belong to the config file's directory, independent of the caller's working directory. */
 export declare function loadDeliveryApiConfiguration(path: string): Promise<DeliveryApiConfiguration>;
+export declare function validateDeliveryApiConfiguration(input: unknown, path: string): DeliveryApiConfiguration;
 /** Operator-only CLI registration. No HTTP route trusts a submitted job or arbitrary release hash. */
 export declare function registerDeliveryPublication(c: DeliveryApiConfiguration, jobPath: string): Promise<{
     registered: boolean;

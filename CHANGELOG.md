@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.7
+
+Add Windows API launchers: local folder input only and remote startup from the root delivery-api.config.json without prompts or credential changes. Include public configuration files and a test-page launcher that installs dependencies, starts the server and opens the browser.
+
 ## 0.2.6
 
 Reuse local connections for the same folder and scope. Add safe connection removal and persistent job-history cleanup; preserve immutable profile IDs, source journals and published receipts.
