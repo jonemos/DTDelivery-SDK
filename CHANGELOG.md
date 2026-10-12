@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.9
+
+Rewrite the beginner README into complete local-folder and remote-storage setup paths. Clarify folder selection, prepared remote configuration, API tokens, test-page startup, project integration and model updates. Align example navigation; preserve SDK/API behavior.
+
 ## 0.2.8
 
 Support ordinary local chunk export folders directly without publisher receipts. Fully validate the head, chunks, reconstructed files and level metadata before API catalog registration; keep source files read-only and apply saved changes on API restart. Preserve existing publication-store and remote workflows.

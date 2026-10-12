@@ -4,7 +4,7 @@
 
 SDK는 웹페이지에서 3D를 표시하고 API 서버는 S3 또는 로컬 게시 저장소에서 목록과 청크를 제공합니다. 둘 다 같은 패키지에 들어 있지만 서버는 별도 Node 프로세스로 실행합니다. Node.js 24.16 이상, pnpm을 사용하세요. 에디터 설치나 소스 빌드는 필요하지 않습니다.
 
-Windows의 SDK clone/ZIP 사본에서는 루트의 `local-server.cmd`(폴더만 입력) 또는 `remote-server.cmd`(질문 없이 루트 `delivery-api.config.json` 사용)를 실행합니다. `examples/test-server.cmd`가 테스트 웹 서버와 브라우저를 엽니다. 로컬 설정은 별도 `delivery-api.local.config.json`과 `delivery-data-local`에 저장되어 원격 설정을 바꾸지 않습니다. 접속 키는 질문하거나 수정하지 않습니다. [CMD 실행 안내](../README.md#windows에서-cmd로-실행하기).
+처음 시작한다면 루트 README의 [공통 준비](../README.md#prepare)를 읽은 뒤 [로컬 실행](../README.md#local) 또는 [원격 실행](../README.md#remote)을 선택하세요. Windows의 SDK clone/ZIP 사본에서는 `local-server.cmd`(청크 폴더만 입력) 또는 `remote-server.cmd`(질문 없이 루트 `delivery-api.config.json` 사용)를 실행하고 `examples/test-server.cmd`로 웹페이지를 엽니다. 로컬 설정은 별도 `delivery-api.local.config.json`과 `delivery-data-local`에 저장되어 원격 설정을 바꾸지 않습니다. 접속 키는 질문하거나 수정하지 않습니다. 아래는 상세 설정·운영 연결 안내입니다.
 
 clone/ZIP에는 공개 원격 설정 파일2개가 이미 있어 init을 생략합니다. 실제 S3 설정·통합레벨 ID는 배포 담당자가 준비하며 키는 기존 `.env`/환경변수에서 공급합니다. 공개 배포의 주소는 예제값입니다. 기존 프로젝트에 의존성으로 설치했으면 프로젝트 루트에서 `pnpm exec dt-delivery-api …`를 사용합니다. 아래 init 절은 **기존 프로젝트 기준**입니다.
 
