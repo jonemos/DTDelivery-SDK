@@ -42,7 +42,7 @@ pnpm --version
 이 GitHub 페이지에서 **Code → Download ZIP**으로 받아 압축을 풀거나, 다음 명령으로 clone합니다.
 
 ```sh
-git clone --branch v0.2.13 https://github.com/jonemos/DTWebEditor_SDK.git
+git clone --branch v0.2.14 https://github.com/jonemos/DTWebEditor_SDK.git
 cd DTWebEditor_SDK
 ```
 
@@ -228,7 +228,7 @@ API 창을 유지한 채 **`examples/test-server.cmd`**를 실행합니다. 브�
 로컬 또는 원격 테스트 화면에서 모델 표시를 확인한 뒤, **외부 웹프로젝트 루트**에서 SDK를 설치합니다.
 
 ```sh
-pnpm add "https://github.com/jonemos/DTWebEditor_SDK.git#v0.2.13"
+pnpm add "https://github.com/jonemos/DTWebEditor_SDK.git#v0.2.14"
 ```
 
 API 서버는 계속 별도 프로세스로 실행합니다. 이미 실행 중인 API를 사용한다면 웹프로젝트에서 API 설정을 다시 만들 필요 없습니다.

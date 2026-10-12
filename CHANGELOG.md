@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.14
+
+Retain automatically supplied token provenance after scope edits, so changing the API address clears that token before any request can send it to another host. Keep same-PC local/remote automatic settings, download/preparation progress, cancellation and error handling; preserve API authorization/catalog/hash validation and all existing tags.
+
 ## 0.2.13
 
 Automatically fill same-PC example connection settings and API tokens for local and remote configurations. Show actual download and preparation progress, loading cancellation and immediate failures. Reuse bounded immutable release parsing and membership indexes while rechecking current authorization, catalog grants and stored release hashes on every API request.

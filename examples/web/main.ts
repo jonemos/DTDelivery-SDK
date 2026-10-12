@@ -72,8 +72,8 @@ function connection() {
 source.onchange = () => { void close(); configureSource(); };
 for (const id of ['api', 'token', 'scope']) input(id).oninput = () => {
   connectionVersion++; automatic = false;
-  if (id === 'api' && autoToken && input('token').value === autoToken && input('api').value !== autoAddress) input('token').value = '';
-  autoToken = '';
+  if (id === 'api' && autoToken && input('token').value === autoToken && input('api').value !== autoAddress) { input('token').value = ''; autoToken = ''; }
+  if (id === 'token') autoToken = '';
   void close(); clearCatalog(); message('연결 정보가 바뀌었습니다. 목록 조회를 다시 누르세요.');
 };
 canvas.hidden = true; configureSource();
