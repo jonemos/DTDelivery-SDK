@@ -44,7 +44,7 @@ S3 키와 API 토큰은 별개입니다. 실제 키·설정·모델·API 토큰�
 
 에디터의 **SDK → 버전 관리**에서 기존 SDK 전용 저장소를 연결한 뒤 **업데이트 검사 → 업데이트 커밋 → Git에 업데이트(Push)**를 진행합니다. GitHub Desktop의 Push origin도 사용할 수 있습니다.
 
-GitHub의 Tags에서 사용할 버전이 올라왔는지 확인하고 그 버전을 개발자에게 전달하세요. 아래 설치 명령은 `v0.2.5` 태그 기준입니다. 버전 고정에는 실제 태그 또는 commit을 사용합니다. 자세한 방법은 [GitHub Desktop 안내](docs/GITHUB_DESKTOP.md)를 참고하세요.
+GitHub의 Tags에서 사용할 버전이 올라왔는지 확인하고 그 버전을 개발자에게 전달하세요. 아래 설치 명령은 `v0.2.6` 태그 기준입니다. 버전 고정에는 실제 태그 또는 commit을 사용합니다. 자세한 방법은 [GitHub Desktop 안내](docs/GITHUB_DESKTOP.md)를 참고하세요.
 
 ## 2. 제작자 — 청크를 업로드하고 완료 정보를 전달
 
@@ -70,7 +70,7 @@ GitHub의 Tags에서 사용할 버전이 올라왔는지 확인하고 그 버전
 에디터가 버전 관리하는 배포 폴더와 별개로 개발용 사본을 만듭니다.
 
 ```sh
-git clone --branch v0.2.5 https://github.com/jonemos/DTWebEditor_SDK.git
+git clone --branch v0.2.6 https://github.com/jonemos/DTWebEditor_SDK.git
 cd DTWebEditor_SDK
 pnpm --ignore-workspace install --ignore-scripts
 pnpm api:init
@@ -81,7 +81,7 @@ pnpm api:init
 외부 프로젝트 루트에서:
 
 ```sh
-pnpm add "https://github.com/jonemos/DTWebEditor_SDK.git#v0.2.5"
+pnpm add "https://github.com/jonemos/DTWebEditor_SDK.git#v0.2.6"
 pnpm exec dt-delivery-api init
 ```
 

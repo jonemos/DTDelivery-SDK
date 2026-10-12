@@ -33427,6 +33427,7 @@ async function loadS3HostBackend(profilesPath, profileId, catalogPath) {
 }
 //#endregion
 //#region desktop/PublicationService.ts
+var localKey = (row) => `${process.platform === "win32" ? resolve(row.root).toLowerCase() : resolve(row.root)}\n${row.profile.scope}`;
 /** Main-process service: persistent paths never come from renderer payloads. */
 var PublicationService = class {
 	root;
@@ -33434,6 +33435,8 @@ var PublicationService = class {
 	remotes;
 	active = /* @__PURE__ */ new Map();
 	journal;
+	metadataQueue = Promise.resolve();
+	starting = /* @__PURE__ */ new Map();
 	constructor(root, adapterFactory, remotes) {
 		this.root = root;
 		this.adapterFactory = adapterFactory;
@@ -33454,41 +33457,131 @@ var PublicationService = class {
 			throw error;
 		}
 	}
+	metadata(operation) {
+		const result = this.metadataQueue.then(operation);
+		this.metadataQueue = result.then(() => {}, () => {});
+		return result;
+	}
+	async listing() {
+		try {
+			const bytes = await readFile(join(this.root, "listing.json"));
+			if (bytes.length > 2 * 1024 ** 2) throw new Error("Publication listing too large");
+			const value = JSON.parse(bytes.toString("utf8"));
+			if (!value || Object.keys(value).sort().join() !== "jobs,profiles,version" || value.version !== 1 || !Array.isArray(value.jobs) || !Array.isArray(value.profiles) || value.jobs.length > 1e4 || value.profiles.length > 100) throw new Error("Invalid publication listing");
+			for (const ids of [value.jobs, value.profiles]) {
+				ids.forEach(publicationSegment);
+				if (new Set(ids).size !== ids.length) throw new Error("Duplicate publication listing IDs");
+			}
+			return value;
+		} catch (error) {
+			if (error.code === "ENOENT") return {
+				version: 1,
+				jobs: [],
+				profiles: []
+			};
+			throw error;
+		}
+	}
+	async profileListing() {
+		const rows = await this.configurations(), hidden = new Set((await this.listing()).profiles), profiles = [], aliases = {}, canonical = /* @__PURE__ */ new Map();
+		for (const row of rows) {
+			if (hidden.has(row.profile.id)) continue;
+			const key = row.profile.kind === "local" ? localKey(row) : row.profile.id, existing = canonical.get(key);
+			if (existing) aliases[row.profile.id] = existing;
+			else {
+				canonical.set(key, row.profile.id);
+				profiles.push(row.profile);
+			}
+		}
+		return {
+			profiles,
+			profileAliases: aliases,
+			locations: Object.fromEntries(rows.filter((row) => row.profile.kind === "local").map((row) => [row.profile.id, row.root]))
+		};
+	}
 	async profiles() {
-		return (await this.configurations()).map((row) => row.profile);
+		return (await this.profileListing()).profiles;
 	}
 	async configureS3(profiles) {
-		const local = (await this.configurations()).filter((row) => row.profile.kind === "local");
-		for (const profile of profiles) {
-			validatePublicationProfile(profile);
-			if (profile.kind !== "s3") throw new Error("Invalid S3 profile");
-		}
-		const managed = await this.remotes?.profiles() ?? [];
-		const unique = new Map([...profiles, ...managed].map((profile) => [profile.id, profile]));
-		await atomicPublicationJSON(join(this.root, "profiles.json"), [...local, ...[...unique.values()].map((profile) => ({
-			profile,
-			root: ""
-		}))]);
+		return this.metadata(async () => {
+			const local = (await this.configurations()).filter((row) => row.profile.kind === "local");
+			for (const profile of profiles) {
+				validatePublicationProfile(profile);
+				if (profile.kind !== "s3") throw new Error("Invalid S3 profile");
+			}
+			const managed = await this.remotes?.profiles() ?? [];
+			const unique = new Map([...profiles, ...managed].map((profile) => [profile.id, profile]));
+			await atomicPublicationJSON(join(this.root, "profiles.json"), [...local, ...[...unique.values()].map((profile) => ({
+				profile,
+				root: ""
+			}))]);
+		});
 	}
 	async addLocalProfile(root, scope, name) {
-		const profile = validatePublicationProfile({
+		const requested = validatePublicationProfile({
 			id: randomUUID(),
 			name,
 			kind: "local",
 			scope
 		});
-		const repository = await PublicationRepository.create(root), rows = await this.configurations();
-		rows.push({
-			profile,
-			root: repository.root
+		const repository = await PublicationRepository.create(root);
+		return this.metadata(async () => {
+			const rows = await this.configurations(), key = localKey({
+				profile: requested,
+				root: repository.root
+			});
+			const matches = rows.filter((row) => row.profile.kind === "local" && localKey(row) === key);
+			if (matches.length) {
+				const listing = await this.listing(), ids = new Set(matches.map((row) => row.profile.id));
+				if (listing.profiles.some((id) => ids.has(id))) await atomicPublicationJSON(join(this.root, "listing.json"), {
+					...listing,
+					profiles: listing.profiles.filter((id) => !ids.has(id))
+				});
+				return matches[0].profile;
+			}
+			if (rows.length >= 100) throw new Error("저장소 등록 한도를 초과했습니다.");
+			rows.push({
+				profile: requested,
+				root: repository.root
+			});
+			await atomicPublicationJSON(join(this.root, "profiles.json"), rows);
+			return requested;
 		});
-		await atomicPublicationJSON(join(this.root, "profiles.json"), rows);
-		return profile;
 	}
 	async configuration(id) {
 		const value = (await this.configurations()).find((row) => row.profile.id === id);
-		if (!value) throw new Error("Unknown publication profile");
+		if (!value || (await this.listing()).profiles.includes(id)) throw new Error("연결 해제된 저장소입니다. 같은 폴더를 다시 연결하세요.");
 		return value;
+	}
+	async disconnectLocal(id) {
+		publicationSegment(id);
+		await this.metadata(async () => {
+			const rows = await this.configurations(), selected = rows.find((row) => row.profile.id === id);
+			if (!selected || selected.profile.kind !== "local") throw new Error("로컬 저장소 연결만 해제할 수 있습니다.");
+			const ids = new Set(rows.filter((row) => row.profile.kind === "local" && localKey(row) === localKey(selected)).map((row) => row.profile.id));
+			if (this.starting.size) throw new Error("게시 준비가 끝난 뒤 연결을 해제하세요.");
+			for (const jobId of this.active.keys()) if (ids.has((await this.status(jobId)).profile.id)) throw new Error("진행 중인 게시가 끝난 뒤 연결을 해제하세요.");
+			const listing = await this.listing();
+			await atomicPublicationJSON(join(this.root, "listing.json"), {
+				...listing,
+				profiles: [.../* @__PURE__ */ new Set([...listing.profiles, ...ids])]
+			});
+		});
+	}
+	async deleteJob(id) {
+		publicationSegment(id);
+		await this.metadata(async () => {
+			const job = await this.status(id);
+			if (this.active.has(id) || this.starting.has(id)) throw new Error("진행 중인 작업은 삭제할 수 없습니다. 작업이 끝난 뒤 다시 시도하세요.");
+			if (job.state === "publishing" || job.state === "outcome_unknown") throw new Error("게시 결과 재조회 후 작업 이력을 삭제하세요.");
+			const listing = await this.listing();
+			if (listing.jobs.includes(id)) return;
+			if (listing.jobs.length >= 1e4) throw new Error("삭제한 작업 이력 보관 한도를 초과했습니다.");
+			await atomicPublicationJSON(join(this.root, "listing.json"), {
+				...listing,
+				jobs: [...listing.jobs, id]
+			});
+		});
 	}
 	packagePath(id) {
 		publicationSegment(id);
@@ -33545,7 +33638,8 @@ var PublicationService = class {
 	async jobs() {
 		await mkdir(join(this.root, "jobs"), { recursive: true });
 		const ids = (await readdir(join(this.root, "jobs"))).filter((n) => /^[a-zA-Z0-9_-]+\.json$/.test(n));
-		return Promise.all(ids.map((n) => this.journal.read(n.slice(0, -5))));
+		const hidden = new Set((await this.listing()).jobs);
+		return Promise.all(ids.filter((name) => !hidden.has(name.slice(0, -5))).map((n) => this.journal.read(n.slice(0, -5))));
 	}
 	status(id) {
 		return this.journal.read(id);
@@ -33556,8 +33650,29 @@ var PublicationService = class {
 	}
 	async start(id) {
 		if (this.active.has(id)) return this.status(id);
-		const job = await this.status(id), configuration = await this.configuration(job.profile.id);
-		if (JSON.stringify(configuration.profile) !== JSON.stringify(job.profile)) throw new Error("Publication profile changed");
+		const pending = this.starting.get(id);
+		if (pending) return pending;
+		const setup = this.startJob(id);
+		this.starting.set(id, setup);
+		try {
+			return await setup;
+		} finally {
+			this.starting.delete(id);
+		}
+	}
+	async startJob(id) {
+		const { job, configuration } = await this.metadata(async () => {
+			if ((await this.listing()).jobs.includes(id)) throw new Error("삭제한 작업 이력은 재개할 수 없습니다. 새 게시 작업을 만드세요.");
+			const job = await this.status(id);
+			return {
+				job,
+				configuration: await this.configuration(job.profile.id)
+			};
+		});
+		if (publicationIdentity({
+			...job,
+			profile: configuration.profile
+		}) !== publicationIdentity(job)) throw new Error("Publication profile changed");
 		const { source } = await this.source(id), adapter = job.profile.kind === "local" ? await PublicationRepository.create(configuration.root) : await this.remotes?.adapter(job.profile) ?? await this.adapterFactory?.(job.profile);
 		if (!adapter) throw new Error("Storage adapter unavailable");
 		if (this.active.has(id)) return this.status(id);
@@ -33603,18 +33718,16 @@ var PublicationService = class {
 			],
 			status: ["action", "id"],
 			start: ["action", "id"],
-			cancel: ["action", "id"]
+			cancel: ["action", "id"],
+			deleteJob: ["action", "id"],
+			disconnectLocal: ["action", "id"]
 		};
 		if (!Object.hasOwn(keys, r.action) || Object.keys(r).sort().join() !== keys[r.action].sort().join()) throw new Error("Invalid publication fields");
 		switch (r.action) {
-			case "profiles": {
-				const rows = await this.configurations();
-				return {
-					profiles: rows.map((r) => r.profile),
-					remotes: await this.remotes?.details() ?? [],
-					locations: Object.fromEntries(rows.filter((r) => r.profile.kind === "local").map((r) => [r.profile.id, join(r.root, "levels", r.profile.scope)]))
-				};
-			}
+			case "profiles": return {
+				...await this.profileListing(),
+				remotes: await this.remotes?.details() ?? []
+			};
 			case "jobs": return { jobs: await this.jobs() };
 			case "localProfile": {
 				publicationSegment(r.scope);
@@ -33623,11 +33736,14 @@ var PublicationService = class {
 			}
 			case "remoteProfile": {
 				if (!this.remotes) throw new Error("원격 저장소 연결은 Desktop 앱에서 사용할 수 있습니다.");
-				const profile = await this.remotes.save(r.connection), rows = await this.configurations();
-				await atomicPublicationJSON(join(this.root, "profiles.json"), [...rows.filter((row) => row.profile.id !== profile.id), {
-					profile,
-					root: ""
-				}]);
+				const profile = await this.remotes.save(r.connection);
+				await this.metadata(async () => {
+					const rows = await this.configurations();
+					await atomicPublicationJSON(join(this.root, "profiles.json"), [...rows.filter((row) => row.profile.id !== profile.id), {
+						profile,
+						root: ""
+					}]);
+				});
 				return { profiles: [profile] };
 			}
 			case "prepare": return { token: await this.prepare(r.profileId, r.compositionId) };
@@ -33642,6 +33758,12 @@ var PublicationService = class {
 				this.cancel(r.id);
 				return { job: await this.status(r.id) };
 			case "status": return { job: await this.status(r.id) };
+			case "deleteJob":
+				await this.deleteJob(r.id);
+				return { jobs: await this.jobs() };
+			case "disconnectLocal":
+				await this.disconnectLocal(r.id);
+				return await this.profileListing();
 		}
 	}
 };

@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.6
+
+Reuse local connections for the same folder and scope. Add safe connection removal and persistent job-history cleanup; preserve immutable profile IDs, source journals and published receipts.
+
 ## 0.2.5
 
 Validate and reflect remote publications once at API startup. Configure composition IDs once; restart after republishing without a new job JSON. No periodic monitoring; preserve previous verified releases on failure.
