@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "version": "0.2.1",
+  "version": "0.2.2",
   "baseVersion": "0.2.1",
   "license": "MIT",
   "addonSdkVersion": 5,
@@ -24,8 +24,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 118,
-      "sha256": "ccca87c0f45aa6bf6bc5d6482b17cb45e939180b16f92f1e4216c1c5bb0c076f"
+      "bytes": 134,
+      "sha256": "37714a23c8df41b61922aaceb81f7fe7c4d105a9feda6e9c90a210bc3d675b58"
     },
     {
       "path": "docs/API.md",
@@ -80,17 +80,17 @@
     {
       "path": "package.json",
       "bytes": 654,
-      "sha256": "176b2f2c6da1d7ea799a4b31765c5f4054881864083817cc65a039f0241a99b2"
+      "sha256": "5c450298fc7caeedad20aacd0b125c19847323ffcaf8194160f65fae7d7755af"
     },
     {
       "path": "README.md",
       "bytes": 2075,
-      "sha256": "7f259ef10eea098f3a9552fc40e945154b56515f9ecba3e4425b12838d686e19"
+      "sha256": "5c496349770ff3606ad9f362de41e51b3f1cd7ed4202d7d6bead047745be6588"
     },
     {
       "path": "runtime/index.js",
       "bytes": 71,
-      "sha256": "268e1629be7ad7eea768ede598e1525526384401c3325d941a9b4f7aa1a17f0f"
+      "sha256": "b45d620888c913d9e506a5bfa2fade914c73494540fedccf5e0fa082dd74994d"
     },
     {
       "path": "runtime/RenderQualityPipeline-BQGbF9IG.js",

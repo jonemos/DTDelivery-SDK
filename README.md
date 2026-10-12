@@ -7,7 +7,7 @@ Prebuilt browser SDK for chunked digital twin publications, stable Actor IDs and
 Replace OWNER/REPOSITORY with the public repository you created and choose an existing release tag:
 
 ```sh
-pnpm add "https://github.com/OWNER/REPOSITORY.git#v0.2.1"
+pnpm add "https://github.com/OWNER/REPOSITORY.git#v0.2.2"
 ```
 
 The repository root is an installable package. Installation does not compile the editor or run a prepare script. Commit your application package.json and pnpm-lock.yaml. For reproducible deployments pin a release tag or commit and run `pnpm install --frozen-lockfile`.
