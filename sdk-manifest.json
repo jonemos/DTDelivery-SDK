@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "version": "0.2.21",
-  "baseVersion": "0.2.21",
+  "version": "0.2.22",
+  "baseVersion": "0.2.22",
   "license": "MIT",
   "addonSdkVersion": 5,
   "contracts": [
@@ -24,8 +24,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 3976,
-      "sha256": "f437ab6465a150f19202905cac3c785f02fa6d23db26d035c078ca5c90e14c11"
+      "bytes": 4298,
+      "sha256": "b3e578da4b02955bc022120e5946662addda4b0f0c3a7b183eea51ce772dbe97"
     },
     {
       "path": "delivery-api.config.json",
@@ -49,13 +49,13 @@
     },
     {
       "path": "docs/UPDATING.md",
-      "bytes": 5652,
-      "sha256": "d5309d3588bc2977698b702bea324282106e4e26bfecac9ed9a535639db19e32"
+      "bytes": 5989,
+      "sha256": "03dd52849a58f8a970df2027d73c3f01ac1ea8bad342161f3e0df3c3120e5cd9"
     },
     {
       "path": "examples/test-server.cmd",
-      "bytes": 831,
-      "sha256": "9d34760eeb9285f0e2e8be7cc8b50f980a943afc2b6ad6d9d7a2874ee91ef284"
+      "bytes": 1805,
+      "sha256": "d9a52953e42ac86558205d55d41287ae251206ee480421561ca3840a08a144ad"
     },
     {
       "path": "examples/web/index.html",
@@ -110,12 +110,12 @@
     {
       "path": "package.json",
       "bytes": 1188,
-      "sha256": "4c09c42fc1c8d3beab6163c68ae819bbc43dc2f1dfe20d99d54e31f19dbae7cb"
+      "sha256": "dbd8bbc86f60d30dae5e53f8456d3117a7eae7849a9b002d384e7fd349878781"
     },
     {
       "path": "README.md",
       "bytes": 20664,
-      "sha256": "acae845191a53b13ae4b35a2e0ca333959f4bf8054faa4a5dc1318f81751f090"
+      "sha256": "f3cb2f511004d9ceae223644bdda47ded79f3308f61997912b97104babb774a6"
     },
     {
       "path": "remote-server.cmd",
@@ -125,7 +125,7 @@
     {
       "path": "runtime/index.js",
       "bytes": 72,
-      "sha256": "4e960709e2d1e517cca31ba9cf5c41f9d6053b8692dba7cbd048d9d4f00e6dbf"
+      "sha256": "a19f1a8c8f04229df4d9e635a4f2bbd3e254bf162b2f3b47fcb6c02b1375a5a5"
     },
     {
       "path": "runtime/RenderQualityPipeline-BKmcypAp.js",
@@ -140,7 +140,7 @@
     {
       "path": "runtime/sdk.js",
       "bytes": 994170,
-      "sha256": "0a06bc1821a330cce6827718b2924a4182ca004e8b40b682705c1ad0d24964a7"
+      "sha256": "d4707870b409a7d6f7100d68b03cc4db481adabf10691d5d3276b424758b4abc"
     },
     {
       "path": "runtime/viewport.css",

@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.22
+
+Refresh the local SDK dependency graph when launching the example, including existing lockfiles. Keep pinned React declarations, copied dependencies, exact cell reentry draw ranks, progressive loading, original Actor selection and experimental batching disabled by default. Retain all existing immutable tags.
+
 ## 0.2.21
 
 Include pinned React declarations for standalone public viewport UI types. Use copied example dependencies so SDK updates retain the hardlink protection. Preserve stable cell reentry draw ranks, progressive loading, original Actor selection and experimental batching disabled by default. Retain all existing immutable tags.

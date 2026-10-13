@@ -228,7 +228,7 @@ API 창을 유지한 채 **`examples/test-server.cmd`**를 실행합니다. 브�
 로컬 또는 원격 테스트 화면에서 모델 표시를 확인한 뒤, **외부 웹프로젝트 루트**에서 SDK를 설치합니다.
 
 ```sh
-pnpm add "https://github.com/jonemos/DTWebEditor_SDK.git#v0.2.21"
+pnpm add "https://github.com/jonemos/DTWebEditor_SDK.git#v0.2.22"
 ```
 
 API 서버는 계속 별도 프로세스로 실행합니다. 이미 실행 중인 API를 사용한다면 웹프로젝트에서 API 설정을 다시 만들 필요 없습니다.
