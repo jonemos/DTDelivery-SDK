@@ -1,1 +1,2 @@
 virtualStoreDirMaxLength: 20
+packageImportMethod: copy

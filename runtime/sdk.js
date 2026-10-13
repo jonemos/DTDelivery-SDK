@@ -3837,7 +3837,7 @@ async function uo(e, t, n, r, i) {
 //#region src/delivery/SdkVersion.ts
 var fo = typeof __DT_DELIVERY_SDK_VERSION__ > "u" ? {
 	name: "@dt/delivery-sdk",
-	version: "0.2.20",
+	version: "0.2.21",
 	license: "MIT",
 	addonSdkVersion: 5,
 	contracts: [

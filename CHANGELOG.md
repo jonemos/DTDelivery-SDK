@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.21
+
+Include pinned React declarations for standalone public viewport UI types. Use copied example dependencies so SDK updates retain the hardlink protection. Preserve stable cell reentry draw ranks, progressive loading, original Actor selection and experimental batching disabled by default. Retain all existing immutable tags.
+
 ## 0.2.20
 
 Preserve immutable cell reentry pixels by stable opaque draw ranks instead of reallocated material/object IDs. Keep progressive loading, original Actor selection, compact viewport controls and experimental batching disabled by default. Verified actual model three unload/reentry cycles with exact pixels and stable Actor picks.

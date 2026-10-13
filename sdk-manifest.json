@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "version": "0.2.20",
-  "baseVersion": "0.2.20",
+  "version": "0.2.21",
+  "baseVersion": "0.2.21",
   "license": "MIT",
   "addonSdkVersion": 5,
   "contracts": [
@@ -24,8 +24,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 3640,
-      "sha256": "a91c5cf938bae19521a4174a0fcea654323c8656e730a6a1a64158b8c86fca5d"
+      "bytes": 3976,
+      "sha256": "f437ab6465a150f19202905cac3c785f02fa6d23db26d035c078ca5c90e14c11"
     },
     {
       "path": "delivery-api.config.json",
@@ -49,8 +49,8 @@
     },
     {
       "path": "docs/UPDATING.md",
-      "bytes": 5354,
-      "sha256": "f0f6a4fdb377c3471e6f2c054879e185f8efa0327ccf6e8e4a56a41ec4e2343e"
+      "bytes": 5652,
+      "sha256": "d5309d3588bc2977698b702bea324282106e4e26bfecac9ed9a535639db19e32"
     },
     {
       "path": "examples/test-server.cmd",
@@ -74,8 +74,8 @@
     },
     {
       "path": "examples/web/pnpm-workspace.yaml",
-      "bytes": 29,
-      "sha256": "e8fb8c40213546ed9e16cb272bfea0664a936ee483ff9fd0f25797b16f3c0f89"
+      "bytes": 55,
+      "sha256": "1d3f29da18776350fe1eaaa7ea8d810a2d59cc4e43350e52048ad700b908debc"
     },
     {
       "path": "examples/web/README.md",
@@ -109,13 +109,13 @@
     },
     {
       "path": "package.json",
-      "bytes": 1158,
-      "sha256": "76abac2bdfeb9e11f24d7aa4411b830f4994f773bd6a670b7024de7e4e937841"
+      "bytes": 1188,
+      "sha256": "4c09c42fc1c8d3beab6163c68ae819bbc43dc2f1dfe20d99d54e31f19dbae7cb"
     },
     {
       "path": "README.md",
       "bytes": 20664,
-      "sha256": "044380ca03aa5fcbe7578c1ada417ad790c51ac1c9c79c076ff7048814f475ea"
+      "sha256": "acae845191a53b13ae4b35a2e0ca333959f4bf8054faa4a5dc1318f81751f090"
     },
     {
       "path": "remote-server.cmd",
@@ -125,7 +125,7 @@
     {
       "path": "runtime/index.js",
       "bytes": 72,
-      "sha256": "6a9505e175c67489c4920a426d69b79b81f0f4d8364fc76de6608fbd638f48a7"
+      "sha256": "4e960709e2d1e517cca31ba9cf5c41f9d6053b8692dba7cbd048d9d4f00e6dbf"
     },
     {
       "path": "runtime/RenderQualityPipeline-BKmcypAp.js",
@@ -140,7 +140,7 @@
     {
       "path": "runtime/sdk.js",
       "bytes": 994170,
-      "sha256": "31660baac229df55a3f783d2e41f4281519ada71a8449284d4421983b9713a9f"
+      "sha256": "0a06bc1821a330cce6827718b2924a4182ca004e8b40b682705c1ad0d24964a7"
     },
     {
       "path": "runtime/viewport.css",
