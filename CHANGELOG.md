@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.16
+
+16
+
 ## 0.2.14
 
 Retain automatically supplied token provenance after scope edits, so changing the API address clears that token before any request can send it to another host. Keep same-PC local/remote automatic settings, download/preparation progress, cancellation and error handling; preserve API authorization/catalog/hash validation and all existing tags.

@@ -62,6 +62,8 @@ export declare class DeliveryViewer {
     private pick;
     constructor(canvas: HTMLCanvasElement, reader: ChunkReader, budget?: DisplayBudget);
     open(hash: string): Promise<void>;
+    /** Frame verified release bounds once, then display each fully prepared level/cell as it arrives. */
+    openProgressive(hash: string, priority?: readonly string[]): Promise<void>;
     /** Keep the host's initial camera; do not fit the entire release after prioritizing its nearby regions. */
     openSpatial(hash: string, options?: SpatialStreamingOptions): Promise<void>;
     setSpatialStreaming(options: SpatialStreamingOptions | null): void;
@@ -102,6 +104,13 @@ export declare class DeliveryViewer {
     };
     fit(): void;
     onViewChange?: () => void;
+    get cameraSettings(): {
+        horizontalFovDegrees: number;
+        orthographicWidthMeters: number;
+        nearMeters: number;
+        farMeters: number;
+    };
+    setCameraSettings(change: Partial<DeliveryViewer['cameraSettings']>): void;
     private pointerStart;
     private prepareOrbit;
     private resizeCamera;

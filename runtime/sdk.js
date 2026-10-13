@@ -3814,7 +3814,7 @@ async function oo(e, t, n, r, i) {
 //#region src/delivery/SdkVersion.ts
 var so = typeof __DT_DELIVERY_SDK_VERSION__ > "u" ? {
 	name: "@dt/delivery-sdk",
-	version: "0.2.14",
+	version: "0.2.16",
 	license: "MIT",
 	addonSdkVersion: 5,
 	contracts: [
@@ -12988,6 +12988,16 @@ var Jf = class {
 	async open(e) {
 		await this.session.open(e), this.fit();
 	}
+	async openProgressive(e, t = []) {
+		let n = !1, r = this.session.subscribe(() => {
+			!n && !this.session.placeholderBounds.isEmpty() && (this.frameBounds(this.session.placeholderBounds), n = !0), this.invalidate();
+		});
+		try {
+			await this.session.openProgressive(e, t), n || this.fit();
+		} finally {
+			r();
+		}
+	}
 	async openSpatial(e, t = Kf) {
 		this.setSpatialStreaming(t), await this.session.openProgressive(e);
 	}
@@ -13015,6 +13025,24 @@ var Jf = class {
 		}), e.isEmpty() && e.union(this.session.placeholderBounds), !e.isEmpty() && this.frameBounds(e);
 	}
 	onViewChange;
+	get cameraSettings() {
+		return {
+			horizontalFovDegrees: 2 * Math.atan(Math.tan(this.perspective.fov * Math.PI / 360) * this.perspective.aspect) * 180 / Math.PI,
+			orthographicWidthMeters: (this.orthographic.right - this.orthographic.left) / this.orthographic.zoom,
+			nearMeters: this.camera.near,
+			farMeters: this.camera.far
+		};
+	}
+	setCameraSettings(e) {
+		let t = {
+			...this.cameraSettings,
+			...e
+		};
+		if (!Object.values(t).every(Number.isFinite) || t.horizontalFovDegrees < 1 || t.horizontalFovDegrees > 179 || t.orthographicWidthMeters < .1 || t.nearMeters < .001 || t.farMeters <= t.nearMeters) throw Error("카메라 범위가 올바르지 않습니다.");
+		this.perspective.fov = 2 * Math.atan(Math.tan(t.horizontalFovDegrees * Math.PI / 360) / this.perspective.aspect) * 180 / Math.PI, this.perspective.near = this.orthographic.near = t.nearMeters, this.perspective.far = this.orthographic.far = t.farMeters;
+		let n = t.orthographicWidthMeters / 2;
+		this.orthographic.left = -n, this.orthographic.right = n, this.orthographic.zoom = 1, this.resizeCamera(Math.max(1, this.canvas.clientWidth) / Math.max(1, this.canvas.clientHeight)), this.invalidate(), this.onViewChange?.();
+	}
 	pointerStart = null;
 	prepareOrbit = (e) => {
 		this.pointerStart = {
@@ -24517,17 +24545,17 @@ function $p({ value: e, onCommit: t, disabled: n, ariaLabel: r }) {
 }
 //#endregion
 //#region src/delivery/DeliveryViewportTools.tsx
-function em({ viewer: e, immersive: t }) {
-	let [, n] = (0, Np.useState)(0), [r, i] = (0, Np.useState)(Yp), a = () => n((e) => e + 1);
-	(0, Np.useEffect)(() => (e.onViewChange = a, e.navigation.onAction = (n) => {
+function em({ viewer: e, immersive: t, leftOnly: n = !1 }) {
+	let [, r] = (0, Np.useState)(0), [i, a] = (0, Np.useState)(Yp), o = () => r((e) => e + 1);
+	(0, Np.useEffect)(() => (e.onViewChange = o, e.navigation.onAction = (n) => {
 		if (n === "focus-selection" && e.focusSelection(), n === "toggle-immersive" && t(), n === "toggle-game-view") {
 			let t = !e.helpers;
-			e.helpers = t, e.grid.visible = t, e.invalidate(), a();
+			e.helpers = t, e.grid.visible = t, e.invalidate(), o();
 		}
 	}, () => {
 		e.onViewChange = void 0, e.navigation.onAction = void 0;
 	}), [e, t]);
-	let o = e.quality.snapshot();
+	let s = e.quality.snapshot();
 	return /* @__PURE__ */ (0, $.jsxs)(Up, { children: [
 		/* @__PURE__ */ (0, $.jsxs)("details", {
 			className: "viewport-options-menu viewport-main-menu",
@@ -24550,14 +24578,68 @@ function em({ viewer: e, immersive: t }) {
 				/* @__PURE__ */ (0, $.jsxs)("details", {
 					className: "camera-options",
 					open: !0,
-					children: [/* @__PURE__ */ (0, $.jsx)("summary", { children: "카메라 설정" }), /* @__PURE__ */ (0, $.jsx)("div", { children: /* @__PURE__ */ (0, $.jsxs)("label", { children: ["속도 (m/s)", /* @__PURE__ */ (0, $.jsx)(Fp, {
+					children: [/* @__PURE__ */ (0, $.jsx)("summary", { children: "카메라 설정" }), /* @__PURE__ */ (0, $.jsxs)("div", { children: [/* @__PURE__ */ (0, $.jsxs)("label", { children: ["속도 (m/s)", /* @__PURE__ */ (0, $.jsx)(Fp, {
 						label: "Viewport camera speed",
 						value: e.navigation.speed,
 						validate: (e) => ({ ok: typeof e == "number" && Number.isFinite(e) && e >= .25 && e <= 64 }),
 						onCommit: (t) => {
-							e.navigation.setSpeed(t), a();
+							e.navigation.setSpeed(t), o();
 						}
-					})] }) })]
+					})] }), [
+						[
+							"horizontalFovDegrees",
+							"수평 FOV",
+							"Viewport horizontal FOV",
+							1,
+							179,
+							1
+						],
+						[
+							"orthographicWidthMeters",
+							"Ortho 폭 (m)",
+							"Viewport orthographic width",
+							.1,
+							void 0,
+							.5
+						],
+						[
+							"nearMeters",
+							"Near (m)",
+							"Viewport near clip",
+							.001,
+							void 0,
+							.01
+						],
+						[
+							"farMeters",
+							"Far (m)",
+							"Viewport far clip",
+							1,
+							void 0,
+							10
+						]
+					].map(([t, n, r, i, a, o]) => /* @__PURE__ */ (0, $.jsxs)("label", { children: [n, /* @__PURE__ */ (0, $.jsx)("input", {
+						type: "number",
+						"aria-label": r,
+						value: e.cameraSettings[t],
+						min: i,
+						max: a,
+						step: o,
+						disabled: t === "horizontalFovDegrees" ? e.projection !== "perspective" : t === "orthographicWidthMeters" && e.projection === "perspective",
+						onChange: (n) => {
+							let r = n.target.valueAsNumber;
+							Number.isFinite(r) && r >= i && (a === void 0 || r <= a) && (t !== "nearMeters" || r < e.cameraSettings.farMeters) && (t !== "farMeters" || r > e.cameraSettings.nearMeters) && e.setCameraSettings({ [t]: r });
+						}
+					})] }, t))] })]
+				}),
+				/* @__PURE__ */ (0, $.jsx)("button", {
+					"aria-label": "Toggle game view",
+					"aria-pressed": !e.helpers,
+					onClick: () => {
+						let t = !e.helpers;
+						e.helpers = t, e.grid.visible = t, e.invalidate(), o();
+					},
+					children: "게임 뷰"
 				}),
 				/* @__PURE__ */ (0, $.jsxs)("p", { children: [
 					"우클릭 + WASD / QE 이동",
@@ -24577,8 +24659,8 @@ function em({ viewer: e, immersive: t }) {
 			onChange: (t) => e.setMode(t)
 		}),
 		/* @__PURE__ */ (0, $.jsxs)(Jp, {
-			preset: o.requested,
-			status: o,
+			preset: s.requested,
+			status: s,
 			disabled: !1,
 			onChange: (t) => {
 				e.quality.apply(t);
@@ -24592,7 +24674,7 @@ function em({ viewer: e, immersive: t }) {
 						type: "checkbox",
 						checked: e.environment,
 						onChange: (t) => {
-							e.environment = t.target.checked, e.invalidate(), a();
+							e.environment = t.target.checked, e.invalidate(), o();
 						}
 					}), "환경광"]
 				}),
@@ -24601,14 +24683,14 @@ function em({ viewer: e, immersive: t }) {
 					value: e.environmentIntensity,
 					disabled: !e.environment,
 					onCommit: (t) => {
-						e.environmentIntensity = t, e.invalidate(), a();
+						e.environmentIntensity = t, e.invalidate(), o();
 					}
 				})] })
 			] }), /* @__PURE__ */ (0, $.jsx)(Zp, {
-				effects: r,
+				effects: i,
 				disabled: !1,
 				onChange: (t) => {
-					e.setScreenEffects(t), i(t);
+					e.setScreenEffects(t), a(t);
 				}
 			})]
 		}),
@@ -24620,7 +24702,7 @@ function em({ viewer: e, immersive: t }) {
 					type: "checkbox",
 					checked: e.grid.visible,
 					onChange: (t) => {
-						e.grid.visible = t.target.checked, e.invalidate(), a();
+						e.grid.visible = t.target.checked, e.invalidate(), o();
 					}
 				}), "그리드"] }),
 				/* @__PURE__ */ (0, $.jsxs)("label", { children: [/* @__PURE__ */ (0, $.jsx)("input", {
@@ -24628,22 +24710,22 @@ function em({ viewer: e, immersive: t }) {
 					type: "checkbox",
 					checked: e.helpers,
 					onChange: (t) => {
-						e.helpers = t.target.checked, e.invalidate(), a();
+						e.helpers = t.target.checked, e.invalidate(), o();
 					}
 				}), "선택 표시·아이콘"] }),
 				/* @__PURE__ */ (0, $.jsx)(Qp, {
 					visible: e.icons,
 					scale: e.iconScale,
 					onVisible: (t) => {
-						e.icons = t, e.invalidate(), a();
+						e.icons = t, e.invalidate(), o();
 					},
 					onScale: (t) => {
-						e.iconScale = t, e.invalidate(), a();
+						e.iconScale = t, e.invalidate(), o();
 					}
 				})
 			] })]
 		}),
-		/* @__PURE__ */ (0, $.jsxs)("div", {
+		!n && /* @__PURE__ */ (0, $.jsxs)("div", {
 			className: "viewport-tool-actions",
 			children: [/* @__PURE__ */ (0, $.jsx)("button", {
 				className: "viewport-layout-toggle",
@@ -24661,12 +24743,13 @@ function em({ viewer: e, immersive: t }) {
 		})
 	] });
 }
-function tm(e, t, n) {
-	let r = (0, Vp.createRoot)(e);
-	return r.render(/* @__PURE__ */ (0, $.jsx)(em, {
+function tm(e, t, n, r = {}) {
+	let i = (0, Vp.createRoot)(e);
+	return i.render(/* @__PURE__ */ (0, $.jsx)(em, {
 		viewer: t,
-		immersive: n
-	})), () => r.unmount();
+		immersive: n,
+		leftOnly: r.leftOnly
+	})), () => i.unmount();
 }
 //#endregion
 //#region src/delivery/EquipmentPanel.ts

@@ -40,7 +40,11 @@
       <span id="status" role="status">API 연결 정보를 확인하고 있습니다…</span>
     </div>
   </header>
-  <main><canvas id="view"></canvas></main>
+  <main class="viewer-layout">
+    <aside class="viewer-outliner" aria-label="통합레벨 아웃라이너"><h2>통합레벨 아웃라이너</h2><div id="actors"></div></aside>
+    <section id="viewport" aria-label="통합레벨 뷰포트"><div id="viewport-tools"></div><canvas id="view"></canvas></section>
+    <aside class="viewer-details"><section aria-label="실시간 로드 진행"><h2>실시간 로드 진행</h2><progress id="load-progress" aria-label="준비된 화면 청크" max="1" value="0"></progress><ul id="load-states"></ul></section><div id="actor-details"></div></aside>
+  </main>
   <script type="module" src="./main.ts"></script>
 </body>
 </html>

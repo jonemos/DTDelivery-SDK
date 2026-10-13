@@ -71,7 +71,7 @@ pnpm exec dt-delivery-api start
 SDK 저장소의 별도 터미널에서 `examples/web`으로 이동한 후:
 
 ```sh
-pnpm --ignore-workspace install --ignore-scripts
+pnpm install --ignore-scripts
 pnpm dev -- --port 5183
 ```
 

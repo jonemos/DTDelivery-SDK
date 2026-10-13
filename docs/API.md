@@ -10,6 +10,9 @@
 | provider(scope, compositionId, releaseHash) | 매 요청을 인증하는 청크 공급자 |
 | ChunkReader / BrowserChunkCache | 바이트 크기/hash 검증과 선택적인 캐시 |
 | DeliveryViewer.open(hash) / dispose() | 표시 / 화면과 실행 자원 정리 |
+| DeliveryViewer.openProgressive(hash, priority?) | 최초 열기는 검증된 경계에 맞추고 준비된 레벨·공간 셀부터 표시; 기존 화면 교체는 원자적으로 유지 |
+| mountDeliveryViewportTools(element, viewer, immersive, { leftOnly: true }) | 통합레벨 공통 왼쪽 뷰포트 메뉴부터 표시 메뉴까지 배치 |
+| viewer.cameraSettings / setCameraSettings(values) | 수평 FOV·직교 폭·Near/Far 검증 및 실행 화면 카메라 변경 |
 | viewer.session.control(mountId, values) | 실행 중 배치/표시/로드 상태 변경 |
 | viewer.addons.list() / changeBatch() / subscribe() | 로드된 애드온과 공개 속성 제어 |
 | AddonPropertiesClient / viewer.addons.bind(client) | HTTP 세션과 WebSocket 변경 알림 연결 |

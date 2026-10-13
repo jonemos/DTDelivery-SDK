@@ -1,4 +1,4 @@
-import { DELIVERY_SDK_VERSION, DeliveryApiClient, ChunkReader, DeliveryViewer } from '@dt/delivery-sdk';
+import { DELIVERY_SDK_VERSION, DeliveryApiClient, ChunkReader, DeliveryViewer, mountActorPanel, mountDeliveryViewportTools } from '@dt/delivery-sdk';
 import '@dt/delivery-sdk/viewport.css';
 import './style.css';
 const input = (id: string) => document.getElementById(id) as HTMLInputElement;
@@ -12,9 +12,13 @@ let connectedScope = '';
 let catalog: { id: string; name: string; releaseHash: string }[] = [];
 let connectionVersion = 0, automatic = true, autoAddress = '', autoToken = '';
 let bootstrap: Promise<void> | undefined, progressTimer: ReturnType<typeof setInterval> | undefined;
+let cleanups: (() => void)[] = [];
 const message = (value: string) => { status.textContent = value; };
 function stopProgress() { clearInterval(progressTimer); progressTimer = undefined; disconnect.textContent = '연결 해제'; }
 function close() {
+  for (const cleanup of cleanups.splice(0)) cleanup();
+  document.getElementById('load-states')!.replaceChildren();
+  (document.getElementById('load-progress') as HTMLProgressElement).value = 0;
   request++; canvas.hidden = true; stopProgress(); models.disabled = !catalog.length; open.disabled = !catalog.length;
   const old = viewer, pending = opening; viewer = undefined; opening = undefined;
   return Promise.all([old?.dispose(), pending?.dispose()]).then(() => {});
@@ -102,20 +106,32 @@ document.getElementById('open')!.onclick = async () => {
     canvas.hidden = false;
     const reader = new ChunkReader(client.provider(connectedScope, model.id, model.releaseHash));
     prepared = new DeliveryViewer(canvas, reader); opening = prepared;
+    prepared.environment = true;
+    cleanups = [mountDeliveryViewportTools(document.getElementById('viewport-tools')!, prepared, () => { void document.getElementById('viewport')!.requestFullscreen(); }, { leftOnly: true }),
+      mountActorPanel(document.getElementById('actors')!, prepared, document.getElementById('actor-details')!)];
     open.disabled = true; models.disabled = true; disconnect.textContent = '로딩 취소';
     const started = performance.now(), active = prepared;
     const progress = () => {
       if (generation !== request) return;
-      const states = active.session.loadStates, ready = states.filter(s => s.status === 'ready').length;
-      message(`게시본 준비 중 · 다운로드 ${(reader.stats.downloaded / 1024 ** 2).toFixed(1)} MiB · 청크 ${reader.stats.requests}개${states.length ? ` · 화면 ${ready}/${states.length}` : ''} · ${Math.floor((performance.now() - started) / 1000)}초`);
+      const states = active.session.loadStates, ready = states.filter(s => s.status === 'ready').length, total = states.filter(s => s.status !== 'unloaded').length;
+      const failure = states.find(state => state.status === 'failed');
+      message(failure ? errorMessage(failure.message ?? '청크 로드에 실패했습니다.') : `게시본 준비 중 · 다운로드 ${(reader.stats.downloaded / 1024 ** 2).toFixed(1)} MiB · 청크 ${reader.stats.requests}개${states.length ? ` · 화면 ${ready}/${total}` : ''} · ${Math.floor((performance.now() - started) / 1000)}초`);
+      const rows = states.map(state => { const row = document.createElement('li'); row.dataset.state = state.status; row.textContent = `${state.name ?? state.id} · ${state.status === 'ready' ? '표시 완료' : state.status === 'loading' ? '로드 중' : state.status === 'unloaded' ? '로드 해제' : state.status === 'failed' ? '실패' : state.status === 'cancelled' ? '취소됨' : '대기'}${state.message ? ` · ${state.message}` : ''}`; return row; });
+      document.getElementById('load-states')!.replaceChildren(...rows);
+      const bar = document.getElementById('load-progress') as HTMLProgressElement;
+      bar.hidden = total === 0; bar.max = Math.max(1, total); if (total) bar.value = ready; else bar.removeAttribute('value');
     };
+    const unsubscribeProgress = active.session.subscribe(progress); cleanups.push(unsubscribeProgress);
     progress(); progressTimer = setInterval(progress, 500);
-    await prepared.open(model.releaseHash);
+    await prepared.openProgressive(model.releaseHash);
     if (generation !== request) { await prepared.dispose(); return; }
+    progress(); unsubscribeProgress();
+    const failed = prepared.session.loadStates.find(state => state.status === 'failed');
+    if (failed) throw new Error(failed.message ?? '청크 로드에 실패했습니다. 목록 조회 후 다시 열어 주세요.');
     stopProgress(); opening = undefined; viewer = prepared; open.disabled = false; models.disabled = false;
     message(`${model.name} · 준비 완료 · 다운로드 ${(reader.stats.downloaded / 1024 ** 2).toFixed(1)} MiB · ${model.releaseHash}`);
   } catch (error) {
-    if (generation === request) { stopProgress(); opening = undefined; canvas.hidden = true; open.disabled = !catalog.length; models.disabled = !catalog.length; message(errorMessage(error)); }
+    if (generation === request) { for (const cleanup of cleanups.splice(0)) cleanup(); stopProgress(); opening = undefined; canvas.hidden = true; open.disabled = !catalog.length; models.disabled = !catalog.length; message(errorMessage(error)); }
     await prepared?.dispose();
   }
 };

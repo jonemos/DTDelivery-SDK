@@ -8,10 +8,10 @@ where pnpm >nul 2>nul
 if errorlevel 1 goto missing_tools
 node -e "const [a,b]=process.versions.node.split('.').map(Number);process.exit(a>24||a===24&&b>=16?0:1)"
 if errorlevel 1 goto missing_tools
-call pnpm --ignore-workspace install --ignore-scripts
+call pnpm install --ignore-scripts
 if errorlevel 1 goto failed
 echo Opening http://127.0.0.1:5183/ - keep this window open. Ctrl+C stops the test server.
-call pnpm --ignore-workspace exec vite --host 127.0.0.1 --port 5183 --strictPort --open
+call pnpm exec vite --host 127.0.0.1 --port 5183 --strictPort --open
 set "result=%errorlevel%"
 if not "%result%"=="0" pause
 exit /b %result%
