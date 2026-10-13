@@ -1,5 +1,7 @@
 # SDK 업데이트와 호환성
 
+0.2.20은 셀 해제/재진입 때 재질 ID가 새로 생성되며 불투명 면의 그리기 순서가 달라지던 문제를 수정합니다. 점진 로딩·액터 선택을 유지하며 정적 메시 배칭은 기본 꺼짐입니다. 로컬 SDK 커밋을 테스트할 때는 실행 중인 API/예제 서버를 Ctrl+C로 종료하고 SDK 루트의 `local-server.cmd` 또는 `remote-server.cmd`, 이어서 `examples/test-server.cmd`를 다시 실행하세요. 예제 CMD는 새 SDK 의존성을 설치합니다. 기존 모델과 설치 폴더 밖의 업무 데이터·개인 설정을 유지하세요.
+
 SDK 버전, 청크 계약 버전, 애드온 버전은 다릅니다. package.json/sdk-manifest.json/DELIVERY_SDK_VERSION은 SDK 배포 버전을 나타냅니다. sdk-manifest.json의 contracts는 읽을 수 있는 청크 계약 목록이고 addonSdkVersion은 애드온 API 계약입니다. 애드온의 packageId/version/codeHash는 게시 데이터가 결정하며 SDK 업데이트로 교체하지 않습니다.
 
 Git에 새 버전을 올려도 외부 프로그램은 자동으로 바뀌지 않습니다. 새 태그가 게시되면 외부 프로젝트에서 다음처럼 변경하고 검사·재빌드·배포합니다. 예시 태그는 실제로 게시한 값으로 바꾸세요.

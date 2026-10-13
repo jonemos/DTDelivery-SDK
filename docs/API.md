@@ -13,11 +13,17 @@
 | DeliveryViewer.openProgressive(hash, priority?) | 최초 열기는 검증된 경계에 맞추고 준비된 레벨·공간 셀부터 표시; 기존 화면 교체는 원자적으로 유지 |
 | mountDeliveryViewportTools(element, viewer, immersive, { leftOnly: true }) | 통합레벨 공통 왼쪽 뷰포트 메뉴부터 표시 메뉴까지 배치 |
 | viewer.cameraSettings / setCameraSettings(values) | 수평 FOV·직교 폭·Near/Far 검증 및 실행 화면 카메라 변경 |
+| viewer.setStaticBatching(boolean) / staticBatchingEnabled | 표시 메뉴의 실험적 정적 메시 배칭. 기본 꺼짐; 게시본에 저장하지 않음 |
+| viewer.staticBatchingStatus | 마지막 렌더 상태 off/preparing/active/fallback, 이유, 추가 geometryBytes·reservedBytes 추정·savedDraws |
 | viewer.session.control(mountId, values) | 실행 중 배치/표시/로드 상태 변경 |
 | viewer.addons.list() / changeBatch() / subscribe() | 로드된 애드온과 공개 속성 제어 |
 | AddonPropertiesClient / viewer.addons.bind(client) | HTTP 세션과 WebSocket 변경 알림 연결 |
 
 좌표는 오른손·Y-up·미터·quaternion XYZW입니다. 같은 원본의 중복 배치는 mountId로 구분하고 애드온은 compositionId/mountId/actorId/componentId를 모두 사용합니다. 임시 runtime 변경과 host에 보관하는 persistent override를 구분합니다. 외부 변경을 에디터 원본에 자동으로 역기록하지 않습니다.
+
+배칭은 같은 월드 변환·검증된 동결 재질·버퍼 형식을 가진 정적 메시만 묶어 기존 CPU 변환과 그리기 순서를 보존합니다. 원근/Lit/Viewport 품질과 WEBGL_multi_draw 지원이 필요합니다. 로드·텍스처 교체·액터 선택·동적 효과/애드온·그림자·미지원 장치나 메모리/렌더 실패에서는 복제 버퍼를 해제하고 기존 표시를 사용합니다. 셀 변경 후에는 새 리소스로 다시 준비합니다. 선택은 원본 액터의 안정 ID를 사용합니다. 모든 모델에서 빨라지는 옵션이 아니므로 실제 모델의 드로콜·프레임 시간을 비교한 뒤 사용하세요. reservedBytes는 CPU/GPU 예약 추정치이며 실제 VRAM 측정값이 아닙니다.
+
+0.2.20부터 정적인 SDK 화면은 준비 완료된 불투명 메시의 그리기 순서를 액터와 원본 내부 경로로 유지합니다. 셀 재진입으로 재질·렌더 객체가 새로 생성돼도 같은 게시본의 겹치는 면 순서가 바뀌지 않습니다. 다음에 표시되는 셀은 순서를 추가하며 리소스 자체는 계속 해제할 수 있습니다. 다른 게시본을 열면 순서도 새로 준비합니다. 배칭 기본 꺼짐, 명시적 renderOrder, 투명 재질과 동적 애드온/효과의 기존 처리 방식을 유지합니다.
 
 호스트의 기본 HTTP 계약:
 

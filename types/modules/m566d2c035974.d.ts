@@ -33,6 +33,21 @@ export declare class DeliveryViewer {
     icons: boolean;
     iconScale: number;
     helpers: boolean;
+    private batchEnabled;
+    private readonly drawOrder;
+    private readonly batching;
+    private readonly batchInstances;
+    private readonly unsubscribeBatching;
+    get staticBatchingEnabled(): boolean;
+    get staticBatchingStatus(): {
+        state: "off" | "preparing" | "active" | "fallback";
+        message: string;
+        geometryBytes: number;
+        reservedBytes: number;
+        savedDraws: number;
+    };
+    /** Display-only experimental optimization; never included in a publication or Actor identity. */
+    setStaticBatching(enabled: boolean): void;
     private selected;
     private wire;
     private frameTime;

@@ -95,6 +95,7 @@ canvas[hidden] { visibility: hidden; }
   .token-field { grid-column: span 2; }
 }
 @media (max-width: 640px) {
+  #viewport-tools .render-quality-menu > summary { max-width: 90px; overflow: hidden; }
   .viewer-layout { display: flex; flex-direction: column; overflow: auto; }
   #viewport { flex: 0 0 320px; order: -1; }
   .viewer-outliner { border-right: 0; }

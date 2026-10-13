@@ -13,6 +13,7 @@ export declare function createMaterialResolver(storage: AssetRegistryStorage, re
     textureMaxSize?: number;
     textureMapLimits?: ReadonlyMap<string, number>;
     transformDocument?: (document: MaterialDocument) => MaterialDocument;
+    frozenInstancing?: boolean;
 }): MaterialResolver;
 export declare function applyMaterialTintOverrides(layers: WebMaskPbrMaterialDocument['maskLayers'], overrides: readonly MaterialTintOverride[]): WebMaskPbrMaterialDocument['maskLayers'];
 export declare function createThreeMaterial(document: MaterialDocument): MeshStandardMaterial;

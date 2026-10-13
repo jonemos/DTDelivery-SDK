@@ -7,7 +7,8 @@ export interface ViewportColorControls {
     readonly light: () => void;
 }
 /** Lighting controls are transient preferences; never rewrite imported material colors. */
-export declare function ViewportColorGuidance({ controls, disabled }: {
+export declare function ViewportColorGuidance({ controls, disabled, compact }: {
     controls: ViewportColorControls;
     disabled: boolean;
+    compact?: boolean;
 }): import("react").JSX.Element | null;

@@ -5,7 +5,7 @@ export type TextureDisplayControl = Pick<TextureDisplaySession<unknown>, 'layout
         readonly reservedBytes: number;
     } | null;
 };
-export declare function TextureOptionsMenu({ resources, disabled, onBusy, autoApply, colorControls }: {
+export declare function TextureOptionsMenu({ resources, disabled, onBusy, autoApply, colorControls, embedded }: {
     resources?: {
         textureDisplay?: TextureDisplayControl;
     };
@@ -13,4 +13,5 @@ export declare function TextureOptionsMenu({ resources, disabled, onBusy, autoAp
     onBusy: (busy: boolean) => void;
     autoApply?: boolean;
     colorControls?: ViewportColorControls;
+    embedded?: boolean;
 }): import("react").JSX.Element;

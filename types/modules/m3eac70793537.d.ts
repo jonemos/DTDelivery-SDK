@@ -1,7 +1,7 @@
 import type { ProcessingProgress } from './mbe16a57a11d3.js';
 import { type TextureAdmission } from './m92c36c0360d4.js';
 import { Group, type Camera, type Object3D } from 'three';
-import type { AssetRegistryStorage } from './m5e4e772c2f57.js';
+import type { AssetRegistrySnapshot, AssetRegistryStorage } from './m5e4e772c2f57.js';
 import { type ProjectedActor } from './m631b06a7a1dc.js';
 import { type SceneDocument } from './mcec497bf55e6.js';
 import type { TextureImportOptions } from './mae043aea4362.js';
@@ -31,11 +31,13 @@ export declare class CompositionResourcePool {
     constructor(storage: Pick<CompositionStorage, 'source'> & {
         resourceKey?(info: LevelSourceInfo): string;
         projectDocument?(document: SceneDocument, info: LevelSourceInfo): SceneDocument;
-        prepared?(info: LevelSourceInfo, signal: AbortSignal, textureBudget: TextureAdmission): Promise<{
+        prepared?(info: LevelSourceInfo, signal: AbortSignal, textureBudget: TextureAdmission, textureOptions?: TextureImportOptions): Promise<{
             document: SceneDocument;
             storage: AssetRegistryStorage & {
                 readonly reservedTextureBytes?: number;
             };
+            textureCatalog?: AssetRegistrySnapshot;
+            layouts?: readonly TextureAppearanceLayout[];
         }>;
     }, textureOptions?: TextureImportOptions | undefined, cacheStaticMatrices?: boolean);
     private key;

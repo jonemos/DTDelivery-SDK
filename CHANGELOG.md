@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.20
+
+Preserve immutable cell reentry pixels by stable opaque draw ranks instead of reallocated material/object IDs. Keep progressive loading, original Actor selection, compact viewport controls and experimental batching disabled by default. Verified actual model three unload/reentry cycles with exact pixels and stable Actor picks.
+
 ## 0.2.16
 
 16

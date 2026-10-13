@@ -228,7 +228,7 @@ API 창을 유지한 채 **`examples/test-server.cmd`**를 실행합니다. 브�
 로컬 또는 원격 테스트 화면에서 모델 표시를 확인한 뒤, **외부 웹프로젝트 루트**에서 SDK를 설치합니다.
 
 ```sh
-pnpm add "https://github.com/jonemos/DTWebEditor_SDK.git#v0.2.16"
+pnpm add "https://github.com/jonemos/DTWebEditor_SDK.git#v0.2.20"
 ```
 
 API 서버는 계속 별도 프로세스로 실행합니다. 이미 실행 중인 API를 사용한다면 웹프로젝트에서 API 설정을 다시 만들 필요 없습니다.
@@ -291,6 +291,8 @@ canvas 생성 후 `openModel`을 호출합니다. `compositionId`는 `api.compos
 | `api.actors(scope, compositionId, releaseHash, query, page)` | 액터·컴포넌트 검색 |
 | `api.provider(scope, compositionId, releaseHash)` | 인증된 청크 다운로드 연결 |
 | `viewer.open(releaseHash)` / `viewer.dispose()` | 모델 열기 / 화면 자원 정리 |
+| `viewer.session.textureDisplay` | 표시용 텍스처 크기·맵·예산 조회 및 전체 적용. 저장된 게시본은 유지 |
+| `viewer.setStaticBatching(true)` / `viewer.staticBatchingStatus` | 실험적 정적 메시 배칭 켜기 / 상태·추가 메모리 추정 조회. 기본 꺼짐; 실제 모델의 성능 비교 후 사용 |
 
 HTTP로 직접 호출할 때는 `Authorization: Bearer <API 토큰>`을 사용합니다. 예를 들어 모델 목록은 `GET /api/scopes/<scope>/compositions?page=0`입니다. 전체 HTTP 경로와 애드온 제어는 [API 상세 문서](docs/API.md)에 있습니다. 청크 다운로드와 hash 검증은 `ChunkReader`를 사용합니다.
 

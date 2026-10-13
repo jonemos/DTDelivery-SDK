@@ -1,5 +1,6 @@
 import type { TextureAdmission } from './m92c36c0360d4.js';
 import type { SceneDocument } from './mcec497bf55e6.js';
+import { type AssetRegistrySnapshot } from './m5e4e772c2f57.js';
 import type { LevelPin, LevelSourceData, LevelSourceInfo } from './mf0f7647466ef.js';
 import { type ChunkFile, type DeliveryManifest } from './m58f4c922e436.js';
 export interface ByteProvider {
@@ -50,8 +51,10 @@ export declare class ChunkReader {
     source(manifest: DeliveryManifest, signal: AbortSignal): {
         info: (_source: LevelPin["source"], pin?: LevelPin) => Promise<LevelSourceInfo>;
         source: (pin: LevelPin) => Promise<LevelSourceData>;
-        prepared: (info: LevelSourceInfo, requestSignal: AbortSignal, textureBudget: TextureAdmission) => Promise<{
+        prepared: (info: LevelSourceInfo, requestSignal: AbortSignal, textureBudget: TextureAdmission, textureOptions?: import("./mae043aea4362.js").TextureImportOptions) => Promise<{
             document: SceneDocument;
+            textureCatalog: AssetRegistrySnapshot;
+            layouts: import("./m4c70f05441f4.js").TextureAppearanceLayout[];
             storage: import("./m5e4e772c2f57.js").AssetRegistryStorage & {
                 readonly reservedTextureBytes: number;
             };

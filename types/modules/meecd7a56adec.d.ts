@@ -6,6 +6,7 @@ import { type DisplayBudget } from './m915207263d86.js';
 import { type DeliveryManifest, type DeliveryMount } from './m58f4c922e436.js';
 import { ChunkReader } from './m5e6f4f6908c1.js';
 import { type SpatialStreamingOptions, type SpatialResidentState } from './me11583edf903.js';
+import type { TextureDisplayControl } from './mc2d8265ec683.js';
 export interface DeviceState {
     status: 'normal' | 'warning' | 'alarm' | 'offline';
     values: Record<string, string | number | boolean | null>;
@@ -100,6 +101,9 @@ export declare class DeliverySession {
         automatic?: boolean;
     }>;
     get automaticBudget(): boolean;
+    get textureApplying(): boolean;
+    /** Transient presentation only; all loaded cells swap atomically through the shared runtime. */
+    readonly textureDisplay: TextureDisplayControl;
     setDisplayBudget(value: DisplayBudget): void;
     /** Detached values: hosts cannot mutate the canonical scene or SDK index. */
     get actors(): ActorIndex | undefined;

@@ -25093,69 +25093,6 @@ function placeEquipmentIndex(index, manifest) {
 	return result;
 }
 //#endregion
-//#region tools/asset-capacity-policy.json
-var policyId, validation, storage, backup, player, asset_capacity_policy_default;
-var init_asset_capacity_policy = __esmMin((() => {
-	policyId = "dtwe-capacity-v1";
-	validation = "initial-guardrails-not-device-capacity";
-	storage = {
-		"assets": 4e4,
-		"revisions": 8e4,
-		"blobs": 4e4,
-		"desktopEntries": 4e4,
-		"retainedBlobBytes": 1073741824,
-		"priorVersions": 32,
-		"historyMetadataBytes": 33554432
-	};
-	backup = {
-		"archiveBytes": 2147483648,
-		"entries": 6e4
-	};
-	player = {
-		"templateBytes": 536870912,
-		"archiveBytes": 2147483648
-	};
-	asset_capacity_policy_default = {
-		schemaVersion: 1,
-		policyId,
-		validation,
-		"import": {
-			"initialSourceAssets": 3e3,
-			"sourceAssetStep": 1e3,
-			"sourceAssets": 1e4,
-			"payloadRecords": 1e4,
-			"payloadFiles": 2e4,
-			"transferFiles": 20002,
-			"progressUnits": 3e4,
-			"placements": 3e4,
-			"singlePayloadBytes": 268435456,
-			"payloadBytes": 1073741824,
-			"inventoryBytes": 33554432,
-			"reportBytes": 16777216
-		},
-		storage,
-		backup,
-		player
-	};
-})), CAPACITY_POLICY, IMPORT_CAPACITY;
-var init_CapacityPolicy = __esmMin((() => {
-	init_asset_capacity_policy();
-	if (asset_capacity_policy_default.schemaVersion !== 1 || asset_capacity_policy_default.policyId !== "dtwe-capacity-v1") throw new Error("지원하지 않는 에셋 용량 정책");
-	for (const group of [
-		asset_capacity_policy_default.import,
-		asset_capacity_policy_default.storage,
-		asset_capacity_policy_default.backup,
-		asset_capacity_policy_default.player
-	]) {
-		if (Object.values(group).some((v) => !Number.isSafeInteger(v) || v <= 0)) throw new Error("잘못된 에셋 용량 정책");
-		Object.freeze(group);
-	}
-	if (asset_capacity_policy_default.import.initialSourceAssets > asset_capacity_policy_default.import.sourceAssets || asset_capacity_policy_default.import.sourceAssetStep > asset_capacity_policy_default.import.sourceAssets || asset_capacity_policy_default.import.payloadRecords < asset_capacity_policy_default.import.sourceAssets || asset_capacity_policy_default.import.payloadFiles < asset_capacity_policy_default.import.payloadRecords * 2 || asset_capacity_policy_default.import.transferFiles < asset_capacity_policy_default.import.payloadFiles + 2 || asset_capacity_policy_default.import.progressUnits < asset_capacity_policy_default.import.sourceAssets * 3 || asset_capacity_policy_default.backup.entries >= 65535) throw new Error("잘못된 자동 가져오기 용량 정책");
-	CAPACITY_POLICY = Object.freeze(asset_capacity_policy_default);
-	IMPORT_CAPACITY = CAPACITY_POLICY.import;
-	IMPORT_CAPACITY.payloadBytes + IMPORT_CAPACITY.inventoryBytes + IMPORT_CAPACITY.reportBytes;
-}));
-//#endregion
 //#region src/assets/GlbStaticMeshImporter.ts
 function parseStaticMeshGlb(bytes, limits = DEFAULT_STATIC_MESH_IMPORT_LIMITS) {
 	if (bytes.byteLength > limits.singleImportBytes) fail$2("resource-limit", `GLB exceeds the ${limits.singleImportBytes} byte decode budget.`);
@@ -25816,6 +25753,251 @@ function migrateWebMaskPbrV2(value) {
 }
 var init_MaterialAsset = __esmMin((() => {
 	init_BakedMaterialBinding();
+}));
+//#endregion
+//#region src/assets/StaticMeshLodAsset.ts
+function isStaticMeshLod(bytes) {
+	return bytes.byteLength >= 4 && new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength).getUint32(0, true) === MAGIC;
+}
+function decodeStaticMeshLod(bytes) {
+	if (bytes.byteLength < HEADER_BYTES || bytes.byteLength > DEFAULT_STATIC_MESH_IMPORT_LIMITS.singleImportBytes) throw new Error("Invalid LOD payload size.");
+	const header = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+	if (header.getUint32(0, true) !== MAGIC || header.getUint32(4, true) !== 1) throw new Error("Unsupported LOD payload version.");
+	const distanceMeters = header.getFloat64(8, true), hysteresis = header.getFloat64(16, true);
+	validateSettings(distanceMeters, hysteresis);
+	const highLength = header.getUint32(24, true), lowLength = header.getUint32(28, true);
+	if (!highLength || !lowLength || HEADER_BYTES + highLength + lowLength !== bytes.byteLength) throw new Error("LOD payload lengths do not match.");
+	return {
+		distanceMeters,
+		hysteresis,
+		levels: [bytes.slice(HEADER_BYTES, HEADER_BYTES + highLength), bytes.slice(HEADER_BYTES + highLength)]
+	};
+}
+function inspectStaticMeshLod(bytes) {
+	const payload = decodeStaticMeshLod(bytes);
+	const levels = payload.levels.map((level) => parseStaticMeshGlb(level));
+	const high = levels[0], low = levels[1];
+	if (JSON.stringify(high.materialSlots.map(({ slotId }) => slotId)) !== JSON.stringify(low.materialSlots.map(({ slotId }) => slotId))) throw new Error("LOD levels must have matching mesh/primitive material slot IDs.");
+	const vertices = high.vertexCount + low.vertexCount, indices = high.indexCount + low.indexCount;
+	if (vertices > DEFAULT_STATIC_MESH_IMPORT_LIMITS.meshVertices || indices > DEFAULT_STATIC_MESH_IMPORT_LIMITS.meshIndices || high.nodeCount + low.nodeCount > DEFAULT_STATIC_MESH_IMPORT_LIMITS.modelNodes) throw new Error(`Combined LOD geometry exceeds the decode budget. LOD 합계: 정점 ${vertices}/${DEFAULT_STATIC_MESH_IMPORT_LIMITS.meshVertices}, 인덱스 ${indices}/${DEFAULT_STATIC_MESH_IMPORT_LIMITS.meshIndices}, 노드 ${high.nodeCount + low.nodeCount}/${DEFAULT_STATIC_MESH_IMPORT_LIMITS.modelNodes}. Unreal 가져오기에서 '2단계 LOD 준비'를 끄고 다시 시도하세요.`);
+	return {
+		payload,
+		metadata: {
+			...high,
+			profile: STATIC_MESH_LOD_PROFILE,
+			schemaVersion: 1,
+			boundsMin: high.boundsMin.map((value, axis) => Math.min(value, low.boundsMin[axis])),
+			boundsMax: high.boundsMax.map((value, axis) => Math.max(value, low.boundsMax[axis])),
+			lod: {
+				distanceMeters: payload.distanceMeters,
+				hysteresis: payload.hysteresis,
+				levels: levels.map(({ vertexCount, indexCount }) => ({
+					vertexCount,
+					indexCount
+				}))
+			}
+		}
+	};
+}
+function validateSettings(distance, hysteresis) {
+	if (!Number.isFinite(distance) || distance <= 0 || distance > 2e3) throw new Error("LOD distance must be greater than 0 and at most 2000 meters.");
+	if (!Number.isFinite(hysteresis) || hysteresis < 0 || hysteresis >= .5) throw new Error("LOD hysteresis must be in [0, 0.5).");
+}
+var STATIC_MESH_LOD_PROFILE, MAGIC, HEADER_BYTES;
+var init_StaticMeshLodAsset = __esmMin((() => {
+	init_GlbStaticMeshImporter();
+	STATIC_MESH_LOD_PROFILE = "static-mesh-lod-v1";
+	MAGIC = 1146047556;
+	HEADER_BYTES = 32;
+}));
+//#endregion
+//#region src/ue-import/OptimizeStaticTextures.ts
+function validateTextureImportOptions(options) {
+	if (!options || typeof options !== "object" || ![
+		0,
+		128,
+		256,
+		512,
+		1024,
+		2048
+	].includes(options.maxSize) || !Array.isArray(options.maps) || new Set(options.maps).size !== options.maps.length || options.maps.some((map) => !kinds.includes(map))) throw new Error("지원하지 않는 텍스처 가져오기 옵션");
+	if (options.compactBaseColor !== void 0 && typeof options.compactBaseColor !== "boolean") throw new Error("지원하지 않는 텍스처 포맷 옵션");
+	if (options.mapMaxSizes !== void 0 && (!options.mapMaxSizes || typeof options.mapMaxSizes !== "object" || Array.isArray(options.mapMaxSizes) || Object.entries(options.mapMaxSizes).some(([kind, size]) => !kinds.includes(kind) || ![
+		128,
+		256,
+		512,
+		1024,
+		2048
+	].includes(size)))) throw new Error("지원하지 않는 맵별 크기 옵션");
+}
+function textureMapLimit(options, kind) {
+	return Math.min(options.maxSize || Infinity, options.mapMaxSizes?.[kind] || Infinity);
+}
+var SOURCE_TEXTURE_OPTIONS, kinds;
+var init_OptimizeStaticTextures = __esmMin((() => {
+	SOURCE_TEXTURE_OPTIONS = {
+		maxSize: 0,
+		maps: [
+			"baseColor",
+			"normal",
+			"metallicRoughness",
+			"occlusion",
+			"emissive",
+			"specular"
+		]
+	};
+	({ ...SOURCE_TEXTURE_OPTIONS });
+	kinds = [
+		"baseColor",
+		"normal",
+		"metallicRoughness",
+		"occlusion",
+		"emissive",
+		"specular"
+	];
+}));
+//#endregion
+//#region src/ue-import/CandidateMaterialDisplay.ts
+function candidateTextureLimits(snapshot, options) {
+	const limits = /* @__PURE__ */ new Map();
+	if (!options) return limits;
+	const add = (assetId, kind) => {
+		if (options.maps.includes(kind)) limits.set(assetId, Math.min(limits.get(assetId) ?? Infinity, textureMapLimit(options, kind)));
+	};
+	for (const asset of snapshot.assets.filter((a) => a.kind === "Material")) {
+		const material = validateMaterialDocument(snapshot.revisions.find((r) => r.id === asset.currentRevisionId)?.metadata.material);
+		if (material.kind === "WebMaskPbrMaterial") {
+			for (const [input, view] of Object.entries(material.textureViews)) add(view.texture.assetId, inputKind[input]);
+			for (const layer of material.maskLayers) add(layer.mask.texture.assetId, "baseColor");
+			for (const mask of material.vertexAtlas?.masks ?? []) {
+				add(mask.texture.assetId, "baseColor");
+				if (limits.has(mask.texture.assetId)) limits.set(mask.texture.assetId, Math.min(512, limits.get(mask.texture.assetId)));
+			}
+		} else for (const [input, ref] of Object.entries(material.textures)) add(ref.assetId, inputKind[input]);
+	}
+	return limits;
+}
+/** Conservative reservations across typed source materials, including placement-only materials. */
+function candidateMaterialLayout(snapshot, metadataDimensions = false) {
+	const dimensions = [], uses = [];
+	const indices = /* @__PURE__ */ new Map();
+	const add = (assetId, kind) => {
+		let index = indices.get(assetId);
+		if (index === void 0) {
+			const asset = snapshot.assets.find((a) => a.id === assetId && a.kind === "Texture");
+			const revision = snapshot.revisions.find((r) => r.id === asset?.currentRevisionId && r.assetId === asset?.id);
+			const blob = snapshot.blobs.find((b) => b.key === revision?.blobKeys[0]);
+			if (!revision || typeof revision.metadata.mimeType !== "string") throw new Error("Missing candidate material texture");
+			let size;
+			if (blob) size = validateEncodedImageBudget(blob.bytes, revision.metadata.mimeType);
+			else if (metadataDimensions) {
+				const { width, height } = revision.metadata;
+				if (typeof width !== "number" || typeof height !== "number" || !Number.isSafeInteger(width) || !Number.isSafeInteger(height) || width < 1 || height < 1 || width > 8192 || height > 8192 || width * height * 4 > 256 * 1024 ** 2) throw new Error("Invalid published texture dimensions");
+				size = {
+					width,
+					height
+				};
+			} else throw new Error("Missing candidate material texture");
+			index = dimensions.length;
+			indices.set(assetId, index);
+			dimensions.push(size);
+		}
+		uses.push({
+			source: index,
+			kind
+		});
+	};
+	for (const asset of snapshot.assets.filter((a) => a.kind === "Material")) {
+		const material = validateMaterialDocument(snapshot.revisions.find((r) => r.id === asset.currentRevisionId && r.assetId === asset.id)?.metadata.material);
+		if (material.kind === "WebMaskPbrMaterial") {
+			for (const [input, view] of Object.entries(material.textureViews)) add(view.texture.assetId, inputKind[input]);
+			for (const layer of material.maskLayers) add(layer.mask.texture.assetId, "baseColor");
+			for (const mask of material.vertexAtlas?.masks ?? []) add(mask.texture.assetId, "baseColor");
+		} else for (const [semantic, texture] of Object.entries(material.textures)) add(texture.assetId, inputKind[semantic]);
+	}
+	return {
+		dimensions,
+		uses
+	};
+}
+var inputKind;
+var init_CandidateMaterialDisplay = __esmMin((() => {
+	init_GlbStaticMeshImporter();
+	init_MaterialAsset();
+	init_OptimizeStaticTextures();
+	inputKind = {
+		baseColor: "baseColor",
+		normal: "normal",
+		metallic: "metallicRoughness",
+		roughness: "metallicRoughness",
+		occlusion: "occlusion",
+		emissive: "emissive",
+		"baseColor-srgb": "baseColor",
+		"normal-linear": "normal",
+		"metallicRoughness-linear": "metallicRoughness",
+		"occlusion-linear": "occlusion",
+		"emissive-srgb": "emissive"
+	};
+})), policyId, validation, storage, backup, player, asset_capacity_policy_default;
+var init_asset_capacity_policy = __esmMin((() => {
+	policyId = "dtwe-capacity-v1";
+	validation = "initial-guardrails-not-device-capacity";
+	storage = {
+		"assets": 4e4,
+		"revisions": 8e4,
+		"blobs": 4e4,
+		"desktopEntries": 4e4,
+		"retainedBlobBytes": 1073741824,
+		"priorVersions": 32,
+		"historyMetadataBytes": 33554432
+	};
+	backup = {
+		"archiveBytes": 2147483648,
+		"entries": 6e4
+	};
+	player = {
+		"templateBytes": 536870912,
+		"archiveBytes": 2147483648
+	};
+	asset_capacity_policy_default = {
+		schemaVersion: 1,
+		policyId,
+		validation,
+		"import": {
+			"initialSourceAssets": 3e3,
+			"sourceAssetStep": 1e3,
+			"sourceAssets": 1e4,
+			"payloadRecords": 1e4,
+			"payloadFiles": 2e4,
+			"transferFiles": 20002,
+			"progressUnits": 3e4,
+			"placements": 3e4,
+			"singlePayloadBytes": 268435456,
+			"payloadBytes": 1073741824,
+			"inventoryBytes": 33554432,
+			"reportBytes": 16777216
+		},
+		storage,
+		backup,
+		player
+	};
+})), CAPACITY_POLICY, IMPORT_CAPACITY;
+var init_CapacityPolicy = __esmMin((() => {
+	init_asset_capacity_policy();
+	if (asset_capacity_policy_default.schemaVersion !== 1 || asset_capacity_policy_default.policyId !== "dtwe-capacity-v1") throw new Error("지원하지 않는 에셋 용량 정책");
+	for (const group of [
+		asset_capacity_policy_default.import,
+		asset_capacity_policy_default.storage,
+		asset_capacity_policy_default.backup,
+		asset_capacity_policy_default.player
+	]) {
+		if (Object.values(group).some((v) => !Number.isSafeInteger(v) || v <= 0)) throw new Error("잘못된 에셋 용량 정책");
+		Object.freeze(group);
+	}
+	if (asset_capacity_policy_default.import.initialSourceAssets > asset_capacity_policy_default.import.sourceAssets || asset_capacity_policy_default.import.sourceAssetStep > asset_capacity_policy_default.import.sourceAssets || asset_capacity_policy_default.import.payloadRecords < asset_capacity_policy_default.import.sourceAssets || asset_capacity_policy_default.import.payloadFiles < asset_capacity_policy_default.import.payloadRecords * 2 || asset_capacity_policy_default.import.transferFiles < asset_capacity_policy_default.import.payloadFiles + 2 || asset_capacity_policy_default.import.progressUnits < asset_capacity_policy_default.import.sourceAssets * 3 || asset_capacity_policy_default.backup.entries >= 65535) throw new Error("잘못된 자동 가져오기 용량 정책");
+	CAPACITY_POLICY = Object.freeze(asset_capacity_policy_default);
+	IMPORT_CAPACITY = CAPACITY_POLICY.import;
+	IMPORT_CAPACITY.payloadBytes + IMPORT_CAPACITY.inventoryBytes + IMPORT_CAPACITY.reportBytes;
 }));
 //#endregion
 //#region node_modules/.pnpm/three@0.186.0/node_modules/three/examples/jsm/utils/BufferGeometryUtils.js
@@ -28654,108 +28836,6 @@ var init_RenderQualityPreset = __esmMin((() => {
 	RENDER_QUALITY_PRESETS = Object.values(RenderQualityPreset);
 }));
 //#endregion
-//#region src/assets/StaticMeshLodAsset.ts
-function isStaticMeshLod(bytes) {
-	return bytes.byteLength >= 4 && new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength).getUint32(0, true) === MAGIC;
-}
-function decodeStaticMeshLod(bytes) {
-	if (bytes.byteLength < HEADER_BYTES || bytes.byteLength > DEFAULT_STATIC_MESH_IMPORT_LIMITS.singleImportBytes) throw new Error("Invalid LOD payload size.");
-	const header = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
-	if (header.getUint32(0, true) !== MAGIC || header.getUint32(4, true) !== 1) throw new Error("Unsupported LOD payload version.");
-	const distanceMeters = header.getFloat64(8, true), hysteresis = header.getFloat64(16, true);
-	validateSettings(distanceMeters, hysteresis);
-	const highLength = header.getUint32(24, true), lowLength = header.getUint32(28, true);
-	if (!highLength || !lowLength || HEADER_BYTES + highLength + lowLength !== bytes.byteLength) throw new Error("LOD payload lengths do not match.");
-	return {
-		distanceMeters,
-		hysteresis,
-		levels: [bytes.slice(HEADER_BYTES, HEADER_BYTES + highLength), bytes.slice(HEADER_BYTES + highLength)]
-	};
-}
-function inspectStaticMeshLod(bytes) {
-	const payload = decodeStaticMeshLod(bytes);
-	const levels = payload.levels.map((level) => parseStaticMeshGlb(level));
-	const high = levels[0], low = levels[1];
-	if (JSON.stringify(high.materialSlots.map(({ slotId }) => slotId)) !== JSON.stringify(low.materialSlots.map(({ slotId }) => slotId))) throw new Error("LOD levels must have matching mesh/primitive material slot IDs.");
-	const vertices = high.vertexCount + low.vertexCount, indices = high.indexCount + low.indexCount;
-	if (vertices > DEFAULT_STATIC_MESH_IMPORT_LIMITS.meshVertices || indices > DEFAULT_STATIC_MESH_IMPORT_LIMITS.meshIndices || high.nodeCount + low.nodeCount > DEFAULT_STATIC_MESH_IMPORT_LIMITS.modelNodes) throw new Error(`Combined LOD geometry exceeds the decode budget. LOD 합계: 정점 ${vertices}/${DEFAULT_STATIC_MESH_IMPORT_LIMITS.meshVertices}, 인덱스 ${indices}/${DEFAULT_STATIC_MESH_IMPORT_LIMITS.meshIndices}, 노드 ${high.nodeCount + low.nodeCount}/${DEFAULT_STATIC_MESH_IMPORT_LIMITS.modelNodes}. Unreal 가져오기에서 '2단계 LOD 준비'를 끄고 다시 시도하세요.`);
-	return {
-		payload,
-		metadata: {
-			...high,
-			profile: STATIC_MESH_LOD_PROFILE,
-			schemaVersion: 1,
-			boundsMin: high.boundsMin.map((value, axis) => Math.min(value, low.boundsMin[axis])),
-			boundsMax: high.boundsMax.map((value, axis) => Math.max(value, low.boundsMax[axis])),
-			lod: {
-				distanceMeters: payload.distanceMeters,
-				hysteresis: payload.hysteresis,
-				levels: levels.map(({ vertexCount, indexCount }) => ({
-					vertexCount,
-					indexCount
-				}))
-			}
-		}
-	};
-}
-function validateSettings(distance, hysteresis) {
-	if (!Number.isFinite(distance) || distance <= 0 || distance > 2e3) throw new Error("LOD distance must be greater than 0 and at most 2000 meters.");
-	if (!Number.isFinite(hysteresis) || hysteresis < 0 || hysteresis >= .5) throw new Error("LOD hysteresis must be in [0, 0.5).");
-}
-var STATIC_MESH_LOD_PROFILE, MAGIC, HEADER_BYTES;
-var init_StaticMeshLodAsset = __esmMin((() => {
-	init_GlbStaticMeshImporter();
-	STATIC_MESH_LOD_PROFILE = "static-mesh-lod-v1";
-	MAGIC = 1146047556;
-	HEADER_BYTES = 32;
-}));
-//#endregion
-//#region src/ue-import/OptimizeStaticTextures.ts
-function validateTextureImportOptions(options) {
-	if (!options || typeof options !== "object" || ![
-		0,
-		128,
-		256,
-		512,
-		1024,
-		2048
-	].includes(options.maxSize) || !Array.isArray(options.maps) || new Set(options.maps).size !== options.maps.length || options.maps.some((map) => !kinds.includes(map))) throw new Error("지원하지 않는 텍스처 가져오기 옵션");
-	if (options.compactBaseColor !== void 0 && typeof options.compactBaseColor !== "boolean") throw new Error("지원하지 않는 텍스처 포맷 옵션");
-	if (options.mapMaxSizes !== void 0 && (!options.mapMaxSizes || typeof options.mapMaxSizes !== "object" || Array.isArray(options.mapMaxSizes) || Object.entries(options.mapMaxSizes).some(([kind, size]) => !kinds.includes(kind) || ![
-		128,
-		256,
-		512,
-		1024,
-		2048
-	].includes(size)))) throw new Error("지원하지 않는 맵별 크기 옵션");
-}
-function textureMapLimit(options, kind) {
-	return Math.min(options.maxSize || Infinity, options.mapMaxSizes?.[kind] || Infinity);
-}
-var SOURCE_TEXTURE_OPTIONS, kinds;
-var init_OptimizeStaticTextures = __esmMin((() => {
-	SOURCE_TEXTURE_OPTIONS = {
-		maxSize: 0,
-		maps: [
-			"baseColor",
-			"normal",
-			"metallicRoughness",
-			"occlusion",
-			"emissive",
-			"specular"
-		]
-	};
-	({ ...SOURCE_TEXTURE_OPTIONS });
-	kinds = [
-		"baseColor",
-		"normal",
-		"metallicRoughness",
-		"occlusion",
-		"emissive",
-		"specular"
-	];
-}));
-//#endregion
 //#region src/domain/EnvironmentLighting.ts
 function isEnvironmentIntensity(value) {
 	return typeof value === "number" && Number.isFinite(value) && value >= 0 && value <= 4;
@@ -29332,6 +29412,7 @@ var init_CandidateAppearanceReview = __esmMin((() => {
 }));
 //#endregion
 //#region src/assets/MaterialTextureEditing.ts
+init_CandidateMaterialDisplay();
 init_CapacityPolicy();
 init_CandidateAppearanceReview();
 //#endregion
@@ -29850,6 +29931,17 @@ var init_StaticCandidateHierarchy = __esmMin((() => {
 	init_staticPreviewMath();
 }));
 //#endregion
+//#region src/render/CompositionBatchMaterial.ts
+function enableCompositionBatchRecipes(registry, freezeUniforms = true) {
+	frozenRegistries.add(registry);
+	if (freezeUniforms) frozenUniformRegistries.add(registry);
+}
+var frozenRegistries, frozenUniformRegistries;
+var init_CompositionBatchMaterial = __esmMin((() => {
+	frozenRegistries = /* @__PURE__ */ new WeakSet();
+	frozenUniformRegistries = /* @__PURE__ */ new WeakSet();
+}));
+//#endregion
 //#region src/render/MaterialRendering.ts
 function applyMaterialTintOverrides(layers, overrides) {
 	const seen = /* @__PURE__ */ new Set();
@@ -29872,11 +29964,6 @@ function applyMaterialTintOverrides(layers, overrides) {
 }
 var init_MaterialRendering = __esmMin((() => {}));
 //#endregion
-//#region src/ue-import/CandidateMaterialDisplay.ts
-var init_CandidateMaterialDisplay = __esmMin((() => {
-	init_OptimizeStaticTextures();
-}));
-//#endregion
 //#region src/ue-import/TextureDisplaySession.ts
 var init_TextureDisplaySession = __esmMin((() => {
 	init_OptimizeStaticTextures();
@@ -29897,7 +29984,6 @@ var init_prepareStaticEditorPreview = __esmMin((() => {
 	init_PreviewTextureAppearance();
 	init_OptimizeStaticTextures();
 	init_StaticCandidateHierarchy();
-	init_CandidateMaterialDisplay();
 	init_TextureDisplaySession();
 	init_MemoryBudget();
 }));
@@ -31132,12 +31218,18 @@ init_MaterialAsset();
 init_UEPackageImport();
 init_PreviewTextureAppearance();
 init_StaticMeshProjection();
+init_CandidateMaterialDisplay();
+init_CompositionBatchMaterial();
 /** Metadata is resident; each decoder asks only for its immutable revision's files. No editor storage fallback. */
-function deliveryAssets(metadata, files, reader, signal, textureBudget) {
+function deliveryAssets(metadata, files, reader, signal, textureBudget, textureOptions) {
 	const denied = async () => {
 		throw new Error("Published assets are read-only");
 	};
 	const blobFiles = new Map(metadata.blobs.map((b) => [b.key, files.get(b.hash)]));
+	const limits = candidateTextureLimits({
+		...metadata.assets,
+		blobs: []
+	}, textureOptions);
 	let reservedTextures = 0;
 	const reserved = /* @__PURE__ */ new Set();
 	const read = async (assetId, revisionId) => {
@@ -31182,7 +31274,9 @@ function deliveryAssets(metadata, files, reader, signal, textureBudget) {
 				const mime = revision.metadata.mimeType;
 				if (mime !== "image/png" && mime !== "image/jpeg" && mime !== "image/webp") throw new Error("Unsupported image type");
 				const size = validateEncodedImageBudget(first.bytes, mime);
-				textureBytes += size.width * size.height * 4 * (1 + 4 / 3);
+				if (revision.metadata.width !== void 0 && revision.metadata.width !== size.width || revision.metadata.height !== void 0 && revision.metadata.height !== size.height) throw new Error("Published texture dimensions mismatch");
+				const limit = limits.get(asset.id) ?? (textureOptions?.maxSize || Infinity), scale = Math.min(1, limit / Math.max(size.width, size.height));
+				textureBytes += Math.max(1, Math.round(size.width * scale)) * Math.max(1, Math.round(size.height * scale)) * 4 * (1 + 4 / 3);
 			} else throw new Error(`Unsupported published asset: ${asset.kind}`);
 		}
 		if (!reserved.has(revision.id)) {
@@ -31206,7 +31300,7 @@ function deliveryAssets(metadata, files, reader, signal, textureBudget) {
 			blobs
 		};
 	};
-	return {
+	const storage = {
 		get reservedTextureBytes() {
 			return reservedTextures;
 		},
@@ -31231,6 +31325,8 @@ function deliveryAssets(metadata, files, reader, signal, textureBudget) {
 			}))
 		})
 	};
+	enableCompositionBatchRecipes(storage, false);
+	return storage;
 }
 //#endregion
 //#region src/delivery/LevelMetadata.ts
@@ -31277,6 +31373,7 @@ function validateLevelMetadata(input, level, files) {
 //#region src/delivery/ChunkReader.ts
 init_ScriptAddonRegistry();
 init_AssetRegistry();
+init_CandidateMaterialDisplay();
 var MemoryChunkCache = class {
 	budget;
 	values = /* @__PURE__ */ new Map();
@@ -31482,14 +31579,33 @@ var ChunkReader = class {
 				assets: frozen.assets
 			};
 		};
-		const prepared = async (info, requestSignal, textureBudget) => {
+		const prepared = async (info, requestSignal, textureBudget, textureOptions) => {
 			const combined = AbortSignal.any([signal, requestSignal]), metadata = await readMetadata(info.pin, combined);
 			combined.throwIfAborted();
 			await prepareScriptAddons(metadata.envelope.payload);
 			combined.throwIfAborted();
+			const textureBlobs = [];
+			const textureCatalog = {
+				...metadata.assets,
+				blobs: textureBlobs
+			};
+			for (const revision of textureCatalog.revisions.filter((r) => textureCatalog.assets.some((a) => a.kind === "Texture" && a.currentRevisionId === r.id))) {
+				if (revision.metadata.width !== void 0 && revision.metadata.height !== void 0) continue;
+				for (const key of revision.blobKeys) {
+					const blob = metadata.blobs.find((b) => b.key === key);
+					if (!blob) throw new Error("Missing published texture");
+					textureBlobs.push({
+						key,
+						bytes: await this.file(files.get(blob.hash), combined)
+					});
+				}
+			}
+			const layouts = [candidateMaterialLayout(textureCatalog, true)];
 			return {
 				document: metadata.envelope.payload,
-				storage: deliveryAssets(metadata, files, this, combined, textureBudget)
+				textureCatalog,
+				layouts,
+				storage: deliveryAssets(metadata, files, this, combined, textureBudget, textureOptions)
 			};
 		};
 		return {
