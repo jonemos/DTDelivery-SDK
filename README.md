@@ -200,7 +200,7 @@ ZIP으로 받은 경우에는 새 ZIP을 **새 폴더**에 풉니다. 모델 청
 
 예제 설치는 짧은 의존성 경로와 파일 복사를 사용합니다. SDK 폴더를 정리하기 전에는 두 서버를 종료하고 해당 폴더를 사용하는 터미널도 닫으세요.
 
-## 8. 개발자가 기존 웹프로젝트에 연결하기
+## 8. SDK API로 웹프로젝트에 모델 연결하기
 
 테스트 페이지에서 모델을 확인한 뒤 **기존 웹프로젝트 폴더**에서 설치합니다. 아래 명령은 버전 태그를 지정하여 설치합니다. 이전 버전 태그는 그대로 보존합니다.
 
@@ -208,7 +208,193 @@ ZIP으로 받은 경우에는 새 ZIP을 **새 폴더**에 풉니다. 모델 청
 pnpm.cmd add "https://github.com/jonemos/DTWebEditor_SDK.git#v0.2.22"
 ```
 
-API 서버는 웹프로젝트와 별도로 계속 실행합니다. 연결 코드·액터 조회·선택·텍스처·배칭 API는 [SDK API 안내](docs/API.md), 실행 가능한 전체 화면 코드는 [예제 코드](examples/web/main.ts)를 참고하세요. 자체 페이지의 모델 표시 영역에는 실제 너비와 높이가 있어야 합니다.
+API 서버는 웹프로젝트와 별도로 계속 실행합니다. SDK는 브라우저용 JavaScript/TypeScript API이고, API 서버는 모델과 공개 속성을 HTTP로 제공하는 Node.js 프로그램입니다.
+
+### 연결에 필요한 값
+
+| 값 | 의미 | 얻는 방법 |
+|---|---|---|
+| `apiURL` | 모델을 읽는 API 주소 | 로컬 기본 `http://127.0.0.1:18849/`. 다른 PC는 운영자가 제공한 주소 |
+| `scope` | 게시 구역 이름 | API 설정과 같은 값. 로컬 기본 `development` |
+| `compositionId` | 표시할 통합레벨 ID | `api.compositions(scope)`로 조회한 항목의 `id` |
+| API 토큰 | API 접속 인증 | 테스트 페이지의 자동 연결 또는 운영자가 제공한 값 |
+| `releaseHash` | 정확한 게시 버전 | `api.publication(scope, compositionId)`의 응답 |
+
+SDK는 요청할 때마다 `getToken`을 호출합니다. 브라우저에는 **API 토큰**을 공급하며, S3 접속 키는 API 서버에서 사용합니다.
+
+### 점진 로딩과 액터 선택 연결 예제
+
+먼저 페이지에 표시 영역을 만듭니다. 부모와 canvas에 실제 크기가 있어야 합니다.
+
+```html
+<div style="width:100%;height:600px">
+  <canvas id="model-view" style="width:100%;height:100%"></canvas>
+</div>
+```
+
+아래 함수에 생성된 canvas와 연결 정보를 전달합니다. 준비된 청크부터 표시하고 클릭한 액터를 알려줍니다.
+
+```ts
+import { DeliveryApiClient, ChunkReader, DeliveryViewer } from '@dt/delivery-sdk';
+import '@dt/delivery-sdk/viewport.css';
+
+export async function openSdkModel(
+  canvas: HTMLCanvasElement,
+  apiURL: string,
+  scope: string,
+  compositionId: string,
+  getToken: () => Promise<string>,
+) {
+  const api = new DeliveryApiClient(new URL(apiURL), async () => `Bearer ${await getToken()}`);
+  const { releaseHash } = await api.publication(scope, compositionId);
+  if (!releaseHash) throw new Error('게시된 모델이 없습니다.');
+
+  const reader = new ChunkReader(api.provider(scope, compositionId, releaseHash));
+  const viewer = new DeliveryViewer(canvas, reader);
+  viewer.setStaticBatching(false);
+  const unsubscribe = viewer.subscribeActorSelection(actor => {
+    console.log('선택 액터:', actor?.actorName, actor?.serviceKey);
+  });
+  try {
+    await viewer.openProgressive(releaseHash);
+  } catch (error) {
+    unsubscribe();
+    await viewer.dispose();
+    throw error;
+  }
+  return {
+    api, viewer, releaseHash,
+    async dispose() { unsubscribe(); await viewer.dispose(); },
+  };
+}
+```
+
+페이지·컴포넌트를 닫거나 모델을 교체할 때 반환된 `dispose()`를 호출합니다. 레벨을 편집하는 에디터 API와 SDK의 실행 화면 변경은 서로 다른 작업입니다. SDK 변경이 에디터 원본에 자동 저장되지는 않습니다.
+
+### 자주 사용하는 SDK API
+
+| 호출 | 하는 일 |
+|---|---|
+| `api.compositions(scope, page)` | 게시된 모델 목록. 첫 페이지는 `0`, 응답은 `items`·`total`·`page`·`limit` |
+| `api.publication(scope, compositionId)` | 현재 게시 버전의 `releaseHash` 조회 |
+| `api.releases(scope, compositionId)` | 검증된 이전 버전 목록 |
+| `api.actors(scope, compositionId, releaseHash, query, page)` | 액터 검색. 검색하지 않으면 `query`에 빈 문자열 사용 |
+| `api.provider(scope, compositionId, releaseHash)` | 인증된 청크 공급자. `ChunkReader`가 크기와 해시 검증 |
+| `viewer.openProgressive(releaseHash)` | 검증·준비된 부분부터 표시 |
+| `viewer.subscribeActorSelection(callback)` | 화면에서 액터 선택 시 알림. 반환 함수로 구독 해제 |
+| `viewer.selectActorTarget(actor)` | 로드된 액터 검색 결과를 안정 ID로 선택 |
+| `viewer.selectActor(null)` | 선택 해제 |
+| `mountDeliveryViewportTools(element, viewer, immersive, { leftOnly: true })` | 예제와 같은 왼쪽 뷰포트 메뉴부터 표시 메뉴까지 연결 |
+| `viewer.setStaticBatching(false)` / `viewer.staticBatchingStatus` | 배칭 설정 / 마지막 상태. 기본 꺼짐 |
+| `viewer.dispose()` | 모델·GPU·이벤트·애드온 연결 자원 해제 |
+
+액터는 화면 이름 대신 `compositionId`·`mountId`·`actorId`로 식별합니다. 같은 원본을 두 번 배치해도 `mountId`가 달라 서로 구분됩니다. SDK의 좌표는 오른손/Y-up/미터/quaternion XYZW입니다.
+
+## 9. HTTP API로 모델 조회하기
+
+SDK를 사용하는 경우 위 메서드가 HTTP 요청을 처리합니다. Python·C# 등에서 직접 호출할 때는 **모든 요청에 `Authorization: Bearer <API 토큰>`**을 넣습니다.
+
+| 메서드 / 경로 | 응답·용도 |
+|---|---|
+| `GET /api/scopes/<scope>/compositions?page=0` | 통합레벨 목록 |
+| `GET /api/scopes/<scope>/compositions/<id>/publication` | 현재 `releaseHash` |
+| `GET /api/scopes/<scope>/compositions/<id>/releases` | 이전 게시 버전 목록 |
+| `GET /api/scopes/<scope>/compositions/<id>/releases/<hash>/actors?q=&page=0` | 액터 목록·검색 |
+| `GET /api/delivery/<scope>/<id>/<hash>/authorize` | 해당 버전 읽기 권한 확인 |
+| `GET /api/delivery/<scope>/<id>/<hash>/releases/<hash>.json` | 청크 구성표 |
+| `GET /api/delivery/<scope>/<id>/<hash>/objects/<chunkHash>` | 청크 바이트 |
+
+`<id>`는 통합레벨 ID이고 `<hash>`는 전체 게시 해시입니다. 모델 표시에는 SDK의 `ChunkReader`를 사용하면 청크 검증을 함께 처리할 수 있습니다.
+
+## 10. 편집기에서 추가한 애드온 스크립트도 제어할 수 있나요?
+
+**SDK 5의 공개 속성을 API로 조회·변경할 수 있습니다.** SDK 0.2.22에는 `DeliveryAddonController`, `AddonPropertiesClient`와 서버의 애드온 HTTP/WebSocket 처리가 포함됩니다.
+
+### 게시본에 포함되는 조건
+
+1. 신뢰한 ZIP 애드온을 편집기에 설치하고 실제 액터의 컴포넌트로 부착합니다.
+2. 애드온의 `sdkVersion`은 `5`이고 `environments`에 **`delivery`**가 있어야 합니다. 선언한 capability도 Delivery에서 지원해야 합니다.
+3. 애드온 설정을 저장하고 해당 원본을 참조하는 통합레벨의 **청크를 새로 제작·게시**합니다.
+4. 새 게시본에는 필요한 설치 모듈과 정확한 `packageId`·`version`·`codeHash`가 `addonBundle`로 들어갑니다. SDK는 이를 검증하고 실행합니다. 외부 소비자 PC에 에디터나 제작 ZIP을 다시 설치할 필요는 없습니다.
+5. 외부에서 제어할 값은 애드온 manifest의 **`properties`**에 선언해야 합니다. 허용된 속성의 타입·범위·`access`·`storage`에 따라 제어합니다.
+
+설치 목록에만 있는 미사용 애드온은 모델에 포함되지 않습니다. 예전 게시본에는 새로 설치한 스크립트가 자동으로 추가되지 않습니다. `editor` 전용 애드온은 Delivery 지원을 추가해야 사용할 수 있습니다. 일반 내부 함수 호출을 HTTP API로 자동 노출하는 기능은 제공하지 않습니다.
+
+### 화면 안에서 조회·임시 변경
+
+`viewer.addons.list()`는 **현재 로드된 실행 인스턴스**를 반환합니다. 점진 로딩 중에는 목록이 늘어날 수 있습니다. 각 항목의 `target`, `reference`, `schema`, `values`, `revision`, `state`, `error`를 확인하세요.
+
+```ts
+import {
+  addonTargetKey,
+  type AddonTarget,
+  type DeliveryViewer,
+} from '@dt/delivery-sdk';
+
+export async function changeAddonValue(
+  viewer: DeliveryViewer,
+  target: AddonTarget,
+  propertyName: string,
+  value: string | number | boolean,
+) {
+  const instance = viewer.addons.list().find(i => addonTargetKey(i.target) === addonTargetKey(target));
+  if (!instance || instance.state !== 'running') throw new Error('먼저 대상 애드온을 로드하세요.');
+  await viewer.addons.changeBatch([{
+    target: instance.target,
+    expectedRevision: instance.revision,
+    values: { [propertyName]: value },
+  }], 'runtime');
+}
+```
+
+`target`은 `compositionId`·`mountId`·`actorId`·`componentId` 전체를 사용합니다. `propertyName`은 `schema`에 공개된 이름이어야 하고, `access: read-write`와 `storage: runtime` 또는 `both`가 필요합니다. 타입·범위 위반이나 오래된 revision은 거부됩니다. HTTP 연결을 bind하기 전의 runtime 변경은 이 화면에만 적용되며 종료하면 사라집니다.
+
+### HTTP 연결·영구 저장
+
+| 준비·API | 설명 |
+|---|---|
+| API 설정의 `allowWrites: true` | 운영자가 쓰기 권한을 허용한 경우 설정하고 API 재시작. 기본값 `false`에서는 서버 속성 변경 거부 |
+| `api.registerApp(appId, scope, compositionId, releaseHash)` | 최초 한 번 외부 제어용 app 등록. 등록 권한 필요. 기존 app은 같은 ID로 사용 |
+| `new AddonPropertiesClient(api, appId, releaseHash)` | 등록한 app과 정확한 게시 버전에 연결 |
+| `await viewer.addons.bind(client)` | 실행 세션과 WebSocket 변경 알림 연결 |
+| `client.list()` / `schema(target)` / `values(target)` | 서버의 애드온 목록·공개 속성·값 조회. 목록은 미로드 인스턴스도 포함 |
+| `viewer.addons.changeBatch(updates, 'runtime')` | bind 후에는 서버를 통해 이 실행 세션의 임시값 변경 |
+| `viewer.addons.changeBatch(updates, 'persistent')` | 쓰기 권한과 persistent/both 속성 필요. 서버 DB에 저장 |
+| `viewer.addons.subscribe(callback)` / `viewer.addons.error` | 실행 목록·값 변경 관찰 / 동기화 오류 확인 |
+
+서버 연결 예제입니다. `appId`는 먼저 등록된 값을 전달합니다.
+
+```ts
+import { AddonPropertiesClient, type DeliveryApiClient, type DeliveryViewer } from '@dt/delivery-sdk';
+
+export async function connectAddonApi(
+  api: DeliveryApiClient,
+  viewer: DeliveryViewer,
+  appId: string,
+  releaseHash: string,
+) {
+  const client = new AddonPropertiesClient(api, appId, releaseHash);
+  await viewer.addons.bind(client);
+  return { executionId: client.executionId, instances: viewer.addons.list() };
+}
+```
+
+영구값은 API 서버의 DB override에 저장됩니다. 게시 청크나 편집기·Unreal 원본은 자동으로 덮어쓰지 않습니다. `viewer.dispose()`가 연결과 임시 실행 상태도 정리합니다.
+
+| HTTP / WebSocket 경로 | 용도 |
+|---|---|
+| `POST /api/apps/<app>` | app 등록 |
+| `GET /api/apps/<app>/addons?releaseHash=<hash>` | 애드온 목록 |
+| `GET /api/apps/<app>/addons/schema` / `/values` | `releaseHash`·URL 인코딩한 `target` query로 한 인스턴스 조회 |
+| `POST /api/apps/<app>/addons/sessions` | `executionId` 세션 등록·종료 |
+| `POST /api/apps/<app>/addons/properties` | 버전·속성·revision을 검증한 일괄 변경 |
+| `WS /api/apps/<app>/addons/events?executionId=<id>` | 변경 알림 |
+
+임시값 조회에는 `executionId`도 지정합니다. 세션·WebSocket 인증과 변경 요청 본문은 `AddonPropertiesClient`가 처리합니다. 쓰기 권한 오류는 `403`, revision 충돌은 `409`이므로 최신 목록을 다시 확인하세요. 전체 HTTP 경로와 타입은 [API 상세 안내](docs/API.md), 서버 권한 설정은 [서버 안내](docs/SERVER.md)에 있습니다.
+
+## 11. 추가 문서와 버전 안내
+
+실행 가능한 전체 화면 코드는 [예제 코드](examples/web/main.ts)에 있습니다.
 
 이 SDK는 점진 로딩과 원래 액터 선택을 유지합니다. 0.2.22에는 셀 재진입 시 그리기 순서를 유지하는 수정과 기존 예제 설치 의존성 갱신이 포함됩니다. 배칭의 기본값은 꺼짐입니다. 성능이나 픽셀 일치 여부는 모델·브라우저·GPU에 따라 직접 검증하세요.
 
