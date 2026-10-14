@@ -1,4 +1,4 @@
-# 공개 함수·타입 명세 · SDK 0.3.1
+# 공개 함수·타입 명세 · SDK 0.3.2
 
 0.3.0은 조회 API 서버가 없는 브라우저 SDK입니다. `DeliveryApiClient`, `AddonPropertiesClient`, 서버 subpath와 CLI를 공개 패키지에서 제거했습니다. 기존 청크 계약1–5는 유지합니다. 아래 선언은 실제 TypeScript API를 요약한 것이며 생성된 `types/index.d.ts`가 정확한 계약입니다.
 

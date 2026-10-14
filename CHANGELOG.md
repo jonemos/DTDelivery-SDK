@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.2
+
+Compact the example page into a logo/status row and one connection/model action row. Improve Actor search cards, selected details, cell-state labels and script-property readability. Increase viewport space by reducing header/panel chrome. Preserve viewport source, controls and runtime rendering; maintain the original host defaults inside the viewport. Keep existing direct sources, immutable chunks, Actor identities and all prior version tags.
+
 ## 0.3.1
 
 Match standalone viewport popup controls to the composition editor's compact styles and isolate them from host page forms. Remove icon and icon-size controls from Show, rename editor helpers consistently, and add real Actor world bounds with helper-layer isolation and cleanup on hide/unload/toggle/dispose. Keep direct local/static HTTP sources, chunk contracts 1-5, Atlas, stable Actor identity and static batching off by default.

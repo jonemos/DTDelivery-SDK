@@ -9,7 +9,7 @@ const open = element<HTMLButtonElement>('open'), folder = element<HTMLButtonElem
 let sdk: DeliveryClient | undefined, directory: DeliveryDirectoryHandle | undefined, currentSource: DeliverySource | undefined, generation = 0;
 let cleanups: (() => void)[] = [];
 element('version').textContent = DELIVERY_SDK_VERSION;
-const message = (value: string) => { status.textContent = value; };
+const message = (value: string, state = 'idle') => { status.textContent = value; status.title = value; status.dataset.state = state; };
 function fields() {
   folder.hidden = source.value !== 'local'; element('address-field').hidden = source.value !== 'http'; scope.disabled = source.value !== 'local';
   element('source-help').textContent = source.value === 'local' ? '전체/변경분 저장 폴더 또는 로컬 게시 저장소를 선택하세요. 폴더는 읽기만 합니다.' : 'delivery-head.json·objects·releases가 있는 정적 폴더 주소입니다. 인증된 S3 목록 조회는 아직 제공하지 않습니다.';
@@ -41,8 +41,15 @@ function scripts() {
 function progress(value: DeliveryProgress) {
   const bar = element<HTMLProgressElement>('load-progress'); bar.max = Math.max(1, value.totalCells); bar.value = value.readyCells;
   if (value.status === 'loading' && value.totalCells === 0) bar.removeAttribute('value');
-  element('load-states').replaceChildren(...value.cells.map(cell => { const row = document.createElement('li'); row.textContent = `${cell.name ?? cell.id} · ${cell.status}`; return row; }));
-  if (value.status === 'loading' || value.status === 'ready') message(`${value.status === 'ready' ? '로드 완료' : '준비 중'} · 화면 ${value.readyCells}/${value.totalCells} · ${(value.downloadedBytes / 1024 ** 2).toFixed(1)} MiB`);
+  element('load-summary').textContent = value.totalCells ? `${value.readyCells} / ${value.totalCells}` : '대기 중';
+  element('load-states').replaceChildren(...value.cells.map(cell => {
+    const row = document.createElement('li'), name = document.createElement('span'), state = document.createElement('span');
+    row.dataset.state = cell.status; row.title = cell.message ?? `${cell.name ?? cell.id} · ${cell.status}`;
+    name.className = 'cell-name'; name.textContent = cell.name ?? cell.id; state.className = 'cell-status';
+    const labels: Record<string, string> = { ready: '준비 완료', loading: '읽는 중', unloaded: '해제됨', failed: '실패', pending: '대기', queued: '대기', unavailable: '사용 불가' };
+    state.textContent = labels[cell.status] ?? cell.status; row.append(name, state); return row;
+  }));
+  if (value.status === 'loading' || value.status === 'ready') message(`${value.status === 'ready' ? '로드 완료' : '준비 중'} · 화면 ${value.readyCells}/${value.totalCells} · ${(value.downloadedBytes / 1024 ** 2).toFixed(1)} MiB`, value.status);
   scripts();
 }
 async function disconnect() {
