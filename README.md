@@ -32,11 +32,11 @@ SDK와 모델 청크는 별도로 준비합니다. 이 Git 저장소에는 사�
 3. Git이 설치되어 있다면 고정된 0.3.0 버전을 받습니다.
 
    ```powershell
-   git clone --branch v0.3.0 https://github.com/jonemos/DTWebEditor_SDK.git
-   Set-Location DTWebEditor_SDK
+   git clone --branch v0.3.0 https://github.com/jonemos/DTDelivery-SDK.git
+   Set-Location DTDelivery-SDK
    ```
 
-   Git이 없다면 [v0.3.0 페이지](https://github.com/jonemos/DTWebEditor_SDK/tree/v0.3.0)의 **Code → Download ZIP**을 받아 압축을 풉니다. `README.md`와 `examples`가 있는 폴더가 SDK 루트입니다. 새 버전은 이전 SDK와 별도 폴더에 받습니다.
+   Git이 없다면 [v0.3.0 페이지](https://github.com/jonemos/DTDelivery-SDK/tree/v0.3.0)의 **Code → Download ZIP**을 받아 압축을 풉니다. `README.md`와 `examples`가 있는 폴더가 SDK 루트입니다. 새 버전은 이전 SDK와 별도 폴더에 받습니다.
 4. SDK 루트에서 `examples/test-server.cmd`를 더블 클릭하거나 PowerShell에서 실행합니다.
 
    ```powershell
@@ -110,7 +110,7 @@ SDK와 모델 청크는 별도로 준비합니다. 이 Git 저장소에는 사�
 Git 태그로 버전을 고정하려면 프로젝트에서 실행합니다.
 
 ```powershell
-pnpm.cmd add '@dt/delivery-sdk@github:jonemos/DTWebEditor_SDK#v0.3.0'
+pnpm.cmd add '@dt/delivery-sdk@github:jonemos/DTDelivery-SDK#v0.3.0'
 ```
 
 또는 SDK 폴더를 프로젝트의 `vendor/delivery-sdk`에 복사한 뒤 프로젝트에서 실행합니다.
