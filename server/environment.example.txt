@@ -1,7 +1,0 @@
-# Copy these settings to the server's private .env or environment.
-DT_DELIVERY_REMOTE_ACCESS_KEY_ID=
-DT_DELIVERY_REMOTE_SECRET_ACCESS_KEY=
-# Optional temporary S3 session token:
-# DT_DELIVERY_REMOTE_SESSION_TOKEN=
-# For a non-local listening host, supply a separate 32–512 character API token:
-# DT_DELIVERY_API_TOKEN=

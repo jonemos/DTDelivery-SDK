@@ -1,7 +1,15 @@
 import type { AddonTarget } from './m15cd22cd6bd7.js';
 import type { DeliveryViewer } from './m566d2c035974.js';
-import { AddonPropertiesClient } from './mf12bd6e990c7.js';
+import type { AddonControlCatalog } from './mec05efbb93a1.js';
 import { type AddonPropertyMode } from './mfc2efa75f19e.js';
+/** Optional host transport; the browser SDK does not implement an HTTP control server. */
+export interface AddonPropertyConnection {
+    connect(): Promise<void>;
+    list(): Promise<AddonControlCatalog>;
+    change(updates: readonly import('./mec05efbb93a1.js').AddonControlChange[], mode: AddonPropertyMode, expectedRevision: number): Promise<AddonControlCatalog>;
+    subscribe(listener: () => void): () => void;
+    dispose(): Promise<void>;
+}
 /** Scoped to this viewer, including canonical mount IDs behind virtual spatial cells. */
 export declare class DeliveryAddonController {
     private readonly viewer;
@@ -22,7 +30,7 @@ export declare class DeliveryAddonController {
         values: unknown;
         expectedRevision: number;
     }[], mode?: AddonPropertyMode): Promise<import("../index.js").AddonInstanceSnapshot[]>;
-    bind(remote: AddonPropertiesClient): Promise<{
+    bind(remote: AddonPropertyConnection): Promise<{
         change: (updates: readonly import("./mec05efbb93a1.js").AddonControlChange[], mode: AddonPropertyMode) => Promise<void>;
         dispose: () => Promise<void>;
     }>;

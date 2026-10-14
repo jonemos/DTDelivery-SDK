@@ -1,403 +1,201 @@
-# DTWebEditor SDK — 처음 실행하는 분을 위한 안내
+# DT Delivery SDK 0.3.0
 
-DTWebEditor에서 제작한 3D 모델을 웹브라우저에서 보고 선택할 수 있는 SDK입니다. 이 저장소에는 **SDK, 모델을 읽는 API 서버, 테스트 웹페이지**가 들어 있습니다. **실제 모델 데이터는 별도로 받아야 합니다.**
+브라우저에서 제작된 청크를 검증하고 3D 모델을 보여주는 SDK입니다. **0.3.0부터 별도의 Delivery API 서버를 실행하지 않습니다.** 클래스와 함수로 모델 목록, 점진 로딩, 액터 선택, 스크립트 공개 속성을 제어합니다. 기존 청크 계약1–5와 Atlas는 유지됩니다.
 
-Windows에서 처음 테스트한다면 아래 1~4번을 순서대로 진행하세요. 에디터나 Unreal Engine을 테스트 PC에 설치할 필요는 없습니다.
+## 1. 0.3.0에서 달라진 연결 방식
 
-```text
-모델 데이터 → API 서버(18849번 포트) → 테스트 웹페이지(5183번 포트)
-```
-
-API 서버와 테스트 웹페이지는 서로 다른 창에서 실행하며, 모델을 보는 동안 두 창을 모두 켜 둡니다.
-
-## 1. 필요한 프로그램 설치
-
-| 프로그램 | 역할 | 준비 방법 |
-|---|---|---|
-| Node.js | API와 테스트 서버 실행 | [공식 다운로드](https://nodejs.org/en/download)에서 Windows용 Node.js 24 LTS 설치. 최소 24.16.0 필요 |
-| pnpm | 테스트 페이지 의존성 설치 | Node.js 설치 후 아래 명령 실행 |
-| Git | GitHub에서 SDK 받기 | [Git for Windows](https://git-scm.com/downloads/win) 설치. ZIP으로 받으면 생략 가능 |
-| Chrome 또는 Edge | 3D 화면 표시 | WebGL을 사용할 수 있는 브라우저 |
-
-Node.js 설치 후 **PowerShell 창을 새로 열고** 아래 명령을 한 줄씩 실행합니다. `PS C:\...>` 같은 프롬프트는 입력하지 않습니다.
-
-```powershell
-node --version
-npm.cmd install --global pnpm@11.9.0
-pnpm.cmd --version
-```
-
-이 SDK의 설치·빌드는 Node.js 24.19.0 / pnpm 11.9.0으로 확인했습니다. 이미 pnpm 11.9.0이 설치되어 있다면 설치 명령은 생략하세요. pnpm 설치 방법은 [공식 설치 안내](https://pnpm.io/installation)를 참고하세요.
-
-## 2. SDK 다운로드
-
-### Git으로 받기
-
-저장할 폴더에서 PowerShell을 열고 실행합니다. 현재 SDK와 최신 README를 함께 받습니다.
-
-```powershell
-git clone https://github.com/jonemos/DTWebEditor_SDK.git
-cd DTWebEditor_SDK
-Get-Content package.json -TotalCount 6
-```
-
-`package.json`의 `version`으로 받은 SDK 버전을 확인합니다. 이미 같은 이름의 폴더가 있다면 새 빈 위치에서 clone하세요.
-
-### Git 없이 ZIP으로 받기
-
-[저장소 페이지](https://github.com/jonemos/DTWebEditor_SDK)에서 **Code → Download ZIP**을 누르고 압축을 풉니다. 압축 파일 안에서 바로 실행하지 마세요.
-
-준비가 끝나면 다음 파일들이 보여야 합니다.
-
-```text
-DTWebEditor_SDK/
-├─ local-server.cmd          로컬 모델 데이터를 읽는 API 실행
-├─ remote-server.cmd         원격 저장소를 읽는 API 실행
-├─ delivery-api.config.json  원격 API 설정 예제
-├─ s3-profiles.json          원격 저장소 설정 예제
-├─ examples/
-│  └─ test-server.cmd        브라우저 테스트 페이지 실행
-├─ docs/                    상세 설명
-└─ package.json             SDK 버전 정보
-```
-
-처음에는 SDK 루트에서 별도로 `pnpm install`할 필요가 없습니다. 테스트 실행기가 필요한 의존성을 설치합니다.
-
-## 3. 테스트할 모델 데이터 준비
-
-**SDK를 clone하는 것만으로 모델이 생기지는 않습니다.** 모델 제작자에게 DTWebEditor의 **청크 제작 및 업로드**에서 저장한 청크 폴더를 받으세요.
-
-| 데이터 위치 | 사용할 실행 파일 | 필요한 준비 |
-|---|---|---|
-| 이 PC의 폴더 | `local-server.cmd` | 모델의 청크 폴더 전체를 이 PC에 복사 |
-| S3 호환 원격 저장소 | `remote-server.cmd` | 제작자·운영자가 제공한 원격 설정. 아래 5번 참고 |
-
-로컬 테스트용 일반 청크 폴더는 다음 구조입니다. `objects`와 `releases` 안의 파일을 함께 복사해야 합니다.
-
-```text
-D:\DTTest\model-chunks\
-├─ delivery-head.json
-├─ objects\
-└─ releases\
-```
-
-API에 입력할 경로는 **`D:\DTTest\model-chunks`**입니다. `objects`나 `releases` 하위 폴더를 입력하지 마세요. 변경분 저장으로 생긴 `deltas` 폴더가 있다면 함께 보관합니다. 기존 `levels`·`receipts` 구조의 로컬 게시 저장소도 지원합니다.
-
-청크 폴더는 SDK 폴더 밖에 두어도 됩니다. 모델·개인 설정·접속 키는 공개 Git에 추가하지 않습니다.
-
-## 4. 로컬 모델 실행하기
-
-### ① API 서버 실행
-
-SDK 폴더에서 **`local-server.cmd`를 더블클릭**합니다. 청크 폴더를 물으면 3번에서 준비한 경로를 입력합니다.
-
-```text
-로컬 청크 폴더: D:\DTTest\model-chunks
-```
-
-첫 실행은 모델 파일을 검증하므로 큰 모델은 시간이 걸립니다. 아래 문구가 나오면 준비 완료입니다. **이 창을 켜 두세요.**
-
-```text
-Delivery API listening: http://127.0.0.1:18849/
-```
-
-입력한 경로는 `delivery-api.local.config.json`에 저장됩니다. 다음 실행에서 Enter를 누르면 이전 경로를 사용합니다. 모델 원본은 읽기만 하며, API의 검증 정보와 토큰은 `delivery-data-local`에 생성됩니다.
-
-### ② 테스트 웹페이지 실행
-
-API 창을 켜 둔 상태에서 **`examples/test-server.cmd`를 더블클릭**합니다. 첫 실행에는 인터넷 연결이 필요합니다. 설치가 끝나면 브라우저가 자동으로 열립니다.
-
-```text
-http://127.0.0.1:5183/
-```
-
-브라우저가 열리지 않으면 위 주소를 직접 입력하세요. **테스트 서버 창도 켜 두세요.**
-
-PowerShell로 실행하려면 SDK 폴더에서 첫 번째 명령을 실행하고, **다른 PowerShell 창**에서 같은 SDK 폴더로 이동한 뒤 두 번째 명령을 실행합니다.
-
-```powershell
-.\local-server.cmd
-```
-
-```powershell
-.\examples\test-server.cmd
-```
-
-### ③ 모델 열기
-
-1. 화면에서 **청크 위치 → 로컬 폴더**를 선택합니다.
-2. 같은 PC에서 API를 실행했다면 API 주소·scope·토큰이 자동 입력됩니다.
-3. **목록 조회**를 누릅니다.
-4. **통합레벨** 목록에서 모델을 선택합니다.
-5. **게시본 열기**를 누릅니다.
-
-토큰이 비어 있으면 API의 준비 완료 문구를 확인하고 **목록 조회**를 다시 누르세요. `scope`는 게시 구역 이름이며 로컬 기본값은 `development`입니다.
-
-### ④ 정상 실행 확인
-
-- 상단 SDK 버전과 3D 모델이 표시됩니다.
-- **실시간 로드 진행**에서 실제 청크 준비 상태를 확인할 수 있습니다. 큰 모델은 준비된 부분부터 표시됩니다.
-- 모델이나 **통합레벨 아웃라이너**의 액터를 선택하면 선택 정보가 표시됩니다.
-- 뷰포트 **표시** 메뉴 맨 아래에서 텍스처 옵션을 조절할 수 있습니다.
-- 정적 메시 배칭은 기본 꺼짐입니다. 성능 실험이 필요한 경우에만 개발자가 API로 켤 수 있습니다.
-
-테스트가 끝나면 API 창과 테스트 서버 창에서 각각 **Ctrl+C**를 누릅니다. `일괄 작업을 끝내시겠습니까?`가 나오면 `Y`를 입력합니다.
-
-## 5. 원격 저장소로 테스트하기
-
-제작자가 원격 저장소에 청크를 업로드하고 **게시 완료**한 뒤 진행합니다. 운영자에게 다음 정보를 받아 설정하세요.
-
-| 파일·정보 | 준비할 내용 |
+| 항목 | 0.3.0 사용 방법 |
 |---|---|
-| `delivery-api.config.json` | 실제 `scope`와 통합레벨 ID를 `compositionIds`에 지정 |
-| `s3-profiles.json` | 실제 저장소 주소·버킷·region과 연결 설정 |
-| `.env` 또는 서버 환경변수 | 저장소 읽기에 사용하는 접속 키 |
+| 모델 목록·열기 | `DeliveryClient`의 `listModels()`·`open()` 직접 호출 |
+| 로컬 청크 | `LocalChunkSource`와 브라우저의 읽기 전용 폴더 선택 |
+| 정적 웹 청크 | `HttpChunkSource`로 일반 청크 폴더의 HTTP/HTTPS 파일 읽기 |
+| 스크립트 공개 속성 | `sdk.scripts`로 현재 로드된 인스턴스 조회·실행 중 변경 |
+| 기존 청크 | 계약 1–5와 Atlas 지원 유지. SDK 업데이트가 청크를 재제작하지 않음 |
 
-저장소에 포함된 설정은 예제입니다. `storage.example.com`과 빈 `compositionIds: []`를 그대로 사용하면 실제 모델을 조회할 수 없습니다. 구체적인 설정과 수동 등록은 [서버 설정 안내](docs/SERVER.md)를 참고하세요.
+`DeliveryApiClient`, `AddonPropertiesClient`, 서버 subpath와 CLI는 공개 패키지에서 제거했습니다. 0.2.x 프로젝트는 [API 명세](docs/API.md)와 [업데이트 안내](docs/UPDATING.md)에 따라 연결 코드를 바꿔야 합니다.
 
-1. 같은 PC에서 실행 중인 로컬 API가 있다면 Ctrl+C로 종료합니다.
-2. SDK 폴더의 **`remote-server.cmd`**를 실행합니다. 설정을 질문하지 않고 위 파일을 읽습니다.
-3. `Delivery API listening` 문구가 나오면 **`examples/test-server.cmd`**를 실행합니다.
-4. 웹페이지에서 **청크 위치 → 원격 저장소 → 목록 조회 → 모델 선택 → 게시본 열기** 순서로 진행합니다.
+`local-server.cmd`, `remote-server.cmd`, `delivery-api.config.json`, API 토큰, `.env`는 이 버전에서 사용하지 않습니다. 테스트 서버는 웹페이지 파일만 제공합니다. 로컬 청크 읽기는 브라우저가 직접 수행하며 파일을 생성하거나 수정하지 않습니다.
 
-원격 데이터를 읽더라도 API를 이 PC에서 실행하면 API 주소는 `http://127.0.0.1:18849/`입니다. 같은 SDK 폴더의 설정·토큰은 자동 입력됩니다. 웹페이지에서 위치를 바꾸는 것만으로 API 설정이 바뀌지는 않습니다. 먼저 해당 API 실행 파일을 실행해야 합니다.
+## 2. SDK 받기와 테스트 페이지 실행
 
-API가 다른 PC에서 실행 중이라면 운영자가 제공한 **API 주소·scope·토큰**을 직접 입력하세요. `127.0.0.1`은 항상 현재 PC를 가리킵니다. 다른 PC 접속에는 서버의 접속 허용 설정도 필요합니다. [다른 PC·서버 운영 안내](docs/SERVER.md)를 따르세요.
+SDK와 모델 청크는 별도로 준비합니다. 이 Git 저장소에는 사용자 모델이 들어 있지 않습니다.
 
-## 6. 모델 변경과 SDK 업데이트
+1. Windows에 [Node.js](https://nodejs.org/en/download) 24.16 이상을 설치합니다. 이 문서의 확인 환경은 Node 24.16.0·pnpm 11.9.0입니다. SDK를 사용하는 배포 웹페이지에는 Node 설치가 필요하지 않습니다.
+2. PowerShell에서 아래 명령으로 pnpm을 준비합니다. 이미 11.9.0이 있다면 설치 명령을 생략합니다. `.cmd` 명령은 PowerShell 실행 정책을 바꾸지 않고 사용할 수 있습니다.
 
-| 바뀐 항목 | 진행 순서 |
+   ```powershell
+   node --version
+   npm.cmd install --global pnpm@11.9.0
+   pnpm.cmd --version
+   ```
+
+3. Git이 설치되어 있다면 고정된 0.3.0 버전을 받습니다.
+
+   ```powershell
+   git clone --branch v0.3.0 https://github.com/jonemos/DTWebEditor_SDK.git
+   Set-Location DTWebEditor_SDK
+   ```
+
+   Git이 없다면 [v0.3.0 페이지](https://github.com/jonemos/DTWebEditor_SDK/tree/v0.3.0)의 **Code → Download ZIP**을 받아 압축을 풉니다. `README.md`와 `examples`가 있는 폴더가 SDK 루트입니다. 새 버전은 이전 SDK와 별도 폴더에 받습니다.
+4. SDK 루트에서 `examples/test-server.cmd`를 더블 클릭하거나 PowerShell에서 실행합니다.
+
+   ```powershell
+   .\examples\test-server.cmd
+   ```
+
+   의존성을 설치한 뒤 `http://127.0.0.1:5183/`을 엽니다. 첫 실행에는 의존성 다운로드가 필요합니다. 창을 유지하고 Chrome/Edge에서 페이지 상단의 **SDK 0.3.0**을 확인합니다. 다른 브라우저가 자동으로 열렸다면 같은 주소를 Chrome/Edge로 엽니다.
+5. 아래 순서로 청크를 연결합니다. 종료할 때는 페이지의 **연결 해제**, 실행 창의 **Ctrl+C**를 차례로 사용합니다.
+
+`index.html`을 파일로 직접 열지 않습니다. 실행 창에 설치 오류가 있으면 그 오류부터 해결합니다. 5183 포트가 사용 중이면 기존 테스트 서버를 종료한 뒤 다시 실행합니다.
+
+## 3. 편집기에서 청크 준비하고 연결하기
+
+처음 테스트한다면 최신 편집기에서 통합레벨을 저장하고 **청크 제작 및 업로드 → 로컬 폴더 → 전체 저장**을 실행합니다. 완료 메시지가 나온 출력 폴더를 사용합니다. 같은 폴더를 갱신할 때는 **변경분 저장**을 사용하며, 기존 `objects`·`releases`를 함께 보존합니다. 변경분의 새 파일만 따로 옮긴 폴더는 완전한 게시본이 아닐 수 있습니다.
+
+이미 제작된 청크가 있다면 새로 제작할 필요 없이 다음 구조를 확인합니다.
+
+일반 전체/변경분 저장 결과:
+
+```text
+내 청크 폴더/
+  delivery-head.json
+  objects/
+  releases/
+```
+
+로컬 게시 저장소:
+
+```text
+내 게시 저장소/
+  levels/
+    objects/
+    releases/
+    development/
+      통합레벨-ID/delivery-head.json
+```
+
+두 번째 구조는 페이지의 **게시 구역**과 실제 구역이 같아야 합니다. API용 ID 설정 파일은 필요 없습니다. 현재 head와 manifest의 해시·ID를 검증해 목록을 만들고, 로딩할 때 각 청크와 파일의 크기·해시를 검사합니다. 목록 조회만으로 미로드 파일 전체를 검증했다고 간주하지 않습니다. 재저장 후 **목록 조회 → 게시본 열기**를 실행합니다. 이미 열린 게시본은 자동 교체하지 않습니다.
+
+연결 순서:
+
+1. 테스트 페이지의 **청크 위치**를 **로컬 청크 폴더**로 둡니다.
+2. 게시 저장소라면 **게시 구역**을 실제 구역 이름으로 설정합니다. 위 예시는 `development`입니다. 일반 전체/변경분 저장 폴더에서는 이 값으로 모델을 거르지 않습니다.
+3. **청크 폴더 선택**을 눌러 `delivery-head.json`이 있는 일반 청크 루트 또는 `levels`가 있는 게시 저장소 루트를 선택합니다. `levels` 폴더 자체도 지원합니다. `objects`만 선택하거나 `development/통합레벨-ID`만 선택하지 않습니다.
+4. Chrome/Edge에서 읽기 권한을 허용합니다. 목록이 표시되면 원하는 **통합레벨 → 게시본 열기**를 선택합니다. **목록 조회**로 다시 읽을 수도 있습니다.
+
+### 테스트할 항목과 통과 기준
+
+| 순서 | 확인할 결과 |
 |---|---|
-| 모델 내용 | 제작자가 청크 저장/게시 완료 → API 종료·재실행 → 웹페이지에서 목록 조회·게시본 다시 열기 |
-| SDK 기능·버그 수정 | 서버 두 개 종료 → SDK 업데이트 → API·테스트 서버 재실행 → 브라우저 새로고침 |
+| 1. 목록 | 게시 완료된 통합레벨 이름이 표시됨. 빈 목록이면 루트·게시 구역·head 확인 |
+| 2. 점진 로딩 | 여러 셀인 모델은 준비된 셀부터 표시되고 실제 셀 상태·다운로드 용량이 갱신됨 |
+| 3. 완료 | 상태가 **로드 완료**, 준비된 셀 수가 전체 셀 수와 일치함 |
+| 4. 표시·선택 | 메시·재질·텍스처를 확인하고 캔버스 클릭/Outliner 검색·선택의 Actor 디테일을 대조함. 배칭 기본 꺼짐 |
+| 5. 재열기 | **연결 해제 → 목록 조회 → 게시본 열기** 후 같은 모델의 외형과 같은 Actor 선택을 확인함 |
+| 6. 갱신 | 편집기에서 같은 폴더에 변경분 저장 완료 후 **목록 조회 → 게시본 열기**로 새 게시본을 확인함 |
+| 7. 스크립트 | Delivery 지원 애드온이 포함된 모델에서 공개 속성 변경을 확인함. 스크립트가 없는 모델에는 비해당 |
 
-모델 내용만 바뀌었을 때는 SDK를 다시 설치하지 않습니다. API는 시작할 때 게시본을 검증하며 실행 중에 주기적으로 새 버전을 감시하지 않습니다.
+이 목록은 사용자의 실제 청크로 수행할 인수 절차입니다. SDK 설치·빌드 성공만으로 모델 표시나 Unreal 외형 비교가 통과한 것은 아닙니다. 오류가 발생하면 오류 메시지, SDK 버전, 선택한 폴더 구조·게시 구역, 실패 단계를 기록합니다.
 
-Git으로 `main`을 받은 사본은 SDK 폴더에서 다음 명령으로 업데이트합니다. 로컬 변경이 있거나 Git 오류가 나오면 강제로 덮어쓰지 말고 [업데이트 안내](docs/UPDATING.md)를 확인하세요.
+## 4. 정적 파일로 읽기
+
+웹서버가 `delivery-head.json`, `objects`, `releases`를 그대로 제공한다면 페이지에서 **정적 청크 주소**를 선택하고 그 폴더 주소를 입력합니다. 예: `https://example.com/chunks/`. 이 기능은 한 일반 청크 폴더를 읽으며 S3 버킷 자동 검색이나 로그인 기능은 아닙니다. 다른 도메인은 CORS가 필요합니다.
+
+인증된 S3 직접 연결은 호스트의 읽기·목록 권한, CORS, 임시 인증을 준비한 후 별도 source adapter로 연결해야 합니다. 현재 패키지에는 S3 로그인·서명·목록 구현이 없습니다. 장기 Secret Key를 웹 코드나 공개 Git에 넣지 않습니다.
+
+테스트 페이지에서는 **청크 위치 → 정적 청크 주소**를 선택하고 폴더 주소 입력 → **목록 조회 → 통합레벨 선택 → 게시본 열기**를 실행합니다. 주소는 끝에 `/`가 있어야 하며 사용자/비밀번호, query, fragment를 포함하지 않습니다. 이 모드는 로컬 게시 저장소의 `levels` 전체를 자동 검색하지 않습니다.
+
+## 5. 외부 프로젝트에 설치
+
+Git 태그로 버전을 고정하려면 프로젝트에서 실행합니다.
 
 ```powershell
-git pull --ff-only origin main
+pnpm.cmd add '@dt/delivery-sdk@github:jonemos/DTWebEditor_SDK#v0.3.0'
 ```
 
-ZIP으로 받은 경우에는 새 ZIP을 **새 폴더**에 풉니다. 모델 청크는 계속 같은 폴더를 사용하고, API 설정은 기존 값을 확인해 새 SDK에서 다시 준비합니다.
-
-## 7. 실행이 안 될 때
-
-| 증상 | 해결 방법 |
-|---|---|
-| `node` 또는 `pnpm`을 찾을 수 없음 | 1번 설치 후 PowerShell·실행 창을 새로 열기 |
-| PowerShell에서 `.ps1` 실행이 차단됨 | 설치·버전 확인 명령에 `npm.cmd`, `pnpm.cmd` 사용. 실행 정책을 바꿀 필요 없음 |
-| 청크 폴더가 거부됨 | `delivery-head.json`·`objects`·`releases`를 함께 가진 상위 폴더인지 확인. 복사가 모두 완료됐는지 확인 |
-| 모델 목록이 비어 있음 | API 검증 로그·scope 확인. 원격은 실제 설정과 `compositionIds`·게시 완료 여부도 확인 |
-| API 연결 실패 | API 창이 켜져 있고 `Delivery API listening`이 나왔는지 확인 |
-| 토큰이 비어 있거나 `401` 오류 | 같은 SDK의 API를 실행한 뒤 목록 재조회. 다른 PC의 API는 운영자에게 토큰 확인 |
-| `403` 오류 | 웹페이지 주소와 API 설정의 `origin`, scope/권한 확인 |
-| 포트 `18849` 또는 `5183` 사용 중 | 이전 API/테스트 서버 창에서 Ctrl+C 후 재실행 |
-| 새 모델 내용이 보이지 않음 | 게시 완료 확인 → API 재실행 → 목록 조회·다시 열기 |
-| 화면이 비거나 검게 보임 | 로드 실패 메시지 확인. 브라우저 WebGL 사용 여부와 뷰포트 조명/표시 옵션 확인 |
-
-기본 웹페이지 주소는 **`http://127.0.0.1:5183/`**입니다. `localhost`로 바꾸면 API의 허용 origin과 달라질 수 있습니다. API 주소에는 끝의 `/`를 붙이고, config의 `origin`에는 붙이지 않습니다.
-
-예제 설치는 짧은 의존성 경로와 파일 복사를 사용합니다. SDK 폴더를 정리하기 전에는 두 서버를 종료하고 해당 폴더를 사용하는 터미널도 닫으세요.
-
-## 8. SDK API로 웹프로젝트에 모델 연결하기
-
-테스트 페이지에서 모델을 확인한 뒤 **기존 웹프로젝트 폴더**에서 설치합니다. 아래 명령은 버전 태그를 지정하여 설치합니다. 이전 버전 태그는 그대로 보존합니다.
+또는 SDK 폴더를 프로젝트의 `vendor/delivery-sdk`에 복사한 뒤 프로젝트에서 실행합니다.
 
 ```powershell
-pnpm.cmd add "https://github.com/jonemos/DTWebEditor_SDK.git#v0.2.23"
+pnpm add @dt/delivery-sdk@file:./vendor/delivery-sdk
 ```
 
-API 서버는 웹프로젝트와 별도로 계속 실행합니다. SDK는 브라우저용 JavaScript/TypeScript API이고, API 서버는 모델과 공개 속성을 HTTP로 제공하는 Node.js 프로그램입니다.
-
-### 연결에 필요한 값
-
-| 값 | 의미 | 얻는 방법 |
-|---|---|---|
-| `apiURL` | 모델을 읽는 API 주소 | 로컬 기본 `http://127.0.0.1:18849/`. 다른 PC는 운영자가 제공한 주소 |
-| `scope` | 게시 구역 이름 | API 설정과 같은 값. 로컬 기본 `development` |
-| `compositionId` | 표시할 통합레벨 ID | `api.compositions(scope)`로 조회한 항목의 `id` |
-| API 토큰 | API 접속 인증 | 테스트 페이지의 자동 연결 또는 운영자가 제공한 값 |
-| `releaseHash` | 정확한 게시 버전 | `api.publication(scope, compositionId)`의 응답 |
-
-SDK는 요청할 때마다 `getToken`을 호출합니다. 브라우저에는 **API 토큰**을 공급하며, S3 접속 키는 API 서버에서 사용합니다.
-
-### 점진 로딩과 액터 선택 연결 예제
-
-먼저 페이지에 표시 영역을 만듭니다. 부모와 canvas에 실제 크기가 있어야 합니다.
-
-```html
-<div style="width:100%;height:600px">
-  <canvas id="model-view" style="width:100%;height:100%"></canvas>
-</div>
-```
-
-아래 함수에 생성된 canvas와 연결 정보를 전달합니다. 준비된 청크부터 표시하고 클릭한 액터를 알려줍니다.
+이 패키지는 ESM과 TypeScript 타입을 제공합니다. React/Vue 등 호스트는 canvas와 연결 수명만 관리합니다. 에디터 설치나 에디터 DB는 필요하지 않습니다. 페이지 해제 시 `dispose()`를 호출하고 진행 중 열기에는 AbortSignal 또는 `cancel()`을 사용합니다.
 
 ```ts
-import { DeliveryApiClient, ChunkReader, DeliveryViewer } from '@dt/delivery-sdk';
+import { DeliveryClient, LocalChunkSource } from '@dt/delivery-sdk';
 import '@dt/delivery-sdk/viewport.css';
 
-export async function openSdkModel(
-  canvas: HTMLCanvasElement,
-  apiURL: string,
-  scope: string,
-  compositionId: string,
-  getToken: () => Promise<string>,
-) {
-  const api = new DeliveryApiClient(new URL(apiURL), async () => `Bearer ${await getToken()}`);
-  const { releaseHash } = await api.publication(scope, compositionId);
-  if (!releaseHash) throw new Error('게시된 모델이 없습니다.');
-
-  const reader = new ChunkReader(api.provider(scope, compositionId, releaseHash));
-  const viewer = new DeliveryViewer(canvas, reader);
-  viewer.setStaticBatching(false);
-  const unsubscribe = viewer.subscribeActorSelection(actor => {
-    console.log('선택 액터:', actor?.actorName, actor?.serviceKey);
+export async function showLocal(canvas: HTMLCanvasElement, directory: FileSystemDirectoryHandle) {
+  const sdk = new DeliveryClient({
+    canvas,
+    source: new LocalChunkSource(directory, { scope: 'development' }),
+    onProgress: progress => console.log(progress.readyCells, progress.totalCells),
+    onActorSelect: actor => console.log(actor?.serviceKey),
   });
   try {
-    await viewer.openProgressive(releaseHash);
+    const models = await sdk.listModels();
+    if (!models.length) throw new Error('게시된 모델이 없습니다.');
+    await sdk.open(models[0]!.id, { progressive: true });
+    return sdk;
   } catch (error) {
-    unsubscribe();
-    await viewer.dispose();
+    await sdk.dispose();
     throw error;
   }
-  return {
-    api, viewer, releaseHash,
-    async dispose() { unsubscribe(); await viewer.dispose(); },
-  };
 }
 ```
 
-페이지·컴포넌트를 닫거나 모델을 교체할 때 반환된 `dispose()`를 호출합니다. 레벨을 편집하는 에디터 API와 SDK의 실행 화면 변경은 서로 다른 작업입니다. SDK 변경이 에디터 원본에 자동 저장되지는 않습니다.
+canvas와 부모 영역에 실제 폭·높이를 지정하세요. 폴더 선택은 사용자의 클릭에서 `showDirectoryPicker({ mode: 'read' })`로 실행합니다. SDK가 폴더 선택창을 자동으로 열거나 읽기 권한을 임의로 얻지 않습니다.
 
-### 자주 사용하는 SDK API
+## 6. 클래스와 함수
 
-| 호출 | 하는 일 |
+전체 함수·타입 계약은 [API 명세](docs/API.md)에 있습니다.
+
+| 기능 | 호출 |
 |---|---|
-| `api.compositions(scope, page)` | 게시된 모델 목록. 첫 페이지는 `0`, 응답은 `items`·`total`·`page`·`limit` |
-| `api.publication(scope, compositionId)` | 현재 게시 버전의 `releaseHash` 조회 |
-| `api.releases(scope, compositionId)` | 검증된 이전 버전 목록 |
-| `api.actors(scope, compositionId, releaseHash, query, page)` | 액터 검색. 검색하지 않으면 `query`에 빈 문자열 사용 |
-| `api.provider(scope, compositionId, releaseHash)` | 인증된 청크 공급자. `ChunkReader`가 크기와 해시 검증 |
-| `viewer.openProgressive(releaseHash)` | 검증·준비된 부분부터 표시 |
-| `viewer.subscribeActorSelection(callback)` | 화면에서 액터 선택 시 알림. 반환 함수로 구독 해제 |
-| `viewer.selectActorTarget(actor)` | 로드된 액터 검색 결과를 안정 ID로 선택 |
-| `viewer.selectActor(null)` | 선택 해제 |
-| `mountDeliveryViewportTools(element, viewer, immersive, { leftOnly: true })` | 예제와 같은 왼쪽 뷰포트 메뉴부터 표시 메뉴까지 연결 |
-| `viewer.setStaticBatching(false)` / `viewer.staticBatchingStatus` | 배칭 설정 / 마지막 상태. 기본 꺼짐 |
-| `viewer.dispose()` | 모델·GPU·이벤트·애드온 연결 자원 해제 |
+| 목록 | `sdk.listModels()` |
+| 게시본 열기 | `sdk.open(modelId, { progressive: true })` |
+| 실제 진행 상태 | `sdk.progress`, `sdk.subscribeProgress(listener)` |
+| 액터 검색·선택 | `sdk.actors(query)`, `sdk.selectActor({ mountId, actorId })` |
+| 선택 액터·포커스 | `sdk.selectedActor`, `sdk.focusActor(target)` |
+| 화면·배칭 | `sdk.setViewMode(mode)`, `sdk.setProjection(projection)`, `sdk.setStaticBatching(enabled)` |
+| 스크립트 목록·핸들 | `sdk.scripts.list()`, `sdk.scripts.get(target)` |
+| 해제 | `sdk.cancel()`, `await sdk.dispose()` |
 
-액터는 화면 이름 대신 `compositionId`·`mountId`·`actorId`로 식별합니다. 같은 원본을 두 번 배치해도 `mountId`가 달라 서로 구분됩니다. SDK의 좌표는 오른손/Y-up/미터/quaternion XYZW입니다.
+배칭은 기본 꺼짐입니다. 선택은 액터 이름이나 renderer UUID가 아닌 mountId·actorId로 구분합니다. null mountId는 통합레벨 자체 액터입니다. 진행 값은 실제 요청·다운로드·캐시·셀 상태이며 시간이 지나서 증가하는 모의 수치가 아닙니다.
 
-## 9. HTTP API로 모델 조회하기
+## 7. 스크립트 컴포넌트 속성 제어
 
-SDK를 사용하는 경우 위 메서드가 HTTP 요청을 처리합니다. Python·C# 등에서 직접 호출할 때는 **모든 요청에 `Authorization: Bearer <API 토큰>`**을 넣습니다.
-
-| 메서드 / 경로 | 응답·용도 |
-|---|---|
-| `GET /api/scopes/<scope>/compositions?page=0` | 통합레벨 목록 |
-| `GET /api/scopes/<scope>/compositions/<id>/publication` | 현재 `releaseHash` |
-| `GET /api/scopes/<scope>/compositions/<id>/releases` | 이전 게시 버전 목록 |
-| `GET /api/scopes/<scope>/compositions/<id>/releases/<hash>/actors?q=&page=0` | 액터 목록·검색 |
-| `GET /api/delivery/<scope>/<id>/<hash>/authorize` | 해당 버전 읽기 권한 확인 |
-| `GET /api/delivery/<scope>/<id>/<hash>/releases/<hash>.json` | 청크 구성표 |
-| `GET /api/delivery/<scope>/<id>/<hash>/objects/<chunkHash>` | 청크 바이트 |
-
-`<id>`는 통합레벨 ID이고 `<hash>`는 전체 게시 해시입니다. 모델 표시에는 SDK의 `ChunkReader`를 사용하면 청크 검증을 함께 처리할 수 있습니다.
-
-## 10. 편집기에서 추가한 애드온 스크립트도 제어할 수 있나요?
-
-**SDK 5의 공개 속성을 API로 조회·변경할 수 있습니다.** SDK 0.2.22에는 `DeliveryAddonController`, `AddonPropertiesClient`와 서버의 애드온 HTTP/WebSocket 처리가 포함됩니다.
-
-### 게시본에 포함되는 조건
-
-1. 신뢰한 ZIP 애드온을 편집기에 설치하고 실제 액터의 컴포넌트로 부착합니다.
-2. 애드온의 `sdkVersion`은 `5`이고 `environments`에 **`delivery`**가 있어야 합니다. 선언한 capability도 Delivery에서 지원해야 합니다.
-3. 애드온 설정을 저장하고 해당 원본을 참조하는 통합레벨의 **청크를 새로 제작·게시**합니다.
-4. 새 게시본에는 필요한 설치 모듈과 정확한 `packageId`·`version`·`codeHash`가 `addonBundle`로 들어갑니다. SDK는 이를 검증하고 실행합니다. 외부 소비자 PC에 에디터나 제작 ZIP을 다시 설치할 필요는 없습니다.
-5. 외부에서 제어할 값은 애드온 manifest의 **`properties`**에 선언해야 합니다. 허용된 속성의 타입·범위·`access`·`storage`에 따라 제어합니다.
-
-설치 목록에만 있는 미사용 애드온은 모델에 포함되지 않습니다. 예전 게시본에는 새로 설치한 스크립트가 자동으로 추가되지 않습니다. `editor` 전용 애드온은 Delivery 지원을 추가해야 사용할 수 있습니다. 일반 내부 함수 호출을 HTTP API로 자동 노출하는 기능은 제공하지 않습니다.
-
-### 화면 안에서 조회·임시 변경
-
-`viewer.addons.list()`는 **현재 로드된 실행 인스턴스**를 반환합니다. 점진 로딩 중에는 목록이 늘어날 수 있습니다. 각 항목의 `target`, `reference`, `schema`, `values`, `revision`, `state`, `error`를 확인하세요.
+편집기에 설치되어 액터에 붙은 신뢰한 애드온이 `sdkVersion: 5`, `environments: ["delivery", ...]`를 지원하고 `properties`에 공개 속성을 선언해야 합니다. 해당 설정을 저장한 뒤 청크를 새로 제작해야 모듈·packageId·version·codeHash가 청크에 포함됩니다. SDK는 정확한 모듈을 검증하고 실행합니다.
 
 ```ts
-import {
-  addonTargetKey,
-  type AddonTarget,
-  type DeliveryViewer,
-} from '@dt/delivery-sdk';
+import type { DeliveryClient, DeliveryScriptTarget } from '@dt/delivery-sdk';
 
-export async function changeAddonValue(
-  viewer: DeliveryViewer,
-  target: AddonTarget,
-  propertyName: string,
-  value: string | number | boolean,
-) {
-  const instance = viewer.addons.list().find(i => addonTargetKey(i.target) === addonTargetKey(target));
-  if (!instance || instance.state !== 'running') throw new Error('먼저 대상 애드온을 로드하세요.');
-  await viewer.addons.changeBatch([{
-    target: instance.target,
-    expectedRevision: instance.revision,
-    values: { [propertyName]: value },
-  }], 'runtime');
+export async function changeScriptColor(sdk: DeliveryClient, target: DeliveryScriptTarget) {
+  const script = sdk.scripts.get(target);
+  const snapshot = script.snapshot();
+  const color = snapshot.schema.find(p => p.format === 'color' && p.access === 'read-write' && p.storage !== 'persistent');
+  if (!color) throw new Error('실행 중 변경 가능한 색상 속성이 없습니다.');
+  await script.setProperties({ [color.name]: '#20b870' }, { expectedRevision: snapshot.revision });
+  return script.subscribe((values, current) => console.log(values, current.revision));
 }
 ```
 
-`target`은 `compositionId`·`mountId`·`actorId`·`componentId` 전체를 사용합니다. `propertyName`은 `schema`에 공개된 이름이어야 하고, `access: read-write`와 `storage: runtime` 또는 `both`가 필요합니다. 타입·범위 위반이나 오래된 revision은 거부됩니다. HTTP 연결을 bind하기 전의 runtime 변경은 이 화면에만 적용되며 종료하면 사라집니다.
+`target`은 mountId·actorId·componentId입니다. 현재 통합레벨 ID는 SDK가 결합합니다. 핸들은 열린 세션과 정확한 코드 해시에 묶이며, 재열기나 해제 후 이전 핸들은 거부됩니다. 점진 로딩 중 준비된 인스턴스만 제어합니다. 읽기 전용·잘못된 타입/범위·오래된 revision은 거부됩니다.
 
-### HTTP 연결·영구 저장
+`setProperties()`는 실행 중 변경입니다. 원본 청크·에디터 문서에 저장하거나 다른 사람의 화면에 전송하지 않습니다. 영구 저장·공유 동기화는 호스트가 별도로 구현해야 합니다. 저수준 `viewport.addons.bind()`의 `AddonPropertyConnection` 타입은 자체 호스트 연동을 위한 확장점이며, 이 패키지에 기본 서버 구현은 없습니다.
 
-| 준비·API | 설명 |
+## 8. 오류 확인
+
+| 증상 | 확인 |
 |---|---|
-| API 설정의 `allowWrites: true` | 운영자가 쓰기 권한을 허용한 경우 설정하고 API 재시작. 기본값 `false`에서는 서버 속성 변경 거부 |
-| `api.registerApp(appId, scope, compositionId, releaseHash)` | 최초 한 번 외부 제어용 app 등록. 등록 권한 필요. 기존 app은 같은 ID로 사용 |
-| `new AddonPropertiesClient(api, appId, releaseHash)` | 등록한 app과 정확한 게시 버전에 연결 |
-| `await viewer.addons.bind(client)` | 실행 세션과 WebSocket 변경 알림 연결 |
-| `client.list()` / `schema(target)` / `values(target)` | 서버의 애드온 목록·공개 속성·값 조회. 목록은 미로드 인스턴스도 포함 |
-| `viewer.addons.changeBatch(updates, 'runtime')` | bind 후에는 서버를 통해 이 실행 세션의 임시값 변경 |
-| `viewer.addons.changeBatch(updates, 'persistent')` | 쓰기 권한과 persistent/both 속성 필요. 서버 DB에 저장 |
-| `viewer.addons.subscribe(callback)` / `viewer.addons.error` | 실행 목록·값 변경 관찰 / 동기화 오류 확인 |
+| 모델이 없음 | 올바른 청크 루트·게시 구역·게시 완료 head 확인 |
+| 읽기 권한 필요 | 사용자의 클릭으로 폴더 다시 선택 |
+| hash/ID/참조 오류 | 손상·누락된 게시본 사용 중단, 제작자가 정상 게시본 복구 |
+| 속성 변경 거부 | schema의 access/storage/type/range와 현재 revision 확인 |
+| 핸들 만료 | 현재 열린 모델에서 scripts.get으로 다시 얻기 |
+| 정적 주소 fetch 오류 | 폴더 주소·CORS·HTTPS·브라우저 네트워크 권한 확인 |
+| Changed SDK public file | 수정된 파일 이름을 확인. 개발자 설정·모델은 SDK 패키지 밖에 둠 |
 
-서버 연결 예제입니다. `appId`는 먼저 등록된 값을 전달합니다.
+설치 때 pnpm의 로컬 의존성이 만든 하드 링크는 해시 검증 후 byte 동일한 독립 파일로 분리합니다. 실행 코드 검증을 끄지 않습니다. 현재 ZIP은 사용자별 API 설정 파일을 포함하지 않으므로 그 설정 수정 때문에 설치 검사가 실패하지 않습니다.
 
-```ts
-import { AddonPropertiesClient, type DeliveryApiClient, type DeliveryViewer } from '@dt/delivery-sdk';
-
-export async function connectAddonApi(
-  api: DeliveryApiClient,
-  viewer: DeliveryViewer,
-  appId: string,
-  releaseHash: string,
-) {
-  const client = new AddonPropertiesClient(api, appId, releaseHash);
-  await viewer.addons.bind(client);
-  return { executionId: client.executionId, instances: viewer.addons.list() };
-}
-```
-
-영구값은 API 서버의 DB override에 저장됩니다. 게시 청크나 편집기·Unreal 원본은 자동으로 덮어쓰지 않습니다. `viewer.dispose()`가 연결과 임시 실행 상태도 정리합니다.
-
-| HTTP / WebSocket 경로 | 용도 |
-|---|---|
-| `POST /api/apps/<app>` | app 등록 |
-| `GET /api/apps/<app>/addons?releaseHash=<hash>` | 애드온 목록 |
-| `GET /api/apps/<app>/addons/schema` / `/values` | `releaseHash`·URL 인코딩한 `target` query로 한 인스턴스 조회 |
-| `POST /api/apps/<app>/addons/sessions` | `executionId` 세션 등록·종료 |
-| `POST /api/apps/<app>/addons/properties` | 버전·속성·revision을 검증한 일괄 변경 |
-| `WS /api/apps/<app>/addons/events?executionId=<id>` | 변경 알림 |
-
-임시값 조회에는 `executionId`도 지정합니다. 세션·WebSocket 인증과 변경 요청 본문은 `AddonPropertiesClient`가 처리합니다. 쓰기 권한 오류는 `403`, revision 충돌은 `409`이므로 최신 목록을 다시 확인하세요. 전체 HTTP 경로와 타입은 [API 상세 안내](docs/API.md), 서버 권한 설정은 [서버 안내](docs/SERVER.md)에 있습니다.
-
-## 11. 추가 문서와 버전 안내
-
-실행 가능한 전체 화면 코드는 [예제 코드](examples/web/main.ts)에 있습니다.
-
-이 SDK는 점진 로딩과 원래 액터 선택을 유지합니다. 0.2.23은 SmartCube 자동 Atlas와 UPB의 SCQO·Painter 결합 재질을 지원합니다. 새 편집기에서 가져온 색 개수·마스크·ID 처리·Painter 텍스처가 청크에 포함되어야 합니다. SDK 업데이트만으로 기존 청크의 재질이 바뀌지는 않습니다. 지원 범위 안의 색 개수·색상·텍스처 변경은 이후 청크 재생성으로 반영합니다. 셀 재진입 그리기 순서와 예제 설치 의존성 갱신을 유지하며 배칭의 기본값은 꺼짐입니다. 성능이나 픽셀 일치 여부는 모델·브라우저·GPU에 따라 직접 검증하세요.
-
-추가 문서: [서버 설정](docs/SERVER.md) · [예제 상세 안내](examples/web/README.md) · [SDK 업데이트](docs/UPDATING.md) · [SDK Git 배포](docs/GITHUB_DESKTOP.md)
-
-MIT 라이선스입니다. 제3자 라이선스는 [THIRD_PARTY_LICENSES.txt](THIRD_PARTY_LICENSES.txt)에 있습니다.
+업데이트는 [업데이트 안내](docs/UPDATING.md), 공개 Git 관리는 [GitHub Desktop 안내](docs/GITHUB_DESKTOP.md)를 참고하세요.

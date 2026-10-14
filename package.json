@@ -1,28 +1,13 @@
 {
   "name": "@dt/delivery-sdk",
-  "version": "0.2.23",
+  "version": "0.3.0",
   "type": "module",
   "license": "MIT",
-  "description": "Browser SDK and Node API server for chunked digital twin publications",
-  "engines": {
-    "node": ">=24.16.0"
-  },
-  "bin": {
-    "dt-delivery-api": "./server/cli.mjs"
-  },
-  "scripts": {
-    "api:init": "node server/cli.mjs init",
-    "api:start": "node server/cli.mjs start",
-    "api:register": "node server/cli.mjs register"
-  },
+  "description": "Direct browser SDK for validated chunked digital twins, without a query API server",
   "exports": {
     ".": {
       "types": "./types/index.d.ts",
       "import": "./runtime/index.js"
-    },
-    "./server": {
-      "types": "./types/server.d.ts",
-      "node": "./server/api.mjs"
     },
     "./viewport.css": {
       "types": "./types/viewport.css.d.ts",
@@ -31,14 +16,9 @@
   },
   "files": [
     "runtime",
-    "server",
     "types",
     "docs",
     "examples",
-    "local-server.cmd",
-    "remote-server.cmd",
-    "delivery-api.config.json",
-    "s3-profiles.json",
     "README.md",
     "CHANGELOG.md",
     "LICENSE",
@@ -47,7 +27,6 @@
   ],
   "dependencies": {
     "@types/three": "0.186.0",
-    "@types/node": "24.19.0",
     "@types/react": "19.3.0"
   }
 }
