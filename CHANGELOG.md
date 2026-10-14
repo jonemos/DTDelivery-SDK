@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.23
+
+Support SmartCube and shared UPB Atlas v3/v4 materials.
+
+Preserve automatic color counts, valid-ID/preview fallback, enabled kinds and original Painter RGB/PBR inputs. Allow the registered profiles in frozen Player/delivery packages while retaining rejection of unsupported profiles.
+
+Keep progressive loading, stable Actor selection, exact cell reentry draw order and experimental static batching disabled by default. Existing Atlas v1/v2 and publication contracts remain supported. New material data requires chunks rebuilt with the updated editor.
+
 ## 0.2.22
 
 Refresh the local SDK dependency graph when launching the example, including existing lockfiles. Keep pinned React declarations, copied dependencies, exact cell reentry draw ranks, progressive loading, original Actor selection and experimental batching disabled by default. Retain all existing immutable tags.

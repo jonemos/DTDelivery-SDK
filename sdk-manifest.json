@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "version": "0.2.22",
-  "baseVersion": "0.2.22",
+  "version": "0.2.23",
+  "baseVersion": "0.2.23",
   "license": "MIT",
   "addonSdkVersion": 5,
   "contracts": [
@@ -24,8 +24,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 4298,
-      "sha256": "b3e578da4b02955bc022120e5946662addda4b0f0c3a7b183eea51ce772dbe97"
+      "bytes": 4861,
+      "sha256": "1f15f6cea56efbfa86b15199bc578f137c6d165b867691ce3356013641cd0a18"
     },
     {
       "path": "delivery-api.config.json",
@@ -49,8 +49,8 @@
     },
     {
       "path": "docs/UPDATING.md",
-      "bytes": 5989,
-      "sha256": "03dd52849a58f8a970df2027d73c3f01ac1ea8bad342161f3e0df3c3120e5cd9"
+      "bytes": 6677,
+      "sha256": "b88331fcd2a5ff29b7fd20e583369164091703be36dfcf60ed9f38913d28552a"
     },
     {
       "path": "examples/test-server.cmd",
@@ -110,12 +110,12 @@
     {
       "path": "package.json",
       "bytes": 1188,
-      "sha256": "dbd8bbc86f60d30dae5e53f8456d3117a7eae7849a9b002d384e7fd349878781"
+      "sha256": "7e2294bac418e3c36442117f16a4cb5401a6154117f7530888333227e1c4ab69"
     },
     {
       "path": "README.md",
-      "bytes": 24095,
-      "sha256": "c035f3252e3ef8d7cb7261ce2c7ff8952d7d37da3eef13dda52136945a36a297"
+      "bytes": 24445,
+      "sha256": "550c34f0c82f1cf1825abd45afd68a9cb9b09225e502506b0f3bdd7267be0f1a"
     },
     {
       "path": "remote-server.cmd",
@@ -125,7 +125,7 @@
     {
       "path": "runtime/index.js",
       "bytes": 72,
-      "sha256": "a19f1a8c8f04229df4d9e635a4f2bbd3e254bf162b2f3b47fcb6c02b1375a5a5"
+      "sha256": "979b1d2789cc80464de62a8241c6e820406816dc1c709d937c29750005d787b2"
     },
     {
       "path": "runtime/RenderQualityPipeline-BKmcypAp.js",
@@ -139,8 +139,8 @@
     },
     {
       "path": "runtime/sdk.js",
-      "bytes": 994170,
-      "sha256": "d4707870b409a7d6f7100d68b03cc4db481adabf10691d5d3276b424758b4abc"
+      "bytes": 996182,
+      "sha256": "52a629ef8fc0b74219f305899b0aea02a144649d3d2265aa94bf1983c2620ceb"
     },
     {
       "path": "runtime/viewport.css",
@@ -154,8 +154,8 @@
     },
     {
       "path": "server/api.mjs",
-      "bytes": 1408942,
-      "sha256": "3aa1fad44b2a080d424db1fe152174ff3c091dc92df0712b19357615533ffea5"
+      "bytes": 1410671,
+      "sha256": "88cbd345256ce52398e771e92842d0408ce04086482d64c8f6d5752cb14e1d04"
     },
     {
       "path": "server/cli.mjs",
@@ -664,8 +664,8 @@
     },
     {
       "path": "types/modules/mcf568d106c8d.d.ts",
-      "bytes": 6743,
-      "sha256": "0a83aad8d805d6e1a1cb56c1a9aa4f3e39deff648d679da744d2ecf30a86578f"
+      "bytes": 7157,
+      "sha256": "7f2ddbd3b45a00997e7e1d51a7d7a9229047ea81254ee47416b2fa8d6d95f116"
     },
     {
       "path": "types/modules/md356ef9a3849.d.ts",

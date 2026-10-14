@@ -205,7 +205,7 @@ ZIP으로 받은 경우에는 새 ZIP을 **새 폴더**에 풉니다. 모델 청
 테스트 페이지에서 모델을 확인한 뒤 **기존 웹프로젝트 폴더**에서 설치합니다. 아래 명령은 버전 태그를 지정하여 설치합니다. 이전 버전 태그는 그대로 보존합니다.
 
 ```powershell
-pnpm.cmd add "https://github.com/jonemos/DTWebEditor_SDK.git#v0.2.22"
+pnpm.cmd add "https://github.com/jonemos/DTWebEditor_SDK.git#v0.2.23"
 ```
 
 API 서버는 웹프로젝트와 별도로 계속 실행합니다. SDK는 브라우저용 JavaScript/TypeScript API이고, API 서버는 모델과 공개 속성을 HTTP로 제공하는 Node.js 프로그램입니다.
@@ -396,7 +396,7 @@ export async function connectAddonApi(
 
 실행 가능한 전체 화면 코드는 [예제 코드](examples/web/main.ts)에 있습니다.
 
-이 SDK는 점진 로딩과 원래 액터 선택을 유지합니다. 0.2.22에는 셀 재진입 시 그리기 순서를 유지하는 수정과 기존 예제 설치 의존성 갱신이 포함됩니다. 배칭의 기본값은 꺼짐입니다. 성능이나 픽셀 일치 여부는 모델·브라우저·GPU에 따라 직접 검증하세요.
+이 SDK는 점진 로딩과 원래 액터 선택을 유지합니다. 0.2.23은 SmartCube 자동 Atlas와 UPB의 SCQO·Painter 결합 재질을 지원합니다. 새 편집기에서 가져온 색 개수·마스크·ID 처리·Painter 텍스처가 청크에 포함되어야 합니다. SDK 업데이트만으로 기존 청크의 재질이 바뀌지는 않습니다. 지원 범위 안의 색 개수·색상·텍스처 변경은 이후 청크 재생성으로 반영합니다. 셀 재진입 그리기 순서와 예제 설치 의존성 갱신을 유지하며 배칭의 기본값은 꺼짐입니다. 성능이나 픽셀 일치 여부는 모델·브라우저·GPU에 따라 직접 검증하세요.
 
 추가 문서: [서버 설정](docs/SERVER.md) · [예제 상세 안내](examples/web/README.md) · [SDK 업데이트](docs/UPDATING.md) · [SDK Git 배포](docs/GITHUB_DESKTOP.md)
 

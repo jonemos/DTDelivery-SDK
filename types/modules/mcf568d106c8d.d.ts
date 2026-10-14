@@ -81,12 +81,20 @@ export interface WebMaskPbrMaterialDocument {
 export declare const VERTEX_ATLAS_PROFILE = "ue-painter-vertex-atlas-v1";
 export declare const KIND_ATLAS_PROFILE = "ue-kind-single-atlas-v1";
 export declare const MULTI_KIND_ATLAS_PROFILE = "ue-kind-multi-atlas-v1";
+export declare const SCQO_KIND_ATLAS_PROFILE = "ue-scqo-kind-atlas-v1";
+export declare const SCQO_PAINTER_ATLAS_PROFILE = "ue-scqo-painter-atlas-v1";
 export declare const KIND_ATLAS_STRUCTURE = "a22feb3d2ddaa4f970c4edc785b1dbf6687c0426582245efcf7c9f007bcb4acc";
 export declare const MAX_VERTEX_ATLAS_COLORS = 32;
 export declare const VERTEX_ATLAS_GRAPH = "a6035e7dab82c73de6057006bbc3e8f496feec6f6328ed76c4930bdfaa20c899";
 export interface VertexAtlasDocument {
-    readonly version: 1 | 2;
-    /** Version 2 preserves measured Painter RGB detail; version 1 uses luminance. */
+    readonly version: 1 | 2 | 3 | 4;
+    /** v3/v4 preserve SmartCube's valid-ID/preview fallback and enabled kinds. */
+    readonly kindIdFallback?: {
+        readonly previewKind: number;
+        readonly useVertexMaterialIds: boolean;
+        readonly enabled: readonly boolean[];
+    };
+    /** Versions 2/4 preserve measured Painter RGB detail; version 1 uses luminance. */
     readonly colorDetailMode?: 'color';
     /** Single-kind source also gates roughness and metallic by the vertex ID. */
     readonly surfaceGated?: true;

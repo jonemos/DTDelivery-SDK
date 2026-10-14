@@ -25554,10 +25554,12 @@ function validateWebMaskPbrMaterial(value) {
 	if (value.unlit !== void 0 && typeof value.unlit !== "boolean") throw new Error("unlit is invalid.");
 	if (value.unlit === true && maskLayers.length) throw new Error("Unlit mask layers are not supported.");
 	const vertexAtlas = value.vertexAtlas === void 0 ? void 0 : validateVertexAtlas(value.vertexAtlas);
-	const atlasProfile = value.mappingProfileId === "ue-painter-vertex-atlas-v1" || value.mappingProfileId === "ue-kind-single-atlas-v1" || value.mappingProfileId === "ue-kind-multi-atlas-v1";
+	const scqo = value.mappingProfileId === SCQO_KIND_ATLAS_PROFILE;
+	const scqoPainter = value.mappingProfileId === SCQO_PAINTER_ATLAS_PROFILE;
+	const atlasProfile = value.mappingProfileId === "ue-painter-vertex-atlas-v1" || value.mappingProfileId === "ue-kind-single-atlas-v1" || value.mappingProfileId === "ue-kind-multi-atlas-v1" || scqo || scqoPainter;
 	if (vertexAtlas && (!atlasProfile || value.unlit || maskLayers.length || value.mappingProfileId === "ue-kind-single-atlas-v1" !== !!vertexAtlas.surfaceGated)) throw new Error("Vertex Atlas cannot use an unrelated profile, unlit, or RGBA layers.");
 	if (atlasProfile && !vertexAtlas) throw new Error("Missing vertex Atlas data.");
-	if (vertexAtlas && value.mappingProfileId === "ue-kind-multi-atlas-v1" !== !!vertexAtlas.surfaces) throw new Error("Multi Kind Atlas surface profile mismatch.");
+	if (vertexAtlas && ((value.mappingProfileId === "ue-kind-multi-atlas-v1" || scqo) !== !!vertexAtlas.surfaces || scqo !== (vertexAtlas.version === 3) || scqoPainter !== (vertexAtlas.version === 4))) throw new Error("Multi Kind Atlas surface profile mismatch.");
 	const extendedSampling = [
 		...Object.values(textureViews),
 		...maskLayers.map((layer) => layer.mask),
@@ -25592,8 +25594,8 @@ function validateVertexAtlas(value) {
 		if (typeof candidate !== "number" || !Number.isFinite(candidate) || candidate < min || candidate > max) throw new Error(`${label} is invalid.`);
 		return candidate;
 	};
-	if (!isRecord$2(value) || value.version !== 1 && value.version !== 2 || !Array.isArray(value.colors) || value.colors.length < 1 || value.colors.length > 32 || !Array.isArray(value.masks) || value.masks.length !== Math.ceil(value.colors.length / 4)) throw new Error("Vertex Atlas requires version 1 or 2, 1–32 colors and one RGBA mask per four colors.");
-	if (value.version === 2 ? value.colorDetailMode !== "color" || value.surfaceGated !== void 0 || value.surfaces !== void 0 : value.colorDetailMode !== void 0) throw new Error("Vertex Atlas detail mode does not match its version.");
+	if (!isRecord$2(value) || value.version !== 1 && value.version !== 2 && value.version !== 3 && value.version !== 4 || !Array.isArray(value.colors) || value.colors.length < 1 || value.colors.length > 32 || !Array.isArray(value.masks) || value.masks.length !== Math.ceil(value.colors.length / 4)) throw new Error("Vertex Atlas requires a supported version, 1–32 colors and one RGBA mask per four colors.");
+	if (value.version === 2 || value.version === 4 ? value.colorDetailMode !== "color" || value.surfaceGated !== void 0 || value.surfaces !== void 0 : value.colorDetailMode !== void 0) throw new Error("Vertex Atlas detail mode does not match its version.");
 	const masks = value.masks.map((v, i) => validateTextureView(v, `vertexAtlas.masks[${i}]`));
 	if (masks.some((m) => m.channel !== "rgba" || m.colorSpace !== "linear" || m.texCoord !== 0 || m.flipY)) throw new Error("Vertex Atlas requires linear RGBA masks on UV0 without a vertical flip.");
 	const colors = value.colors.map((v, i) => {
@@ -25603,7 +25605,7 @@ function validateVertexAtlas(value) {
 	if (value.surfaceGated !== void 0 && (value.surfaceGated !== true || colors.length !== 1)) throw new Error("Kind Atlas requires exactly one gated surface.");
 	let surfaces;
 	if (value.surfaces !== void 0) {
-		if (value.surfaceGated || colors.length < 2 || !Array.isArray(value.surfaces) || value.surfaces.length !== colors.length) throw new Error("Multi Kind Atlas surface count mismatch.");
+		if (value.surfaceGated || colors.length < 2 && value.version !== 3 || !Array.isArray(value.surfaces) || value.surfaces.length !== colors.length) throw new Error("Multi Kind Atlas surface count mismatch.");
 		surfaces = value.surfaces.map((v, i) => {
 			if (!isRecord$2(v)) throw new Error("Invalid Kind surface");
 			return {
@@ -25612,9 +25614,24 @@ function validateVertexAtlas(value) {
 			};
 		});
 	}
+	let kindIdFallback;
+	if (value.version === 3 || value.version === 4) {
+		const fallback = value.kindIdFallback;
+		if (!isRecord$2(fallback) || !Number.isInteger(fallback.previewKind) || typeof fallback.useVertexMaterialIds !== "boolean" || Object.keys(fallback).some((key) => ![
+			"previewKind",
+			"useVertexMaterialIds",
+			"enabled"
+		].includes(key)) || !Array.isArray(fallback.enabled) || fallback.enabled.length !== colors.length || fallback.enabled.some((v) => typeof v !== "boolean") || value.surfaceGated || value.version === 3 && (!surfaces || value.colorDetail !== 0 || value.roughnessOffset !== 0 || value.metallicReduction !== 0)) throw new Error("Invalid SmartCube Atlas fallback contract.");
+		kindIdFallback = {
+			previewKind: scalar(fallback.previewKind, "previewKind", 1, colors.length),
+			useVertexMaterialIds: fallback.useVertexMaterialIds,
+			enabled: fallback.enabled
+		};
+	} else if (value.kindIdFallback !== void 0) throw new Error("SmartCube fallback requires Atlas version 3 or 4.");
 	return {
 		version: value.version,
-		...value.version === 2 ? { colorDetailMode: "color" } : {},
+		...value.version === 2 || value.version === 4 ? { colorDetailMode: "color" } : {},
+		...kindIdFallback ? { kindIdFallback } : {},
 		masks,
 		colors,
 		...value.surfaceGated === true ? { surfaceGated: true } : {},
@@ -25751,8 +25768,11 @@ function migrateWebMaskPbrV2(value) {
 		maskLayers
 	};
 }
+var SCQO_KIND_ATLAS_PROFILE, SCQO_PAINTER_ATLAS_PROFILE;
 var init_MaterialAsset = __esmMin((() => {
 	init_BakedMaterialBinding();
+	SCQO_KIND_ATLAS_PROFILE = "ue-scqo-kind-atlas-v1";
+	SCQO_PAINTER_ATLAS_PROFILE = "ue-scqo-painter-atlas-v1";
 }));
 //#endregion
 //#region src/assets/StaticMeshLodAsset.ts
@@ -31099,7 +31119,7 @@ async function freezePlayerAssets(sceneInput, source, options, readDetachedBlobs
 			}
 		} else if (asset.kind === "Material") {
 			const material = validateMaterialDocument(JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(blob.bytes)));
-			if (material.kind === "WebMaskPbrMaterial" && material.mappingProfileId !== "web-authored-mask-v1" && material.mappingProfileId !== "ue-painter-vertex-atlas-v1" && material.mappingProfileId !== "ue-kind-single-atlas-v1" && material.mappingProfileId !== "ue-kind-multi-atlas-v1" && !(["u01-baked-pbr-v1", "web-authored-pbr-v1"].includes(material.mappingProfileId) && material.maskLayers.length === 0) && !PLAYER_MASK_PROFILES.some((profile) => profile.id === material.mappingProfileId)) throw new Error(`Unregistered Player WebMaskPBR profile: ${material.mappingProfileId}`);
+			if (material.kind === "WebMaskPbrMaterial" && material.mappingProfileId !== "web-authored-mask-v1" && material.mappingProfileId !== "ue-painter-vertex-atlas-v1" && material.mappingProfileId !== "ue-kind-single-atlas-v1" && material.mappingProfileId !== "ue-kind-multi-atlas-v1" && material.mappingProfileId !== "ue-scqo-kind-atlas-v1" && material.mappingProfileId !== "ue-scqo-painter-atlas-v1" && !(["u01-baked-pbr-v1", "web-authored-pbr-v1"].includes(material.mappingProfileId) && material.maskLayers.length === 0) && !PLAYER_MASK_PROFILES.some((profile) => profile.id === material.mappingProfileId)) throw new Error(`Unregistered Player WebMaskPBR profile: ${material.mappingProfileId}`);
 			dependencies = textureDependencies(material);
 			for (const texture of dependencies) select(texture, "Texture");
 			metadata = { material };
