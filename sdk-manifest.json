@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "version": "0.3.0",
-  "baseVersion": "0.3.0",
+  "version": "0.3.1",
+  "baseVersion": "0.3.1",
   "license": "MIT",
   "addonSdkVersion": 5,
   "contracts": [
@@ -25,13 +25,13 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 5513,
-      "sha256": "5494ec64d8317316b085acf689889a6b49f0bd306eed05a0673aa4c8bb893d4a"
+      "bytes": 5957,
+      "sha256": "badfcb02a964bb8d0f84326e9c3a31ff38cde5c3aa8776c753dbaa3fc8cbfc98"
     },
     {
       "path": "docs/API.md",
-      "bytes": 7231,
-      "sha256": "7aa632b5f9e72724dcb720349ee407448018b984f03b4164ec9bf3295457c895"
+      "bytes": 7636,
+      "sha256": "14f518f48b775c86c1cb9cc7400d8795903b1f07ba427b299625b0ab2ba1ab4b"
     },
     {
       "path": "docs/GITHUB_DESKTOP.md",
@@ -101,17 +101,17 @@
     {
       "path": "package.json",
       "bytes": 692,
-      "sha256": "9bf1475a9e85c5fe568b9bf14f6485acb8613ff3a86c4cc9646c76353e12ec1b"
+      "sha256": "130b81720e899a4465b8c082f9b770455ebd18e3a8e7100367ac0b115af99125"
     },
     {
       "path": "README.md",
-      "bytes": 14067,
-      "sha256": "e703002e6bd0d3d618b38391a9dff255bc4f723758d547300fe8ce9c951b6d61"
+      "bytes": 14425,
+      "sha256": "8e8b081f9186bbdb8f4e63f09d49a5eb8efcbec3684bfed220ee26aa1a3ac54f"
     },
     {
       "path": "runtime/index.js",
       "bytes": 71,
-      "sha256": "6f065ec30f6a4605fc6146e4fe4be7c285c95e495876b35c09421a7c1f11c2d2"
+      "sha256": "5bc3c088bd84fabedf93ae867e0dfd7f296412476652d9f727117df1df329714"
     },
     {
       "path": "runtime/RenderQualityPipeline-BKmcypAp.js",
@@ -125,13 +125,13 @@
     },
     {
       "path": "runtime/sdk.js",
-      "bytes": 998535,
-      "sha256": "ea41ae8e73167fed1cbdf9a6c10cf836106ff01f3861d8351af7ca26d2042924"
+      "bytes": 999042,
+      "sha256": "2686a1cb14bc3e6f4588a504a460980166ffc3e38910e5b2e0b5caaf91f339cd"
     },
     {
       "path": "runtime/viewport.css",
-      "bytes": 7854,
-      "sha256": "ed396c9b4f93abb69a14eabafd62f950874f0051ad41d0dc453ecded16186a84"
+      "bytes": 10014,
+      "sha256": "631a0c4a20ee05169c2ae9fd155880d6046908bb9e86bbed201f84cb58c3ef5c"
     },
     {
       "path": "THIRD_PARTY_LICENSES.txt",
@@ -300,8 +300,8 @@
     },
     {
       "path": "types/modules/m566d2c035974.d.ts",
-      "bytes": 8957,
-      "sha256": "862b2a3fabc5c55b9658a177037b91cb0fafac87f5c1f5514ebea01338f608ef"
+      "bytes": 9081,
+      "sha256": "359e8dbabfb2420e6c6331484235f8d19ca2f4857a336235b1768010ee1ef68b"
     },
     {
       "path": "types/modules/m58f4c922e436.d.ts",

@@ -33,6 +33,9 @@ export declare class DeliveryViewer {
     icons: boolean;
     iconScale: number;
     helpers: boolean;
+    private showBounds;
+    get bounds(): boolean;
+    setBounds(enabled: boolean): void;
     private batchEnabled;
     private readonly drawOrder;
     private readonly batching;
@@ -59,6 +62,7 @@ export declare class DeliveryViewer {
     subscribeFrame(listener: (dt: number) => void): () => void;
     subscribeDispose(listener: () => void): () => void;
     readonly scene: Scene<import("three").Object3DEventMap>;
+    private readonly actorBounds;
     readonly controls: OrbitControls;
     onSelect?: (value: {
         mountId: string;

@@ -1,6 +1,8 @@
-# 공개 함수·타입 명세 · SDK 0.3.0
+# 공개 함수·타입 명세 · SDK 0.3.1
 
 0.3.0은 조회 API 서버가 없는 브라우저 SDK입니다. `DeliveryApiClient`, `AddonPropertiesClient`, 서버 subpath와 CLI를 공개 패키지에서 제거했습니다. 기존 청크 계약1–5는 유지합니다. 아래 선언은 실제 TypeScript API를 요약한 것이며 생성된 `types/index.d.ts`가 정확한 계약입니다.
+
+0.3.1의 `viewport.setBounds(enabled: boolean)`은 준비된 액터의 실제 월드 바운드를 표시하며 `viewport.bounds`로 현재 설정을 읽습니다. 기본 꺼짐이고, 숨김/로드 해제/종료 시 helper를 정리합니다. 청크·Actor ID·선택용 picking을 변경하지 않습니다. 표시 메뉴에서는 아이콘·아이콘 크기 항목 대신 바운드를 제공합니다.
 
 ## 연결과 모델
 

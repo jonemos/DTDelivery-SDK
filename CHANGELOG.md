@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.1
+
+Match standalone viewport popup controls to the composition editor's compact styles and isolate them from host page forms. Remove icon and icon-size controls from Show, rename editor helpers consistently, and add real Actor world bounds with helper-layer isolation and cleanup on hide/unload/toggle/dispose. Keep direct local/static HTTP sources, chunk contracts 1-5, Atlas, stable Actor identity and static batching off by default.
+
 ## 0.3.0
 
 Breaking public SDK change: use DeliveryClient with LocalChunkSource or HttpChunkSource instead of the query API server, CLI and HTTP control clients. Add session/code/revision-bound script property handles. Keep chunk contracts 1-5, Atlas profiles, progressive loading, stable Actor identity and static batching off by default. Rewrite the README with version-pinned Git installation, read-only local chunk connection, editor full/delta export instructions and an actual-model acceptance sequence. The example runs one static test page server. Authenticated S3 discovery and persistent/shared property storage remain host responsibilities.

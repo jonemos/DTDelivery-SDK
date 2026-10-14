@@ -1,6 +1,8 @@
-# DT Delivery SDK 0.3.0
+# DT Delivery SDK 0.3.1
 
 브라우저에서 제작된 청크를 검증하고 3D 모델을 보여주는 SDK입니다. **0.3.0부터 별도의 Delivery API 서버를 실행하지 않습니다.** 클래스와 함수로 모델 목록, 점진 로딩, 액터 선택, 스크립트 공개 속성을 제어합니다. 기존 청크 계약1–5와 Atlas는 유지됩니다.
+
+0.3.1은 통합레벨과 같은 뷰포트 메뉴 간격·입력 스타일을 적용합니다. 표시 메뉴의 아이콘·아이콘 크기 항목을 제거하고 실제 액터의 **바운드** 표시를 제공합니다. 원본 청크와 Actor 선택은 유지됩니다.
 
 ## 1. 0.3.0에서 달라진 연결 방식
 
@@ -29,21 +31,21 @@ SDK와 모델 청크는 별도로 준비합니다. 이 Git 저장소에는 사�
    pnpm.cmd --version
    ```
 
-3. Git이 설치되어 있다면 고정된 0.3.0 버전을 받습니다.
+3. Git이 설치되어 있다면 고정된 0.3.1 버전을 받습니다.
 
    ```powershell
-   git clone --branch v0.3.0 https://github.com/jonemos/DTDelivery-SDK.git
+   git clone --branch v0.3.1 https://github.com/jonemos/DTDelivery-SDK.git
    Set-Location DTDelivery-SDK
    ```
 
-   Git이 없다면 [v0.3.0 페이지](https://github.com/jonemos/DTDelivery-SDK/tree/v0.3.0)의 **Code → Download ZIP**을 받아 압축을 풉니다. `README.md`와 `examples`가 있는 폴더가 SDK 루트입니다. 새 버전은 이전 SDK와 별도 폴더에 받습니다.
+   Git이 없다면 [v0.3.1 페이지](https://github.com/jonemos/DTDelivery-SDK/tree/v0.3.1)의 **Code → Download ZIP**을 받아 압축을 풉니다. `README.md`와 `examples`가 있는 폴더가 SDK 루트입니다. 새 버전은 이전 SDK와 별도 폴더에 받습니다.
 4. SDK 루트에서 `examples/test-server.cmd`를 더블 클릭하거나 PowerShell에서 실행합니다.
 
    ```powershell
    .\examples\test-server.cmd
    ```
 
-   의존성을 설치한 뒤 `http://127.0.0.1:5183/`을 엽니다. 첫 실행에는 의존성 다운로드가 필요합니다. 창을 유지하고 Chrome/Edge에서 페이지 상단의 **SDK 0.3.0**을 확인합니다. 다른 브라우저가 자동으로 열렸다면 같은 주소를 Chrome/Edge로 엽니다.
+   의존성을 설치한 뒤 `http://127.0.0.1:5183/`을 엽니다. 첫 실행에는 의존성 다운로드가 필요합니다. 창을 유지하고 Chrome/Edge에서 페이지 상단의 **SDK 0.3.1**을 확인합니다. 다른 브라우저가 자동으로 열렸다면 같은 주소를 Chrome/Edge로 엽니다.
 5. 아래 순서로 청크를 연결합니다. 종료할 때는 페이지의 **연결 해제**, 실행 창의 **Ctrl+C**를 차례로 사용합니다.
 
 `index.html`을 파일로 직접 열지 않습니다. 실행 창에 설치 오류가 있으면 그 오류부터 해결합니다. 5183 포트가 사용 중이면 기존 테스트 서버를 종료한 뒤 다시 실행합니다.
@@ -110,7 +112,7 @@ SDK와 모델 청크는 별도로 준비합니다. 이 Git 저장소에는 사�
 Git 태그로 버전을 고정하려면 프로젝트에서 실행합니다.
 
 ```powershell
-pnpm.cmd add '@dt/delivery-sdk@github:jonemos/DTDelivery-SDK#v0.3.0'
+pnpm.cmd add '@dt/delivery-sdk@github:jonemos/DTDelivery-SDK#v0.3.1'
 ```
 
 또는 SDK 폴더를 프로젝트의 `vendor/delivery-sdk`에 복사한 뒤 프로젝트에서 실행합니다.
@@ -158,6 +160,7 @@ canvas와 부모 영역에 실제 폭·높이를 지정하세요. 폴더 선택�
 | 액터 검색·선택 | `sdk.actors(query)`, `sdk.selectActor({ mountId, actorId })` |
 | 선택 액터·포커스 | `sdk.selectedActor`, `sdk.focusActor(target)` |
 | 화면·배칭 | `sdk.setViewMode(mode)`, `sdk.setProjection(projection)`, `sdk.setStaticBatching(enabled)` |
+| 액터 바운드 표시 | `sdk.viewport.setBounds(enabled)`, `sdk.viewport.bounds` |
 | 스크립트 목록·핸들 | `sdk.scripts.list()`, `sdk.scripts.get(target)` |
 | 해제 | `sdk.cancel()`, `await sdk.dispose()` |
 
