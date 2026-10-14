@@ -1,4 +1,5 @@
-import { DELIVERY_SDK_VERSION, DeliveryClient, LocalChunkSource, HttpChunkSource, mountActorPanel, mountDeliveryViewportTools, type DeliveryDirectoryHandle, type DeliveryProgress, type DeliverySource } from '@dt/delivery-sdk';
+import { DELIVERY_SDK_VERSION, DeliveryClient, LocalChunkSource, HttpChunkSource, mountActorPanel, mountDeliveryViewportTools, type DeliveryDirectoryHandle, type DeliveryModel, type DeliveryProgress, type DeliverySource } from '@dt/delivery-sdk';
+import { mountFeaturePanel } from './featurePanel';
 import '@dt/delivery-sdk/viewport.css';
 import './style.css';
 
@@ -8,6 +9,7 @@ const status = element('status'), scope = element<HTMLInputElement>('scope'), ad
 const open = element<HTMLButtonElement>('open'), folder = element<HTMLButtonElement>('folder');
 let sdk: DeliveryClient | undefined, directory: DeliveryDirectoryHandle | undefined, currentSource: DeliverySource | undefined, generation = 0;
 let cleanups: (() => void)[] = [];
+let catalog: readonly DeliveryModel[] = [];
 element('version').textContent = DELIVERY_SDK_VERSION;
 const message = (value: string, state = 'idle') => { status.textContent = value; status.title = value; status.dataset.state = state; };
 function fields() {
@@ -51,22 +53,31 @@ function progress(value: DeliveryProgress) {
   }));
   if (value.status === 'loading' || value.status === 'ready') message(`${value.status === 'ready' ? '로드 완료' : '준비 중'} · 화면 ${value.readyCells}/${value.totalCells} · ${(value.downloadedBytes / 1024 ** 2).toFixed(1)} MiB`, value.status);
   scripts();
+  examples?.refresh();
 }
-async function disconnect() {
+async function disconnect(stopExamples = true) {
+  if (stopExamples) examples?.stop();
   const ticket = ++generation, old = sdk; sdk = undefined; cleanups.splice(0).forEach(dispose => dispose()); await old?.dispose();
+  catalog = []; examples?.refresh();
   if (ticket === generation) { canvas.hidden = true; element('scripts').replaceChildren(); }
   return ticket;
 }
-async function connect(value: DeliverySource) {
-  const ticket = await disconnect(); if (ticket !== generation) return; currentSource = value;
+async function connect(value: DeliverySource, signal?: AbortSignal, fromExample = false): Promise<readonly DeliveryModel[]> {
+  if (!fromExample) examples?.stop();
+  signal?.throwIfAborted();
+  const ticket = await disconnect(false); signal?.throwIfAborted(); if (ticket !== generation) return []; currentSource = value;
+  if (value instanceof LocalChunkSource) { directory = value.directory; scope.value = value.scope; source.value = 'local'; }
+  if (value instanceof HttpChunkSource) { address.value = value.base.href; source.value = 'http'; }
+  fields();
   models.disabled = true; open.disabled = true;
   sdk = new DeliveryClient({ canvas, source: value, onProgress: value => { if (ticket === generation) progress(value); } });
   // A standalone inspection page needs fill light even when the source contains no lights.
   sdk.viewport.environment = true;
-  cleanups = [mountActorPanel(element('actors'), sdk.viewport, element('actor-details')), mountDeliveryViewportTools(element('viewport-tools'), sdk.viewport, () => { void element('viewport').requestFullscreen().catch(error => message(String(error))); })];
-  const catalog = await sdk.listModels(); if (ticket !== generation) return;
+  cleanups = [mountActorPanel(element('actors'), sdk.viewport, element('actor-details')), mountDeliveryViewportTools(element('viewport-tools'), sdk.viewport, () => { void element('viewport').requestFullscreen().catch(error => message(String(error))); }), sdk.subscribeActorSelection(() => examples?.refresh()), sdk.scripts.subscribe(() => { if (ticket === generation) { scripts(); examples?.refresh(); } })];
+  const listed = await sdk.listModels(signal); if (ticket !== generation) return []; catalog = listed;
   models.replaceChildren(...catalog.map(model => { const option = document.createElement('option'); option.value = model.id; option.textContent = model.name; return option; }));
   models.disabled = !catalog.length; open.disabled = !catalog.length; message(catalog.length ? `${catalog.length}개 모델 · 게시본을 여세요.` : '게시 완료된 모델이 없습니다.');
+  examples?.refresh(); return catalog;
 }
 folder.onclick = () => {
   const picker = (window as unknown as { showDirectoryPicker?: (options: { mode: 'read' }) => Promise<DeliveryDirectoryHandle> }).showDirectoryPicker;
@@ -79,9 +90,16 @@ element<HTMLButtonElement>('list').onclick = () => {
 };
 open.onclick = () => {
   if (!currentSource || !models.value) return;
+  examples?.stop();
   void (async () => { if (!sdk) await connect(currentSource!); const client = sdk!; canvas.hidden = false; open.disabled = true; try { await client.open(models.value, { progressive: true }); } finally { if (client === sdk) open.disabled = false; } })().catch(error => message(String(error)));
 };
 element<HTMLButtonElement>('close').onclick = () => { void disconnect().then(() => message('연결을 해제했습니다.')).catch(error => message(String(error))); };
 source.onchange = () => { void disconnect(); models.replaceChildren(); models.disabled = true; open.disabled = true; fields(); message('청크 연결을 선택하세요.'); };
-window.addEventListener('pagehide', () => { void sdk?.dispose(); });
+const examples = mountFeaturePanel(element('examples'), element('example-code-panel'), element('viewer-information'), {
+  client: () => sdk, catalog: () => catalog, address: () => address.value, scope: () => scope.value,
+  connect: (value, signal) => connect(value, signal, true),
+  disconnect: async () => { await disconnect(false); message('연결을 해제했습니다.'); },
+  showViewport: () => { canvas.hidden = false; },
+});
+window.addEventListener('pagehide', () => { examples?.dispose(); void sdk?.dispose(); });
 canvas.hidden = true; fields();

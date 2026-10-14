@@ -1,6 +1,8 @@
-# 공개 함수·타입 명세 · SDK 0.3.2
+# 공개 함수·타입 명세 · SDK 0.3.3
 
 API를 화면에 연결하는 순서와 기능별 실행 예제는 [개발 가이드 목차](guides/README.md)를 참고하세요. 이 문서는 함수 계약 요약이며 가이드의 코드도 공개 `@dt/delivery-sdk` import만 사용합니다.
+
+0.3.3의 [기능별 실행 예제](guides/16_FEATURE_PLAYGROUND.md)는 아래 공개 API를 사용하는 호스트 페이지 코드입니다. SDK 루트에 새로운 gallery API를 추가하지 않습니다. 선택한 코드는 읽기 전용으로 표시하며 컴파일된 함수를 실행합니다.
 
 0.3.0은 조회 API 서버가 없는 브라우저 SDK입니다. `DeliveryApiClient`, `AddonPropertiesClient`, 서버 subpath와 CLI를 공개 패키지에서 제거했습니다. 기존 청크 계약1–5는 유지합니다. 아래 선언은 실제 TypeScript API를 요약한 것이며 생성된 `types/index.d.ts`가 정확한 계약입니다.
 

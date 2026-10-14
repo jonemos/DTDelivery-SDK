@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "version": "0.3.2",
-  "baseVersion": "0.3.2",
+  "version": "0.3.3",
+  "baseVersion": "0.3.3",
   "license": "MIT",
   "addonSdkVersion": 5,
   "contracts": [
@@ -25,13 +25,13 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 6415,
-      "sha256": "bb4972c58626bc970c9306a2cab87481c1c2fe39e7d623f9f362282cb152a996"
+      "bytes": 6680,
+      "sha256": "cf5bad446a6297e95b7afaaf3cb55129cd56e32a02524f437548fe80ab5455da"
     },
     {
       "path": "docs/API.md",
-      "bytes": 7885,
-      "sha256": "d6f920af666891ec9886282a31545bd640552ecfbf7a66b465a1543d10ecb6b2"
+      "bytes": 8187,
+      "sha256": "ad954eb698a3a74be450ae5be522453c5f0b300ac0399cf44851fcda19d0d677"
     },
     {
       "path": "docs/GITHUB_DESKTOP.md",
@@ -119,9 +119,14 @@
       "sha256": "18ffb29e805a0b3d2f5b0b6ca481d665c92100d467c406724d7aeea4ca6b77a8"
     },
     {
+      "path": "docs/guides/16_FEATURE_PLAYGROUND.md",
+      "bytes": 5136,
+      "sha256": "00ae47722b29b2e6f9da0960071c07cd76827c82145a8c1e79554c70c7d5e4c9"
+    },
+    {
       "path": "docs/guides/README.md",
-      "bytes": 6909,
-      "sha256": "2c1fed8c55b7bc59105c66e51ec5474aaba3279c375260212a5e525f4ea4d4c2"
+      "bytes": 7065,
+      "sha256": "dd5f373980bda1b7d6d59aaa43c4a045321de160d79ba8d4d11be394680a6aca"
     },
     {
       "path": "docs/UPDATING.md",
@@ -139,14 +144,24 @@
       "sha256": "768a01ecfc2075986abc78f19be9023ada1ee5a260982ea3b4390a0d6d230729"
     },
     {
+      "path": "examples/web/featureExamples.ts",
+      "bytes": 19302,
+      "sha256": "2c240c94be7611cd7aae9090353002451be07e63eb5a60775977311e82fb1df1"
+    },
+    {
+      "path": "examples/web/featurePanel.ts",
+      "bytes": 14977,
+      "sha256": "73e31d2e4364a625caf870ba3fce0e14cc91dc46ef8b48953869bd71d80e80c6"
+    },
+    {
       "path": "examples/web/index.html",
-      "bytes": 3062,
-      "sha256": "f0f8727698d65ceb88c2a5fd08728d5e5b567e428bf558b1bee5c5d1d38d9401"
+      "bytes": 3301,
+      "sha256": "f25f14bc0b04c40042990ab6366f7df41fe3dec429e00f52ce69cf128adf52b7"
     },
     {
       "path": "examples/web/main.ts",
-      "bytes": 8343,
-      "sha256": "b744b1db592d9be6f65428b523245ba06d9568f3ccfebab6900f5d2eadbcb618"
+      "bytes": 9683,
+      "sha256": "e98ce6e7f85db2ad1c40f26eb4728ffb720cadd82fdea735afd4439c2ce8c5d3"
     },
     {
       "path": "examples/web/package.json",
@@ -160,13 +175,13 @@
     },
     {
       "path": "examples/web/README.md",
-      "bytes": 2375,
-      "sha256": "2db2d98e4f71f3128b2646144faf455526a62c1a8b29b46cddf2eefa8119f3c6"
+      "bytes": 2944,
+      "sha256": "c517be6d555c4eacb911460c406f32c88c7dec2ace493caf9635cd1a276a2f39"
     },
     {
       "path": "examples/web/style.css",
-      "bytes": 18652,
-      "sha256": "68b2115be58a83dfa704c0fe4198a59569e9cb2aa0612ec6f2bebe0d24d27865"
+      "bytes": 21560,
+      "sha256": "2ef6b6938626f7ff282d99d8f41412164ac241d993899a120dffb4f062a81fe8"
     },
     {
       "path": "examples/web/tsconfig.json",
@@ -186,17 +201,17 @@
     {
       "path": "package.json",
       "bytes": 692,
-      "sha256": "616b2c3602c6f3d4302dc016dec88f2640dad52a1a06c49d86c313dc4a2d80cf"
+      "sha256": "4bb0d70bf9ce9309e2dd590a9e2fa63b29cb9dd277458908701342861a851e9f"
     },
     {
       "path": "README.md",
-      "bytes": 15312,
-      "sha256": "6269507c88928630ab53ea8333e2597ddef9444e17f3dcda00272a262b35bf6d"
+      "bytes": 15800,
+      "sha256": "8347cf97ccb37bce44ab9c764a98043cc979a450fd819d52e1d795cb0ec382ae"
     },
     {
       "path": "runtime/index.js",
       "bytes": 71,
-      "sha256": "ddd3a8dc29a077183dc84b4adb148cc5adc6605c112bbc9462379c4c07f5866e"
+      "sha256": "dba728343c901ac061e46140e03dd8a6762375f9124d5de313633b1ca1d86143"
     },
     {
       "path": "runtime/RenderQualityPipeline-BKmcypAp.js",
@@ -211,7 +226,7 @@
     {
       "path": "runtime/sdk.js",
       "bytes": 999042,
-      "sha256": "ff2a821c7f433b2f52b8de72fcb0472056d42a99b2782242a3cb62bca32bb24b"
+      "sha256": "6ba108fa6ca587a16febabbda356b3e6739157225c6970f5892707e4121ccb85"
     },
     {
       "path": "runtime/viewport.css",

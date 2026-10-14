@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.3
+
+Add21 runnable feature examples, actual source-code viewing/copy, parameter and result panels, prerequisite guards, cancellation and view restoration. Preserve viewport rendering and menus, immutable IDs, direct sources, all contracts and previous tags.
+
 ## 0.3.2
 
 Compact the example page into a logo/status row and one connection/model action row. Improve Actor search cards, selected details, cell-state labels and script-property readability. Increase viewport space by reducing header/panel chrome. Preserve viewport source, controls and runtime rendering; maintain the original host defaults inside the viewport. Keep existing direct sources, immutable chunks, Actor identities and all prior version tags.

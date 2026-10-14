@@ -19,9 +19,9 @@
     </div>
   </header>
   <main class="viewer-layout">
-    <aside class="viewer-outliner" aria-label="통합레벨 아웃라이너"><div class="panel-heading"><span class="panel-kicker">SCENE</span><h2>아웃라이너</h2></div><div id="actors"></div></aside>
+    <aside class="viewer-outliner" aria-label="통합레벨 아웃라이너"><section id="examples" class="feature-lab" aria-label="기능별 실행 예제"></section><div class="panel-heading"><span class="panel-kicker">SCENE</span><h2>아웃라이너</h2></div><div id="actors"></div></aside>
     <section id="viewport" aria-label="통합레벨 뷰포트"><div id="viewport-tools"></div><canvas id="view"></canvas></section>
-    <aside class="viewer-details" aria-label="모델 상세"><section class="panel-section load-section" aria-label="실시간 로드 진행"><div class="section-heading"><h2>로드 진행</h2><span id="load-summary" class="count-label">대기 중</span></div><progress id="load-progress" aria-label="준비된 화면 청크" max="1" value="0"></progress><ul id="load-states"></ul></section><section class="panel-section"><div class="section-heading"><h2>선택 액터</h2></div><div id="actor-details"></div></section><section class="panel-section"><div class="section-heading"><h2>스크립트 공개 속성</h2></div><div id="scripts">로드된 스크립트가 없습니다.</div></section></aside>
+    <aside class="viewer-details" aria-label="모델 상세"><section id="example-code-panel" class="example-code-panel" aria-label="예제 코드와 결과" hidden></section><div id="viewer-information"><section class="panel-section load-section" aria-label="실시간 로드 진행"><div class="section-heading"><h2>로드 진행</h2><span id="load-summary" class="count-label">대기 중</span></div><progress id="load-progress" aria-label="준비된 화면 청크" max="1" value="0"></progress><ul id="load-states"></ul></section><section class="panel-section"><div class="section-heading"><h2>선택 액터</h2></div><div id="actor-details"></div></section><section class="panel-section"><div class="section-heading"><h2>스크립트 공개 속성</h2></div><div id="scripts">로드된 스크립트가 없습니다.</div></section></div></aside>
   </main>
   <script type="module" src="./main.ts"></script>
 </body></html>

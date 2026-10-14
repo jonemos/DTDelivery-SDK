@@ -1,10 +1,12 @@
-# DT Delivery SDK 0.3.2
+# DT Delivery SDK 0.3.3
 
 브라우저에서 제작된 청크를 검증하고 3D 모델을 보여주는 SDK입니다. **0.3.0부터 별도의 Delivery API 서버를 실행하지 않습니다.** 클래스와 함수로 모델 목록, 점진 로딩, 액터 선택, 스크립트 공개 속성을 제어합니다. 기존 청크 계약1–5와 Atlas는 유지됩니다.
 
 0.3.1은 통합레벨과 같은 뷰포트 메뉴 간격·입력 스타일을 적용합니다. 표시 메뉴의 아이콘·아이콘 크기 항목을 제거하고 실제 액터의 **바운드** 표시를 제공합니다. 원본 청크와 Actor 선택은 유지됩니다.
 
 0.3.2는 예제 페이지의 상단을 로고·상태 메시지 / 연결 필드·버튼의 두 줄로 압축하고 좌우 패널의 검색·선택 정보·실제 로드 상태를 정리합니다. 뷰포트와 뷰포트 메뉴는 그대로입니다.
+
+0.3.3은 예제 페이지 왼쪽에서 **기능별 예제21개를 선택·실행**하고 오른쪽에서 실제 코드·입력값·결과를 볼 수 있습니다. 코드 복사·줄바꿈·기능 문서 연결과 정지/복원도 제공합니다. 청크/액터/스크립트가 필요한 예제는 실제 준비 조건을 안내합니다. [실행 예제 사용법](docs/guides/16_FEATURE_PLAYGROUND.md)을 참고하세요. 뷰포트와 기본 메뉴의 코드·크기는 유지합니다.
 
 외부 프로젝트에 같은 화면을 구성하려면 **[기능별 개발 가이드](docs/guides/README.md)**를 읽으세요. 설치부터 로컬/HTTP 연결, 모델 목록·열기, 진행 상태, 액터 검색·선택·상세, 뷰포트 도구·카메라·텍스처, 스크립트 속성, 외부 업무 데이터와 종료 처리까지 각각 클래스·함수·값·복사 가능한 예제로 설명합니다. [전체 화면 구성](docs/guides/14_PAGE_LAYOUT.md)은 예제 DOM과 SDK 호출의 대응표를 제공합니다. 가이드는 SDK0.3.2 API 기준의 문서 보강이며 기존 버전 태그를 변경하지 않습니다.
 
@@ -35,21 +37,21 @@ SDK와 모델 청크는 별도로 준비합니다. 이 Git 저장소에는 사�
    pnpm.cmd --version
    ```
 
-3. Git이 설치되어 있다면 고정된 0.3.2 버전을 받습니다.
+3. Git이 설치되어 있다면 고정된 0.3.3 버전을 받습니다.
 
    ```powershell
-   git clone --branch v0.3.2 https://github.com/jonemos/DTDelivery-SDK.git
+   git clone --branch v0.3.3 https://github.com/jonemos/DTDelivery-SDK.git
    Set-Location DTDelivery-SDK
    ```
 
-   Git이 없다면 [v0.3.2 페이지](https://github.com/jonemos/DTDelivery-SDK/tree/v0.3.2)의 **Code → Download ZIP**을 받아 압축을 풉니다. `README.md`와 `examples`가 있는 폴더가 SDK 루트입니다. 새 버전은 이전 SDK와 별도 폴더에 받습니다.
+   Git이 없다면 [v0.3.3 페이지](https://github.com/jonemos/DTDelivery-SDK/tree/v0.3.3)의 **Code → Download ZIP**을 받아 압축을 풉니다. `README.md`와 `examples`가 있는 폴더가 SDK 루트입니다. 새 버전은 이전 SDK와 별도 폴더에 받습니다.
 4. SDK 루트에서 `examples/test-server.cmd`를 더블 클릭하거나 PowerShell에서 실행합니다.
 
    ```powershell
    .\examples\test-server.cmd
    ```
 
-   의존성을 설치한 뒤 `http://127.0.0.1:5183/`을 엽니다. 첫 실행에는 의존성 다운로드가 필요합니다. 창을 유지하고 Chrome/Edge에서 페이지 상단의 **SDK 0.3.2**을 확인합니다. 다른 브라우저가 자동으로 열렸다면 같은 주소를 Chrome/Edge로 엽니다.
+   의존성을 설치한 뒤 `http://127.0.0.1:5183/`을 엽니다. 첫 실행에는 의존성 다운로드가 필요합니다. 창을 유지하고 Chrome/Edge에서 페이지 상단의 **SDK 0.3.3**을 확인합니다. 다른 브라우저가 자동으로 열렸다면 같은 주소를 Chrome/Edge로 엽니다.
 5. 아래 순서로 청크를 연결합니다. 종료할 때는 페이지의 **연결 해제**, 실행 창의 **Ctrl+C**를 차례로 사용합니다.
 
 `index.html`을 파일로 직접 열지 않습니다. 실행 창에 설치 오류가 있으면 그 오류부터 해결합니다. 5183 포트가 사용 중이면 기존 테스트 서버를 종료한 뒤 다시 실행합니다.
@@ -116,7 +118,7 @@ SDK와 모델 청크는 별도로 준비합니다. 이 Git 저장소에는 사�
 Git 태그로 버전을 고정하려면 프로젝트에서 실행합니다.
 
 ```powershell
-pnpm.cmd add '@dt/delivery-sdk@github:jonemos/DTDelivery-SDK#v0.3.2'
+pnpm.cmd add '@dt/delivery-sdk@github:jonemos/DTDelivery-SDK#v0.3.3'
 ```
 
 또는 SDK 폴더를 프로젝트의 `vendor/delivery-sdk`에 복사한 뒤 프로젝트에서 실행합니다.

@@ -24,6 +24,7 @@ SDK는 **검증된 게시 청크를 읽고 보여주는 브라우저 런타임**
 | 13 | [취소·전환·종료](13_LIFECYCLE.md) | 연결 해제·SPA 정리 | cancel, dispose, unsubscribe |
 | 14 | [전체 페이지 구성](14_PAGE_LAYOUT.md) | 2행 상단·좌/중앙/우 배치 | 위 기능 조립·실제 예제 대응표 |
 | 15 | [사용자 정의 저장소](15_CUSTOM_SOURCE.md) | 여러 정적 게시본/호스트 adapter | DeliverySource, ByteProvider |
+| 16 | [기능별 실행 페이지](16_FEATURE_PLAYGROUND.md) |21개 예제 선택·실행·코드/결과 보기 | 기존 SDK API·compiled host handlers |
 
 처음 만드는 화면은 **00 → 01 또는 02 → 03 → 04 → 05 → 07 → 08 → 13 → 14** 순서로 구성하세요. 업무 데이터가 필요한 경우06/12, 스크립트가 포함된 게시본은11을 추가합니다. 이미 동작하는 화면에 한 기능만 추가한다면 해당 문서의 함수와 준비 조건을 확인하세요.
 
