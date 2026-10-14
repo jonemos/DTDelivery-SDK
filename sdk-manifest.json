@@ -30,13 +30,98 @@
     },
     {
       "path": "docs/API.md",
-      "bytes": 7636,
-      "sha256": "df0599ac296dc5bc04f009b16babb8047727f2d0713412c4bc1bc39ecc5f78aa"
+      "bytes": 7885,
+      "sha256": "d6f920af666891ec9886282a31545bd640552ecfbf7a66b465a1543d10ecb6b2"
     },
     {
       "path": "docs/GITHUB_DESKTOP.md",
       "bytes": 2621,
       "sha256": "f29da40cc6f1183d30e5a6f82fca4fc4cb058e1ae26f31a0558cc403bb14f164"
+    },
+    {
+      "path": "docs/guides/00_INSTALL.md",
+      "bytes": 3528,
+      "sha256": "0e8db5b0398dfc85ccb8aa8d1b4e5b1a9531a0c4b7d4b0f2eb3eae1cbb6b3e1f"
+    },
+    {
+      "path": "docs/guides/01_LOCAL_SOURCE.md",
+      "bytes": 4154,
+      "sha256": "a2e8bfd7bce3b16223bf57639b69c9aae688775a40614c340031d947403bd5f0"
+    },
+    {
+      "path": "docs/guides/02_HTTP_SOURCE.md",
+      "bytes": 3330,
+      "sha256": "550dcf35fef98cd7ca87bd9bac7590a572592d66a319538700d1d874bdf5e636"
+    },
+    {
+      "path": "docs/guides/03_CLIENT.md",
+      "bytes": 4249,
+      "sha256": "fd2fdd45daaf0f009d093cd7721449d856cad855e270f79493730717120373a9"
+    },
+    {
+      "path": "docs/guides/04_MODELS.md",
+      "bytes": 4173,
+      "sha256": "30a13e6b505cf76df8ced98c2939ee044b91de6b1ade83a05a78c17ebdd4b223"
+    },
+    {
+      "path": "docs/guides/05_PROGRESS.md",
+      "bytes": 4091,
+      "sha256": "9d75ee35867b9409cd133f42fef1f5c8f2d17cfd700c88cc6acebff50f3734fa"
+    },
+    {
+      "path": "docs/guides/06_ACTORS.md",
+      "bytes": 4994,
+      "sha256": "c617012c5d88ffb803c90892873e9d06741c9a1a8008d414676482b84bba6caf"
+    },
+    {
+      "path": "docs/guides/07_PANELS.md",
+      "bytes": 4115,
+      "sha256": "1f4879a76c3e1026ff254d213f2c29939dd36b4a2d4e8f029e0a5c28d654a484"
+    },
+    {
+      "path": "docs/guides/08_VIEWPORT_TOOLS.md",
+      "bytes": 3933,
+      "sha256": "4beb0065ff9a1db2381cf968d0880b5aa236404889037507f97dd38e5223c4e0"
+    },
+    {
+      "path": "docs/guides/09_CAMERA_DISPLAY.md",
+      "bytes": 4987,
+      "sha256": "faa8f936907a1f34a208a844bfb5b6224240057ca16d49c8a614cbaed3b2d3fb"
+    },
+    {
+      "path": "docs/guides/10_TEXTURES_BUDGET.md",
+      "bytes": 5776,
+      "sha256": "2c5178a58d70ce4e4bfd7d5ff19d283835df5402c2898b00e8c0f2d8f47dfd30"
+    },
+    {
+      "path": "docs/guides/11_SCRIPTS.md",
+      "bytes": 7646,
+      "sha256": "6fc591d22a9bca115b81f1eba8e8363aca00b1b0358e2ec90faa74e2ea004e2e"
+    },
+    {
+      "path": "docs/guides/12_HOST_DATA.md",
+      "bytes": 4303,
+      "sha256": "0b15c7e0d125b5db74d960a9a08c59abd75590826598d98d0915912ac07b9703"
+    },
+    {
+      "path": "docs/guides/13_LIFECYCLE.md",
+      "bytes": 4739,
+      "sha256": "1546b500fa90d99a0613dbc86f8cb4a0b06ad714f30ff943452bca9f723df639"
+    },
+    {
+      "path": "docs/guides/14_PAGE_LAYOUT.md",
+      "bytes": 11254,
+      "sha256": "6cd54a25f4fb1cce9852de6b8a5eac3170da53fbdfc99d7e1a1d161af8d96eaa"
+    },
+    {
+      "path": "docs/guides/15_CUSTOM_SOURCE.md",
+      "bytes": 4500,
+      "sha256": "18ffb29e805a0b3d2f5b0b6ca481d665c92100d467c406724d7aeea4ca6b77a8"
+    },
+    {
+      "path": "docs/guides/README.md",
+      "bytes": 6909,
+      "sha256": "2c1fed8c55b7bc59105c66e51ec5474aaba3279c375260212a5e525f4ea4d4c2"
     },
     {
       "path": "docs/UPDATING.md",
@@ -75,8 +160,8 @@
     },
     {
       "path": "examples/web/README.md",
-      "bytes": 2093,
-      "sha256": "d448d4c79db615da5cd005f9dfa5ab74ff40c7f2ca0af4a97545d1ba65734c1d"
+      "bytes": 2375,
+      "sha256": "2db2d98e4f71f3128b2646144faf455526a62c1a8b29b46cddf2eefa8119f3c6"
     },
     {
       "path": "examples/web/style.css",
@@ -105,8 +190,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 14675,
-      "sha256": "5f46fc8755efdf94c7ad461c2b271709014878700461ad0b1010b5a3952bf73e"
+      "bytes": 15312,
+      "sha256": "6269507c88928630ab53ea8333e2597ddef9444e17f3dcda00272a262b35bf6d"
     },
     {
       "path": "runtime/index.js",
