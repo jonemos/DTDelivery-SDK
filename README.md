@@ -1,4 +1,4 @@
-# DT Delivery SDK 0.3.6
+# DT Delivery SDK 0.3.7
 
 브라우저에서 제작된 청크를 검증하고 3D 모델을 보여주는 SDK입니다. **0.3.0부터 별도의 Delivery API 서버를 실행하지 않습니다.** 클래스와 함수로 모델 목록, 점진 로딩, 액터 선택, 스크립트 공개 속성을 제어합니다. 기존 청크 계약1–5와 Atlas는 유지됩니다.
 
@@ -20,7 +20,7 @@
 |---|---|
 | 모델 목록·열기 | `DeliveryClient`의 `listModels()`·`open()` 직접 호출 |
 | 로컬 청크 | `LocalChunkSource`와 브라우저의 읽기 전용 폴더 선택 |
-| 정적 웹 청크 | `HttpChunkSource`로 일반 청크 폴더의 HTTP/HTTPS 파일 읽기 |
+| 원격 웹 청크 | `HttpChunkSource`로 일반 내보내기 폴더 또는 scope·통합레벨 ID를 지정한 원격 게시 저장소 읽기. 공개 GET·CORS 필요 |
 | 스크립트 공개 속성 | `sdk.scripts`로 현재 로드된 인스턴스 조회·실행 중 변경 |
 | 기존 청크 | 계약 1–5와 Atlas 지원 유지. SDK 업데이트가 청크를 재제작하지 않음 |
 
@@ -48,7 +48,7 @@ SDK와 모델 청크는 별도로 준비합니다. 이 Git 저장소에는 사�
    .\examples\test-server.cmd
    ```
 
-   공개 manifest의 페이지 해시를 검사한 뒤 `http://127.0.0.1:5183/`을 엽니다. 설치·빌드·자동 다운로드는 실행하지 않습니다. 창을 유지하고 Chrome/Edge에서 페이지 상단의 **SDK 0.3.6**를 확인합니다. 다른 브라우저가 자동으로 열렸다면 같은 주소를 Chrome/Edge로 엽니다.
+   공개 manifest의 페이지 해시를 검사한 뒤 `http://127.0.0.1:5183/`을 엽니다. 설치·빌드·자동 다운로드는 실행하지 않습니다. 창을 유지하고 Chrome/Edge에서 페이지 상단의 **SDK 0.3.7**를 확인합니다. 다른 브라우저가 자동으로 열렸다면 같은 주소를 Chrome/Edge로 엽니다.
 5. 아래 순서로 청크를 연결합니다. 종료할 때는 페이지의 **연결 해제**, 실행 창의 **Ctrl+C**를 차례로 사용합니다.
 
 `index.html`을 파일로 직접 열지 않습니다. 해시 불일치·파일 누락 오류이면 전체 SDK를 새 폴더에 다시 압축 해제합니다. 5183 포트가 사용 중이면 기존 테스트 서버를 종료한 뒤 다시 실행합니다. 기존 서버를 자동으로 종료하거나 다른 포트로 바꾸지 않습니다. 로컬 청크는 인터넷 없이 사용할 수 있으며, HTTP 청크·온라인 기능 문서는 해당 주소의 네트워크 연결이 필요합니다.
@@ -117,7 +117,7 @@ SDK와 모델 청크는 별도로 준비합니다. 이 Git 저장소에는 사�
 Git 태그로 버전을 고정하려면 프로젝트에서 실행합니다.
 
 ```powershell
-pnpm.cmd add '@dt/delivery-sdk@github:jonemos/DTDelivery-SDK#v0.3.6'
+pnpm.cmd add '@dt/delivery-sdk@github:jonemos/DTDelivery-SDK#v0.3.7'
 ```
 
 또는 SDK 폴더를 프로젝트의 `vendor/delivery-sdk`에 복사한 뒤 프로젝트에서 실행합니다.

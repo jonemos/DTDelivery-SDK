@@ -1,4 +1,4 @@
-# 공개 함수·타입 명세 · SDK 0.3.6
+# 공개 함수·타입 명세 · SDK 0.3.7
 
 API를 화면에 연결하는 순서와 기능별 실행 예제는 [개발 가이드 목차](guides/README.md)를 참고하세요. 이 문서는 함수 계약 요약이며 가이드의 코드도 공개 `@dt/delivery-sdk` import만 사용합니다.
 
@@ -25,7 +25,7 @@ interface ByteProvider {
 
 `LocalChunkSource(directory, { scope? })`는 읽기 전용 DirectoryHandle을 사용합니다. 일반 내보내기 루트의 head 또는 로컬 게시 저장소의 선택한 구역을 조회합니다. 목록 최대256개이며 손상된 게시본을 성공으로 숨기지 않습니다. 게시 head가 없는 업로드 중 폴더는 목록에 넣지 않습니다.
 
-`HttpChunkSource(baseURL)`는 한 일반 내보내기 폴더의 head와 정적 파일을 GET으로 읽습니다. 주소는 HTTP/HTTPS, 끝의 `/`, 사용자/비밀번호·query·fragment 없음이 필요합니다. 인증된 S3 목록·서명은 구현하지 않습니다.
+`HttpChunkSource(baseURL)`는 한 일반 내보내기 폴더의 head와 정적 파일을 GET으로 읽습니다. `HttpChunkSource(baseURL, { scope, compositionId })`는 버킷/접두사 루트에서 `levels/<scope>/<compositionId>/delivery-head.json`과 공유 `levels/objects`, `levels/releases`를 읽고 실제 manifest ID를 검증합니다. 주소는 HTTP/HTTPS, 끝의 `/`, 사용자/비밀번호·query·fragment 없음이 필요합니다. 익명 HTTP 읽기와 페이지 origin의 CORS 허용이 필요하며 인증된 S3 목록·서명은 구현하지 않습니다.
 
 외부 호스트는 DeliverySource를 구현할 수 있습니다. adapter는 전달된 경로·크기 제한·AbortSignal을 지키고 인증을 유지해야 합니다. SDK는 manifest ID·canonical encoding·해시와 로드한 청크/파일의 크기·해시를 검사합니다. 이 검사가 저장소 사용자 권한을 대신하지 않습니다. package 데이터에서 저장소 주소나 실행 코드를 가져오지 않습니다.
 

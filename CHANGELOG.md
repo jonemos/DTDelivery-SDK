@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.7
+
+Support HttpChunkSource(base, { scope, compositionId }) for read-only remote publication heads and shared levels objects/releases under a bucket prefix. Add a remote-publication mode to the no-install example with explicit identity and CORS/read-permission guidance. Preserve plain exports, hash/identity validation, anonymous GET-only browser access, viewport behavior and immutable history.
+
 ## 0.3.6
 
 Preserve committed personal files by refusing Git SDK checkouts with tracked paths outside the SDK manifest before checkout. Reject redirected Git directories. Retain verified no-install ZIP/Git updates, recoverable backups and the prebuilt PowerShell test server.

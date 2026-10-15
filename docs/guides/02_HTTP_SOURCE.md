@@ -2,7 +2,11 @@
 
 [목차](README.md) · 앞: [설치](00_INSTALL.md) · 다음: [클라이언트 생성](03_CLIENT.md)
 
-이 기능은 게시된 **일반 내보내기 폴더 한 개**를 HTTP/HTTPS로 읽습니다. `HttpChunkSource`는 청크 파일을 GET으로 읽으며0.2.x 조회 API 주소를 받지 않습니다.
+이 기능은 게시된 **일반 내보내기 폴더 한 개** 또는 **명시한 원격 게시 모델 한 개**를 HTTP/HTTPS로 읽습니다. `HttpChunkSource`는 청크 파일을 GET으로 읽으며0.2.x 조회 API 주소를 받지 않습니다.
+
+0.3.7부터 편집기의 원격 업로드 경로는 `new HttpChunkSource(new URL('https://storage.example/bucket/test-upload/'), { scope: 'development', compositionId: '실제-통합레벨-ID' })`로 연결합니다. head는 `levels/<scope>/<compositionId>/delivery-head.json`, 파일은 `levels/objects/<hash>`와 `levels/releases/<hash>.json`에서 읽습니다. 모델 ID는 실제 manifest ID와 일치해야 하며 scope/ID를 임의로 검색하지 않습니다. 테스트 페이지에서 **원격 게시 저장소**를 선택하고 같은 주소·게시 구역·통합레벨 ID를 입력합니다.
+
+브라우저는 GET만 전송하며 Access/Secret Key를 받지 않습니다. 저장소에서 해당 파일의 공개 읽기 또는 별도의 호스트 인증 adapter, 테스트 페이지 origin을 허용하는 CORS가 필요합니다. 업로드 키의 GET/HEAD 권한과 브라우저 CORS는 별도 설정입니다.
 
 ## 입력과 실제 읽기
 

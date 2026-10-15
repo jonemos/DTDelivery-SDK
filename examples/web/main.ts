@@ -6,6 +6,7 @@ import './style.css';
 const element = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
 const source = element<HTMLSelectElement>('source'), models = element<HTMLSelectElement>('models'), canvas = element<HTMLCanvasElement>('view');
 const status = element('status'), scope = element<HTMLInputElement>('scope'), address = element<HTMLInputElement>('address');
+const publicationId = element<HTMLInputElement>('publication-id');
 const open = element<HTMLButtonElement>('open'), folder = element<HTMLButtonElement>('folder');
 let sdk: DeliveryClient | undefined, directory: DeliveryDirectoryHandle | undefined, currentSource: DeliverySource | undefined, generation = 0;
 let cleanups: (() => void)[] = [];
@@ -13,8 +14,8 @@ let catalog: readonly DeliveryModel[] = [];
 element('version').textContent = DELIVERY_SDK_VERSION;
 const message = (value: string, state = 'idle') => { status.textContent = value; status.title = value; status.dataset.state = state; };
 function fields() {
-  folder.hidden = source.value !== 'local'; element('address-field').hidden = source.value !== 'http'; scope.disabled = source.value !== 'local';
-  element('source-help').textContent = source.value === 'local' ? '전체/변경분 저장 폴더 또는 로컬 게시 저장소를 선택하세요. 폴더는 읽기만 합니다.' : 'delivery-head.json·objects·releases가 있는 정적 폴더 주소입니다. 인증된 S3 목록 조회는 아직 제공하지 않습니다.';
+  folder.hidden = source.value !== 'local'; element('address-field').hidden = source.value === 'local'; element('publication-field').hidden = source.value !== 'publication'; scope.disabled = source.value === 'http';
+  element('source-help').textContent = source.value === 'local' ? '전체/변경분 저장 폴더 또는 로컬 게시 저장소를 선택하세요. 폴더는 읽기만 합니다.' : source.value === 'publication' ? '버킷/경로 접두사까지의 주소와 게시 구역·통합레벨 ID를 입력하세요. levels 아래의 게시본을 읽습니다. 파일 읽기 권한과 이 페이지 origin의 CORS 허용이 필요합니다.' : 'delivery-head.json·objects·releases가 있는 정적 폴더 주소입니다. 파일 읽기 권한과 CORS 허용이 필요합니다.';
 }
 function scripts() {
   const root = element('scripts'); root.replaceChildren();
@@ -67,7 +68,7 @@ async function connect(value: DeliverySource, signal?: AbortSignal, fromExample 
   signal?.throwIfAborted();
   const ticket = await disconnect(false); signal?.throwIfAborted(); if (ticket !== generation) return []; currentSource = value;
   if (value instanceof LocalChunkSource) { directory = value.directory; scope.value = value.scope; source.value = 'local'; }
-  if (value instanceof HttpChunkSource) { address.value = value.base.href; source.value = 'http'; }
+  if (value instanceof HttpChunkSource) { address.value = value.base.href; source.value = value.publication ? 'publication' : 'http'; publicationId.value = value.publication?.compositionId ?? ''; if (value.publication) scope.value = value.publication.scope; }
   fields();
   models.disabled = true; open.disabled = true;
   sdk = new DeliveryClient({ canvas, source: value, onProgress: value => { if (ticket === generation) progress(value); } });
@@ -86,7 +87,7 @@ folder.onclick = () => {
 };
 element<HTMLButtonElement>('list').onclick = () => {
   if (source.value === 'local' && !directory) { message('먼저 청크 폴더를 선택하세요.'); return; }
-  void (async () => { const value = source.value === 'local' ? new LocalChunkSource(directory!, { scope: scope.value.trim() }) : new HttpChunkSource(new URL(address.value.trim())); await connect(value); })().catch(error => message(String(error)));
+  void (async () => { const value = source.value === 'local' ? new LocalChunkSource(directory!, { scope: scope.value.trim() }) : new HttpChunkSource(new URL(address.value.trim()), source.value === 'publication' ? { scope: scope.value.trim(), compositionId: publicationId.value.trim() } : undefined); await connect(value); })().catch(error => message(error instanceof TypeError && source.value !== 'local' ? '원격 파일 요청 실패 · 주소·읽기 권한·CORS 설정을 확인하세요.' : String(error)));
 };
 open.onclick = () => {
   if (!currentSource || !models.value) return;

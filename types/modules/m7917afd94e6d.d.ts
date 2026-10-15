@@ -43,11 +43,19 @@ export declare class LocalChunkSource implements DeliverySource {
     listModels(signal?: AbortSignal): Promise<readonly DeliveryModel[]>;
     resolve(modelId: string, signal?: AbortSignal): Promise<DeliveryRelease>;
 }
-/** One plain export served as static files. This is not an authenticated S3 catalog adapter. */
+/** One plain export or an explicitly selected published model. Anonymous HTTP reads only. */
 export declare class HttpChunkSource implements DeliverySource {
     readonly base: URL;
+    readonly publication?: Readonly<{
+        scope: string;
+        compositionId: string;
+    }>;
+    private readonly headBase;
     private readonly provider;
-    constructor(base: URL);
+    constructor(base: URL, publication?: {
+        scope: string;
+        compositionId: string;
+    });
     private current;
     listModels(signal?: AbortSignal): Promise<DeliveryModel[]>;
     resolve(modelId: string, signal?: AbortSignal): Promise<DeliveryRelease>;
