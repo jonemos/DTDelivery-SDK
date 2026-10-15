@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "version": "0.3.8",
-  "baseVersion": "0.3.8",
+  "version": "0.3.9",
+  "baseVersion": "0.3.9",
   "license": "MIT",
   "addonSdkVersion": 5,
   "contracts": [
@@ -25,13 +25,13 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 8370,
-      "sha256": "54dba2184c46b91ed2d810e80a1f28bd215153e62e8de8255887349fec1f87ef"
+      "bytes": 8872,
+      "sha256": "ec96fb80885237c0e4d589e4b6768643f57c18d36f82e6d2ef02d5069bf83179"
     },
     {
       "path": "docs/API.md",
-      "bytes": 8490,
-      "sha256": "d6ba76c63ba926bf2379986be8c1205731a4936bea44787c5007634a56db9fcd"
+      "bytes": 9954,
+      "sha256": "0937a35dd3c6995f0ee7d38f43d3447f248e6683ab0bf03a217efeb3fdb9669f"
     },
     {
       "path": "docs/GITHUB_DESKTOP.md",
@@ -50,8 +50,8 @@
     },
     {
       "path": "docs/guides/02_HTTP_SOURCE.md",
-      "bytes": 4304,
-      "sha256": "278c4f384ccb1a3ee94b10ce0c24ec06d6032dd766eea8b85894460c9e04adfd"
+      "bytes": 4856,
+      "sha256": "a99356f71463489c697b51b2fe31930135aa01995fbd1d4043f29d8382ed4cc0"
     },
     {
       "path": "docs/guides/03_CLIENT.md",
@@ -130,8 +130,8 @@
     },
     {
       "path": "docs/UPDATING.md",
-      "bytes": 5168,
-      "sha256": "8d7bd24af8b1f9f77ff7f89cb37b40eeaebd1c3604eb08735e44841cf56f18c6"
+      "bytes": 5666,
+      "sha256": "ac1864a215f98d631aed831293288e503ab9c2bd7c36ddd136220e1a956cd559"
     },
     {
       "path": "examples/detach-sdk.mjs",
@@ -149,14 +149,14 @@
       "sha256": "7dd3e3ba1011833cecc798279eb98e45d8dc3ebb319d0f555e4f8795afd1922a"
     },
     {
-      "path": "examples/standalone/assets/index-BR9in8h4.js",
-      "bytes": 45947,
-      "sha256": "33623e39d48f94c2d1fde0b35bf1206b493ee3fbad08e8dde8af4baf81d3866e"
+      "path": "examples/standalone/assets/index-DmJ0eSbr.js",
+      "bytes": 46636,
+      "sha256": "f3e25a409080c56616ba1a5fec924207167de9486bde118004fb741afc07205a"
     },
     {
       "path": "examples/standalone/index.html",
-      "bytes": 3690,
-      "sha256": "c8b9326984354629a5781b8fae9dd9b27337e522435073f0a514b3262f5b8372"
+      "bytes": 3798,
+      "sha256": "965cc5ce39ada96959d9fe79e8c6743c8acb6cea2859dd4ff4c948edb4c73d25"
     },
     {
       "path": "examples/test-server.cmd",
@@ -180,13 +180,13 @@
     },
     {
       "path": "examples/web/index.html",
-      "bytes": 3588,
-      "sha256": "5a05fe8acd45240bda402b8925c7077f8baf4d8af6bbe5d3edc48048e10f00df"
+      "bytes": 3696,
+      "sha256": "00a25d580120cf769d9f74c23506032e19e6be4632d6a75f83adb782c26e35e9"
     },
     {
       "path": "examples/web/main.ts",
-      "bytes": 10493,
-      "sha256": "0ac01adb4a9d9e9568358b5cf56ad9497e3103849ad8257f8d7f142a32cfb748"
+      "bytes": 11429,
+      "sha256": "5613cc4d31e1197b7d2c1c5d4fdf0357721f91856adef4a6a844c83688b42786"
     },
     {
       "path": "examples/web/package.json",
@@ -200,8 +200,8 @@
     },
     {
       "path": "examples/web/README.md",
-      "bytes": 4440,
-      "sha256": "ee143593db937fe7039a0535685086b4a399fbc6c3f1924298145a3c01dd9224"
+      "bytes": 4921,
+      "sha256": "b42115c5452fb96c53ac807143b3ddb2e2c0abbc2eac750c9bd89c8d2d6d866f"
     },
     {
       "path": "examples/web/style.css",
@@ -226,17 +226,17 @@
     {
       "path": "package.json",
       "bytes": 728,
-      "sha256": "3891bcd6e5a30ca990411ddca26c866d53d93a5bf7fa486d405fc4df91d3d941"
+      "sha256": "de0d350f0c3e005c93e0bb70e7f21c4a71cb89fc5be379c709104cab2d0c62e1"
     },
     {
       "path": "README.md",
-      "bytes": 17494,
-      "sha256": "19a88073023422cca44fd5ac0c93a9789c5a071dde0040f036f3ee88a9ae6ca4"
+      "bytes": 18134,
+      "sha256": "2550eae17ba76a82a4e6e88c8e80a67cc6f40bc79463a775cd5fd2c6791963ea"
     },
     {
       "path": "runtime/index.js",
       "bytes": 71,
-      "sha256": "0eb28dd0c4bb4241b0cc8ae88df41929d8619b9ae7e2a30b506ea050d78896b2"
+      "sha256": "f512f8f2de92f023a1fb73d5aea402075e11bfc584141809c729125452eedd88"
     },
     {
       "path": "runtime/RenderQualityPipeline-BKmcypAp.js",
@@ -250,8 +250,8 @@
     },
     {
       "path": "runtime/sdk.js",
-      "bytes": 999516,
-      "sha256": "52e3ae4e4d7f52831a25166a64367ffd70752c416755d95976a227703f639b9c"
+      "bytes": 1004069,
+      "sha256": "5c55aa757a9d1fa23b13245dce41ba5ef5b1a99c0e8268b11e135bd9b8dcceeb"
     },
     {
       "path": "runtime/viewport.css",
@@ -265,8 +265,8 @@
     },
     {
       "path": "types/index.d.ts",
-      "bytes": 3730,
-      "sha256": "bfcdd4cf73f74773c91a95aabe33711251ed4adead1bf305fa4ebf23fbcfc618"
+      "bytes": 3774,
+      "sha256": "1269e1dfe916c16c51637647a04784743e74817e6b0bc2891c7b52c7f990c68b"
     },
     {
       "path": "types/modules/m023a36aa6638.d.ts",
@@ -425,8 +425,8 @@
     },
     {
       "path": "types/modules/m566d2c035974.d.ts",
-      "bytes": 9081,
-      "sha256": "359e8dbabfb2420e6c6331484235f8d19ca2f4857a336235b1768010ee1ef68b"
+      "bytes": 9125,
+      "sha256": "c13574de9cbc0893652066dc96d9959a6d2f36b963c1938039829dc011af55a6"
     },
     {
       "path": "types/modules/m58f4c922e436.d.ts",
@@ -500,8 +500,8 @@
     },
     {
       "path": "types/modules/m7917afd94e6d.d.ts",
-      "bytes": 2336,
-      "sha256": "85e05537863d24b8ac924ae273faa8add69d2bbcd9afe615d14f90bf01bb1ec8"
+      "bytes": 2675,
+      "sha256": "c5240b9c8d92ada156c61380432907aa3f4501c956fffb0ae56436f547d24190"
     },
     {
       "path": "types/modules/m7aea83ff3a59.d.ts",
@@ -565,8 +565,8 @@
     },
     {
       "path": "types/modules/m9e3090309385.d.ts",
-      "bytes": 9008,
-      "sha256": "b90e353dfcf11dee8187a350ee3f3a17ccc3ca8d886c3908f8e246fcff0426d4"
+      "bytes": 9727,
+      "sha256": "2edb57f9776d990103a79d16bbf0ea715d91a13ce1f448a1c351bd274b42f57e"
     },
     {
       "path": "types/modules/ma031f5c2c822.d.ts",
@@ -745,8 +745,8 @@
     },
     {
       "path": "types/modules/meecd7a56adec.d.ts",
-      "bytes": 8459,
-      "sha256": "b32a6407dab1b912c28c9d7ca01135d38dd501f7430fc9754f35c21c76ac90cb"
+      "bytes": 8529,
+      "sha256": "9ada9cb58a28cdfa129ace36912fdc9a3bfebf3eef805fbc5378cb20edbc775b"
     },
     {
       "path": "types/modules/mf0f7647466ef.d.ts",

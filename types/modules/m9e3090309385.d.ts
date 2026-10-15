@@ -10,6 +10,13 @@ export type DeliveryActorSelection = Pick<ActorTarget, 'mountId' | 'actorId'>;
 export type DeliveryScriptTarget = DeliveryActorSelection & {
     readonly componentId: string;
 };
+export interface DeliveryAutoUpdate {
+    readonly intervalMs?: number;
+}
+export interface DeliveryUpdateProgress {
+    readonly state: 'disabled' | 'stopped' | 'watching' | 'checking' | 'updating' | 'retrying';
+    readonly targetHash?: string;
+}
 export interface DeliveryProgress {
     readonly status: 'idle' | 'loading' | 'ready' | 'cancelled' | 'failed' | 'disposed';
     readonly model: DeliveryModel | null;
@@ -25,12 +32,15 @@ export interface DeliveryProgress {
         status: string;
         message?: string;
     }[];
+    readonly update: DeliveryUpdateProgress;
 }
 export interface DeliveryClientOptions {
     readonly canvas: HTMLCanvasElement;
     readonly source: DeliverySource;
     readonly cache?: ChunkCache;
     readonly budget?: DisplayBudget;
+    /** Enabled by default; check the current model's head every 5 seconds. */
+    readonly autoUpdate?: boolean | DeliveryAutoUpdate;
     readonly onProgress?: (progress: DeliveryProgress) => void;
     readonly onActorSelect?: (actor: ActorPlacement | null) => void;
 }
@@ -69,7 +79,13 @@ export declare class DeliveryClient {
     readonly options: DeliveryClientOptions;
     readonly viewport: DeliveryViewer;
     readonly scripts: DeliveryScripts;
-    private readonly reader;
+    private readonly cache;
+    private readonly stats;
+    private readonly updateInterval;
+    private update;
+    private watchEpoch;
+    private watchTimer?;
+    private watchRequest?;
     private binding?;
     private generation;
     private operation?;
@@ -82,6 +98,7 @@ export declare class DeliveryClient {
     private selected;
     private readonly cleanup;
     constructor(options: DeliveryClientOptions);
+    private createReader;
     private live;
     get model(): DeliveryModel | null;
     get progress(): DeliveryProgress;
@@ -94,6 +111,10 @@ export declare class DeliveryClient {
     listModels(signal?: AbortSignal): Promise<readonly DeliveryModel[]>;
     open(modelId: string, options?: DeliveryOpenOptions): Promise<DeliveryModel>;
     private ready;
+    private stopWatching;
+    private startWatching;
+    private scheduleCheck;
+    private checkUpdate;
     cancel(): void;
     actors(query?: string): {
         loaded: boolean;

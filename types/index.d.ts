@@ -1,7 +1,7 @@
 export { mountActorPanel } from './modules/mcee0320204dd.js';
 export { DELIVERY_SDK_VERSION } from './modules/m2401b9bcc641.js';
 export { DeliveryClient } from './modules/m9e3090309385.js';
-export type { DeliveryClientOptions, DeliveryOpenOptions, DeliveryProgress, DeliveryActorSelection, DeliveryScriptTarget, DeliveryScriptSnapshot, DeliveryScriptHandle, DeliveryScripts } from './modules/m9e3090309385.js';
+export type { DeliveryClientOptions, DeliveryOpenOptions, DeliveryProgress, DeliveryAutoUpdate, DeliveryUpdateProgress, DeliveryActorSelection, DeliveryScriptTarget, DeliveryScriptSnapshot, DeliveryScriptHandle, DeliveryScripts } from './modules/m9e3090309385.js';
 export { LocalChunkSource, HttpChunkSource } from './modules/m7917afd94e6d.js';
 export type { DeliverySource, DeliveryModel, DeliveryRelease, DeliveryDirectoryHandle, DeliveryFileHandle } from './modules/m7917afd94e6d.js';
 export { readReviewSnapshot, diffActors } from './modules/m5b5c85898923.js';

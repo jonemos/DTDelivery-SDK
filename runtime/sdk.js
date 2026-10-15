@@ -2443,7 +2443,7 @@ function Ri(e, t, n = e) {
 //#region src/delivery/SdkVersion.ts
 var zi = typeof __DT_DELIVERY_SDK_VERSION__ > "u" ? {
 	name: "@dt/delivery-sdk",
-	version: "0.3.8",
+	version: "0.3.9",
 	license: "MIT",
 	addonSdkVersion: 5,
 	contracts: [
@@ -12681,6 +12681,7 @@ var ep = class {
 	wanted;
 	spatialStates = [];
 	spatialPaused = !1;
+	activeReader;
 	spatialOpening;
 	spatialHolds = /* @__PURE__ */ new Set();
 	mountHolds = /* @__PURE__ */ new Map();
@@ -12830,7 +12831,7 @@ var ep = class {
 		return this.serial;
 	}
 	constructor(e, t) {
-		this.reader = e, this.automatic = t?.automatic ?? !t;
+		this.reader = e, this.activeReader = e, this.automatic = t?.automatic ?? !t;
 		let n = t ?? Xf;
 		this.limits = Object.freeze({
 			...n,
@@ -12973,17 +12974,17 @@ var ep = class {
 	cancel() {
 		this.spatialPaused = !0, this.sequence++, this.pending?.abort(/* @__PURE__ */ Error("Delivery operation cancelled")), this.streamUnsubscribe && this.runtime?.cancel();
 	}
-	async open(e) {
-		return this.enqueue(async (t) => ({
-			manifest: await this.reader.manifest(e, t),
+	async open(e, t = this.activeReader) {
+		return this.enqueue(async (n) => ({
+			manifest: await t.manifest(e, n),
 			hash: e
-		}));
+		}), t);
 	}
-	async openProgressive(e, t = []) {
+	async openProgressive(e, t = [], n = this.activeReader) {
 		return this.enqueue(async (t) => ({
-			manifest: await this.reader.manifest(e, t),
+			manifest: await n.manifest(e, t),
 			hash: e
-		}), this.reader, void 0, { priority: t });
+		}), n, void 0, { priority: t });
 	}
 	async openApplication(e) {
 		return this.enqueue(async (t) => ({
@@ -13013,7 +13014,7 @@ var ep = class {
 			hash: this.hash
 		}));
 	}
-	async enqueue(e, t = this.reader, n, r) {
+	async enqueue(e, t = this.activeReader, n, r) {
 		if (this.disposed) throw Error("Viewer disposed");
 		this.cancel(), this.spatialPaused = !1;
 		let i = this.sequence, a = new AbortController();
@@ -13045,11 +13046,11 @@ var ep = class {
 			}, x = () => {
 				this.displayManifest = u, this.aliases = d, this.memberships = l.memberships, this.spatial = f, this.wanted = m, this.spatialStates = p?.states ?? [];
 			};
-			if (!n && !this.applied && this.runtime && this.manifest && s.id === this.manifest.id && u.mounts.every((e) => !e.loaded || this.runtime.states.get(e.id)?.view?.info.pin.assetRevision === e.level)) {
-				x(), this.runtime.reconcile(ee), this.manifest = s, this.hash = c, this.equipmentIndex = g, this.actorIndex = _, this.changed(), this.pending === a && (this.pending = void 0);
+			if (!n && !this.applied && t.provider === this.activeReader.provider && this.runtime && this.manifest && s.id === this.manifest.id && u.mounts.every((e) => !e.loaded || this.runtime.states.get(e.id)?.view?.info.pin.assetRevision === e.level)) {
+				this.activeReader = t, x(), this.runtime.reconcile(ee), this.manifest = s, this.hash = c, this.equipmentIndex = g, this.actorIndex = _, this.changed(), this.pending === a && (this.pending = void 0);
 				return;
 			}
-			let S = h ? new AbortController() : void 0, C = l.source(t, S?.signal ?? o), w = new Vf(C, Ia), te = this.usage;
+			let S = h ? new AbortController() : void 0, C = l.source(t, S?.signal ?? o), w = new Vf(C, this.runtime?.textureControl().options ?? Ia), te = this.usage;
 			w.configureAddons({
 				environment: "delivery",
 				compositionId: s.id,
@@ -13072,7 +13073,7 @@ var ep = class {
 			o.addEventListener("abort", ne, { once: !0 });
 			let re = !1;
 			try {
-				h && (this.streamAbort = S, this.root.add(T.root), this.runtime = T, this.manifest = s, this.hash = c, this.equipmentIndex = g, this.actorIndex = _, re = !0, x(), this.spatialOpening = T, this.observeRuntime(T), m && this.showBoxes(u, m)), T.reconcile(ee);
+				h && (this.activeReader = t, this.streamAbort = S, this.root.add(T.root), this.runtime = T, this.manifest = s, this.hash = c, this.equipmentIndex = g, this.actorIndex = _, re = !0, x(), this.spatialOpening = T, this.observeRuntime(T), m && this.showBoxes(u, m)), T.reconcile(ee);
 				for (let e of T.objectViews.values()) e.setHelpersVisible?.(!1), e.setIconPresentation?.(!1, 1);
 				if (T.usage.geometry > T.budget.geometry || T.usage.texture > T.budget.texture || T.usage.actors > T.budget.actors) throw Error("통합 객체 표시 예산 초과");
 				if (await T.idle(), o.throwIfAborted(), h) {
@@ -13083,8 +13084,8 @@ var ep = class {
 				if (e) throw Error(e.message ?? "Level preparation failed");
 				for (let [e, t] of T.states) t.view && (t.view.root.userData.deliveryMountId = d.get(e) ?? e);
 				if (i !== this.sequence || this.disposed) throw Error("Stale delivery operation");
-				let t = this.runtime;
-				this.root.add(T.root), this.runtime = T, this.manifest = s, this.hash = c, this.equipmentIndex = g, this.actorIndex = _, this.streamUnsubscribe?.(), this.streamUnsubscribe = void 0, this.streamAbort?.abort(), this.streamAbort = void 0, this.clearBoxes(), this.applied = n?.revision, x(), this.observeRuntime(T), m && this.showBoxes(u, m), t?.root.removeFromParent(), t?.dispose(), this.changed();
+				let r = this.runtime;
+				this.root.add(T.root), this.runtime = T, this.manifest = s, this.hash = c, this.equipmentIndex = g, this.actorIndex = _, this.streamUnsubscribe?.(), this.streamUnsubscribe = void 0, this.streamAbort?.abort(), this.streamAbort = void 0, this.clearBoxes(), this.applied = n?.revision, this.activeReader = t, x(), this.observeRuntime(T), m && this.showBoxes(u, m), r?.root.removeFromParent(), r?.dispose(), this.changed();
 			} catch (e) {
 				throw re || T.dispose(), await T.idle(), e;
 			} finally {
@@ -14144,17 +14145,17 @@ var xp = (e, t) => e.groupOrder - t.groupOrder || e.renderOrder - t.renderOrder 
 			}
 		});
 	}
-	async open(e) {
-		await this.session.open(e), this.fit();
+	async open(e, t) {
+		await this.session.open(e, t), this.fit();
 	}
-	async openProgressive(e, t = []) {
-		let n = !1, r = this.session.subscribe(() => {
-			!n && !this.session.placeholderBounds.isEmpty() && (this.frameBounds(this.session.placeholderBounds), n = !0), this.invalidate();
+	async openProgressive(e, t = [], n) {
+		let r = !1, i = this.session.subscribe(() => {
+			!r && !this.session.placeholderBounds.isEmpty() && (this.frameBounds(this.session.placeholderBounds), r = !0), this.invalidate();
 		});
 		try {
-			await this.session.openProgressive(e, t), n || this.fit();
+			await this.session.openProgressive(e, t, n), r || this.fit();
 		} finally {
-			r();
+			i();
 		}
 	}
 	async openSpatial(e, t = $f) {
@@ -14405,7 +14406,17 @@ var Dp = class {
 		}, Object.freeze({ ...e }), this.generation)),
 		subscribe: (e) => this.subscribeScripts(() => e(this.scriptList()))
 	};
-	reader;
+	cache;
+	stats = {
+		downloaded: 0,
+		requests: 0,
+		cacheHits: 0
+	};
+	updateInterval;
+	update;
+	watchEpoch = 0;
+	watchTimer;
+	watchRequest;
 	binding;
 	generation = 0;
 	operation;
@@ -14419,23 +14430,34 @@ var Dp = class {
 	cleanup;
 	constructor(e) {
 		this.options = e;
-		let t = {
-			authorize: async (e) => {
-				if (e.throwIfAborted(), !this.binding) throw Error("먼저 게시본을 여세요.");
-				await this.binding.provider.authorize?.(e);
-			},
-			read: async (e, t, n) => {
-				if (n.throwIfAborted(), !this.binding) throw Error("먼저 게시본을 여세요.");
-				return this.binding.provider.read(e, t, n);
-			}
-		};
-		this.reader = new Ku(t, e.cache ?? new Wu()), this.viewport = new wp(e.canvas, this.reader, e.budget), e.onProgress && this.progressListeners.add(e.onProgress), e.onActorSelect && this.actorListeners.add(e.onActorSelect), this.reader.onProgress = () => this.emitProgress(), this.cleanup = [
+		let t = typeof e.autoUpdate == "object" ? e.autoUpdate.intervalMs ?? 5e3 : 5e3;
+		if (!Number.isSafeInteger(t) || t < 1e3 || t > 3e5) throw Error("자동 갱신 간격은 1000~300000ms여야 합니다.");
+		this.updateInterval = t, this.update = { state: e.autoUpdate === !1 ? "disabled" : "stopped" }, this.cache = e.cache ?? new Wu(), this.viewport = new wp(e.canvas, this.createReader({ read: async () => {
+			throw Error("먼저 게시본을 여세요.");
+		} }), e.budget), e.onProgress && this.progressListeners.add(e.onProgress), e.onActorSelect && this.actorListeners.add(e.onActorSelect), this.cleanup = [
 			this.viewport.session.subscribe(() => {
 				this.emitProgress(), this.emitScripts();
 			}),
 			this.viewport.subscribeActorSelection((e) => this.emitActor(e)),
 			this.viewport.addons.subscribe(() => this.emitScripts())
 		];
+	}
+	createReader(e) {
+		let t = new Ku(e, this.cache), n = {
+			downloaded: 0,
+			requests: 0,
+			cacheHits: 0
+		};
+		return t.onProgress = (e) => {
+			if (!this.disposed) {
+				for (let t of [
+					"downloaded",
+					"requests",
+					"cacheHits"
+				]) this.stats[t] += e[t] - n[t], n[t] = e[t];
+				this.emitProgress();
+			}
+		}, t;
 	}
 	live() {
 		if (this.disposed) throw Error("SDK 연결이 종료되었습니다.");
@@ -14448,12 +14470,13 @@ var Dp = class {
 		return {
 			status: this.status,
 			model: this.model,
-			downloadedBytes: this.reader.stats.downloaded,
-			requests: this.reader.stats.requests,
-			cacheHits: this.reader.stats.cacheHits,
+			downloadedBytes: this.stats.downloaded,
+			requests: this.stats.requests,
+			cacheHits: this.stats.cacheHits,
 			readyCells: t.filter((e) => e.status === "ready").length,
 			totalCells: t.length,
-			cells: structuredClone(e)
+			cells: structuredClone(e),
+			update: { ...this.update }
 		};
 	}
 	emitProgress() {
@@ -14523,13 +14546,13 @@ var Dp = class {
 			let r = await this.options.source.resolve(e, i);
 			if (i.throwIfAborted(), this.live(), n !== this.generation) throw Error("더 새로운 게시본 열기 요청이 있습니다.");
 			if (r.model.id !== e || !F(r.model.releaseHash)) throw Error("잘못된 저장소 게시본입니다.");
-			let a = await new Ku(r.provider).manifest(r.model.releaseHash, i);
-			if (a.id !== e || a.name !== r.model.name) throw Error("저장소 모델 정보가 manifest와 다릅니다.");
+			let a = this.createReader(r.provider), o = await a.manifest(r.model.releaseHash, i);
+			if (o.id !== e || o.name !== r.model.name) throw Error("저장소 모델 정보가 manifest와 다릅니다.");
 			if (i.throwIfAborted(), n !== this.generation) throw Error("더 새로운 게시본 열기 요청이 있습니다.");
-			return this.binding = {
+			return t.progressive === !1 ? await this.viewport.open(r.model.releaseHash, a) : await this.viewport.openProgressive(r.model.releaseHash, t.priority, a), await this.ready(i), i.throwIfAborted(), n === this.generation && (this.binding = {
 				model: Object.freeze({ ...r.model }),
 				provider: r.provider
-			}, this.emitActor(null), t.progressive === !1 ? await this.viewport.open(r.model.releaseHash) : await this.viewport.openProgressive(r.model.releaseHash, t.priority), await this.ready(i), i.throwIfAborted(), n === this.generation && (this.status = "ready", this.emitProgress()), this.model;
+			}, this.emitActor(null), this.status = "ready", this.startWatching(), this.emitProgress()), this.model;
 		} catch (e) {
 			throw n === this.generation && !this.disposed && (this.viewport.session.release !== this.binding?.model.releaseHash && (this.binding = o), this.status = i.aborted ? "cancelled" : "failed", this.emitProgress()), e;
 		} finally {
@@ -14551,8 +14574,72 @@ var Dp = class {
 			r = this.viewport.session.subscribe(o), e.addEventListener("abort", a, { once: !0 }), o();
 		});
 	}
+	stopWatching() {
+		this.watchEpoch++, clearTimeout(this.watchTimer), this.watchTimer = void 0, this.watchRequest?.abort(/* @__PURE__ */ Error("자동 갱신이 중단되었습니다.")), this.watchRequest = void 0, this.update = { state: this.options.autoUpdate === !1 ? "disabled" : "stopped" };
+	}
+	startWatching() {
+		if (this.options.autoUpdate === !1) return;
+		let e = this.watchEpoch;
+		this.update = { state: "watching" }, this.scheduleCheck(e, this.updateInterval, 0);
+	}
+	scheduleCheck(e, t, n) {
+		e !== this.watchEpoch || this.disposed || (this.watchTimer = setTimeout(() => {
+			this.watchTimer = void 0, this.checkUpdate(e, n);
+		}, t));
+	}
+	async checkUpdate(e, t) {
+		if (e !== this.watchEpoch || this.disposed || !this.binding) return;
+		if (this.viewport.session.busy || this.viewport.session.textureApplying) {
+			this.scheduleCheck(e, this.updateInterval, t);
+			return;
+		}
+		let n = this.binding, r = new AbortController();
+		this.watchRequest = r;
+		let i = AbortSignal.any([r.signal, AbortSignal.timeout(3e5)]), a = () => {
+			if (i.throwIfAborted(), this.live(), e !== this.watchEpoch) throw Error("이전 자동 갱신 요청입니다.");
+		}, o = () => {
+			e === this.watchEpoch && this.viewport.session.cancel();
+		}, s = !1, c = !1;
+		try {
+			this.update = { state: "checking" }, this.emitProgress(), a();
+			let e = this.options.source, t, r = e.latestRelease ? await e.latestRelease(n.model.id, i) : (t = await e.resolve(n.model.id, i)).model.releaseHash;
+			if (a(), !F(r)) throw Error("잘못된 게시본 head입니다.");
+			if (t && t.model.id !== n.model.id) throw Error("잘못된 저장소 게시본입니다.");
+			if (r !== n.model.releaseHash) {
+				if (t ??= await e.resolve(n.model.id, i), a(), t.model.id !== n.model.id || !F(t.model.releaseHash)) throw Error("잘못된 저장소 게시본입니다.");
+				if (t.model.releaseHash !== n.model.releaseHash) {
+					this.update = {
+						state: "updating",
+						targetHash: t.model.releaseHash
+					}, this.emitProgress();
+					let e = this.createReader(t.provider), r = await e.manifest(t.model.releaseHash, i);
+					if (a(), r.id !== n.model.id || r.name !== t.model.name) throw Error("저장소 모델 정보가 manifest와 다릅니다.");
+					i.addEventListener("abort", o, { once: !0 }), s = !0, await this.viewport.session.openProgressive(t.model.releaseHash, [], e), a(), this.binding = {
+						model: Object.freeze({ ...t.model }),
+						provider: t.provider
+					}, this.generation++;
+					let c = this.selected;
+					if (c) try {
+						this.selectActor(c);
+					} catch {
+						this.selectActor(null);
+					}
+					this.emitScripts();
+				}
+			}
+			a(), this.update = { state: "watching" };
+		} catch {
+			c = !0, e === this.watchEpoch && !this.disposed && (this.update = { state: "retrying" });
+		} finally {
+			if (s && i.removeEventListener("abort", o), this.watchRequest === r && (this.watchRequest = void 0), e === this.watchEpoch && !this.disposed) {
+				this.emitProgress();
+				let n = c ? Math.min(t + 1, 6) : 0;
+				this.scheduleCheck(e, c ? Math.min(this.updateInterval * 2 ** n, Math.max(this.updateInterval, 6e4)) : this.updateInterval, n);
+			}
+		}
+	}
 	cancel() {
-		this.live(), this.operation?.abort(/* @__PURE__ */ Error("게시본 로드가 취소되었습니다.")), this.viewport.session.cancel();
+		this.live(), this.stopWatching(), this.operation?.abort(/* @__PURE__ */ Error("게시본 로드가 취소되었습니다.")), this.viewport.session.cancel(), this.emitProgress();
 	}
 	actors(e = "") {
 		this.live();
@@ -14637,7 +14724,7 @@ var Dp = class {
 		return this.scriptSnapshot(e.target, t);
 	}
 	async dispose() {
-		this.disposed || (this.operation?.abort(/* @__PURE__ */ Error("SDK 연결이 종료되었습니다.")), this.listings.forEach((e) => e.abort()), this.disposed = !0, this.generation++, this.status = "disposed", this.cleanup.forEach((e) => e()), this.progressListeners.clear(), this.actorListeners.clear(), this.scriptListeners.clear(), this.reader.onProgress = void 0, await this.viewport.dispose(), this.binding = void 0, this.selected = null);
+		this.disposed || (this.stopWatching(), this.operation?.abort(/* @__PURE__ */ Error("SDK 연결이 종료되었습니다.")), this.listings.forEach((e) => e.abort()), this.disposed = !0, this.generation++, this.status = "disposed", this.cleanup.forEach((e) => e()), this.progressListeners.clear(), this.actorListeners.clear(), this.scriptListeners.clear(), await this.viewport.dispose(), this.binding = void 0, this.selected = null);
 	}
 }, kp = /^(objects\/[a-f0-9]{64}|releases\/[a-f0-9]{64}\.json)$/, Ap = 256;
 function jp(e) {
@@ -14745,6 +14832,14 @@ var Lp = class {
 		if (!a) throw Error("아직 게시 완료된 head가 없습니다.");
 		return Ip(a, Fp(r, this.authorize), t, e);
 	}
+	async latestRelease(e, t = new AbortController().signal) {
+		Ep(e), await this.authorize(t);
+		let n = await Pp(this.directory, t);
+		if (n) return n;
+		let { scope: r } = await this.publication(), i = await Pp(await r.getDirectoryHandle(e), t);
+		if (!i) throw Error("아직 게시 완료된 head가 없습니다.");
+		return i;
+	}
 }, Rp = class {
 	base;
 	publication;
@@ -14756,7 +14851,7 @@ var Lp = class {
 			Ep(t.scope), Ep(t.compositionId), this.publication = Object.freeze({ ...t }), this.headBase = new URL(`levels/${t.scope}/${t.compositionId}/`, this.base), this.provider = Gu(new URL("levels/", this.base));
 		} else this.headBase = this.base, this.provider = Gu(this.base);
 	}
-	async current(e) {
+	async currentHash(e) {
 		let t = await fetch(new URL("delivery-head.json", this.headBase), {
 			signal: AbortSignal.any([e, AbortSignal.timeout(3e4)]),
 			redirect: "error",
@@ -14772,10 +14867,17 @@ var Lp = class {
 				if (i + t.length > Ap) throw Error("잘못된 게시본 head입니다.");
 				r.set(t, i), i += t.length;
 			}
-			return Ip(Np(r.subarray(0, i)), this.provider, e, this.publication?.compositionId);
+			return Np(r.subarray(0, i));
 		} finally {
 			await n.cancel().catch(() => {}), n.releaseLock();
 		}
+	}
+	async current(e) {
+		return Ip(await this.currentHash(e), this.provider, e, this.publication?.compositionId);
+	}
+	async latestRelease(e, t = new AbortController().signal) {
+		if (Ep(e), this.publication && e !== this.publication.compositionId) throw Error("정적 청크 주소의 통합레벨 ID가 다릅니다.");
+		return this.currentHash(t);
 	}
 	async listModels(e = new AbortController().signal) {
 		return [(await this.current(e)).model];

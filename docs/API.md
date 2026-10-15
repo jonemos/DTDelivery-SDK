@@ -1,4 +1,4 @@
-# 공개 함수·타입 명세 · SDK 0.3.7
+# 공개 함수·타입 명세 · SDK 0.3.9
 
 API를 화면에 연결하는 순서와 기능별 실행 예제는 [개발 가이드 목차](guides/README.md)를 참고하세요. 이 문서는 함수 계약 요약이며 가이드의 코드도 공개 `@dt/delivery-sdk` import만 사용합니다.
 
@@ -16,6 +16,7 @@ interface DeliveryRelease { readonly model: DeliveryModel; readonly provider: By
 interface DeliverySource {
   listModels(signal: AbortSignal): Promise<readonly DeliveryModel[]>;
   resolve(modelId: string, signal: AbortSignal): Promise<DeliveryRelease>;
+  latestRelease?(modelId: string, signal: AbortSignal): Promise<string>;
 }
 interface ByteProvider {
   read(path: string, limit: number, signal: AbortSignal): Promise<Uint8Array>;
@@ -33,7 +34,7 @@ interface ByteProvider {
 
 | 메서드/속성 | 결과·계약 |
 |---|---|
-| `new DeliveryClient(options)` | canvas, source 필수. cache, budget, onProgress, onActorSelect 선택 |
+| `new DeliveryClient(options)` | canvas, source 필수. cache, budget, onProgress, onActorSelect, autoUpdate 선택 |
 | `listModels(signal?)` | 복사된 모델 목록. source를 다시 읽으며 ID·중복·해시·이름 검증 |
 | `open(modelId, options?)` | 기본 progressive true. 모델 확인 뒤 새 게시 해시를 고정하고 전체 초기 로드를 기다림 |
 | `open` options | progressive, 원본 mount ID인 priority, AbortSignal |
@@ -52,7 +53,11 @@ interface ByteProvider {
 | `setStaticBatching(enabled)` | 기본 false. 표시 최적화이며 Actor ID를 변경하지 않음 |
 | `viewport` | 기존 DeliveryViewer의 저수준 화면/텍스처/환경광/예산 제어 |
 
-같은 연결에서 open은 이전 열기 요청을 취소합니다. 늦게 끝난 이전 요청이 새 연결을 덮어쓰지 않습니다. 이미 열린 화면은 목록 갱신만으로 자동 교체하지 않습니다. 실패·취소는 Promise 거부와 progress status로 확인합니다. 요청 교체·dispose 이후 이전 스크립트 핸들은 무효입니다.
+0.3.9부터 `open()` 완료 후 기본 5초 간격으로 현재 모델의 최신 head를 확인합니다. 해시가 바뀌면 manifest·청크를 검증하고 새 화면 준비가 끝난 뒤 교체하며 카메라·투영·표시 설정을 유지합니다. 준비 실패 시 기존 화면을 유지하고 최대 60초 간격으로 재시도합니다. 네트워크 시간과 브라우저의 백그라운드 타이머 지연이 있어 반영은 즉시가 아닙니다. 자동 전환 시 실행 중 스크립트·속성은 새 게시본으로 재생성되며 이전 핸들은 다시 얻어야 합니다.
+
+`autoUpdate: false`로 고정 게시본을 유지하거나 `autoUpdate: { intervalMs: 10000 }`으로 간격을 정합니다(1000~300000ms). `progress.update.state`는 disabled/stopped/watching/checking/updating/retrying이고 준비 중에는 `targetHash`를 제공합니다. Http/Local source는 작은 head만 확인합니다. 외부 source는 선택적 `latestRelease()`를 구현하면 같은 방식으로 확인하며, 생략하면 `resolve()`로 확인합니다. head는 신뢰 검증을 대신하지 않습니다.
+
+같은 연결에서 open은 이전 열기·자동 갱신 요청을 취소합니다. 늦게 끝난 이전 요청이 새 연결을 덮어쓰지 않습니다. `cancel()`은 자동 확인도 중단하며 다시 `open()`하면 재개합니다. `dispose()`는 확인 타이머와 요청을 해제합니다. 수동 열기의 실패·취소는 Promise 거부와 progress status로 확인합니다. 요청 교체·dispose 이후 이전 스크립트 핸들은 무효입니다. 구버전 SDK나 아직 전환 중인 화면이 있으므로 새 게시 직후 이전 게시본을 즉시 삭제해도 안전하다는 의미는 아닙니다.
 
 Actor target은 `{ mountId: string | null, actorId: string }`입니다. source UUID와 인스턴스 mount ID를 사용하며 표시 이름은 식별자가 아닙니다. full ActorPlacement에는 compositionId, releaseHash, serviceKey, 원본 metadata, 읽기 전용 component 목록과 위치가 있습니다. SDK 위치는 RH/Y-up/미터, Unreal-facing 위치는 별도 positionUeCm입니다.
 

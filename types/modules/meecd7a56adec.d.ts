@@ -36,6 +36,7 @@ export declare class DeliverySession {
     private wanted?;
     private spatialStates;
     private spatialPaused;
+    private activeReader;
     private spatialOpening?;
     private spatialHolds;
     private mountHolds;
@@ -205,9 +206,9 @@ export declare class DeliverySession {
     setDeviceState(mountId: string, actorId: string, state: DeviceState): void;
     deviceState(mountId: string, actorId: string): DeviceState | undefined;
     cancel(): void;
-    open(hash: string): Promise<void>;
+    open(hash: string, reader?: ChunkReader): Promise<void>;
     /** First load may expose ready complete levels. Replacement still commits atomically. */
-    openProgressive(hash: string, priority?: readonly string[]): Promise<void>;
+    openProgressive(hash: string, priority?: readonly string[], reader?: ChunkReader): Promise<void>;
     openApplication(resolved: {
         reader: ChunkReader;
         hash: string;

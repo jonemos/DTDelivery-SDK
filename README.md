@@ -1,6 +1,8 @@
-# DT Delivery SDK 0.3.7
+# DT Delivery SDK 0.3.9
 
 브라우저에서 제작된 청크를 검증하고 3D 모델을 보여주는 SDK입니다. **0.3.0부터 별도의 Delivery API 서버를 실행하지 않습니다.** 클래스와 함수로 모델 목록, 점진 로딩, 액터 선택, 스크립트 공개 속성을 제어합니다. 기존 청크 계약1–5와 Atlas는 유지됩니다.
+
+**0.3.9부터 열린 모델도 최신 게시본으로 자동 갱신합니다.** 기본 5초 간격으로 head를 확인하고 새 게시본 검증·준비 후 화면을 교체합니다. 카메라와 표시 설정은 유지하며 준비 실패 시 현재 화면을 유지하고 재시도합니다. 테스트 페이지의 로드 진행 영역에서 갱신 상태를 확인하세요. `new DeliveryClient({ canvas, source, autoUpdate: false })`로 끌 수 있습니다. 이전 SDK는 `update.cmd` 실행 후 페이지를 새로 열어야 이 기능이 적용됩니다. 실행 중 스크립트 상태는 새 게시본으로 초기화됩니다.
 
 **0.3.4부터 Windows 테스트 서버는 Node.js·pnpm 설치 없이 실행합니다.** SDK 전체 ZIP을 압축 해제하고 `examples/test-server.cmd`를 실행하세요. 미리 빌드한 예제와 Windows 기본 PowerShell을 사용하며 첫 실행에도 패키지를 다운로드하지 않습니다. 예제 소스 개발은 `examples/dev-server.cmd`로 분리했습니다.
 
@@ -117,7 +119,7 @@ SDK와 모델 청크는 별도로 준비합니다. 이 Git 저장소에는 사�
 Git 태그로 버전을 고정하려면 프로젝트에서 실행합니다.
 
 ```powershell
-pnpm.cmd add '@dt/delivery-sdk@github:jonemos/DTDelivery-SDK#v0.3.8'
+pnpm.cmd add '@dt/delivery-sdk@github:jonemos/DTDelivery-SDK#v0.3.9'
 ```
 
 또는 SDK 폴더를 프로젝트의 `vendor/delivery-sdk`에 복사한 뒤 프로젝트에서 실행합니다.

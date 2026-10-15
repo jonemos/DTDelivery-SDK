@@ -12,6 +12,8 @@ export interface DeliveryRelease {
 export interface DeliverySource {
     listModels(signal: AbortSignal): Promise<readonly DeliveryModel[]>;
     resolve(modelId: string, signal: AbortSignal): Promise<DeliveryRelease>;
+    /** Lightweight head check; custom adapters may omit it and fall back to resolve. */
+    latestRelease?(modelId: string, signal: AbortSignal): Promise<string>;
 }
 export interface DeliveryFileHandle {
     getFile(): Promise<Blob>;
@@ -42,6 +44,7 @@ export declare class LocalChunkSource implements DeliverySource {
     private publication;
     listModels(signal?: AbortSignal): Promise<readonly DeliveryModel[]>;
     resolve(modelId: string, signal?: AbortSignal): Promise<DeliveryRelease>;
+    latestRelease(modelId: string, signal?: AbortSignal): Promise<string>;
 }
 /** One plain export or an explicitly selected published model. Anonymous HTTP reads only. */
 export declare class HttpChunkSource implements DeliverySource {
@@ -56,7 +59,9 @@ export declare class HttpChunkSource implements DeliverySource {
         scope: string;
         compositionId: string;
     });
+    private currentHash;
     private current;
+    latestRelease(modelId: string, signal?: AbortSignal): Promise<string>;
     listModels(signal?: AbortSignal): Promise<DeliveryModel[]>;
     resolve(modelId: string, signal?: AbortSignal): Promise<DeliveryRelease>;
 }

@@ -42,6 +42,14 @@ function scripts() {
   }
 }
 function progress(value: DeliveryProgress) {
+  const update = element('update-summary'); update.dataset.state = value.update.state;
+  const updateLabels = { disabled: '자동 갱신 꺼짐', stopped: '자동 갱신 대기', watching: '최신 게시본 자동 확인 · 5초 간격', checking: '최신 게시본 확인 중', updating: '새 게시본 준비 중 · 현재 화면 유지', retrying: '갱신 실패 · 현재 화면 유지, 자동 재시도' };
+  update.textContent = updateLabels[value.update.state];
+  if (value.model) {
+    update.dataset.release = value.model.releaseHash; update.title = `${value.model.name} · ${value.model.releaseHash}`;
+    catalog = catalog.map(model => model.id === value.model!.id ? value.model! : model);
+    for (const option of models.options) if (option.value === value.model.id) option.textContent = value.model.name;
+  }
   const bar = element<HTMLProgressElement>('load-progress'); bar.max = Math.max(1, value.totalCells); bar.value = value.readyCells;
   if (value.status === 'loading' && value.totalCells === 0) bar.removeAttribute('value');
   element('load-summary').textContent = value.totalCells ? `${value.readyCells} / ${value.totalCells}` : '대기 중';
@@ -60,7 +68,7 @@ async function disconnect(stopExamples = true) {
   if (stopExamples) examples?.stop();
   const ticket = ++generation, old = sdk; sdk = undefined; cleanups.splice(0).forEach(dispose => dispose()); await old?.dispose();
   catalog = []; examples?.refresh();
-  if (ticket === generation) { canvas.hidden = true; element('scripts').replaceChildren(); }
+  if (ticket === generation) { canvas.hidden = true; element('scripts').replaceChildren(); element('update-summary').textContent = '자동 갱신 대기'; delete element('update-summary').dataset.release; }
   return ticket;
 }
 async function connect(value: DeliverySource, signal?: AbortSignal, fromExample = false): Promise<readonly DeliveryModel[]> {

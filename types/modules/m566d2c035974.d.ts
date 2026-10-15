@@ -80,9 +80,9 @@ export declare class DeliveryViewer {
     invalidate: () => void;
     private pick;
     constructor(canvas: HTMLCanvasElement, reader: ChunkReader, budget?: DisplayBudget);
-    open(hash: string): Promise<void>;
+    open(hash: string, reader?: ChunkReader): Promise<void>;
     /** Frame verified release bounds once, then display each fully prepared level/cell as it arrives. */
-    openProgressive(hash: string, priority?: readonly string[]): Promise<void>;
+    openProgressive(hash: string, priority?: readonly string[], reader?: ChunkReader): Promise<void>;
     /** Keep the host's initial camera; do not fit the entire release after prioritizing its nearby regions. */
     openSpatial(hash: string, options?: SpatialStreamingOptions): Promise<void>;
     setSpatialStreaming(options: SpatialStreamingOptions | null): void;

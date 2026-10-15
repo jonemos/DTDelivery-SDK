@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.9
+
+Automatically refresh an opened model from the latest publication head every five seconds. Verify and stage replacements atomically, preserve camera and display settings, retain the previous scene on failure and retry with bounded backoff. Add lightweight source head checks, autoUpdate configuration and progress.update status; isolate release providers and stop polling on cancel/dispose. Preserve remote storage prefixes, shared chunk cache, one-click updater and no-install test server.
+
 ## 0.3.8
 
 Fix update.cmd Git rev-parse failures for administrator-owned or copied SDK folders. Trust only the validated SDK path for each updater Git process without changing global Git configuration. Preserve local edits, backup/recovery, existing history and tags, remote publication support, and the no-install test server.
