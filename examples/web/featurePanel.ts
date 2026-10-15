@@ -1,5 +1,6 @@
 import { exampleCode, featureExamples, type ExampleContext, type ExampleValues, type ExampleField } from './featureExamples';
 import type { DeliveryModel, DeliveryScriptSnapshot } from '@dt/delivery-sdk';
+import { DELIVERY_SDK_VERSION } from '@dt/delivery-sdk';
 
 export interface FeatureHost extends Pick<ExampleContext, 'client' | 'connect' | 'disconnect' | 'showViewport'> {
   catalog(): readonly DeliveryModel[];
@@ -135,7 +136,7 @@ export function mountFeaturePanel(root: HTMLElement, codeRoot: HTMLElement, info
     controls = new Map(); shownScript = undefined; fields.replaceChildren();
     for (const field of current.fields ?? []) createField(field);
     codeTitle.textContent = current.title; code.textContent = exampleCode(current.id);
-    guide.href = `https://github.com/jonemos/DTDelivery-SDK/blob/v0.3.3/docs/guides/${current.guide}.md`;
+    guide.href = `https://github.com/jonemos/DTDelivery-SDK/blob/v${DELIVERY_SDK_VERSION}/docs/guides/${current.guide}.md`;
     parameters.textContent = '입력값은 실행 시 표시합니다.'; result.textContent = '아직 실행하지 않았습니다.';
     state.textContent = '예제를 선택하고 실행하세요.'; state.dataset.state = 'idle';
     reload.hidden = current.id !== 'property'; refresh();

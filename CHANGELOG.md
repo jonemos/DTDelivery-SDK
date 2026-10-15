@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.4
+
+Run the prebuilt browser example with built-in Windows PowerShell. No Node.js, pnpm, package installation or startup download is required. Validate exact public runtime/page hashes before serving loopback-only GET/HEAD files. Preserve source development in dev-server.cmd, the shared public SDK entry, existing data contracts and all immutable version tags.
+
 ## 0.3.3
 
 Add21 runnable feature examples, actual source-code viewing/copy, parameter and result panels, prerequisite guards, cancellation and view restoration. Preserve viewport rendering and menus, immutable IDs, direct sources, all contracts and previous tags.
