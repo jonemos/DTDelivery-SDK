@@ -2443,7 +2443,7 @@ function Li(e, t, n = e) {
 //#region src/delivery/SdkVersion.ts
 var Ri = typeof __DT_DELIVERY_SDK_VERSION__ > "u" ? {
 	name: "@dt/delivery-sdk",
-	version: "0.3.5",
+	version: "0.3.6",
 	license: "MIT",
 	addonSdkVersion: 5,
 	contracts: [

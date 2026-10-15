@@ -160,6 +160,10 @@ function Install-SdkSnapshot([string]$Root, [string]$State, [string]$Stage, [str
     $top = Invoke-SdkGit $Git $Root $State @('rev-parse', '--show-toplevel')
     if ([IO.Path]::GetFullPath($top).TrimEnd('\') -ine $Root) { throw 'Use a standalone SDK Git checkout.' }
     if (Invoke-SdkGit $Git $Root $State @('status', '--porcelain', '--untracked-files=no')) { throw 'Keep or commit your tracked SDK edits before updating.' }
+    $tracked = Invoke-SdkGit $Git $Root $State @('ls-files', '-z')
+    foreach ($name in $tracked.Split([char]0)) {
+      if ($name -and -not $Current.Files.ContainsKey($name)) { throw 'This Git checkout contains personal tracked files outside the SDK manifest. Keep them in a separate project before updating.' }
+    }
     $origin = Invoke-SdkGit $Git $Root $State @('config', '--get', 'remote.origin.url')
     if ($origin -notmatch '^(https://github\.com/|git@github\.com:)jonemos/(DTDelivery-SDK|DTWebEditor_SDK)(\.git)?$') { throw 'This checkout does not use the official SDK repository.' }
     $oldHead = Invoke-SdkGit $Git $Root $State @('rev-parse', 'HEAD')
@@ -214,6 +218,7 @@ function Invoke-SdkUpdate([string]$Directory) {
     }
     $git = $null
     if ([IO.Directory]::Exists([IO.Path]::Combine($root, '.git'))) {
+      $null = Get-SdkPath $root '.git'
       $command = Get-Command git.exe -CommandType Application -ErrorAction SilentlyContinue
       if (-not $command) { throw 'A Git checkout requires Git to preserve its history. ZIP copies update without Git.' }
       $git = @($command)[0].Source

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "version": "0.3.5",
-  "baseVersion": "0.3.5",
+  "version": "0.3.6",
+  "baseVersion": "0.3.6",
   "license": "MIT",
   "addonSdkVersion": 5,
   "contracts": [
@@ -25,13 +25,13 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 7362,
-      "sha256": "011887727220a17ea1e5a6519a6655942c7e2ac29dec295c2a50d16328d3a4fd"
+      "bytes": 7638,
+      "sha256": "74bd34acc09301ffa67a89c8c176c112bcdd3371fa40213fdd40d7ec5c1ed8be"
     },
     {
       "path": "docs/API.md",
       "bytes": 8187,
-      "sha256": "a864d156a23643b1c09dff8238e1f4be4b37de443ac674752661d6658fb5b64b"
+      "sha256": "d3ab3e508cf3ca1e8499da13593fd912cc545f8bb6b01912d19f22ae1668b07a"
     },
     {
       "path": "docs/GITHUB_DESKTOP.md",
@@ -130,8 +130,8 @@
     },
     {
       "path": "docs/UPDATING.md",
-      "bytes": 4380,
-      "sha256": "b085d54a19f00087aab7d2ac544eb7a82e85d3fa3444ffca99d024566b6e3873"
+      "bytes": 4572,
+      "sha256": "ba8a5fea0fe05c5e3777969f177463626d6705bd604416f9535bca53da3f7321"
     },
     {
       "path": "examples/detach-sdk.mjs",
@@ -226,17 +226,17 @@
     {
       "path": "package.json",
       "bytes": 728,
-      "sha256": "d2cc02798bb37c918f525d8dd646ada502834c0f15648b331d92b4d9e91e0022"
+      "sha256": "9906736b1d4d69e8d3abf03eb883c617c688e2c1cfcdce7a35f65625453232bd"
     },
     {
       "path": "README.md",
       "bytes": 17417,
-      "sha256": "1782cc22d3fd2717e15a553e82f90d2a1b27ffd24b2cb301ad5a473de28cd215"
+      "sha256": "9eefc032fc5e3ae390ca5ceac6d943a01a070b87406bb43550375d490cf588fa"
     },
     {
       "path": "runtime/index.js",
       "bytes": 71,
-      "sha256": "4a9d5f672c3ad17a7b93dcbe3a0149ce151cd4824ac579c2a77294f330384877"
+      "sha256": "ae83931021a9022f427348bcc819bfd5cc929338c75bacfcfb3157179f55547d"
     },
     {
       "path": "runtime/RenderQualityPipeline-BKmcypAp.js",
@@ -251,7 +251,7 @@
     {
       "path": "runtime/sdk.js",
       "bytes": 999042,
-      "sha256": "9d2e67f5c3c3f0b77ecda1e876dd922cbf01ff02881f5d93c9da5d0ce617ab95"
+      "sha256": "78656f7b3dd7399d1d21b6f6c3db3d0fd0d3aa482cbd9ad4fb877aebdc138cf4"
     },
     {
       "path": "runtime/viewport.css",
@@ -780,8 +780,8 @@
     },
     {
       "path": "update.ps1",
-      "bytes": 18767,
-      "sha256": "ba08c418e27cc850db2b503d1294e9833c42aaba4914eb752ac5f91f213d764e"
+      "bytes": 19126,
+      "sha256": "8c4b89049aded5a215e467bd2f0c0883a3b512a00a7ccd54dd9a3d985bef7e52"
     }
   ]
 }

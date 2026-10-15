@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.6
+
+Preserve committed personal files by refusing Git SDK checkouts with tracked paths outside the SDK manifest before checkout. Reject redirected Git directories. Retain verified no-install ZIP/Git updates, recoverable backups and the prebuilt PowerShell test server.
+
 ## 0.3.5
 
 Add update.cmd for verified one-click updates of ZIP and Git SDK copies without Node.js or pnpm. Pin official main to one commit, preserve user files and Git history, keep verified backups and recover interrupted updates. Keep the prebuilt PowerShell test server and block updates while it is running.
