@@ -230,8 +230,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 18907,
-      "sha256": "a2fa41a7b5df79af75545212f5457c24ee3c4599708f186ba31896ba7a42ea64"
+      "bytes": 7974,
+      "sha256": "c3bded2ab5c2ca99508363a087e63418b1c125eb1282e746262322419aa1d807"
     },
     {
       "path": "runtime/index.js",
