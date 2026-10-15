@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.8
+
+Fix update.cmd Git rev-parse failures for administrator-owned or copied SDK folders. Trust only the validated SDK path for each updater Git process without changing global Git configuration. Preserve local edits, backup/recovery, existing history and tags, remote publication support, and the no-install test server.
+
 ## 0.3.7
 
 Support HttpChunkSource(base, { scope, compositionId }) for read-only remote publication heads and shared levels objects/releases under a bucket prefix. Add a remote-publication mode to the no-install example with explicit identity and CORS/read-permission guidance. Preserve plain exports, hash/identity validation, anonymous GET-only browser access, viewport behavior and immutable history.

@@ -104,7 +104,9 @@ function Invoke-SdkGit([string]$Git, [string]$Root, [string]$State, [string[]]$G
   $saved = $ErrorActionPreference
   try {
     $ErrorActionPreference = 'Continue'
-    $output = & $Git -c core.autocrlf=false -c core.fsmonitor=false -c "core.hooksPath=$State/no-hooks" -C $Root @GitArguments 2>&1
+    # The user selected this validated SDK checkout. Trust only this path for
+    # this process; copied/admin-owned SDKs must not require global Git changes.
+    $output = & $Git -c "safe.directory=$($Root.Replace('\', '/'))" -c core.autocrlf=false -c core.fsmonitor=false -c "core.hooksPath=$State/no-hooks" -C $Root @GitArguments 2>&1
     $code = $LASTEXITCODE
   } finally { $ErrorActionPreference = $saved }
   if ($code -ne 0) { throw ('Git update step failed: ' + $GitArguments[0] + '. Existing SDK files and backup are preserved.') }
