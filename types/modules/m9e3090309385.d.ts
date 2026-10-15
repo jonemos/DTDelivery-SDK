@@ -36,7 +36,7 @@ export interface DeliveryProgress {
 }
 export interface DeliveryClientOptions {
     readonly canvas: HTMLCanvasElement;
-    readonly source: DeliverySource;
+    readonly source?: DeliverySource;
     readonly cache?: ChunkCache;
     readonly budget?: DisplayBudget;
     /** Enabled by default; check the current model's head every 5 seconds. */
@@ -80,6 +80,7 @@ export declare class DeliveryClient {
     readonly viewport: DeliveryViewer;
     readonly scripts: DeliveryScripts;
     private readonly cache;
+    private readonly source;
     private readonly stats;
     private readonly updateInterval;
     private update;

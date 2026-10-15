@@ -4,6 +4,8 @@ export interface DeliveryModel {
     readonly name: string;
     readonly releaseHash: string;
 }
+/** Trusted distribution configuration. Contains a public read-only catalog URL, never storage credentials. */
+export declare function defaultDeliverySource(configuration?: unknown): HttpChunkSource;
 export interface DeliveryRelease {
     readonly model: DeliveryModel;
     readonly provider: ByteProvider;
@@ -46,22 +48,24 @@ export declare class LocalChunkSource implements DeliverySource {
     resolve(modelId: string, signal?: AbortSignal): Promise<DeliveryRelease>;
     latestRelease(modelId: string, signal?: AbortSignal): Promise<string>;
 }
-/** One plain export or an explicitly selected published model. Anonymous HTTP reads only. */
+/** Plain export, scope catalog or explicitly selected published model. Anonymous HTTP reads only. */
 export declare class HttpChunkSource implements DeliverySource {
     readonly base: URL;
     readonly publication?: Readonly<{
         scope: string;
-        compositionId: string;
+        compositionId?: string;
     }>;
-    private readonly headBase;
     private readonly provider;
+    private readonly knownModelIds;
     constructor(base: URL, publication?: {
         scope: string;
-        compositionId: string;
-    });
-    private currentHash;
+        compositionId?: string;
+    }, knownModelIds?: readonly string[]);
+    get connectionUrl(): URL;
+    private read;
     private current;
     latestRelease(modelId: string, signal?: AbortSignal): Promise<string>;
+    listModelIds(signal?: AbortSignal): Promise<readonly string[]>;
     listModels(signal?: AbortSignal): Promise<DeliveryModel[]>;
     resolve(modelId: string, signal?: AbortSignal): Promise<DeliveryRelease>;
 }

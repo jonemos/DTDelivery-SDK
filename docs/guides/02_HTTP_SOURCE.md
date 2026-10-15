@@ -1,5 +1,7 @@
 # 02 · 정적 청크 주소 연결
 
+SDK0.3.10은 현재 저장소가 기본 연결되어 테스트 페이지 첫 실행부터 목록을 읽습니다. 클래스 사용 시 `new DeliveryClient({ canvas })`와 `listModels()`로 연결할 수 있고, 다른 저장소를 지정할 때만 아래 source를 명시합니다. `const source = new HttpChunkSource(new URL(connectionUrl)); const sdk = new DeliveryClient({ canvas, source }); const models = await sdk.listModels();`로 이름 목록을 받고 선택한 `models[index].id`를 `sdk.open()`에 전달하세요. `levels/<scope>/delivery-models.json`에 scope와 모델 목록이 있으므로 ID를 직접 전달할 필요가 없습니다. 같은 모델을 다시 게시해도 연결 주소는 유지됩니다. 루트 주소와 구역만 있다면 `new HttpChunkSource(baseURL, { scope: 'development' })`를 사용합니다. 구버전 게시본은 최신 편집기에서 한 번 재게시해야 목록에 등록됩니다.
+
 SDK0.3.9의 `DeliveryClient`는 모델을 연 뒤 기본 5초 간격으로 같은 모델의 head만 확인합니다. 새 해시의 화면을 검증·준비한 뒤 카메라 위치를 유지하며 전환하고, 실패하면 현재 화면을 유지하며 재시도합니다. `autoUpdate: false`는 자동 확인을 끕니다. `cancel()`·연결 해제 시 중단됩니다. 이미 열린 구버전 SDK는 SDK 업데이트 후 페이지를 다시 열어야 합니다. 원격 모델 게시본의 갱신과 SDK 프로그램 업데이트는 별개입니다.
 
 [목차](README.md) · 앞: [설치](00_INSTALL.md) · 다음: [클라이언트 생성](03_CLIENT.md)

@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.10
+
+Bundle the current public storage connection so first launch needs no address or model ID handoff. DeliveryClient accepts canvas alone. Discover model names automatically, refresh newly published model identities every ten seconds and remember the selected model; explicit disconnect disables default reconnection. Automatically register successful publications with conditional catalog updates and recover incomplete registration without replaying head CAS. Include the existing published model as a read-only bootstrap identity, without modifying storage. Preserve verified heads, shared chunks, five-second release refresh, camera settings, one-click updates and the no-install server.
+
 ## 0.3.9
 
 Automatically refresh an opened model from the latest publication head every five seconds. Verify and stage replacements atomically, preserve camera and display settings, retain the previous scene on failure and retry with bounded backoff. Add lightweight source head checks, autoUpdate configuration and progress.update status; isolate release providers and stop polling on cancel/dispose. Preserve remote storage prefixes, shared chunk cache, one-click updater and no-install test server.

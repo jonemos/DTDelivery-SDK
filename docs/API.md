@@ -1,4 +1,4 @@
-# 공개 함수·타입 명세 · SDK 0.3.9
+# 공개 함수·타입 명세 · SDK 0.3.10
 
 API를 화면에 연결하는 순서와 기능별 실행 예제는 [개발 가이드 목차](guides/README.md)를 참고하세요. 이 문서는 함수 계약 요약이며 가이드의 코드도 공개 `@dt/delivery-sdk` import만 사용합니다.
 
@@ -9,6 +9,14 @@ API를 화면에 연결하는 순서와 기능별 실행 예제는 [개발 가�
 0.3.1의 `viewport.setBounds(enabled: boolean)`은 준비된 액터의 실제 월드 바운드를 표시하며 `viewport.bounds`로 현재 설정을 읽습니다. 기본 꺼짐이고, 숨김/로드 해제/종료 시 helper를 정리합니다. 청크·Actor ID·선택용 picking을 변경하지 않습니다. 표시 메뉴에서는 아이콘·아이콘 크기 항목 대신 바운드를 제공합니다.
 
 ## 연결과 모델
+
+0.3.10 배포본은 현재 저장소의 공개 모델 목록 주소를 기본 연결로 포함합니다. **첫 게시 때도 사용자에게 ID나 주소를 전달할 필요가 없습니다.** `const sdk = new DeliveryClient({ canvas }); const models = await sdk.listModels();`로 이름 목록을 읽고 선택한 항목의 ID를 내부적으로 `open()`에 전달합니다. `defaultDeliverySource()`는 같은 기본 source를 반환합니다. 다른 저장소나 로컬 파일은 기존 `source` 옵션으로 지정합니다. 기본 연결에는 인증키·비밀번호·게시본 해시가 없으며 네트워크 읽기는 list/open 후에만 수행합니다.
+
+0.3.10부터 `new HttpChunkSource(new URL(sdkConnectionUrl))`에 편집기가 복사한 `.../levels/<scope>/delivery-models.json` 주소를 전달하면 게시 구역과 모델 ID를 자동으로 처리합니다. `listModels()`에서 읽은 이름으로 모델을 선택하고 반환된 `id`를 `open()`에 전달합니다. ID를 사용자에게 요구할 필요가 없습니다. 루트 주소를 알고 있다면 `new HttpChunkSource(baseURL, { scope })`도 같습니다. `source.connectionUrl`은 다시 공유할 수 있는 주소이며, `publicationConnectionUrl(baseURL, scope)`로 만들 수도 있습니다.
+
+모델 목록은 `{ version: 1, scope, modelIds: string[] }`이며 64KiB·256모델 한도입니다. 이름과 게시 해시는 각 모델의 현재 head와 검증된 manifest에서 읽습니다. JSON 안의 URL·실행 코드·추가 필드는 거부합니다. 목록은 새 편집기로 **게시 완료한 뒤** 조건부 갱신하며, 중단된 등록은 게시 결과 재조회로 복구합니다. 구버전 게시본은 한 번 재게시하면 등록됩니다. 카탈로그는 모델 탐색용이며 이전 게시본 보관·삭제의 참조 루트가 아닙니다.
+
+기존 `{ scope, compositionId }` 연결과 `.../levels/<scope>/<id>/delivery-head.json` 직접 주소도 지원합니다. 일반 내보내기 폴더는 그대로 동작합니다. 테스트 페이지의 마지막 연결 복원은 호스트 페이지 기능이며 `DeliveryClient` 자체는 localStorage를 사용하거나 임의의 연결을 자동 생성하지 않습니다.
 
 ```ts
 interface DeliveryModel { readonly id: string; readonly name: string; readonly releaseHash: string }
@@ -34,7 +42,7 @@ interface ByteProvider {
 
 | 메서드/속성 | 결과·계약 |
 |---|---|
-| `new DeliveryClient(options)` | canvas, source 필수. cache, budget, onProgress, onActorSelect, autoUpdate 선택 |
+| `new DeliveryClient(options)` | canvas 필수. source 생략 시 배포본 기본 저장소 사용. cache, budget, onProgress, onActorSelect, autoUpdate 선택 |
 | `listModels(signal?)` | 복사된 모델 목록. source를 다시 읽으며 ID·중복·해시·이름 검증 |
 | `open(modelId, options?)` | 기본 progressive true. 모델 확인 뒤 새 게시 해시를 고정하고 전체 초기 로드를 기다림 |
 | `open` options | progressive, 원본 mount ID인 priority, AbortSignal |
