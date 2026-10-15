@@ -1,4 +1,4 @@
-# DT Delivery SDK 0.3.10
+# DT Delivery SDK 0.3.11
 
 편집기에서 게시한 청크를 웹에서 불러와 3D 모델을 표시하는 SDK입니다. 모델 목록·점진 로딩·액터 선택·카메라·스크립트 공개 속성을 클래스와 함수로 제어합니다. 별도의 Delivery API 서버는 필요하지 않습니다.
 
@@ -60,7 +60,7 @@ Set-Location DTDelivery-SDK
 개발 프로젝트에서는 원하는 버전으로 의존성을 고정합니다. 이 설치 명령은 개발 환경에서만 실행하며, 완성된 웹페이지의 사용자는 Node.js나 pnpm을 설치하지 않습니다.
 
 ```powershell
-pnpm add '@dt/delivery-sdk@github:jonemos/DTDelivery-SDK#v0.3.10'
+pnpm add '@dt/delivery-sdk@github:jonemos/DTDelivery-SDK#v0.3.11'
 ```
 
 ```ts

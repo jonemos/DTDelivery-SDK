@@ -18,6 +18,7 @@ function Get-SdkPath([string]$Root, [string]$Relative) {
   return $path
 }
 function Test-SdkPublicPath([string]$Path) {
+  # Recognize the removed developer launcher in old manifests so upgrades can remove it safely.
   return $Path -cmatch '^(package\.json|LICENSE|THIRD_PARTY_LICENSES\.txt|README\.md|CHANGELOG\.md|\.gitignore|\.gitattributes|update\.cmd|update\.ps1|runtime/[A-Za-z0-9_.-]+\.(js|css)|types/(index\.d\.ts|viewport\.css\.d\.ts|modules/m[a-f0-9]{12}\.d\.ts)|docs/(API|GITHUB_DESKTOP|UPDATING)\.md|docs/guides/(README|[0-9]{2}_[A-Z_]+)\.md|examples/(test-server\.cmd|test-server\.ps1|dev-server\.cmd|detach-sdk\.mjs)|examples/standalone/(index\.html|assets/[A-Za-z0-9_-]+\.(js|css|wasm))|examples/web/(package\.json|index\.html|main\.ts|featureExamples\.ts|featurePanel\.ts|style\.css|tsconfig\.json|vite\.config\.mjs|pnpm-workspace\.yaml|README\.md))$'
 }
 function Read-SdkPackage([string]$Root) {

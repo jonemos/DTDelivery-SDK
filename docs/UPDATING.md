@@ -27,7 +27,7 @@ SDK0.3.5부터 **SDK 루트의 `update.cmd`**를 실행합니다. 먼저 해당 
 1. 현재 외부 프로젝트와 사용자 모델·설정을 보존합니다.
 2. 새 SDK를 별도 폴더에 풀고 외부 프로젝트의 의존성을 새 버전으로 변경합니다.
 3. DeliveryApiClient/API URL/token 대신 DeliveryClient와 LocalChunkSource 또는 HttpChunkSource를 사용합니다. [API 명세](API.md)를 확인하세요.
-4. 테스트 예제는 `examples/test-server.cmd`만 실행합니다. 0.3.4부터 전체 SDK에 미리 빌드된 페이지가 포함되어 Windows 기본 PowerShell만 필요하며 Node.js·pnpm·시작 시 인터넷 설치는 필요 없습니다. 예제 소스 개발만 `examples/dev-server.cmd`와 기존 도구 설치를 사용합니다. 이전 local/remote-server CMD와 API 설정은 새 SDK가 사용하지 않습니다.
+4. 테스트 예제는 `examples/test-server.cmd`를 실행합니다. 전체 SDK에 미리 빌드된 페이지가 포함되어 Windows 기본 PowerShell만 필요하며 Node.js·pnpm·시작 시 인터넷 설치는 필요 없습니다. 예제 소스 개발 명령은 `examples/web/README.md`를 참고하세요. 이전 local/remote-server CMD와 API 설정은 새 SDK가 사용하지 않습니다.
 5. 로컬 청크의 목록·점진 로딩·선택·스크립트 공개 속성과 오류/취소를 확인합니다.
 6. 새 웹페이지 배포 전에 `dispose()`와 이벤트 해제, 실제 사용하는 브라우저의 폴더/CORS/네트워크 권한을 확인합니다.
 

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "version": "0.3.10",
-  "baseVersion": "0.3.10",
+  "version": "0.3.11",
+  "baseVersion": "0.3.11",
   "license": "MIT",
   "addonSdkVersion": 5,
   "contracts": [
@@ -25,8 +25,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 9573,
-      "sha256": "daad21cc4dd6a12323064ab58f0351440a7d85212b37c94eb1e04b840d2ea32f"
+      "bytes": 10056,
+      "sha256": "e5351e19859a73a17465bfe22c50f870cf9d03b0411b982e9df03bd31fc4cf38"
     },
     {
       "path": "docs/API.md",
@@ -130,18 +130,13 @@
     },
     {
       "path": "docs/UPDATING.md",
-      "bytes": 6207,
-      "sha256": "b7dcb201d27553848d2f4533c5ad9ac9afc9cea5c2ee60832ad59bbe0b94d144"
+      "bytes": 6177,
+      "sha256": "13daf0a475788b6fbbb86a43bd3876173c2afa9c80e4983a519804b4efbcfc41"
     },
     {
       "path": "examples/detach-sdk.mjs",
       "bytes": 1457,
       "sha256": "245cd74754f9a0235c97fa4dc53c3b72a144e261c6f8b725a48101ac6469313d"
-    },
-    {
-      "path": "examples/dev-server.cmd",
-      "bytes": 1017,
-      "sha256": "7c71e80d15d4921e95ae36c501d17745ae88855e85ce77dac2f41b82718d2000"
     },
     {
       "path": "examples/standalone/assets/index-BEiNJqYd.css",
@@ -200,8 +195,8 @@
     },
     {
       "path": "examples/web/README.md",
-      "bytes": 5571,
-      "sha256": "515e6a613297a5c102965828b265981af9698985c23e4ad9dba887e97875e3d3"
+      "bytes": 2814,
+      "sha256": "02d2f2201aa537352cc9d50e0db13fe6072e31772b91bcc1a9d3e1a90369ec02"
     },
     {
       "path": "examples/web/style.css",
@@ -226,17 +221,17 @@
     {
       "path": "package.json",
       "bytes": 729,
-      "sha256": "82cd821e80f1d828d1a6f6958820e79dd821fd8a589815955d7835750cd36a77"
+      "sha256": "3f8a0af89a75269b48467a15551e060d4f65a48bea68d555c18e2e00ccd5d435"
     },
     {
       "path": "README.md",
       "bytes": 7974,
-      "sha256": "c3bded2ab5c2ca99508363a087e63418b1c125eb1282e746262322419aa1d807"
+      "sha256": "0e1347ab8d2df0888d2dd0156f0052bbd7c138ed54d099367f515ff8b2ae4bf0"
     },
     {
       "path": "runtime/index.js",
       "bytes": 72,
-      "sha256": "b24632efe0d230c222554a1e382acdf19f81826392a777cef6041b8d0a1cd893"
+      "sha256": "3fc6b538972e7d1e8c9accbad3155bb14e2d4e541f01b179cb50bd8cd596014b"
     },
     {
       "path": "runtime/RenderQualityPipeline-BKmcypAp.js",
@@ -251,7 +246,7 @@
     {
       "path": "runtime/sdk.js",
       "bytes": 1009064,
-      "sha256": "753031cb3959b2873dcf2f837a3b9a71a995ccc9944246a74356a0448a9e9b36"
+      "sha256": "fd6325eae348a708dc46efca18c3e7621f5d8f5b5e302bd9e7b3e0efb681b2fe"
     },
     {
       "path": "runtime/viewport.css",
@@ -785,8 +780,8 @@
     },
     {
       "path": "update.ps1",
-      "bytes": 19332,
-      "sha256": "4321ddc757baf11d9ce4d4ec16825b130dbe8e55912344a760d8d084b6cbc106"
+      "bytes": 19428,
+      "sha256": "ab4bad242dcd3444aaadc1ee1a3b102c1e700eab962589605eebc6b9103a3c1c"
     }
   ]
 }

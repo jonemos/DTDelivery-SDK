@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.11
+
+Remove the unused developer launcher; examples/test-server.cmd remains the no-install entry point. Update existing SDKs safely, including removal of the old launcher while retaining personal data, backups and Git history. Rewrite the README around the current automatic storage/model connection workflow and refresh the example instructions. Preserve verified chunk reads, model-name discovery, automatic release updates, Actor selection and all existing immutable tags.
+
 ## 0.3.10
 
 Bundle the current public storage connection so first launch needs no address or model ID handoff. DeliveryClient accepts canvas alone. Discover model names automatically, refresh newly published model identities every ten seconds and remember the selected model; explicit disconnect disables default reconnection. Automatically register successful publications with conditional catalog updates and recover incomplete registration without replaying head CAS. Include the existing published model as a read-only bootstrap identity, without modifying storage. Preserve verified heads, shared chunks, five-second release refresh, camera settings, one-click updates and the no-install server.
