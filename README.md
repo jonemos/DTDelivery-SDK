@@ -1,8 +1,10 @@
-# DT Delivery SDK 0.3.4
+# DT Delivery SDK 0.3.5
 
 브라우저에서 제작된 청크를 검증하고 3D 모델을 보여주는 SDK입니다. **0.3.0부터 별도의 Delivery API 서버를 실행하지 않습니다.** 클래스와 함수로 모델 목록, 점진 로딩, 액터 선택, 스크립트 공개 속성을 제어합니다. 기존 청크 계약1–5와 Atlas는 유지됩니다.
 
 **0.3.4부터 Windows 테스트 서버는 Node.js·pnpm 설치 없이 실행합니다.** SDK 전체 ZIP을 압축 해제하고 `examples/test-server.cmd`를 실행하세요. 미리 빌드한 예제와 Windows 기본 PowerShell을 사용하며 첫 실행에도 패키지를 다운로드하지 않습니다. 예제 소스 개발은 `examples/dev-server.cmd`로 분리했습니다.
+
+**0.3.5부터 SDK 루트의 `update.cmd`를 더블 클릭해 업데이트합니다.** 테스트 서버를 먼저 종료하세요. 공식 저장소의 최신 main을 정확한 커밋으로 고정해 받고 모든 파일 해시를 확인한 뒤 교체합니다. ZIP 사본은 Git·Node.js·pnpm 설치가 필요 없으며, Git으로 받은 사본은 기존 Git을 사용하고 브랜치·태그를 보존합니다. 직접 수정한 SDK 파일은 덮어쓰지 않습니다. 사용자 모델·설정·node_modules는 교체 대상이 아닙니다. [업데이트 방법과 백업](docs/UPDATING.md)을 참고하세요.
 
 0.3.1은 통합레벨과 같은 뷰포트 메뉴 간격·입력 스타일을 적용합니다. 표시 메뉴의 아이콘·아이콘 크기 항목을 제거하고 실제 액터의 **바운드** 표시를 제공합니다. 원본 청크와 Actor 선택은 유지됩니다.
 
@@ -32,21 +34,21 @@ SDK와 모델 청크는 별도로 준비합니다. 이 Git 저장소에는 사�
 
 1. Windows 10/11과 Chrome 또는 Edge를 준비합니다. Windows 기본 PowerShell 5.1로 실행하므로 Node.js·pnpm·Python·관리자 설치는 필요하지 않습니다.
 2. 전달받은 SDK ZIP을 **전체 압축 해제**합니다. `README.md`, `sdk-manifest.json`, `runtime`, `types`, `examples/standalone` 등이 함께 있어야 합니다. `examples`만 따로 복사하지 않습니다. `node_modules`를 전달할 필요는 없습니다.
-3. Git으로 받는 개발자는 고정된 0.3.4 버전을 사용할 수 있습니다. Git도 일반 테스트 PC에는 필요하지 않습니다.
+3. Git으로 받는 개발자는 고정된 0.3.5 버전을 사용할 수 있습니다. Git도 일반 테스트 PC에는 필요하지 않습니다.
 
    ```powershell
-   git clone --branch v0.3.4 https://github.com/jonemos/DTDelivery-SDK.git
+   git clone --branch v0.3.5 https://github.com/jonemos/DTDelivery-SDK.git
    Set-Location DTDelivery-SDK
    ```
 
-   새 버전은 이전 SDK와 별도 폴더에 받습니다. 받은 ZIP이나 Git 사본에 `examples/standalone/index.html`이 없으면 완전한 0.3.4 배포본을 다시 받으세요. 기존 버전의 CMD만 복사해 바꾸지 않습니다.
+   처음 받을 때는 전체 SDK를 압축 해제합니다. 이후 업데이트는 루트의 `update.cmd`를 사용합니다. `examples/standalone/index.html`이 없으면 완전한 배포본을 다시 받으세요. `test-server.cmd`만 따로 복사하지 않습니다.
 4. SDK 루트에서 `examples/test-server.cmd`를 더블 클릭하거나 PowerShell에서 실행합니다.
 
    ```powershell
    .\examples\test-server.cmd
    ```
 
-   공개 manifest의 페이지 해시를 검사한 뒤 `http://127.0.0.1:5183/`을 엽니다. 설치·빌드·자동 다운로드는 실행하지 않습니다. 창을 유지하고 Chrome/Edge에서 페이지 상단의 **SDK 0.3.4**를 확인합니다. 다른 브라우저가 자동으로 열렸다면 같은 주소를 Chrome/Edge로 엽니다.
+   공개 manifest의 페이지 해시를 검사한 뒤 `http://127.0.0.1:5183/`을 엽니다. 설치·빌드·자동 다운로드는 실행하지 않습니다. 창을 유지하고 Chrome/Edge에서 페이지 상단의 **SDK 0.3.5**를 확인합니다. 다른 브라우저가 자동으로 열렸다면 같은 주소를 Chrome/Edge로 엽니다.
 5. 아래 순서로 청크를 연결합니다. 종료할 때는 페이지의 **연결 해제**, 실행 창의 **Ctrl+C**를 차례로 사용합니다.
 
 `index.html`을 파일로 직접 열지 않습니다. 해시 불일치·파일 누락 오류이면 전체 SDK를 새 폴더에 다시 압축 해제합니다. 5183 포트가 사용 중이면 기존 테스트 서버를 종료한 뒤 다시 실행합니다. 기존 서버를 자동으로 종료하거나 다른 포트로 바꾸지 않습니다. 로컬 청크는 인터넷 없이 사용할 수 있으며, HTTP 청크·온라인 기능 문서는 해당 주소의 네트워크 연결이 필요합니다.
@@ -115,7 +117,7 @@ SDK와 모델 청크는 별도로 준비합니다. 이 Git 저장소에는 사�
 Git 태그로 버전을 고정하려면 프로젝트에서 실행합니다.
 
 ```powershell
-pnpm.cmd add '@dt/delivery-sdk@github:jonemos/DTDelivery-SDK#v0.3.4'
+pnpm.cmd add '@dt/delivery-sdk@github:jonemos/DTDelivery-SDK#v0.3.5'
 ```
 
 또는 SDK 폴더를 프로젝트의 `vendor/delivery-sdk`에 복사한 뒤 프로젝트에서 실행합니다.

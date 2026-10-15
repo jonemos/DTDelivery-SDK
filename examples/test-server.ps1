@@ -16,8 +16,13 @@ function Get-PlainFilePath([string]$Relative) {
   return $path
 }
 
-$listener = $null
+$listener = $null; $sdkMutex = $null; $mutexOwned = $false
 try {
+  $keyHash = [Security.Cryptography.SHA256]::Create()
+  try { $key = [BitConverter]::ToString($keyHash.ComputeHash([Text.Encoding]::UTF8.GetBytes($sdkRoot.ToUpperInvariant()))).Replace('-', '').ToLowerInvariant().Substring(0, 24) } finally { $keyHash.Dispose() }
+  $sdkMutex = [Threading.Mutex]::new($false, "Local\DTDeliverySdk-$key")
+  try { $mutexOwned = $sdkMutex.WaitOne(0) } catch [Threading.AbandonedMutexException] { $mutexOwned = $true }
+  if (-not $mutexOwned) { throw 'This SDK is being updated or another test server is running. Close it and retry.' }
   Write-Output 'Verifying the prebuilt SDK test page. No Node.js, pnpm or download is required.'
   $manifest = [IO.File]::ReadAllText((Get-PlainFilePath 'sdk-manifest.json')) | ConvertFrom-Json
   if ($manifest.schemaVersion -ne 1 -or $manifest.transport -ne 'direct') { throw 'Invalid SDK manifest.' }
@@ -84,4 +89,4 @@ try {
 } catch {
   Write-Output ('Test server could not start: ' + $_.Exception.Message)
   exit 1
-} finally { if ($listener) { $listener.Stop() } }
+} finally { if ($listener) { $listener.Stop() }; if ($mutexOwned) { $sdkMutex.ReleaseMutex() }; if ($sdkMutex) { $sdkMutex.Dispose() } }

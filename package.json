@@ -1,6 +1,6 @@
 {
   "name": "@dt/delivery-sdk",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "type": "module",
   "license": "MIT",
   "description": "Direct browser SDK for validated chunked digital twins, without a query API server",
@@ -19,6 +19,8 @@
     "types",
     "docs",
     "examples",
+    "update.cmd",
+    "update.ps1",
     "README.md",
     "CHANGELOG.md",
     "LICENSE",

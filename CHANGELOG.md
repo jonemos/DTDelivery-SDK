@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.5
+
+Add update.cmd for verified one-click updates of ZIP and Git SDK copies without Node.js or pnpm. Pin official main to one commit, preserve user files and Git history, keep verified backups and recover interrupted updates. Keep the prebuilt PowerShell test server and block updates while it is running.
+
 ## 0.3.4
 
 Run the prebuilt browser example with built-in Windows PowerShell. No Node.js, pnpm, package installation or startup download is required. Validate exact public runtime/page hashes before serving loopback-only GET/HEAD files. Preserve source development in dev-server.cmd, the shared public SDK entry, existing data contracts and all immutable version tags.
