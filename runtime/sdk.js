@@ -2443,7 +2443,7 @@ function Li(e, t, n = e) {
 //#region src/delivery/SdkVersion.ts
 var Ri = typeof __DT_DELIVERY_SDK_VERSION__ > "u" ? {
 	name: "@dt/delivery-sdk",
-	version: "0.3.11",
+	version: "0.3.12",
 	license: "MIT",
 	addonSdkVersion: 5,
 	contracts: [
@@ -2921,7 +2921,8 @@ function va(e) {
 		3,
 		4,
 		5,
-		6
+		6,
+		7
 	].includes(e.schemaVersion) || e.kind !== "WebMaskPbrMaterial") throw Error("Unsupported WebMaskPBR Material schema.");
 	if (e = e.schemaVersion === 2 ? Ea(e) : e, !wa(e)) throw Error("WebMaskPBR migration failed.");
 	let t = (e, t, n, r = !0) => {
@@ -2983,9 +2984,9 @@ function va(e) {
 		...a.map((e) => e.mask),
 		...o?.masks ?? []
 	].some((e) => e.texCoord === 2 || e.anisotropy !== void 0 || e.generateMipmaps !== void 0), d = e.bakeBinding === void 0 ? void 0 : pa(e.bakeBinding);
-	if (d && (e.mappingProfileId !== "u01-baked-pbr-v1" || o || a.length || !["OPAQUE", "MASK"].includes(r))) throw Error("Bake binding requires an opaque or masked baked-appearance-only material.");
+	if (d && (e.mappingProfileId !== "u01-baked-pbr-v1" || o || a.length)) throw Error("Bake binding requires a baked-appearance-only PBR material.");
 	return structuredClone({
-		schemaVersion: e.schemaVersion === 6 || e.ior !== void 0 || d && r === "MASK" ? 6 : e.schemaVersion === 5 || d ? 5 : e.schemaVersion === 4 || u ? 4 : 3,
+		schemaVersion: e.schemaVersion === 7 || d && r === "BLEND" ? 7 : e.schemaVersion === 6 || e.ior !== void 0 || d && r === "MASK" ? 6 : e.schemaVersion === 5 || d ? 5 : e.schemaVersion === 4 || u ? 4 : 3,
 		kind: "WebMaskPbrMaterial",
 		mappingProfileId: e.mappingProfileId,
 		...e.unlit === void 0 ? {} : { unlit: e.unlit },
@@ -3064,7 +3065,8 @@ function ba(e) {
 		3,
 		4,
 		5,
-		6
+		6,
+		7
 	].includes(e.schemaVersion) && e.kind === "WebMaskPbrMaterial" ? va(e) : _a(e);
 }
 async function xa(e, t) {
@@ -3513,24 +3515,25 @@ var Ya = {
 function Xa(e, t) {
 	let n = /* @__PURE__ */ new Map();
 	if (!t) return n;
-	let r = (e, r) => {
-		t.maps.includes(r) && n.set(e, Math.min(n.get(e) ?? Infinity, Ga(t, r)));
+	let r = (e, r, i = !1) => {
+		(i || t.maps.includes(r)) && n.set(e, Math.min(n.get(e) ?? Infinity, Ga(t, r)));
 	};
 	for (let t of e.assets.filter((e) => e.kind === "Material")) {
 		let i = ba(e.revisions.find((e) => e.id === t.currentRevisionId)?.metadata.material);
 		if (i.kind === "WebMaskPbrMaterial") {
-			for (let [e, t] of Object.entries(i.textureViews)) r(t.texture.assetId, Ya[e]);
+			for (let [e, t] of Object.entries(i.textureViews)) r(t.texture.assetId, Ya[e], e === "baseColor" && i.alphaMode !== "OPAQUE");
 			for (let e of i.maskLayers) r(e.mask.texture.assetId, "baseColor");
 			for (let e of i.vertexAtlas?.masks ?? []) r(e.texture.assetId, "baseColor"), n.has(e.texture.assetId) && n.set(e.texture.assetId, Math.min(512, n.get(e.texture.assetId)));
-		} else for (let [e, t] of Object.entries(i.textures)) r(t.assetId, Ya[e]);
+		} else for (let [e, t] of Object.entries(i.textures)) r(t.assetId, Ya[e], e === "baseColor-srgb" && i.alphaMode !== "OPAQUE");
 	}
 	return n;
 }
 function Za(e, t, n = !0) {
-	let r = (e) => n && (!t || t.maps.includes(Ya[e]));
+	let r = (e) => n && (!t || t.maps.includes(Ya[e])), i = e.alphaMode !== "OPAQUE" && !r("baseColor"), a = i ? { displayAlphaOnly: !0 } : {};
 	return e.kind === "WebMaskPbrMaterial" ? {
 		...e,
-		textureViews: Object.fromEntries(Object.entries(e.textureViews).filter(([e]) => r(e))),
+		...a,
+		textureViews: Object.fromEntries(Object.entries(e.textureViews).filter(([e]) => r(e) || i && e === "baseColor")),
 		maskLayers: r("baseColor") ? e.maskLayers : [],
 		...!r("baseColor") && e.vertexAtlas ? {
 			vertexAtlas: void 0,
@@ -3538,17 +3541,18 @@ function Za(e, t, n = !0) {
 		} : {}
 	} : {
 		...e,
-		textures: Object.fromEntries(Object.entries(e.textures).filter(([e]) => r(e)))
+		...a,
+		textures: Object.fromEntries(Object.entries(e.textures).filter(([e]) => r(e) || i && e === "baseColor-srgb"))
 	};
 }
 function Qa(e, t = !1) {
-	let n = [], r = [], i = /* @__PURE__ */ new Map(), a = (a, o) => {
-		let s = i.get(a);
-		if (s === void 0) {
-			let r = e.assets.find((e) => e.id === a && e.kind === "Texture"), o = e.revisions.find((e) => e.id === r?.currentRevisionId && e.assetId === r?.id), c = e.blobs.find((e) => e.key === o?.blobKeys[0]);
+	let n = [], r = [], i = /* @__PURE__ */ new Map(), a = (a, o, s = !1) => {
+		let c = i.get(a);
+		if (c === void 0) {
+			let r = e.assets.find((e) => e.id === a && e.kind === "Texture"), o = e.revisions.find((e) => e.id === r?.currentRevisionId && e.assetId === r?.id), s = e.blobs.find((e) => e.key === o?.blobKeys[0]);
 			if (!o || typeof o.metadata.mimeType != "string") throw Error("Missing candidate material texture");
 			let l;
-			if (c) l = Qi(c.bytes, o.metadata.mimeType);
+			if (s) l = Qi(s.bytes, o.metadata.mimeType);
 			else if (t) {
 				let { width: e, height: t } = o.metadata;
 				if (typeof e != "number" || typeof t != "number" || !Number.isSafeInteger(e) || !Number.isSafeInteger(t) || e < 1 || t < 1 || e > 8192 || t > 8192 || e * t * 4 > 256 * 1024 ** 2) throw Error("Invalid published texture dimensions");
@@ -3557,20 +3561,21 @@ function Qa(e, t = !1) {
 					height: t
 				};
 			} else throw Error("Missing candidate material texture");
-			s = n.length, i.set(a, s), n.push(l);
+			c = n.length, i.set(a, c), n.push(l);
 		}
 		r.push({
-			source: s,
-			kind: o
+			source: c,
+			kind: o,
+			...s ? { required: !0 } : {}
 		});
 	};
 	for (let t of e.assets.filter((e) => e.kind === "Material")) {
 		let n = ba(e.revisions.find((e) => e.id === t.currentRevisionId && e.assetId === t.id)?.metadata.material);
 		if (n.kind === "WebMaskPbrMaterial") {
-			for (let [e, t] of Object.entries(n.textureViews)) a(t.texture.assetId, Ya[e]);
+			for (let [e, t] of Object.entries(n.textureViews)) a(t.texture.assetId, Ya[e], e === "baseColor" && n.alphaMode !== "OPAQUE");
 			for (let e of n.maskLayers) a(e.mask.texture.assetId, "baseColor");
 			for (let e of n.vertexAtlas?.masks ?? []) a(e.texture.assetId, "baseColor");
-		} else for (let [e, t] of Object.entries(n.textures)) a(t.assetId, Ya[e]);
+		} else for (let [e, t] of Object.entries(n.textures)) a(t.assetId, Ya[e], e === "baseColor-srgb" && n.alphaMode !== "OPAQUE");
 	}
 	return {
 		dimensions: n,
@@ -5837,7 +5842,7 @@ function Ec(e) {
 }
 function Dc(e, t) {
 	t && Wa(t);
-	let n = e.uses.filter((e) => !t || t.maps.includes(e.kind)), r = new Set(n.map((e) => e.source)), i = e.dimensions.map((e, r) => {
+	let n = e.uses.filter((e) => e.required || !t || t.maps.includes(e.kind)), r = new Set(n.map((e) => e.source)), i = e.dimensions.map((e, r) => {
 		let i = t ? Math.min(...n.filter((e) => e.source === r).map((e) => Ga(t, e.kind))) : Infinity, a = Math.min(1, i / Math.max(e.width, e.height));
 		return {
 			width: Math.max(1, Math.round(e.width * a)),
@@ -6839,6 +6844,12 @@ function Ml(e, t, n = {}) {
 			} else for (let [e, n] of Object.entries(l.textures)) {
 				let i = await r(n), a = t ? i.clone() : i;
 				d.add(a), Il(a, e), e === "baseColor-srgb" && (u.map = a), e === "emissive-srgb" && (u.emissiveMap = a), e === "normal-linear" && (u.normalMap = a), e === "metallicRoughness-linear" && (u.metalnessMap = a, u.roughnessMap = a), e === "occlusion-linear" && (u.aoMap = a);
+			}
+			if ("displayAlphaOnly" in l && l.displayAlphaOnly === !0) {
+				let e = u.onBeforeCompile, t = u.customProgramCacheKey;
+				u.onBeforeCompile = (t, n) => {
+					e.call(u, t, n), t.fragmentShader = t.fragmentShader.replace("#include <map_fragment>", "#ifdef USE_MAP\n diffuseColor.a *= texture2D(map, vMapUv).a;\n #endif");
+				}, u.customProgramCacheKey = () => t.call(u) + "|display-alpha-only-v1";
 			}
 			if (l.kind === "WebMaskPbrMaterial") {
 				let e = [
@@ -7940,7 +7951,11 @@ async function Nu(e, t, n, r = { showTextures: !1 }, i, a = !0) {
 			textured: [],
 			reservedBytes: 0
 		} : Au(d);
-		let e = u.reservedBytes + (r.showTextures === !1 ? 0 : Dc(f, r.optimize).reservedBytes);
+		let e = u.reservedBytes + Dc(f, r.showTextures === !1 ? {
+			...r.optimize,
+			maxSize: r.optimize?.maxSize ?? 1024,
+			maps: []
+		} : r.optimize).reservedBytes;
 		if (o === 0 && (o = pc(e)), e > o) {
 			let t = new Du(e, o);
 			throw t.textureLayouts = [...d.values()].map(Ec).concat(f), t;
@@ -7990,7 +8005,7 @@ async function Nu(e, t, n, r = { showTextures: !1 }, i, a = !0) {
 				signal: i
 			}, s, !1);
 			try {
-				n.maps.length && await f.warmMaterials(c, i);
+				await f.warmMaterials(c, i);
 				let e = (e) => JSON.stringify(e.assets.map((e) => [e.id, e.currentRevisionId]));
 				if (e(c) !== e(await t.snapshot())) throw Error("적용 중 에셋이 변경되었습니다. 기존 표시를 유지합니다. 다시 적용하세요.");
 				return i.throwIfAborted(), {

@@ -55,7 +55,7 @@ export interface WebMaskLayerDocument {
     readonly invert: boolean;
 }
 export interface WebMaskPbrMaterialDocument {
-    readonly schemaVersion: 3 | 4 | 5 | 6;
+    readonly schemaVersion: 3 | 4 | 5 | 6 | 7;
     readonly kind: 'WebMaskPbrMaterial';
     readonly mappingProfileId: string;
     readonly unlit?: boolean;

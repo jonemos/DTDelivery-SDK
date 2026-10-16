@@ -18,6 +18,7 @@ export interface TextureAppearanceLayout {
     readonly uses: readonly {
         source: number;
         kind: TextureMapKind;
+        required?: boolean;
     }[];
 }
 /** Validate all embedded image dimensions and every supported material texture use before decoding. */

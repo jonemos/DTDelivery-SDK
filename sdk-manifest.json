@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "version": "0.3.11",
-  "baseVersion": "0.3.11",
+  "version": "0.3.12",
+  "baseVersion": "0.3.12",
   "license": "MIT",
   "addonSdkVersion": 5,
   "contracts": [
@@ -25,8 +25,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 10056,
-      "sha256": "e5351e19859a73a17465bfe22c50f870cf9d03b0411b982e9df03bd31fc4cf38"
+      "bytes": 10293,
+      "sha256": "e6220ed79e322d3fe219f3329eebce9f2179132c90b4d2ec418adee63bca9071"
     },
     {
       "path": "docs/API.md",
@@ -221,17 +221,17 @@
     {
       "path": "package.json",
       "bytes": 729,
-      "sha256": "3f8a0af89a75269b48467a15551e060d4f65a48bea68d555c18e2e00ccd5d435"
+      "sha256": "667428e5fedf6a381f5035b65ac3dc9e8d68a387549500f44f2232c518f0319e"
     },
     {
       "path": "README.md",
-      "bytes": 7974,
-      "sha256": "0e1347ab8d2df0888d2dd0156f0052bbd7c138ed54d099367f515ff8b2ae4bf0"
+      "bytes": 5637,
+      "sha256": "db646bec8d7c4320d50954479bbd8e89b102c682c9601af6a1da1261d356e286"
     },
     {
       "path": "runtime/index.js",
       "bytes": 72,
-      "sha256": "3fc6b538972e7d1e8c9accbad3155bb14e2d4e541f01b179cb50bd8cd596014b"
+      "sha256": "a2b792834bd531354b5d4b87d23711b136c1a0c324d5dcf770b27e0ff3ef91d2"
     },
     {
       "path": "runtime/RenderQualityPipeline-BKmcypAp.js",
@@ -245,8 +245,8 @@
     },
     {
       "path": "runtime/sdk.js",
-      "bytes": 1009064,
-      "sha256": "fd6325eae348a708dc46efca18c3e7621f5d8f5b5e302bd9e7b3e0efb681b2fe"
+      "bytes": 1009968,
+      "sha256": "817dff2c56424af9548d59f6a0103f9158c6a67312703e8174aab9b876c3cdd4"
     },
     {
       "path": "runtime/viewport.css",
@@ -315,8 +315,8 @@
     },
     {
       "path": "types/modules/m1fc4eeaffa28.d.ts",
-      "bytes": 1286,
-      "sha256": "a6544d917ceb93e85536d103c21ed12b95e24717efc2edfa84a5f8ea57ab57bf"
+      "bytes": 1625,
+      "sha256": "b3154b89d4f1f1f22169d2aeb4a6f696e0b6686916df2b2ae34b41c5e181728e"
     },
     {
       "path": "types/modules/m2401b9bcc641.d.ts",
@@ -395,8 +395,8 @@
     },
     {
       "path": "types/modules/m4c70f05441f4.d.ts",
-      "bytes": 1671,
-      "sha256": "2343df43b2f320d6b061b592945aa26b93f216201dc834eeb11954da77cafb1b"
+      "bytes": 1699,
+      "sha256": "17271469f1a94a0f8ee662a49c7fef2dd78bdc92b71c0c0189e1c413d74ca816"
     },
     {
       "path": "types/modules/m4f696d79727f.d.ts",
@@ -685,8 +685,8 @@
     },
     {
       "path": "types/modules/mcf568d106c8d.d.ts",
-      "bytes": 7157,
-      "sha256": "7f2ddbd3b45a00997e7e1d51a7d7a9229047ea81254ee47416b2fa8d6d95f116"
+      "bytes": 7161,
+      "sha256": "1166848d7bef60f120b2daed7402579b943527c87480c4b16d3ce075d1b1e693"
     },
     {
       "path": "types/modules/md356ef9a3849.d.ts",
