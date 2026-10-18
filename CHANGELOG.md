@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.13
+
+Publish the current runtime and declarations for validated PBR/UV bake recipes and partial-import metadata. Preserve the existing public client API, direct storage connections and immutable chunk checks. Rewrite the README as a current usage guide with the actual automatic connection flow, page controls, update steps and typed quick start.
+
 ## 0.3.12
 
 Import every Unreal material as standard PBR with six outputs; preserve baked mask and translucent opacity, including alpha when color maps are off. Exclude refraction, WPO and extra shading effects without changing sources.

@@ -2,10 +2,11 @@ import { type StaticPreviewBundle } from './m0f0d622f8bdc.js';
 export interface CandidateRefreshRow {
     readonly actorId: string;
     readonly name: string;
-    readonly sourceChange: 'added' | 'removed' | 'changed' | 'unchanged';
+    readonly sourceChange: 'added' | 'removed' | 'changed' | 'unchanged' | 'unavailable';
     readonly webChanged: boolean;
     readonly conflict: boolean;
     readonly resolution: 'web' | 'source' | 'merge';
+    readonly sourceRestricted?: boolean;
 }
 export interface CandidateRefreshPlan {
     readonly current: StaticPreviewBundle;

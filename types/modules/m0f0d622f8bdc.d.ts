@@ -5,8 +5,10 @@ import { type TextureImportOptions } from './mae043aea4362.js';
 import type { CandidateRefreshBaseline } from './mb447e7ccbe60.js';
 import { type AppearanceReviewRecord } from './m2e501185a8ea.js';
 import { type CandidateVersionHistory } from './m84ea7acd5e11.js';
+import { type PartialImportRecord } from './m97ad32a3f8ae.js';
 /** A provisional visualization recipe, NOT a calibrated UEWebPackage/import profile. */
 export interface StaticPreviewRecipe {
+    partialImport?: PartialImportRecord;
     levelVersions?: CandidateVersionHistory;
     appearanceReview?: AppearanceReviewRecord;
     refreshBaseline?: CandidateRefreshBaseline;

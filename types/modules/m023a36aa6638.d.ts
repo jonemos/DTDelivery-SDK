@@ -4,6 +4,7 @@ import { type TextureImportOptions, type WebTextureEncoder } from './mae043aea43
 import { type CandidateMaterialAudit } from './md356ef9a3849.js';
 import type { ImportProgress } from './m5389db5360c3.js';
 import { type CompatibilityBake } from './m1fc4eeaffa28.js';
+import { type PartialImportRecord } from './m97ad32a3f8ae.js';
 import { type AppearanceDecision } from './m2e501185a8ea.js';
 export interface CandidateFile {
     readonly name: string;
@@ -36,6 +37,7 @@ interface Payload {
     };
 }
 export interface CandidateSelection {
+    partialImport?: PartialImportRecord;
     inventory: Inventory;
     payloads: Payload[];
     files: ReadonlyMap<string, CandidateFile>;
