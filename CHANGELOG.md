@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.16
+
+Document the recommended one-time Git clone and single-command SDK update workflow, server restart, validation and backup recovery. Clarify separate external application and model updates. Preserve viewer/updater behavior, immutable file checks and all existing release tags.
+
 ## 0.3.15
 
 Align camera clipping and environment defaults with editor/composition and preserve horizontal FOV on resize. Publish the verified tiling/material runtime and current README, host integration and first-delivery guides. Preserve immutable chunk validation, public API and existing release tags.

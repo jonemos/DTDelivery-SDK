@@ -1,22 +1,22 @@
-# DT Delivery SDK 0.3.15
+# DT Delivery SDK 0.3.16
 
 DT Web Editor에서 게시한 통합레벨을 웹에서 표시하는 SDK입니다. 미리 빌드한 테스트 페이지로 바로 확인하거나 외부 웹 프로젝트에 연결할 수 있습니다. 모델 목록·점진 로딩·액터 검색과 선택·카메라·표시 옵션·스크립트 공개 속성을 제공합니다.
 
 ## 바로 실행하기
 
-1. [최신 SDK ZIP](https://github.com/jonemos/DTDelivery-SDK/archive/refs/heads/main.zip)을 받아 **전체 압축 해제**합니다.
-2. 폴더 안의 `examples/test-server.cmd`를 실행합니다.
-3. Chrome 또는 Edge에서 열린 테스트 페이지를 확인합니다. 모델이 하나면 자동으로 열리고, 여러 개면 이름을 선택한 뒤 **게시본 열기**를 누릅니다.
-
-Windows 10/11의 기본 PowerShell로 실행하며 **Node.js·pnpm·Python 설치나 시작 시 다운로드가 필요 없습니다.** 기본 주소는 `http://127.0.0.1:5183/`입니다. SDK 전체 폴더와 실행 창을 유지하세요. 서버를 종료할 때는 실행 창에서 `Ctrl+C`를 누릅니다.
-
-Git으로 받을 때도 같은 테스트 서버를 사용합니다.
+처음 받는 PC에서는 **Git으로 한 번만 복제한 뒤 사용하는 방식**을 권장합니다. Git이 설치된 Windows 10/11에서 PowerShell을 열고, SDK를 보관할 쓰기 가능한 폴더에서 다음 명령을 순서대로 실행하세요. Git이 없다면 [Git for Windows](https://git-scm.com/downloads/win)를 먼저 설치하고 PowerShell을 다시 엽니다. 공개 저장소이므로 다운로드에 GitHub 로그인은 필요 없습니다.
 
 ```powershell
 git clone https://github.com/jonemos/DTDelivery-SDK.git
 cd DTDelivery-SDK
 .\examples\test-server.cmd
 ```
+
+Chrome 또는 Edge에서 열린 테스트 페이지를 확인합니다. 기본 주소는 `http://127.0.0.1:5183/`입니다. 모델이 하나면 자동으로 열리고, 여러 개면 이름을 선택한 뒤 **게시본 열기**를 누릅니다. 테스트 서버 창은 사용하는 동안 유지하고, 종료할 때는 그 창에서 `Ctrl+C`를 누릅니다.
+
+**테스트 페이지 실행에는 Node.js·pnpm·Python 설치나 패키지 다운로드가 필요 없습니다.** Windows 기본 PowerShell을 사용합니다. 최초 Git clone과 SDK 업데이트에는 인터넷이 필요하고, 원격 모델을 볼 때는 모델 저장소에도 연결되어야 합니다. 다음부터는 받은 폴더의 `examples/test-server.cmd`만 실행하면 됩니다.
+
+Git을 설치하기 어려운 PC는 [최신 SDK ZIP](https://github.com/jonemos/DTDelivery-SDK/archive/refs/heads/main.zip)을 **전체 압축 해제**하고 같은 파일을 실행하세요. ZIP 사본도 `update.cmd`로 업데이트할 수 있습니다. SDK 폴더를 통째로 유지하고 테스트 페이지 HTML만 따로 실행하지 마세요.
 
 ## 모델 연결
 
@@ -53,17 +53,31 @@ SDK의 초기 수평 FOV는 90°, Near/Far는 0.01/2000m, 환경광 강도는 0.
 ## SDK 업데이트
 
 1. 실행 중인 테스트 서버를 `Ctrl+C`로 종료합니다.
-2. SDK 루트의 `update.cmd`를 실행합니다.
+2. **처음 받은 SDK 폴더 안의 `update.cmd`를 더블클릭**합니다. PowerShell에서는 아래 명령을 실행합니다.
 3. 완료 후 `examples/test-server.cmd`를 다시 실행하고 브라우저 페이지를 새로고침합니다.
 
-공식 `main`의 파일 해시를 확인하고 백업한 뒤 교체합니다. ZIP 사본은 Git·Node.js·pnpm 설치 없이 업데이트하며, Git 사본은 설치된 Git을 사용합니다. 배포 파일을 직접 수정한 경우에는 덮어쓰지 않고 중단합니다. 모델과 개인 설정은 SDK 배포 파일과 분리해 보관하세요. 자세한 절차는 [업데이트·복구 안내](docs/UPDATING.md)를 참고하세요.
+```powershell
+.\update.cmd
+```
+
+이후 업데이트도 **같은 `update.cmd` 한 번**으로 SDK의 실행 파일·타입·문서·테스트 페이지를 함께 갱신합니다. 다시 clone하거나 별도로 `git pull`을 실행할 필요가 없습니다. `Updated SDK ...` 또는 `already up to date` 메시지를 확인하세요. 오류가 나면 실행 창의 메시지를 확인하고 [업데이트·복구 안내](docs/UPDATING.md)를 따릅니다.
+
+공식 `main`의 파일 해시를 확인하고 백업한 뒤 교체합니다. Git 사본은 설치된 Git을 사용하고, ZIP 사본은 Git 없이 업데이트합니다. SDK 파일을 직접 수정했다면 덮어쓰지 않고 중단합니다. 모델·개인 설정·자체 앱 코드는 SDK 폴더 밖에 보관하세요.
+
+**이 명령이 갱신하는 범위는 실행한 SDK 폴더입니다.** 다른 웹 프로젝트에 패키지로 설치했거나 파일을 복사해 넣었다면, 그 프로젝트의 SDK 의존성/사본을 갱신한 뒤 다시 빌드·배포해야 합니다. 모델 데이터는 제작자가 재게시하며 SDK 프로그램 업데이트와 별개입니다.
+
+## 다른 사람에게 전달하기
+
+공식 저장소 주소 `https://github.com/jonemos/DTDelivery-SDK.git`와 이 README를 전달하세요. 처음 사용하는 사람에게는 **모델 이름, 기본 저장소 사용 여부 또는 SDK 연결 주소/전체 청크 폴더, 실행 순서, 문의 담당자**도 알려줍니다. SDK Git에는 모델 데이터와 편집기 실행 파일이 포함되지 않습니다. 기본 저장소를 사용한다면 별도 주소 입력 없이 모델 이름으로 열 수 있습니다.
+
+일반 조회 사용자는 위의 **바로 실행하기 → 모델 연결 → SDK 업데이트** 순서로 읽으면 됩니다. 외부 앱 개발자에게는 아래 개발 절차와 [호스트 적용 가이드](docs/guides/17_HOST_INTEGRATION.md)를 함께 전달하세요. 그대로 보낼 실행 안내와 전달 메모 양식은 [첫 전달 안내](docs/guides/18_FIRST_DELIVERY.md)에 있습니다.
 
 ## 개발 프로젝트에서 사용하기
 
 직접 웹페이지를 만드는 개발자는 Node.js·pnpm 프로젝트에 다음 패키지를 연결합니다. 미리 빌드한 테스트 페이지를 실행할 때는 이 설치가 필요 없습니다.
 
 ```powershell
-pnpm add '@dt/delivery-sdk@github:jonemos/DTDelivery-SDK#v0.3.15'
+pnpm add '@dt/delivery-sdk@github:jonemos/DTDelivery-SDK#v0.3.16'
 ```
 
 ```ts

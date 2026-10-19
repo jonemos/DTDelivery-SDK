@@ -656,7 +656,7 @@ function fr(e, t, n = e) {
 //#region src/delivery/SdkVersion.ts
 var pr = typeof __DT_DELIVERY_SDK_VERSION__ > "u" ? {
 	name: "@dt/delivery-sdk",
-	version: "0.3.15",
+	version: "0.3.16",
 	license: "MIT",
 	addonSdkVersion: 5,
 	contracts: [
