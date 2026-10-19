@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "version": "0.3.16",
-  "baseVersion": "0.3.16",
+  "version": "0.3.17",
+  "baseVersion": "0.3.17",
   "license": "MIT",
   "addonSdkVersion": 5,
   "contracts": [
@@ -25,8 +25,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 11622,
-      "sha256": "797e747e4ef1f10d00bed0fadc3cffe94df43c46fbb29b727d31871f0cb58436"
+      "bytes": 11888,
+      "sha256": "8f73930e233b0f0058be3ea32d9f71636cfac4de973511eb54614ce9d7fbbac8"
     },
     {
       "path": "docs/API.md",
@@ -126,12 +126,12 @@
     {
       "path": "docs/guides/17_HOST_INTEGRATION.md",
       "bytes": 8093,
-      "sha256": "45a1cf47da3ec9ff8373aab9344add6f709fe420989fb8022604313c5cdd3bef"
+      "sha256": "fe9a8b4b745054488c991e119d155f1d7686efaece74ef921ab39f7551b5a0a2"
     },
     {
       "path": "docs/guides/18_FIRST_DELIVERY.md",
       "bytes": 6823,
-      "sha256": "9e98f29927726d569590c3c3a701c20538c287bd1e3100cc7d4fefbc0b2ad017"
+      "sha256": "d1cd8ee081d8337a0844ee8254bca7895fc9b37ade57593ca4ebcbfb6cdb1e5c"
     },
     {
       "path": "docs/guides/README.md",
@@ -141,7 +141,7 @@
     {
       "path": "docs/UPDATING.md",
       "bytes": 6516,
-      "sha256": "3add8ddb09b7759053b1400705d5d9930f12d08addbc22b062ba93c08b359716"
+      "sha256": "d1d92bb24c6310f89a4bec9611a8163be02db1d1ee3be447ce4c8d98a2c24b04"
     },
     {
       "path": "examples/detach-sdk.mjs",
@@ -231,12 +231,12 @@
     {
       "path": "package.json",
       "bytes": 729,
-      "sha256": "80e4d6bd4aa4630e563f7c630e00824a83e925cfac89746a13adae316800e029"
+      "sha256": "5e2f96b98bb6d96a97bf6c45d2c032c41cb4ca056ca1ce6b0cc1f25b94919a84"
     },
     {
       "path": "README.md",
       "bytes": 12956,
-      "sha256": "d660aba5aac561c64096555dc1730f91d06a2048edc1edd364e8d25138adb969"
+      "sha256": "c9217618c68e53ea1c89dafa59c23e1dc35ac65a2d7873257cd7e3e98b16facf"
     },
     {
       "path": "runtime/CompositionBrowser-DTR-vua6.js",
@@ -251,7 +251,7 @@
     {
       "path": "runtime/index.js",
       "bytes": 72,
-      "sha256": "84cf0b62b84bd1f00684fb9b8b4d1a153e8a04760970d053ef9120d77536a80a"
+      "sha256": "6b5141d58cc21083faba865f00bf544fffa499b3b3634ae043d4acfb93a4e968"
     },
     {
       "path": "runtime/RenderQualityPipeline-CTbOsfcN.js",
@@ -276,7 +276,7 @@
     {
       "path": "runtime/sdk.js",
       "bytes": 741029,
-      "sha256": "daab5a12f2ae62284c84db083d2b175a6679a5b52e7c8821bff2d5fb40925a86"
+      "sha256": "4a1ac971850b1dd46e5149d6b67e553c20dc687650f7d55c518f8e5f4b4e199d"
     },
     {
       "path": "runtime/StaticPreviewPersistence-BSmfWg2W.js",
@@ -825,8 +825,8 @@
     },
     {
       "path": "update.ps1",
-      "bytes": 19428,
-      "sha256": "ab4bad242dcd3444aaadc1ee1a3b102c1e700eab962589605eebc6b9103a3c1c"
+      "bytes": 19664,
+      "sha256": "a34adafd9d584cac1c903f26c1c4c7d446bad44330d8ed5900f25121afdd6d81"
     }
   ]
 }

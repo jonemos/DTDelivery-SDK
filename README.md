@@ -1,4 +1,4 @@
-# DT Delivery SDK 0.3.16
+# DT Delivery SDK 0.3.17
 
 DT Web Editor에서 게시한 통합레벨을 웹에서 표시하는 SDK입니다. 미리 빌드한 테스트 페이지로 바로 확인하거나 외부 웹 프로젝트에 연결할 수 있습니다. 모델 목록·점진 로딩·액터 검색과 선택·카메라·표시 옵션·스크립트 공개 속성을 제공합니다.
 
@@ -77,7 +77,7 @@ SDK의 초기 수평 FOV는 90°, Near/Far는 0.01/2000m, 환경광 강도는 0.
 직접 웹페이지를 만드는 개발자는 Node.js·pnpm 프로젝트에 다음 패키지를 연결합니다. 미리 빌드한 테스트 페이지를 실행할 때는 이 설치가 필요 없습니다.
 
 ```powershell
-pnpm add '@dt/delivery-sdk@github:jonemos/DTDelivery-SDK#v0.3.16'
+pnpm add '@dt/delivery-sdk@github:jonemos/DTDelivery-SDK#v0.3.17'
 ```
 
 ```ts

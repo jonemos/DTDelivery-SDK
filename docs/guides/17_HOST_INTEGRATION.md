@@ -1,13 +1,13 @@
 # 17 · 외부 개발 도구와 웹 프로젝트에 SDK 포함하기
 
-SDK 0.3.16는 미리 빌드된 브라우저 모듈과 TypeScript 선언을 제공합니다. VS Code·WebStorm 같은 개발 도구의 기존 Vite/React/Vue/일반 TypeScript 프로젝트에서 사용할 수 있습니다. 개발 도구 자체에 플러그인을 설치하는 방식이 아니라, 그 도구로 만드는 웹 애플리케이션에 패키지를 포함합니다. 데스크톱 호스트는 WebGL을 지원하는 웹 화면을 준비하고 같은 모듈을 사용합니다. 모델은 별도의 검증된 게시 청크로 연결합니다.
+SDK 0.3.17는 미리 빌드된 브라우저 모듈과 TypeScript 선언을 제공합니다. VS Code·WebStorm 같은 개발 도구의 기존 Vite/React/Vue/일반 TypeScript 프로젝트에서 사용할 수 있습니다. 개발 도구 자체에 플러그인을 설치하는 방식이 아니라, 그 도구로 만드는 웹 애플리케이션에 패키지를 포함합니다. 데스크톱 호스트는 WebGL을 지원하는 웹 화면을 준비하고 같은 모듈을 사용합니다. 모델은 별도의 검증된 게시 청크로 연결합니다.
 
 ## 1. 패키지로 설치하기
 
 프로젝트 루트의 터미널에서 실행합니다. Git 주소로 설치하므로 개발 PC에 Git과 프로젝트의 Node.js·패키지 관리자가 필요합니다. 수신자가 미리 빌드한 테스트 페이지만 실행한다면 이 설치는 필요 없습니다.
 
 ```powershell
-pnpm add '@dt/delivery-sdk@github:jonemos/DTDelivery-SDK#v0.3.16'
+pnpm add '@dt/delivery-sdk@github:jonemos/DTDelivery-SDK#v0.3.17'
 ```
 
 생성된 package.json과 lockfile을 함께 버전 관리합니다. 운영 배포는 검증한 태그에 고정하고 SDK 업데이트와 모델 게시본 업데이트를 별도로 관리하세요. 기존 프레임워크·개발 서버를 유지하며 SDK 예제 프로젝트를 앱 전체 위에 덮어쓰지 않습니다.

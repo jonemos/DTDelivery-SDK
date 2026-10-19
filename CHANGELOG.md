@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.17
+
+Decode native Git paths as UTF-8 during SDK updates and restore the caller encoding after success or failure. Verify Korean/space/ampersand Windows paths and preserve file validation, backups, tags, and the documented one-time clone/update.cmd workflow.
+
 ## 0.3.16
 
 Document the recommended one-time Git clone and single-command SDK update workflow, server restart, validation and backup recovery. Clarify separate external application and model updates. Preserve viewer/updater behavior, immutable file checks and all existing release tags.
