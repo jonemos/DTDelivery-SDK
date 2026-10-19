@@ -4012,22 +4012,28 @@ function Qi(e) {
 	if (!Array.isArray(o.originMeters) || o.originMeters.length !== 3) throw Error("잘못된 파티클 위치");
 	o.originMeters.forEach((e) => n(e, -1e5, 1e5)), n(o.spreadMeters, 0, 100), n(o.speedMetersPerSecond, 0, 100), n(o.lifetimeSeconds, .1, 60), n(o.sizeMeters, .001, 10);
 }
-function $i(e) {
+//#endregion
+//#region src/domain/EnvironmentLighting.ts
+var $i = {
+	enabled: !1,
+	intensity: .2
+};
+function ea(e) {
 	return typeof e == "number" && Number.isFinite(e) && e >= 0 && e <= 4;
 }
-function ea(e) {
-	if (!e || typeof e != "object" || Array.isArray(e) || Object.keys(e).some((e) => !["enabled", "intensity"].includes(e)) || typeof e.enabled != "boolean" || !$i(e.intensity)) throw Error("환경광 강도는 0~4 사이의 유효한 값이어야 합니다.");
+function ta(e) {
+	if (!e || typeof e != "object" || Array.isArray(e) || Object.keys(e).some((e) => !["enabled", "intensity"].includes(e)) || typeof e.enabled != "boolean" || !ea(e.intensity)) throw Error("환경광 강도는 0~4 사이의 유효한 값이어야 합니다.");
 }
 //#endregion
 //#region src/domain/BuildSettings.ts
-var ta = [
+var na = [
 	[1280, 720],
 	[1920, 1080],
 	[2560, 1440],
 	[3840, 2160]
 ];
 _e.VIEWPORT;
-function na(e) {
+function ra(e) {
 	if (!e || typeof e != "object" || Array.isArray(e)) throw Error("잘못된 빌드 설정");
 	let t = e;
 	if (Object.keys(t).some((e) => ![
@@ -4046,7 +4052,7 @@ function na(e) {
 		"mobile"
 	].includes(t.platform) || typeof t.showInstructions != "boolean" || typeof t.showFullscreen != "boolean" || !(t.playerStartActorId === null || typeof t.playerStartActorId == "string" && t.playerStartActorId.length > 0 && t.playerStartActorId.length <= 120)) throw Error("지원하지 않는 빌드 설정 버전 또는 값");
 	let n = t.resolution;
-	if (!n || !["fit", "fixed"].includes(n.mode) || !ta.some(([e, t]) => e === n.width && t === n.height) || ![
+	if (!n || !["fit", "fixed"].includes(n.mode) || !na.some(([e, t]) => e === n.width && t === n.height) || ![
 		.5,
 		.75,
 		1
@@ -4056,12 +4062,12 @@ function na(e) {
 		"height",
 		"scale"
 	].includes(e))) throw Error("지원하지 않는 실행 해상도");
-	if (Vr(t.textures), t.environmentLighting !== void 0 && ea(t.environmentLighting), t.textures.maps.some((e) => Hr(t.textures, e) > (e === "baseColor" ? 1024 : 512))) throw Error("베이스는 최대 1024, 나머지는 최대 512로 설정하세요.");
+	if (Vr(t.textures), t.environmentLighting !== void 0 && ta(t.environmentLighting), t.textures.maps.some((e) => Hr(t.textures, e) > (e === "baseColor" ? 1024 : 512))) throw Error("베이스는 최대 1024, 나머지는 최대 512로 설정하세요.");
 }
 //#endregion
 //#region src/domain/sceneSerialization.ts
-var J = class extends Error {}, ra = class extends Error {};
-function ia(e) {
+var J = class extends Error {}, ia = class extends Error {};
+function aa(e) {
 	if (!Y(e)) return e;
 	let t = e.schemaVersion === 1 ? {
 		...e,
@@ -4085,7 +4091,7 @@ function ia(e) {
 		})
 	};
 }
-function aa(e) {
+function oa(e) {
 	if (!Y(e)) throw new J("Scene payload must be an object.");
 	if (e.schemaVersion !== 2) throw new J(`Unsupported Scene schemaVersion ${String(e.schemaVersion)}.`);
 	if (e.kind !== "Scene" || e.coordinateSystem !== "RH_Y_UP_METERS_V1") throw new J("Scene kind or coordinate system is unsupported.");
@@ -4094,18 +4100,18 @@ function aa(e) {
 		if (!Y(n)) throw new J(`Actor ${t} must be an object.`);
 		if (X(n.id, `Actor ${t}.id`), X(n.name, `Actor ${t}.name`), X(n.classId, `Actor ${t}.classId`), X(n.rootComponentId, `Actor ${t}.rootComponentId`), !Array.isArray(n.tags) || !n.tags.every((e) => typeof e == "string")) throw new J(`Actor ${t}.tags must be strings.`);
 		if (!Array.isArray(n.components)) throw new J(`Actor ${t}.components must be an array.`);
-		for (let [e, r] of n.components.entries()) ua(r, t, e);
+		for (let [e, r] of n.components.entries()) da(r, t, e);
 	}
 	if (!Y(e.authoring)) throw new J("Scene.authoring is required.");
-	if (e.authoring.webEffects !== void 0 && Qi(e.authoring.webEffects), e.authoring.buildSettings !== void 0 && na(e.authoring.buildSettings), e.authoring.levelName !== void 0 && (typeof e.authoring.levelName != "string" || !e.authoring.levelName.trim() || e.authoring.levelName.length > 120 || [...e.authoring.levelName].some((e) => e.charCodeAt(0) < 32 || e.charCodeAt(0) === 127))) throw new J("레벨 이름은 제어 문자 없이 1~120자로 입력하세요.");
+	if (e.authoring.webEffects !== void 0 && Qi(e.authoring.webEffects), e.authoring.buildSettings !== void 0 && ra(e.authoring.buildSettings), e.authoring.levelName !== void 0 && (typeof e.authoring.levelName != "string" || !e.authoring.levelName.trim() || e.authoring.levelName.length > 120 || [...e.authoring.levelName].some((e) => e.charCodeAt(0) < 32 || e.charCodeAt(0) === 127))) throw new J("레벨 이름은 제어 문자 없이 1~120자로 입력하세요.");
 	if (!Array.isArray(e.authoring.folders) || !Array.isArray(e.authoring.actorFolders)) throw new J("Scene.authoring collections must be arrays.");
 	for (let t of e.authoring.folders) {
 		if (!Y(t)) throw new J("Outliner folder must be an object.");
-		X(t.id, "OutlinerFolder.id"), X(t.name, "OutlinerFolder.name"), da(t.parentId, "OutlinerFolder.parentId");
+		X(t.id, "OutlinerFolder.id"), X(t.name, "OutlinerFolder.name"), fa(t.parentId, "OutlinerFolder.parentId");
 	}
 	for (let t of e.authoring.actorFolders) {
 		if (!Y(t)) throw new J("Actor folder membership must be an object.");
-		X(t.actorId, "ActorFolderMembership.actorId"), da(t.folderId, "ActorFolderMembership.folderId");
+		X(t.actorId, "ActorFolderMembership.actorId"), fa(t.folderId, "ActorFolderMembership.folderId");
 	}
 	if (e.authoring.prefabInstances !== void 0) {
 		if (!Array.isArray(e.authoring.prefabInstances)) throw new J("Scene.authoring.prefabInstances must be an array.");
@@ -4116,9 +4122,9 @@ function aa(e) {
 			if (t.removedComponentLocalIds !== void 0 && (!Array.isArray(t.removedComponentLocalIds) || t.removedComponentLocalIds.some((e) => typeof e != "string"))) throw new J("Invalid Prefab removed Component IDs.");
 		}
 	}
-	e.authoring.ueImport !== void 0 && oa(e.authoring.ueImport);
+	e.authoring.ueImport !== void 0 && sa(e.authoring.ueImport);
 }
-function oa(e) {
+function sa(e) {
 	if (!Y(e)) throw new J("Scene.authoring.ueImport must be an object.");
 	for (let t of [
 		"packageId",
@@ -4147,22 +4153,22 @@ function oa(e) {
 		}
 	}
 }
-function sa(e) {
+function ca(e) {
 	try {
 		sn(e), kn(e);
 	} catch (e) {
-		throw new ra(e instanceof Error ? e.message : "Invalid Scene relationships.");
+		throw new ia(e instanceof Error ? e.message : "Invalid Scene relationships.");
 	}
 }
-function ca(e) {
-	let t = ia(e);
-	return aa(t), sa(t), t;
-}
 function la(e) {
-	let t = structuredClone(e);
-	return aa(t), sa(t), t;
+	let t = aa(e);
+	return oa(t), ca(t), t;
 }
-function ua(e, t, n) {
+function ua(e) {
+	let t = structuredClone(e);
+	return oa(t), ca(t), t;
+}
+function da(e, t, n) {
 	if (!Y(e)) throw new J(`Component ${t}:${n} must be an object.`);
 	if (X(e.id, "Component.id"), X(e.ownerActorId, "Component.ownerActorId"), e.type === "TestData" || e.type === "TestScript") {
 		if (e.typeVersion !== 1 && (e.type !== "TestScript" || e.typeVersion !== 2 && e.typeVersion !== 3) || [
@@ -4173,7 +4179,7 @@ function ua(e, t, n) {
 		e.type === "TestScript" && xt(e);
 		return;
 	}
-	if (da(e.parentComponentId, "Component.parentComponentId"), e.attachmentParent !== null) {
+	if (fa(e.parentComponentId, "Component.parentComponentId"), e.attachmentParent !== null) {
 		if (!Y(e.attachmentParent)) throw new J("Component.attachmentParent is invalid.");
 		X(e.attachmentParent.actorId, "attachmentParent.actorId"), X(e.attachmentParent.componentId, "attachmentParent.componentId");
 		let t = e.attachmentParent.kind;
@@ -4191,7 +4197,7 @@ function Y(e) {
 function X(e, t) {
 	if (typeof e != "string" || e.length === 0) throw new J(`${t} must be a non-empty string.`);
 }
-function da(e, t) {
+function fa(e, t) {
 	if (e !== null && typeof e != "string") throw new J(`${t} must be a string or null.`);
 }
 Uint32Array.from({ length: 256 }, (e, t) => {
@@ -4200,7 +4206,7 @@ Uint32Array.from({ length: 256 }, (e, t) => {
 });
 //#endregion
 //#region src/storage/ProjectPackage.ts
-var fa = class extends Error {
+var pa = class extends Error {
 	code;
 	affectedIds;
 	materialOutcome;
@@ -4208,14 +4214,14 @@ var fa = class extends Error {
 		super(t), this.code = e, this.affectedIds = n, this.materialOutcome = r, this.name = "UEPackageImportError";
 	}
 };
-function pa(e, t) {
-	let n = ga(t.bones, "skeleton.bones"), r = /* @__PURE__ */ new Map(), i = n.map((t) => {
-		let n = _a(t.id, "bone.id");
+function ma(e, t) {
+	let n = _a(t.bones, "skeleton.bones"), r = /* @__PURE__ */ new Map(), i = n.map((t) => {
+		let n = va(t.id, "bone.id");
 		return r.has(n) && Z("identity", `Skeleton ${e} has duplicate bone ${n}.`, [e, n]), r.set(n, t), {
 			id: n,
-			name: _a(t.name, "bone.name"),
-			parentId: t.parentId === null ? null : _a(t.parentId, "bone.parentId"),
-			restLocal: ma(t.restLocal, "bone.restLocal")
+			name: va(t.name, "bone.name"),
+			parentId: t.parentId === null ? null : va(t.parentId, "bone.parentId"),
+			restLocal: ha(t.restLocal, "bone.restLocal")
 		};
 	});
 	for (let t of i) t.parentId !== null && !r.has(t.parentId) && Z("identity", `Skeleton ${e} bone ${t.id} has an unknown parent.`, [e, t.id]);
@@ -4227,82 +4233,82 @@ function pa(e, t) {
 	return {
 		sourceAssetId: e,
 		bones: i,
-		sockets: ga(t.sockets, "skeleton.sockets").map((t) => {
-			let n = _a(t.id, "socket.id"), i = _a(t.boneId, "socket.boneId");
+		sockets: _a(t.sockets, "skeleton.sockets").map((t) => {
+			let n = va(t.id, "socket.id"), i = va(t.boneId, "socket.boneId");
 			return a.has(n) && Z("identity", `Skeleton ${e} has duplicate socket ${n}.`, [e, n]), a.add(n), r.has(i) || Z("identity", `Skeleton ${e} socket ${n} references an unknown bone.`, [
 				e,
 				n,
 				i
 			]), {
 				id: n,
-				name: _a(t.name, "socket.name"),
+				name: va(t.name, "socket.name"),
 				boneId: i,
-				transform: ma(t.transform, "socket.transform")
+				transform: ha(t.transform, "socket.transform")
 			};
 		})
 	};
 }
-function ma(e, t) {
-	let n = ha(e, t);
+function ha(e, t) {
+	let n = ga(e, t);
 	return {
-		position: va(n.position, 3, `${t}.position`),
-		rotation: va(n.rotation, 4, `${t}.rotation`),
-		scale: va(n.scale, 3, `${t}.scale`)
+		position: ya(n.position, 3, `${t}.position`),
+		rotation: ya(n.rotation, 4, `${t}.rotation`),
+		scale: ya(n.scale, 3, `${t}.scale`)
 	};
 }
-function ha(e, t) {
+function ga(e, t) {
 	return (typeof e != "object" || !e || Array.isArray(e)) && Z("json", `${t} must be an object.`), e;
 }
-function ga(e, t) {
-	return Array.isArray(e) || Z("json", `${t} must be an array.`), e.map((e, n) => ha(e, `${t}[${n}]`));
-}
 function _a(e, t) {
+	return Array.isArray(e) || Z("json", `${t} must be an array.`), e.map((e, n) => ga(e, `${t}[${n}]`));
+}
+function va(e, t) {
 	return (typeof e != "string" || !e) && Z("json", `${t} must be a non-empty string.`), e;
 }
-function va(e, t, n) {
+function ya(e, t, n) {
 	return (!Array.isArray(e) || e.length !== t || !e.every(Number.isFinite)) && Z("json", `${n} must contain ${t} finite numbers.`), e;
 }
 function Z(e, t, n = [], r = null) {
-	throw new fa(e, t, n, r);
+	throw new pa(e, t, n, r);
 }
 //#endregion
 //#region src/ue-import/staticPreviewMath.ts
-var ya = new o().set(0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, 0, 0, 0, 0, 1), ba = 1024 ** 2, xa = 1024 ** 3, Sa = 8 * xa, Ca, wa = 0, Ta;
-async function Ea() {
+var ba = new o().set(0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, 0, 0, 0, 0, 1), xa = 1024 ** 2, Sa = 1024 ** 3, Ca = 8 * Sa, wa, Ta = 0, Ea;
+async function Da() {
 	let e = typeof window > "u" ? void 0 : window.desktopAPI?.memoryCapacity;
 	if (!e) {
-		Ca = void 0, wa = 0;
+		wa = void 0, Ta = 0;
 		return;
 	}
-	if (Ta) return Ta;
-	if (!(Date.now() - wa < 1e3)) return Ta = (async () => {
+	if (Ea) return Ea;
+	if (!(Date.now() - Ta < 1e3)) return Ea = (async () => {
 		try {
 			let t = await e();
 			if (!Number.isSafeInteger(t.total) || !Number.isSafeInteger(t.available) || t.total <= 0 || t.available < 0 || t.available > t.total) throw Error("Invalid memory capacity");
-			Ca = t, wa = Date.now();
+			wa = t, Ta = Date.now();
 		} catch {
-			Ca = void 0;
+			wa = void 0;
 		}
 	})().finally(() => {
-		Ta = void 0;
-	}), Ta;
+		Ea = void 0;
+	}), Ea;
 }
-function Da(e = 0, t = Ca) {
+function Oa(e = 0, t = wa) {
 	if (!Number.isFinite(e) || e < 0) throw Error("유효하지 않은 메모리 사용량입니다.");
-	if (t) return Math.floor(Math.min(Sa, t.total * .4, e + t.available * .6));
+	if (t) return Math.floor(Math.min(Ca, t.total * .4, e + t.available * .6));
 	let n = globalThis.navigator?.deviceMemory;
-	return Math.floor(Math.min(Sa, Number.isFinite(n) && n > 0 ? n * xa * .5 : 2 * xa));
+	return Math.floor(Math.min(Ca, Number.isFinite(n) && n > 0 ? n * Sa * .5 : 2 * Sa));
 }
-function Oa(e, t = 0, n = "표시") {
-	let r = Da(t);
-	if (!Number.isFinite(e) || e < 0 || e > Sa || e > r) throw Error(`${n} 자동 메모리 예산: 필요 ${(e / ba).toFixed(1)} MiB / 현재 자동 한도 ${(r / ba).toFixed(0)} MiB. 다른 작업을 닫거나 텍스처 크기를 줄인 뒤 다시 시도하세요. 기존 데이터는 유지됩니다.`);
+function ka(e, t = 0, n = "표시") {
+	let r = Oa(t);
+	if (!Number.isFinite(e) || e < 0 || e > Ca || e > r) throw Error(`${n} 자동 메모리 예산: 필요 ${(e / xa).toFixed(1)} MiB / 현재 자동 한도 ${(r / xa).toFixed(0)} MiB. 다른 작업을 닫거나 텍스처 크기를 줄인 뒤 다시 시도하세요. 기존 데이터는 유지됩니다.`);
 }
-function ka(e) {
-	if (!Number.isFinite(e) || e < 0 || e > Sa) throw Error("유효하지 않은 메모리 예산입니다.");
-	return Math.min(Sa, Math.max(128 * ba, Math.ceil(e * 1.1 / (64 * ba)) * 64 * ba));
+function Aa(e) {
+	if (!Number.isFinite(e) || e < 0 || e > Ca) throw Error("유효하지 않은 메모리 예산입니다.");
+	return Math.min(Ca, Math.max(128 * xa, Math.ceil(e * 1.1 / (64 * xa)) * 64 * xa));
 }
-function Aa(e, t = 0) {
-	return Oa(e, t, "텍스처"), [
+function ja(e, t = 0) {
+	return ka(e, t, "텍스처"), [
 		128,
 		256,
 		512,
@@ -4310,27 +4316,27 @@ function Aa(e, t = 0) {
 		2048,
 		4096,
 		8192
-	].map((e) => e * ba).find((t) => t >= e);
+	].map((e) => e * xa).find((t) => t >= e);
 }
-function ja(e, t, n = 0) {
+function Ma(e, t, n = 0) {
 	return typeof e == "function" ? e(t, n) : e;
 }
-var Ma = /* @__PURE__ */ new Map(), Na = class {
+var Na = /* @__PURE__ */ new Map(), Pa = class {
 	closed = !1;
 	update(e, t, n, r = !1) {
 		if (this.closed) return;
 		if (![e, t].every((e) => Number.isFinite(e) && e >= 0)) throw Error("유효하지 않은 메모리 예약입니다.");
-		r && (e = Math.max(e, Ma.get(this)?.peak ?? 0));
-		let i = [...Ma].filter(([e]) => e !== this).map(([, e]) => e);
-		n && Oa(e + i.reduce((e, t) => e + t.peak, 0), t + i.reduce((e, t) => e + t.resident, 0)), Ma.set(this, {
+		r && (e = Math.max(e, Na.get(this)?.peak ?? 0));
+		let i = [...Na].filter(([e]) => e !== this).map(([, e]) => e);
+		n && ka(e + i.reduce((e, t) => e + t.peak, 0), t + i.reduce((e, t) => e + t.resident, 0)), Na.set(this, {
 			peak: e,
 			resident: t
 		});
 	}
 	dispose() {
-		this.closed = !0, Ma.delete(this);
+		this.closed = !0, Na.delete(this);
 	}
-}, Pa = 134217728, Fa = [
+}, Fa = 134217728, Ia = [
 	128,
 	256,
 	512,
@@ -4339,46 +4345,46 @@ var Ma = /* @__PURE__ */ new Map(), Na = class {
 	4096,
 	8192
 ].map((e) => e * 1048576);
-function Ia(e) {
-	if (e !== 0 && !Fa.includes(e)) throw Error("지원하지 않는 텍스처 표시 예산입니다.");
+function La(e) {
+	if (e !== 0 && !Ia.includes(e)) throw Error("지원하지 않는 텍스처 표시 예산입니다.");
 }
-var La = /* @__PURE__ */ new Set([
+var Ra = /* @__PURE__ */ new Set([
 	"KHR_materials_emissive_strength",
 	"KHR_materials_specular",
 	"KHR_materials_unlit",
 	"KHR_texture_transform",
 	"KHR_materials_ior"
-]), Ra = /* @__PURE__ */ new WeakMap();
+]), za = /* @__PURE__ */ new WeakMap();
 function Q(e) {
 	if (!e || typeof e != "object" || Array.isArray(e)) throw Error("Invalid appearance object");
 	return e;
 }
-function za(e) {
+function Ba(e) {
 	if (e === void 0) return [];
 	if (!Array.isArray(e)) throw Error("Invalid appearance array");
 	return e;
 }
-function Ba(e, t) {
+function Va(e, t) {
 	if (!Number.isSafeInteger(e) || e < 0 || e >= t) throw Error("Invalid appearance index");
 	return e;
 }
-function Va(e) {
+function Ha(e) {
 	if (!e || typeof e != "object") return;
 	if (Array.isArray(e)) {
-		e.forEach(Va);
+		e.forEach(Ha);
 		return;
 	}
 	let t = Q(e);
 	if (t.extensions) {
-		for (let e of Object.keys(Q(t.extensions))) if (!La.has(e)) throw Error(`Unsupported preview appearance extension: ${e}`);
+		for (let e of Object.keys(Q(t.extensions))) if (!Ra.has(e)) throw Error(`Unsupported preview appearance extension: ${e}`);
 	}
-	Object.entries(t).filter(([e]) => e !== "extras").forEach(([, e]) => Va(e));
+	Object.entries(t).filter(([e]) => e !== "extras").forEach(([, e]) => Ha(e));
 }
-function Ha(e) {
+function Ua(e) {
 	if (kr(e)) {
 		let t = [], n = [];
 		for (let r of Mr(e).payload.levels) {
-			let e = Ha(r), i = t.length;
+			let e = Ua(r), i = t.length;
 			t.push(...e.dimensions), n.push(...e.uses.map((e) => ({
 				...e,
 				source: e.source + i
@@ -4391,18 +4397,18 @@ function Ha(e) {
 	}
 	Yn(e);
 	let t = new DataView(e.buffer, e.byteOffset, e.byteLength), n = t.getUint32(12, !0), r = Q(JSON.parse(new TextDecoder().decode(e.subarray(20, 20 + n))));
-	Va(r);
+	Ha(r);
 	let i = /* @__PURE__ */ new Uint8Array();
 	for (let r = 20 + n; r < e.length;) {
 		let n = t.getUint32(r, !0);
 		t.getUint32(r + 4, !0) === 5130562 && (i = e.subarray(r + 8, r + 8 + n)), r += 8 + n;
 	}
-	let a = za(r.bufferViews), o = za(r.images), s = za(r.textures), c = o.map((e) => {
+	let a = Ba(r.bufferViews), o = Ba(r.images), s = Ba(r.textures), c = o.map((e) => {
 		let t = Q(e);
 		if ("uri" in t || typeof t.mimeType != "string") throw Error("Only embedded preview images are supported");
-		let n = Q(a[Ba(t.bufferView, a.length)]), r = Number(n.byteOffset ?? 0), o = Number(n.byteLength);
+		let n = Q(a[Va(t.bufferView, a.length)]), r = Number(n.byteOffset ?? 0), o = Number(n.byteLength);
 		return Xn(i.subarray(r, r + o), t.mimeType);
-	}), l = za(r.materials), u = l.map((e) => {
+	}), l = Ba(r.materials), u = l.map((e) => {
 		let t = Q(e), n = t.pbrMetallicRoughness ? Q(t.pbrMetallicRoughness) : {}, r = t.extensions ? Q(t.extensions) : {}, i = r.KHR_materials_specular ? Q(r.KHR_materials_specular) : {};
 		return [
 			[n.baseColorTexture, "baseColor"],
@@ -4414,9 +4420,9 @@ function Ha(e) {
 			[i.specularTexture, "specular"],
 			[i.specularColorTexture, "specular"]
 		].filter(([e]) => e !== void 0).map(([e, t]) => {
-			let n = Q(e), r = Q(s[Ba(n.index, s.length)]);
+			let n = Q(e), r = Q(s[Va(n.index, s.length)]);
 			if (r.extensions) throw Error("Texture source extensions are not supported in this preview");
-			let i = Ba(r.source, o.length), a = n.extensions ? Q(n.extensions) : {}, c = (a.KHR_texture_transform ? Q(a.KHR_texture_transform) : {}).texCoord ?? n.texCoord ?? 0;
+			let i = Va(r.source, o.length), a = n.extensions ? Q(n.extensions) : {}, c = (a.KHR_texture_transform ? Q(a.KHR_texture_transform) : {}).texCoord ?? n.texCoord ?? 0;
 			if (!Number.isSafeInteger(c) || c < 0 || c > 3) throw Error("Unsupported texture UV channel");
 			return {
 				source: i,
@@ -4425,13 +4431,13 @@ function Ha(e) {
 			};
 		});
 	});
-	for (let e of za(r.meshes)) for (let t of za(Q(e).primitives)) {
+	for (let e of Ba(r.meshes)) for (let t of Ba(Q(e).primitives)) {
 		let e = Q(t);
 		if (e.material === void 0) continue;
 		let n = Q(e.attributes);
-		for (let t of u[Ba(e.material, l.length)]) {
+		for (let t of u[Va(e.material, l.length)]) {
 			let e = n[`TEXCOORD_${t.texCoord}`];
-			if (Q(za(r.accessors)[Ba(e, za(r.accessors).length)]).type !== "VEC2") throw Error(`Missing valid UV${t.texCoord} for texture`);
+			if (Q(Ba(r.accessors)[Va(e, Ba(r.accessors).length)]).type !== "VEC2") throw Error(`Missing valid UV${t.texCoord} for texture`);
 		}
 	}
 	return {
@@ -4439,7 +4445,7 @@ function Ha(e) {
 		uses: u.flat()
 	};
 }
-function Ua(e, t) {
+function Wa(e, t) {
 	t && Vr(t);
 	let n = e.uses.filter((e) => e.required || !t || t.maps.includes(e.kind)), r = new Set(n.map((e) => e.source)), i = e.dimensions.map((e, r) => {
 		let i = t ? Math.min(...n.filter((e) => e.source === r).map((e) => Hr(t, e.kind))) : Infinity, a = Math.min(1, i / Math.max(e.width, e.height));
@@ -4460,12 +4466,12 @@ function Ua(e, t) {
 		textureViewCount: n.length
 	};
 }
-function Wa(e) {
-	return Ua(Ha(e));
+function Ga(e) {
+	return Wa(Ua(e));
 }
-function Ga(e, t = []) {
+function Ka(e, t = []) {
 	let n = /* @__PURE__ */ new Set(), r = /* @__PURE__ */ new Set(), i = new Set(t);
-	e.flatMap((e) => [e, ...Ra.get(e) ?? []]).forEach((e) => e.traverse((e) => {
+	e.flatMap((e) => [e, ...za.get(e) ?? []]).forEach((e) => e.traverse((e) => {
 		e instanceof Me && (r.add(e.geometry), (Array.isArray(e.material) ? e.material : [e.material]).forEach((e) => {
 			n.add(e), Object.values(e).forEach((e) => {
 				e instanceof Se && i.add(e);
@@ -4479,10 +4485,10 @@ function Ga(e, t = []) {
 		e && typeof e == "object" && "close" in e && typeof e.close == "function" && e.close();
 	}), n.forEach((e) => e.dispose()), r.forEach((e) => e.dispose());
 }
-async function Ka(e, t = Pa, n = !0) {
-	Ia(t);
-	let r = Wa(e);
-	if (t === 0 && (await Ea(), t = Aa(r.reservedBytes)), r.reservedBytes > t) throw Error("Preview texture budget exceeded");
+async function qa(e, t = Fa, n = !0) {
+	La(t);
+	let r = Ga(e);
+	if (t === 0 && (await Da(), t = ja(r.reservedBytes)), r.reservedBytes > t) throw Error("Preview texture budget exceeded");
 	if (kr(e)) {
 		let { payload: r } = Mr(e), i = new T();
 		i.userData.staticMeshLod = {
@@ -4490,10 +4496,10 @@ async function Ka(e, t = Pa, n = !0) {
 			hysteresis: r.hysteresis
 		};
 		try {
-			for (let e of r.levels) i.add(await Ka(e, t, n));
+			for (let e of r.levels) i.add(await qa(e, t, n));
 			return i.children[1].visible = !1, i;
 		} catch (e) {
-			throw Ga([i]), e;
+			throw Ka([i]), e;
 		}
 	}
 	let i = [], a = [], o = [], s = !1, c = new ti();
@@ -4517,26 +4523,26 @@ async function Ka(e, t = Pa, n = !0) {
 			n?.meshes !== void 0 && n.primitives !== void 0 && (e.userData.materialSlotId = `mesh:${n.meshes}/primitive:${n.primitives}`);
 		});
 		let r = new T();
-		return r.matrixAutoUpdate = !1, n && r.matrix.copy(ya), r.add(t.scene), r.updateMatrixWorld(!0), Ra.set(r, [...t.scenes.filter((e) => e !== t.scene), ...i]), r;
+		return r.matrixAutoUpdate = !1, n && r.matrix.copy(ba), r.add(t.scene), r.updateMatrixWorld(!0), za.set(r, [...t.scenes.filter((e) => e !== t.scene), ...i]), r;
 	} catch (e) {
-		throw await Promise.allSettled(o), Ga(i, a), e;
+		throw await Promise.allSettled(o), Ka(i, a), e;
 	}
 }
 //#endregion
 //#region src/ue-import/CandidateAppearanceReview.ts
-var qa = (e) => e.trim().normalize("NFC").toLowerCase();
-function Ja(e, t) {
+var Ja = (e) => e.trim().normalize("NFC").toLowerCase();
+function Ya(e, t) {
 	let n = e.trim();
 	if (!n) throw Error("이름을 입력하세요.");
-	let r = new Set(Array.from(t, qa));
-	if (!r.has(qa(n))) return n;
+	let r = new Set(Array.from(t, Ja));
+	if (!r.has(Ja(n))) return n;
 	let i = /^(.*)_(\d+)$/u.exec(n), a = i?.[1] || n, o = i ? BigInt(i[2]) + 1n : 1n;
-	for (; r.has(qa(`${a}_${o}`));) o++;
+	for (; r.has(Ja(`${a}_${o}`));) o++;
 	return `${a}_${o}`;
 }
 //#endregion
 //#region src/prefab/PrefabDocument.ts
-function Ya(e) {
+function Xa(e) {
 	return e.type === "PrimitiveCube" ? {
 		...e,
 		type: "StaticMesh",
@@ -4545,18 +4551,18 @@ function Ya(e) {
 		materialOverrides: []
 	} : e;
 }
-function Xa(e) {
+function Za(e) {
 	return {
 		...e,
 		actors: e.actors.map((e) => ({
 			...e,
-			components: e.components.map(Ya)
+			components: e.components.map(Xa)
 		}))
 	};
 }
-function Za(e) {
+function Qa(e) {
 	if (!e || typeof e != "object" || !Array.isArray(e.actors) || !Array.isArray(e.rootActorLocalIds) || !e.rootActorLocalIds.length) throw Error("Invalid Prefab template/root metadata.");
-	if (aa({
+	if (oa({
 		schemaVersion: 2,
 		kind: "Scene",
 		coordinateSystem: "RH_Y_UP_METERS_V1",
@@ -4590,7 +4596,7 @@ function Za(e) {
 	}), e.rootActorLocalIds.some((e) => !t.has(e))) throw Error("Prefab root local ID is missing.");
 	for (let r of e.actors) for (let e of r.components) if (D(e) && e.attachmentParent && (!t.has(e.attachmentParent.actorId) || !n.has(e.attachmentParent.componentId))) throw Error("Prefab attachment must stay inside its template.");
 }
-function Qa(e, t, n, r) {
+function $a(e, t, n, r) {
 	return e.actors.map((e) => {
 		let i = t[e.id];
 		if (!i) throw Error(`Missing Actor mapping ${e.id}.`);
@@ -4630,26 +4636,26 @@ function Qa(e, t, n, r) {
 				};
 				for (let e of r.filter(({ localComponentId: e }) => e === a.id)) {
 					let t = Nt(s).fields.find(({ fieldId: t }) => t === e.fieldId);
-					t && (s = eo(structuredClone(s), t.path, $a(s, t.fieldId, e.value, n)));
+					t && (s = to(structuredClone(s), t.path, eo(s, t.fieldId, e.value, n)));
 				}
 				return s;
 			})
 		};
 	});
 }
-function $a(e, t, n, r) {
+function eo(e, t, n, r) {
 	if (e.type !== "TestScript" || Nt(e).fields.find((e) => e.fieldId === t)?.referenceKind !== "scene-object" || n === null) return n;
 	if (typeof n != "string" || !r[n]) throw Error("TestScript Prefab target must be a template Component ID.");
 	return r[n];
 }
-function eo(e, t, n) {
+function to(e, t, n) {
 	let r = e;
 	for (let e of t.slice(0, -1)) r = r[e];
 	return r[t.at(-1)] = structuredClone(n), e;
 }
 //#endregion
 //#region src/prefab/PrefabComponentOrigins.ts
-function to(e) {
+function no(e) {
 	let t = e.prefabComponentOrigins;
 	if (t === void 0) return [];
 	if (!t || typeof t != "object" || !("schemaVersion" in t) || t.schemaVersion !== 1 || !("entries" in t) || !Array.isArray(t.entries)) throw Error("프리팹 Component 연결 이력 형식이 올바르지 않습니다.");
@@ -4673,36 +4679,36 @@ function to(e) {
 }
 //#endregion
 //#region src/prefab/PrefabInheritance.ts
-var no = (e) => e.type === "TwinMetadata" ? [] : Nt(e).fields.filter((e) => e.editableContexts.includes("details") && !e.fieldId.startsWith("transform.")), ro = (e, t) => JSON.stringify(e) === JSON.stringify(t);
-function io(e, t) {
+var ro = (e) => e.type === "TwinMetadata" ? [] : Nt(e).fields.filter((e) => e.editableContexts.includes("details") && !e.fieldId.startsWith("transform.")), io = (e, t) => JSON.stringify(e) === JSON.stringify(t);
+function ao(e, t) {
 	return t.reduce((e, t) => e && typeof e == "object" ? e[t] : void 0, e);
 }
-function ao(e, t, n) {
+function oo(e, t, n) {
 	let r = structuredClone(e), i = r;
 	for (let e of t.slice(0, -1)) (!i[e] || typeof i[e] != "object") && (i[e] = {}), i = i[e];
 	return n === void 0 ? delete i[t.at(-1)] : i[t.at(-1)] = structuredClone(n), r;
 }
-var oo = (e, t) => JSON.stringify([e, t]);
-function so(e, t, n) {
+var so = (e, t) => JSON.stringify([e, t]);
+function co(e, t, n) {
 	return t === "scene-object" && typeof e == "string" ? Object.keys(n).find((t) => n[t] === e) ?? e : structuredClone(e);
 }
-function co(e, t) {
-	if (!ro(e.rootActorLocalIds, t.rootActorLocalIds) || !ro(e.actors.map((e) => e.id).sort(), t.actors.map((e) => e.id).sort())) throw Error("상속 프리팹의 액터 추가·삭제 또는 루트 변경은 지원하지 않습니다. 새 프리팹으로 저장하세요.");
+function lo(e, t) {
+	if (!io(e.rootActorLocalIds, t.rootActorLocalIds) || !io(e.actors.map((e) => e.id).sort(), t.actors.map((e) => e.id).sort())) throw Error("상속 프리팹의 액터 추가·삭제 또는 루트 변경은 지원하지 않습니다. 새 프리팹으로 저장하세요.");
 	for (let n of e.actors) {
 		let e = t.actors.find((e) => e.id === n.id);
 		if (n.rootComponentId !== e.rootComponentId) throw Error("상속 프리팹의 루트 Component 변경은 지원하지 않습니다.");
 		for (let t of n.components) {
 			let n = e.components.find((e) => e.id === t.id);
-			if (!n || n.type !== Ya(t).type && n.type !== t.type || n.typeVersion !== t.typeVersion) throw Error("상속 중인 Component 삭제·타입 변경은 지원하지 않습니다. 새 프리팹으로 저장하세요.");
+			if (!n || n.type !== Xa(t).type && n.type !== t.type || n.typeVersion !== t.typeVersion) throw Error("상속 중인 Component 삭제·타입 변경은 지원하지 않습니다. 새 프리팹으로 저장하세요.");
 			for (let e of [
 				"parentComponentId",
 				"attachmentParent",
 				"scriptPackage"
-			]) if (!ro(t[e], n[e])) throw Error("상속 중인 Component 계층·Script 버전 변경은 지원하지 않습니다. 새 프리팹으로 저장하세요.");
+			]) if (!io(t[e], n[e])) throw Error("상속 중인 Component 계층·Script 버전 변경은 지원하지 않습니다. 새 프리팹으로 저장하세요.");
 		}
 	}
 }
-var lo = class {
+var uo = class {
 	catalog;
 	addedIds;
 	constructor(e, t = /* @__PURE__ */ new Map()) {
@@ -4712,16 +4718,16 @@ var lo = class {
 		let n = this.catalog.assets.find((t) => t.id === e && t.kind === "Prefab"), r = this.catalog.revisions.find((r) => r.assetId === e && r.id === (t ?? n?.currentRevisionId));
 		if (!n || !r) throw Error("프리팹 원본 또는 기준 버전을 찾을 수 없습니다: " + e);
 		let i = r.metadata.prefab;
-		return Za(i), {
-			prefab: Xa(i),
+		return Qa(i), {
+			prefab: Za(i),
 			revisionId: r.id,
-			origins: to(r.metadata)
+			origins: no(r.metadata)
 		};
 	}
 	resolve(e) {
 		let t = e.actors, n = e.authoring.prefabInstances?.map((n) => {
 			let r = this.source(n.prefabAssetId, n.sourceRevisionId), i = this.source(n.prefabAssetId);
-			co(r.prefab, i.prefab);
+			lo(r.prefab, i.prefab);
 			let a = { ...n.localComponentIds }, o = /* @__PURE__ */ new Map();
 			for (let r of i.origins) {
 				if (r.documentId !== e.id || r.instanceId !== n.id || a[r.localComponentId]) continue;
@@ -4730,21 +4736,21 @@ var lo = class {
 				a[r.localComponentId] = r.componentId, o.set(r.localComponentId, r);
 			}
 			for (let e of i.prefab.actors) for (let t of e.components) if (!a[t.id]) {
-				let e = oo(n.id, t.id);
+				let e = so(n.id, t.id);
 				this.addedIds.has(e) || this.addedIds.set(e, crypto.randomUUID()), a[t.id] = this.addedIds.get(e);
 			}
-			let s = Qa(i.prefab, n.localActorIds, a, []), c = Qa(r.prefab, n.localActorIds, n.localComponentIds, []), l = /* @__PURE__ */ new Map();
+			let s = $a(i.prefab, n.localActorIds, a, []), c = $a(r.prefab, n.localActorIds, n.localComponentIds, []), l = /* @__PURE__ */ new Map();
 			for (let [e, t] of o) {
-				let r = Qa(this.source(n.prefabAssetId, t.revisionId).prefab, n.localActorIds, a, []).flatMap((e) => e.components).find((e) => e.id === t.componentId);
+				let r = $a(this.source(n.prefabAssetId, t.revisionId).prefab, n.localActorIds, a, []).flatMap((e) => e.components).find((e) => e.id === t.componentId);
 				if (!r) throw Error("원본에 반영한 Component의 기준 버전이 없습니다.");
 				l.set(e, r);
 			}
 			let u = new Map(n.overrides.filter((e) => !e.fieldId.startsWith("transform.")).map((e) => {
-				let t = s.flatMap((e) => e.components).find((t) => t.id === a[e.localComponentId]), n = t && no(t).find((t) => t.fieldId === e.fieldId), r = n?.referenceKind === "scene-object" ? {
+				let t = s.flatMap((e) => e.components).find((t) => t.id === a[e.localComponentId]), n = t && ro(t).find((t) => t.fieldId === e.fieldId), r = n?.referenceKind === "scene-object" ? {
 					...e,
-					value: so(e.value, n.referenceKind, a)
+					value: co(e.value, n.referenceKind, a)
 				} : e;
-				return [oo(e.localComponentId, e.fieldId), r];
+				return [so(e.localComponentId, e.fieldId), r];
 			})), d = new Set(n.removedComponentLocalIds ?? []);
 			return t = t.map((e) => {
 				let t = s.find((t) => t.id === e.id);
@@ -4752,23 +4758,23 @@ var lo = class {
 				let r = c.find((t) => t.id === e.id);
 				for (let [i, a] of Object.entries(n.localComponentIds)) r?.components.some((e) => e.id === a) && !e.components.some((e) => e.id === a) && t.components.some((e) => e.id === a) && d.add(i);
 				let i = (e) => Object.keys(a).find((t) => a[t] === e), o = e.components.map((e) => {
-					let o = t.components.some((t) => t.id === e.id) ? Ya(e) : e, s = t.components.find((e) => e.id === o.id);
+					let o = t.components.some((t) => t.id === e.id) ? Xa(e) : e, s = t.components.find((e) => e.id === o.id);
 					if (!s) return o;
-					if (o.type !== s.type || o.typeVersion !== s.typeVersion || o.type === "TestScript" && s.type === "TestScript" && !ro(o.scriptPackage, s.scriptPackage)) throw Error("인스턴스 Component 타입·Script 버전이 원본과 다릅니다: " + o.id);
+					if (o.type !== s.type || o.typeVersion !== s.typeVersion || o.type === "TestScript" && s.type === "TestScript" && !io(o.scriptPackage, s.scriptPackage)) throw Error("인스턴스 Component 타입·Script 버전이 원본과 다릅니다: " + o.id);
 					let c = o, d = i(o.id);
-					for (let e of no(s)) {
-						let t = oo(d, e.fieldId), i = r?.components.find((e) => e.id === o.id);
-						n.inheritanceVersion !== 1 && i && !ro(io(o, e.path), io(i, e.path)) && u.set(t, {
+					for (let e of ro(s)) {
+						let t = so(d, e.fieldId), i = r?.components.find((e) => e.id === o.id);
+						n.inheritanceVersion !== 1 && i && !io(ao(o, e.path), ao(i, e.path)) && u.set(t, {
 							localComponentId: d,
 							fieldId: e.fieldId,
-							value: so(io(o, e.path), e.referenceKind, a)
+							value: co(ao(o, e.path), e.referenceKind, a)
 						});
 						let f = l.get(d);
-						!u.has(t) && f && !ro(io(o, e.path), io(f, e.path)) && u.set(t, {
+						!u.has(t) && f && !io(ao(o, e.path), ao(f, e.path)) && u.set(t, {
 							localComponentId: d,
 							fieldId: e.fieldId,
-							value: so(io(o, e.path), e.referenceKind, a)
-						}), u.has(t) || (c = ao(c, e.path, io(s, e.path)));
+							value: co(ao(o, e.path), e.referenceKind, a)
+						}), u.has(t) || (c = oo(c, e.path, ao(s, e.path)));
 					}
 					return c;
 				});
@@ -4801,11 +4807,11 @@ var lo = class {
 				prefabInstances: n
 			}
 		};
-		return sa(r), ro(r, e) ? e : r;
+		return ca(r), io(r, e) ? e : r;
 	}
 	reset(e, t, n) {
 		let r = e.authoring.prefabInstances?.find((e) => Object.values(e.localComponentIds).includes(t)), i = e.actors.flatMap((e) => e.components).find((e) => e.id === t);
-		if (!r || !i || !no(i).some((e) => e.fieldId === n)) return null;
+		if (!r || !i || !ro(i).some((e) => e.fieldId === n)) return null;
 		let a = Object.keys(r.localComponentIds).find((e) => r.localComponentIds[e] === t), o = e.authoring.prefabInstances.map((e) => e.id === r.id ? {
 			...e,
 			inheritanceVersion: 1,
@@ -4822,7 +4828,7 @@ var lo = class {
 };
 //#endregion
 //#region src/assets/ContentDeletion.ts
-function uo(e) {
+function fo(e) {
 	let t = e.importSettings;
 	return !t.duplicatedFrom && [
 		"sourcePath",
@@ -4834,7 +4840,7 @@ function uo(e) {
 }
 //#endregion
 //#region src/assets/ContentFolderDeletion.ts
-function fo(e, t) {
+function po(e, t) {
 	if (!e.folders.some((e) => e.id === t)) throw Error("삭제할 폴더가 없습니다. 목록을 새로 확인하세요.");
 	let n = /* @__PURE__ */ new Set([t]), r = [t], i = /* @__PURE__ */ new Map();
 	for (let t of e.folders) t.parentId !== null && i.set(t.parentId, [...i.get(t.parentId) ?? [], t.id]);
@@ -4848,12 +4854,12 @@ function fo(e, t) {
 		assets: e.assets.filter((e) => e.folderId !== null && n.has(e.folderId))
 	});
 }
-function po(e, t, n) {
-	let r = fo(e, t.folderId), i = (e) => [...e].sort((e, t) => e.id.localeCompare(t.id));
+function mo(e, t, n) {
+	let r = po(e, t.folderId), i = (e) => [...e].sort((e, t) => e.id.localeCompare(t.id));
 	if (JSON.stringify([i(r.folders), i(r.assets)]) !== JSON.stringify([i(t.folders), i(t.assets)])) throw Error("확인 이후 폴더 내용이 변경되었습니다. 삭제를 취소하고 목록을 다시 확인하세요.");
 	let a = new Set(r.assets.map((e) => e.id));
 	for (let t of r.assets) {
-		if (uo(t)) throw Error(t.name + ": Unreal 원본 에셋은 가져오기·새로고침 복구를 위해 보존하므로 폴더를 삭제할 수 없습니다.");
+		if (fo(t)) throw Error(t.name + ": Unreal 원본 에셋은 가져오기·새로고침 복구를 위해 보존하므로 폴더를 삭제할 수 없습니다.");
 		let r = [...n.filter((e) => e.assetId === t.id).flatMap((e) => e.references), ...e.assets.filter((e) => !a.has(e.id)).flatMap((e) => e.dependencies.flatMap((n, r) => n.assetId === t.id ? [{
 			ownerType: "Asset",
 			ownerId: e.id,
@@ -4871,10 +4877,10 @@ function po(e, t, n) {
 }
 //#endregion
 //#region src/assets/AssetStorage.ts
-var mo = class extends Error {}, $ = class extends Error {}, ho = class extends Error {};
-function go(e, t, n, r) {
+var ho = class extends Error {}, $ = class extends Error {}, go = class extends Error {};
+function _o(e, t, n, r) {
 	if (r && e.name !== r.expectedName) throw new $("에셋 이름이 다른 작업에서 변경되었습니다.");
-	let i = r?.restoreName ?? e.name, a = Ja(i, n.filter((n) => n.id !== e.id && n.folderId === t).map((e) => e.name));
+	let i = r?.restoreName ?? e.name, a = Ya(i, n.filter((n) => n.id !== e.id && n.folderId === t).map((e) => e.name));
 	if (r?.restoreName !== void 0 && a !== i) throw new $("복원할 이름을 다른 에셋이 사용하고 있습니다.");
 	return {
 		...e,
@@ -4882,12 +4888,12 @@ function go(e, t, n, r) {
 		name: a
 	};
 }
-function _o(e) {
+function vo(e) {
 	let t = e.trim();
 	if (!t || t === "." || t === ".." || /[/\\]/u.test(t) || [...t].some((e) => e.charCodeAt(0) < 32)) throw new $("올바른 폴더 이름을 입력하세요.");
 	return t;
 }
-var vo = class {
+var yo = class {
 	deferredBlobs;
 	deferredSizes = [];
 	restoringBlobs;
@@ -4908,7 +4914,7 @@ var vo = class {
 			if (this.restoringBlobs) return this.restoringBlobs;
 			this.restoringBlobs = (async () => {
 				let e = await this.deferredBlobs();
-				if (yo(e), JSON.stringify(e.assets) !== JSON.stringify([...this.assets.values()]) || JSON.stringify(e.revisions) !== JSON.stringify([...this.revisions.values()]) || JSON.stringify(e.folders) !== JSON.stringify([...this.folders.values()]) || e.blobs.length !== this.deferredSizes.length || this.deferredSizes.some((t) => !e.blobs.some((e) => e.key === t.key && e.bytes.byteLength === t.byteLength))) throw Error("Deferred registry revision mismatch");
+				if (bo(e), JSON.stringify(e.assets) !== JSON.stringify([...this.assets.values()]) || JSON.stringify(e.revisions) !== JSON.stringify([...this.revisions.values()]) || JSON.stringify(e.folders) !== JSON.stringify([...this.folders.values()]) || e.blobs.length !== this.deferredSizes.length || this.deferredSizes.some((t) => !e.blobs.some((e) => e.key === t.key && e.bytes.byteLength === t.byteLength))) throw Error("Deferred registry revision mismatch");
 				this.blobs = new Map(e.blobs.map((e) => [e.key, e])), this.deferredBlobs = void 0, this.deferredSizes = [];
 			})();
 			try {
@@ -4958,18 +4964,18 @@ var vo = class {
 			...t,
 			asset: {
 				...t.asset,
-				name: Ja(t.asset.name, [...this.assets.values()].filter((e) => e.folderId === t.asset.folderId).map((e) => e.name))
+				name: Ya(t.asset.name, [...this.assets.values()].filter((e) => e.folderId === t.asset.folderId).map((e) => e.name))
 			}
 		};
-		if (this.assets.has(n.asset.id) || this.revisions.has(n.revision.id)) throw new mo("Asset or revision UUID already exists.");
+		if (this.assets.has(n.asset.id) || this.revisions.has(n.revision.id)) throw new ho("Asset or revision UUID already exists.");
 		if (n.asset.folderId !== null && !this.folders.has(n.asset.folderId)) throw new $("에셋을 넣을 폴더가 없습니다. 폴더를 다시 선택하세요.");
 		let r = new Map(this.assets), i = new Map(this.revisions), a = new Map(this.blobs);
 		return a.set(n.blob.key, n.blob), this.failIfInjected("after-blob"), i.set(n.revision.id, n.revision), this.failIfInjected("after-revision"), r.set(n.asset.id, n.asset), this.assets = r, this.revisions = i, this.blobs = a, structuredClone(n.asset);
 	}
 	async commitRevision(e, t, n, r, i) {
 		let a = this.requireAsset(e);
-		if (i !== void 0 && a.currentRevisionId !== i) throw new mo("다른 창에서 에셋이 변경되었습니다. 다시 불러온 뒤 편집하세요.");
-		if (t.assetId !== e || this.revisions.has(t.id)) throw new mo("Revision identity is invalid or already exists.");
+		if (i !== void 0 && a.currentRevisionId !== i) throw new ho("다른 창에서 에셋이 변경되었습니다. 다시 불러온 뒤 편집하세요.");
+		if (t.assetId !== e || this.revisions.has(t.id)) throw new ho("Revision identity is invalid or already exists.");
 		let o = new Map(this.assets), s = new Map(this.revisions), c = new Map(this.blobs);
 		c.set(n.key, {
 			key: n.key,
@@ -4986,7 +4992,7 @@ var vo = class {
 		let n = new Map(this.assets), r = new Map(this.revisions), i = new Map(this.blobs);
 		for (let e of t) {
 			let t = this.requireAsset(e.assetId);
-			if (t.currentRevisionId !== e.expectedRevisionId || r.has(e.revision.id)) throw new mo("다른 창에서 에셋이 변경되었습니다. 다시 불러온 뒤 편집하세요.");
+			if (t.currentRevisionId !== e.expectedRevisionId || r.has(e.revision.id)) throw new ho("다른 창에서 에셋이 변경되었습니다. 다시 불러온 뒤 편집하세요.");
 			i.set(e.blob.key, e.blob), this.failIfInjected("after-blob"), r.set(e.revision.id, e.revision), this.failIfInjected("after-revision"), n.set(e.assetId, {
 				...t,
 				currentRevisionId: e.revision.id,
@@ -4997,7 +5003,7 @@ var vo = class {
 	}
 	async setCurrentRevision(e, t) {
 		let n = this.requireAsset(e), r = this.revisions.get(t);
-		if (!r || r.assetId !== e) throw new mo("Rollback revision does not belong to the asset.");
+		if (!r || r.assetId !== e) throw new ho("Rollback revision does not belong to the asset.");
 		this.assets.set(e, {
 			...n,
 			currentRevisionId: t
@@ -5012,7 +5018,7 @@ var vo = class {
 		});
 	}
 	async importSnapshot(e) {
-		if (yo(e), this.assets.size || this.revisions.size || this.blobs.size || this.folders.size) throw new ho("Asset namespace must be empty before package restore.");
+		if (bo(e), this.assets.size || this.revisions.size || this.blobs.size || this.folders.size) throw new go("Asset namespace must be empty before package restore.");
 		this.assets = new Map(e.assets.map((e) => [e.id, structuredClone(e)])), this.revisions = new Map(e.revisions.map((e) => [e.id, structuredClone(e)])), this.blobs = new Map(e.blobs.map((e) => [e.key, {
 			key: e.key,
 			bytes: e.bytes.slice()
@@ -5029,7 +5035,7 @@ var vo = class {
 		});
 	}
 	async renameFolder(e, t, n) {
-		let r = _o(t), i = this.folders.get(e);
+		let r = vo(t), i = this.folders.get(e);
 		if (!i || n !== void 0 && i.name !== n) throw new $("폴더가 없거나 다른 작업에서 이름이 변경되었습니다.");
 		this.folders.set(e, {
 			...i,
@@ -5038,10 +5044,10 @@ var vo = class {
 	}
 	async renameAsset(e, t) {
 		let n = this.requireAsset(e), r = t.trim();
-		if (!r) throw new mo("Asset name is required.");
+		if (!r) throw new ho("Asset name is required.");
 		let i = {
 			...n,
-			name: Ja(r, [...this.assets.values()].filter((t) => t.id !== e && t.folderId === n.folderId).map((e) => e.name))
+			name: Ya(r, [...this.assets.values()].filter((t) => t.id !== e && t.folderId === n.folderId).map((e) => e.name))
 		};
 		return this.assets.set(e, i), structuredClone(i);
 	}
@@ -5049,7 +5055,7 @@ var vo = class {
 		let i = this.requireAsset(e);
 		if (n !== void 0 && i.folderId !== n) throw new $("에셋 폴더가 다른 작업에서 변경되었습니다. 목록을 새로 확인하세요.");
 		if (t !== null && !this.folders.has(t)) throw new $(`Unknown asset folder ${t}.`);
-		let a = go(i, t, [...this.assets.values()], r);
+		let a = _o(i, t, [...this.assets.values()], r);
 		return this.assets.set(e, a), structuredClone(a);
 	}
 	async deleteAsset(e, t = []) {
@@ -5066,7 +5072,7 @@ var vo = class {
 		i.flatMap((e) => e.blobKeys).filter((e) => !a.has(e)).forEach((e) => this.blobs.delete(e)), this.assets.delete(e);
 	}
 	async deleteFolder(e, t) {
-		let n = po({
+		let n = mo({
 			assets: [...this.assets.values()],
 			revisions: [...this.revisions.values()],
 			folders: [...this.folders.values()]
@@ -5082,49 +5088,49 @@ var vo = class {
 		if (this.failure === e) throw this.failure = null, new DOMException("Transaction aborted.", "AbortError");
 	}
 };
-function yo(e) {
+function bo(e) {
 	let t = (e, t) => {
-		if (new Set(e).size !== e.length) throw new ho(`Duplicate ${t} identity.`);
+		if (new Set(e).size !== e.length) throw new go(`Duplicate ${t} identity.`);
 	};
 	t(e.assets.map((e) => e.id), "asset"), t(e.revisions.map((e) => e.id), "revision"), t(e.blobs.map((e) => e.key), "blob"), t(e.folders.map((e) => e.id), "folder");
 	let n = new Map(e.revisions.map((e) => [e.id, e])), r = new Set(e.blobs.map((e) => e.key)), i = new Set(e.assets.map((e) => e.id)), a = new Set(e.folders.map((e) => e.id));
 	for (let t of e.assets) {
 		let e = n.get(t.currentRevisionId);
-		if (!e || e.assetId !== t.id) throw new ho(`Asset ${t.id} has an invalid current revision.`);
-		if (t.folderId && !a.has(t.folderId)) throw new ho(`Asset ${t.id} has an invalid folder.`);
-		if (t.dependencies.some((e) => !i.has(e.assetId))) throw new ho(`Asset ${t.id} has a missing dependency.`);
+		if (!e || e.assetId !== t.id) throw new go(`Asset ${t.id} has an invalid current revision.`);
+		if (t.folderId && !a.has(t.folderId)) throw new go(`Asset ${t.id} has an invalid folder.`);
+		if (t.dependencies.some((e) => !i.has(e.assetId))) throw new go(`Asset ${t.id} has a missing dependency.`);
 	}
-	for (let t of e.revisions) if (!i.has(t.assetId) || t.blobKeys.some((e) => !r.has(e))) throw new ho(`Revision ${t.id} has an invalid asset or blob reference.`);
+	for (let t of e.revisions) if (!i.has(t.assetId) || t.blobKeys.some((e) => !r.has(e))) throw new go(`Revision ${t.id} has an invalid asset or blob reference.`);
 }
 //#endregion
 //#region src/render/StaticBatchMaterial.ts
-var bo = /* @__PURE__ */ new WeakMap();
-function xo(e, t) {
-	bo.set(e, t);
+var xo = /* @__PURE__ */ new WeakMap();
+function So(e, t) {
+	xo.set(e, t);
 }
-function So(e) {
-	return bo.get(e);
+function Co(e) {
+	return xo.get(e);
 }
 //#endregion
 //#region src/render/CompositionBatchMaterial.ts
-var Co = /* @__PURE__ */ new WeakSet(), wo = /* @__PURE__ */ new WeakSet();
-function To(e, t = !0) {
-	Co.add(e), t && wo.add(e);
+var wo = /* @__PURE__ */ new WeakSet(), To = /* @__PURE__ */ new WeakSet();
+function Eo(e, t = !0) {
+	wo.add(e), t && To.add(e);
 }
-function Eo(e) {
-	return wo.has(e);
+function Do(e) {
+	return To.has(e);
 }
-function Do(e, t, n, r = !1) {
-	Co.has(t) && (jo(e, t, n), r && xo(e, JSON.stringify([
+function Oo(e, t, n, r = !1) {
+	wo.has(t) && (Mo(e, t, n), r && So(e, JSON.stringify([
 		"delivery-frozen",
-		ko.get(t),
+		Ao.get(t),
 		n
 	])));
 }
-var Oo = /* @__PURE__ */ new WeakMap(), ko = /* @__PURE__ */ new WeakMap(), Ao = 0;
-function jo(e, t, n) {
-	ko.has(t) || ko.set(t, ++Ao), Oo.set(e, {
-		namespace: ko.get(t),
+var ko = /* @__PURE__ */ new WeakMap(), Ao = /* @__PURE__ */ new WeakMap(), jo = 0;
+function Mo(e, t, n) {
+	Ao.has(t) || Ao.set(t, ++jo), ko.set(e, {
+		namespace: Ao.get(t),
 		document: structuredClone(n),
 		hooks: [
 			e.onBeforeCompile,
@@ -5134,21 +5140,21 @@ function jo(e, t, n) {
 		sources: new Map(Object.entries(e).flatMap(([e, t]) => t instanceof Se ? [[e, t.source]] : []))
 	});
 }
-function Mo(e) {
+function No(e) {
 	if (e === null || typeof e == "string" || typeof e == "boolean") return e;
 	if (typeof e == "number") {
 		if (!Number.isFinite(e)) throw Error("non-finite state");
 		return e;
 	}
-	if (Array.isArray(e)) return e.map(Mo);
+	if (Array.isArray(e)) return e.map(No);
 	if (e && typeof e == "object") {
-		if ("toArray" in e && typeof e.toArray == "function") return Mo(e.toArray());
+		if ("toArray" in e && typeof e.toArray == "function") return No(e.toArray());
 		if (Object.getPrototypeOf(e) !== Object.prototype) throw Error("unknown object state");
-		return Object.fromEntries(Object.entries(e).filter(([, e]) => e !== void 0).sort(([e], [t]) => e < t ? -1 : +(e > t)).map(([e, t]) => [e, Mo(t)]));
+		return Object.fromEntries(Object.entries(e).filter(([, e]) => e !== void 0).sort(([e], [t]) => e < t ? -1 : +(e > t)).map(([e, t]) => [e, No(t)]));
 	}
 	throw Error("unknown state");
 }
-function No(e, t) {
+function Po(e, t) {
 	if (e.mipmaps.length || e.isRenderTargetTexture || e.onUpdate) throw Error("dynamic or custom texture");
 	let n = e.image;
 	return {
@@ -5179,10 +5185,10 @@ function No(e, t) {
 		colorSpace: e.colorSpace
 	};
 }
-function Po(e) {
+function Fo(e) {
 	if (!(e instanceof ve) || e.type !== "MeshStandardMaterial") return { reason: "unsupported material type" };
 	if (e.transparent) return { reason: "transparent sorting" };
-	let t = Oo.get(e), n = Object.entries(e).filter(([, e]) => e instanceof Se);
+	let t = ko.get(e), n = Object.entries(e).filter(([, e]) => e instanceof Se);
 	if (t && (t.hooks.some((t, n) => t !== [
 		e.onBeforeCompile,
 		e.onBeforeRender,
@@ -5199,8 +5205,8 @@ function Po(e) {
 			"onBeforeCompile",
 			"onBeforeRender",
 			"customProgramCacheKey"
-		].includes(e)).filter(([, e]) => e !== void 0).map(([e, n]) => [e, n instanceof Se ? No(n, !!t) : Mo(n)]));
-		return { key: JSON.stringify(Mo({
+		].includes(e)).filter(([, e]) => e !== void 0).map(([e, n]) => [e, n instanceof Se ? Po(n, !!t) : No(n)]));
+		return { key: JSON.stringify(No({
 			recipe: t ? {
 				namespace: t.namespace,
 				document: t.document
@@ -5211,17 +5217,17 @@ function Po(e) {
 		return { reason: String(e) };
 	}
 }
-function Fo(e) {
-	return Oo.has(e);
+function Io(e) {
+	return ko.has(e);
 }
 //#endregion
 //#region src/render/TextureViewRendering.ts
-function Io(e, t) {
-	let n = e.clone();
-	return Lo(n, t), n;
-}
 function Lo(e, t) {
-	e.colorSpace = t.colorSpace === "srgb" ? S : "", e.channel = t.texCoord, e.repeat.set(t.uvScale[0], t.uvScale[1]), e.offset.set(t.uvOffset[0], t.uvOffset[1]), e.wrapS = Ro(t.wrapS), e.wrapT = Ro(t.wrapT), e.minFilter = t.minFilter === "nearest" ? g : t.minFilter === "linear-mipmap-linear" ? ue : je, e.magFilter = t.magFilter === "nearest" ? g : je, e.flipY = t.flipY, e.generateMipmaps = t.generateMipmaps ?? !0, e.anisotropy = t.anisotropy ?? 1, e.matrixAutoUpdate = !0, e.updateMatrix(), e.userData.textureView = {
+	let n = e.clone();
+	return Ro(n, t), n;
+}
+function Ro(e, t) {
+	e.colorSpace = t.colorSpace === "srgb" ? S : "", e.channel = t.texCoord, e.repeat.set(t.uvScale[0], t.uvScale[1]), e.offset.set(t.uvOffset[0], t.uvOffset[1]), e.wrapS = zo(t.wrapS), e.wrapT = zo(t.wrapT), e.minFilter = t.minFilter === "nearest" ? g : t.minFilter === "linear-mipmap-linear" ? ue : je, e.magFilter = t.magFilter === "nearest" ? g : je, e.flipY = t.flipY, e.generateMipmaps = t.generateMipmaps ?? !0, e.anisotropy = t.anisotropy ?? 1, e.matrixAutoUpdate = !0, e.updateMatrix(), e.userData.textureView = {
 		assetId: t.texture.assetId,
 		texCoord: t.texCoord,
 		uvScale: [...t.uvScale],
@@ -5239,12 +5245,12 @@ function Lo(e, t) {
 		alphaTransfer: "linear-unmodified"
 	}, e.needsUpdate = !0;
 }
-function Ro(e) {
+function zo(e) {
 	return e === "mirror" ? h : e === "clamp" ? Ne : p;
 }
 //#endregion
 //#region src/render/WebMaskPbrRendering.ts
-function zo(e, t, n) {
+function Bo(e, t, n) {
 	if (t.length !== n.length) throw Error("WebMaskPBR layer and texture counts differ.");
 	if (t.length === 0) return;
 	let r = !1;
@@ -5294,12 +5300,12 @@ function zo(e, t, n) {
 }
 //#endregion
 //#region src/render/VertexAtlasRendering.ts
-var Bo = [
+var Vo = [
 	.2126390039920807,
 	.7151686549186707,
 	.07219231873750687
 ];
-function Vo(e, t, n, r = !1) {
+function Ho(e, t, n, r = !1) {
 	if (n.length !== t.masks.length || n.length !== Math.ceil(t.colors.length / 4)) throw Error("Atlas mask views must match its colors");
 	e.vertexColors = !1, e.onBeforeRender = (e, n, r, i) => {
 		if (!i.hasAttribute("color") && t.kindIdFallback?.useVertexMaterialIds !== !1 || !i.hasAttribute("uv")) throw Error("Atlas requires source vertex color IDs and UV0");
@@ -5328,7 +5334,7 @@ function Vo(e, t, n, r = !1) {
           dtweColor += dtweW${n} * dtweAtlasColors[${n}]; dtweWeight += dtweW${n};
           ${t.surfaces ? `dtweRoughness += dtweW${n} * dtweKindRoughness[${n}]; dtweMetallic += dtweW${n} * dtweKindMetallic[${n}];` : ""}`).join("\n")}
         diffuseColor.rgb *= dtweColor / max(dtweWeight, 0.0000009999999974752427)
-          * ${t.colorDetailMode === "color" ? "mix(vec3(1.0), dtwePainterBase, dtweAtlasDetail)" : `mix(1.0, dot(dtwePainterBase, vec3(${Bo.join(",")})), dtweAtlasDetail)`};
+          * ${t.colorDetailMode === "color" ? "mix(vec3(1.0), dtwePainterBase, dtweAtlasDetail)" : `mix(1.0, dot(dtwePainterBase, vec3(${Vo.join(",")})), dtweAtlasDetail)`};
       `).replace("#include <roughnessmap_fragment>", `#include <roughnessmap_fragment>\nroughnessFactor = clamp(roughnessFactor ${t.surfaces ? "* (dtweRoughness / max(dtweWeight, 0.0000009999999974752427))" : t.surfaceGated ? "* (dtweWeight / max(dtweWeight, 0.0000009999999974752427))" : ""} + dtweAtlasRoughnessOffset, 0.0, 1.0);`).replace("#include <metalnessmap_fragment>", `#include <metalnessmap_fragment>\nmetalnessFactor = clamp(metalnessFactor ${t.surfaces ? "* (dtweMetallic / max(dtweWeight, 0.0000009999999974752427))" : t.surfaceGated ? "* (dtweWeight / max(dtweWeight, 0.0000009999999974752427))" : ""} - dtweAtlasMetallicReduction, 0.0, 1.0);`), t.surfaces && (e.uniforms.dtweKindRoughness = { value: t.surfaces.map((e) => e.roughness) }, e.uniforms.dtweKindMetallic = { value: t.surfaces.map((e) => e.metallic) }), t.kindIdFallback && (e.uniforms.dtweAtlasPreviewKind = { value: t.kindIdFallback.previewKind }, e.uniforms.dtweAtlasEnabled = { value: t.kindIdFallback.enabled.map((e) => +!!e) }), e.uniforms.dtweAtlasColors = { value: r ? new Float32Array(t.colors.flat()) : t.colors.map((e) => new E(...e)) }, e.uniforms.dtweAtlasDetail = { value: t.colorDetail }, e.uniforms.dtweAtlasRoughnessOffset = { value: t.roughnessOffset }, e.uniforms.dtweAtlasMetallicReduction = { value: t.metallicReduction }, n.forEach((n, r) => {
 			e.uniforms[`dtweAtlasMask${r}`] = { value: n }, e.uniforms[`dtweAtlasScale${r}`] = { value: new C(...t.masks[r].uvScale) }, e.uniforms[`dtweAtlasOffset${r}`] = { value: new C(...t.masks[r].uvOffset) };
 		});
@@ -5340,7 +5346,7 @@ function Vo(e, t, n, r = !1) {
 }
 //#endregion
 //#region src/render/LeasedTextureResolver.ts
-function Ho(e, t = Uo, n = 0, r) {
+function Uo(e, t = Wo, n = 0, r) {
 	let i = /* @__PURE__ */ new Map();
 	return async (a, o) => {
 		let s = [...i.keys()].some((e) => e.startsWith(a.assetId + "@")), c = Math.min(n || Infinity, r?.get(a.assetId) ?? Infinity), l = Number.isFinite(c) ? c : 0, u = (e) => `${a.assetId}@${e}:${l}:${o?.flipY ? "flip" : "original"}`, d = s ? e.currentRevisionId?.(a.assetId) : void 0, f = d ? u(d) : "", p = i.get(f);
@@ -5373,7 +5379,7 @@ function Ho(e, t = Uo, n = 0, r) {
 		}), h;
 	};
 }
-async function Uo(e, t, n, r) {
+async function Wo(e, t, n, r) {
 	if (typeof createImageBitmap != "function") throw Error("ImageBitmap decoding is unavailable");
 	let { width: i, height: a } = Xn(e, t), o = n ? Math.min(1, n / Math.max(i, a)) : 1, s = new Fe(await createImageBitmap(new Blob([e.slice().buffer], { type: t }), {
 		imageOrientation: r ? "flipY" : "none",
@@ -5389,7 +5395,7 @@ async function Uo(e, t, n, r) {
 }
 //#endregion
 //#region src/assets/MaterialDiagnostics.ts
-var Wo = class extends Error {
+var Go = class extends Error {
 	diagnostic;
 	constructor(e, t, n, r) {
 		super(t), this.name = "MaterialFailure", this.diagnostic = r ?? {
@@ -5401,55 +5407,55 @@ var Wo = class extends Error {
 };
 //#endregion
 //#region src/render/MaterialDeviceLimits.ts
-function Go(e, t, n) {
-	if (!Object.values(t).every((e) => Number.isFinite(e) && e >= 1)) throw new Wo("device-limit", "장치의 WebGL 텍스처 한도를 확인할 수 없습니다.", n);
-	if (e.anisotropy > t.maxAnisotropy) throw new Wo("device-limit", `anisotropy ${e.anisotropy} 필요 · 장치 지원 ${t.maxAnisotropy}`, n);
-	if (e.textures > t.maxTextures) throw new Wo("device-limit", `재질 텍스처 ${e.textures}개 필요 · 장치 지원 ${t.maxTextures}개`, n);
+function Ko(e, t, n) {
+	if (!Object.values(t).every((e) => Number.isFinite(e) && e >= 1)) throw new Go("device-limit", "장치의 WebGL 텍스처 한도를 확인할 수 없습니다.", n);
+	if (e.anisotropy > t.maxAnisotropy) throw new Go("device-limit", `anisotropy ${e.anisotropy} 필요 · 장치 지원 ${t.maxAnisotropy}`, n);
+	if (e.textures > t.maxTextures) throw new Go("device-limit", `재질 텍스처 ${e.textures}개 필요 · 장치 지원 ${t.maxTextures}개`, n);
 	let r = Math.max(0, ...e.dimensions.flatMap((e) => [e.width, e.height]));
-	if (r > t.maxTextureSize) throw new Wo("device-limit", `텍스처 최대 변 ${r}px 필요 · 장치 지원 ${t.maxTextureSize}px`, n);
+	if (r > t.maxTextureSize) throw new Go("device-limit", `텍스처 최대 변 ${r}px 필요 · 장치 지원 ${t.maxTextureSize}px`, n);
 }
 //#endregion
 //#region src/render/MaterialRendering.ts
-var Ko = /* @__PURE__ */ new WeakMap();
-function qo(e) {
-	return Ko.get(e) ?? /* @__PURE__ */ new Set();
+var qo = /* @__PURE__ */ new WeakMap();
+function Jo(e) {
+	return qo.get(e) ?? /* @__PURE__ */ new Set();
 }
-function Jo(e, t, n = {}) {
-	let r = t ?? Ho(e, void 0, n.textureMaxSize, n.textureMapLimits), i = async (e) => {
+function Yo(e, t, n = {}) {
+	let r = t ?? Uo(e, void 0, n.textureMaxSize, n.textureMapLimits), i = async (e) => {
 		let n = await r(e.texture, e);
-		return t ? Io(n, e) : (Lo(n, e), n);
+		return t ? Lo(n, e) : (Ro(n, e), n);
 	};
 	return async (a, o) => {
 		let s = await xr(e, a), c = s.kind === "WebMaskPbrMaterial" ? {
 			...s,
-			maskLayers: Yo(s.maskLayers, o?.tintOverrides ?? [])
-		} : s, l = n.transformDocument?.(c) ?? c, u = Xo(l), d = /* @__PURE__ */ new Set(), f = /* @__PURE__ */ new Set(), p = !1;
-		Ko.set(u, d), u.addEventListener("dispose", () => {
+			maskLayers: Xo(s.maskLayers, o?.tintOverrides ?? [])
+		} : s, l = n.transformDocument?.(c) ?? c, u = Zo(l), d = /* @__PURE__ */ new Set(), f = /* @__PURE__ */ new Set(), p = !1;
+		qo.set(u, d), u.addEventListener("dispose", () => {
 			p || (p = !0, d.forEach((e) => e.dispose()));
 		});
 		try {
 			if (l.kind === "WebMaskPbrMaterial") {
 				for (let [e, t] of Object.entries(l.textureViews)) {
 					let n = await i(t);
-					d.add(n), f.add(n), e === "baseColor" && (u.map = n), e === "emissive" && (u.emissiveMap = n), e === "normal" && (u.normalMap = n, $o(u, t.normalGreen === "invert")), e === "metallic" && (u.metalnessMap = n), e === "roughness" && (u.roughnessMap = n), e === "occlusion" && (u.aoMap = n);
+					d.add(n), f.add(n), e === "baseColor" && (u.map = n), e === "emissive" && (u.emissiveMap = n), e === "normal" && (u.normalMap = n, es(u, t.normalGreen === "invert")), e === "metallic" && (u.metalnessMap = n), e === "roughness" && (u.roughnessMap = n), e === "occlusion" && (u.aoMap = n);
 				}
 				let t = l.maskLayers, n = [];
 				for (let e of t) {
 					let t = await i(e.mask);
 					d.add(t), f.add(t), n.push(t);
 				}
-				if (zo(u, t, n), n.forEach((e) => d.delete(e)), l.vertexAtlas) {
+				if (Bo(u, t, n), n.forEach((e) => d.delete(e)), l.vertexAtlas) {
 					let t = [];
 					for (let e of l.vertexAtlas.masks) {
 						let n = await i(e);
 						d.add(n), f.add(n), t.push(n);
 					}
-					Vo(u, l.vertexAtlas, t, Eo(e));
+					Ho(u, l.vertexAtlas, t, Do(e));
 				}
 				u.userData.materialInstance = { tintOverrides: structuredClone(o?.tintOverrides ?? []) };
 			} else for (let [e, n] of Object.entries(l.textures)) {
 				let i = await r(n), a = t ? i.clone() : i;
-				d.add(a), Qo(a, e), e === "baseColor-srgb" && (u.map = a), e === "emissive-srgb" && (u.emissiveMap = a), e === "normal-linear" && (u.normalMap = a), e === "metallicRoughness-linear" && (u.metalnessMap = a, u.roughnessMap = a), e === "occlusion-linear" && (u.aoMap = a);
+				d.add(a), $o(a, e), e === "baseColor-srgb" && (u.map = a), e === "emissive-srgb" && (u.emissiveMap = a), e === "normal-linear" && (u.normalMap = a), e === "metallicRoughness-linear" && (u.metalnessMap = a, u.roughnessMap = a), e === "occlusion-linear" && (u.aoMap = a);
 			}
 			if ("displayAlphaOnly" in l && l.displayAlphaOnly === !0) {
 				let e = u.onBeforeCompile, t = u.customProgramCacheKey;
@@ -5475,7 +5481,7 @@ function Jo(e, t, n = {}) {
 						let t = Math.min(r.get(e), g);
 						e.anisotropy !== t && (e.anisotropy = t, e.needsUpdate = !0);
 					}
-					Go({
+					Ko({
 						anisotropy: Math.min(t, g),
 						textures: f.size,
 						dimensions: n
@@ -5486,18 +5492,18 @@ function Jo(e, t, n = {}) {
 					}, a.assetId);
 					for (let t of e) {
 						let e = t.texCoord === 0 ? "uv" : `uv${t.texCoord}`;
-						if (!p.hasAttribute(e)) throw new Wo("uv", `Material requires ${e}; UV0 fallback is forbidden.`, a.assetId);
+						if (!p.hasAttribute(e)) throw new Go("uv", `Material requires ${e}; UV0 fallback is forbidden.`, a.assetId);
 					}
 					l.mappingProfileId === "u01-baked-pbr-v1" && u.normalMap && (u.normalScale.y = p.hasAttribute("tangent") ? o : -o), i.call(u, s, c, d, p, m, h);
 				};
 			}
-			return Do(u, e, l, n.frozenInstancing), u;
+			return Oo(u, e, l, n.frozenInstancing), u;
 		} catch (e) {
 			throw u.dispose(), e;
 		}
 	};
 }
-function Yo(e, t) {
+function Xo(e, t) {
 	let n = /* @__PURE__ */ new Set(), r = new Map(t.map((t) => {
 		if (!Number.isInteger(t.layerIndex) || t.layerIndex < 0 || t.layerIndex >= e.length) throw Error(`Material tint layer ${t.layerIndex} does not exist.`);
 		if (n.has(t.layerIndex)) throw Error(`Material tint layer ${t.layerIndex} is overridden more than once.`);
@@ -5514,7 +5520,7 @@ function Yo(e, t) {
 		} : e;
 	});
 }
-function Xo(e) {
+function Zo(e) {
 	let t = e.kind === "WebMaskPbrMaterial" ? e.ior : void 0, r = new (t === void 0 ? ve : n)({
 		color: new b().setRGB(e.baseColorFactor[0], e.baseColorFactor[1], e.baseColorFactor[2]),
 		opacity: e.baseColorFactor[3],
@@ -5537,24 +5543,24 @@ function Xo(e) {
 		e.fragmentShader = e.fragmentShader.replace("#include <opaque_fragment>", "outgoingLight = diffuseColor.rgb;\n#include <opaque_fragment>");
 	}, r.customProgramCacheKey = () => "u01-khr-materials-unlit-v1", r.userData.unlit = !0), r;
 }
-function Zo(e, t) {
+function Qo(e, t) {
 	e.material = t, e.userData.materialProfile = "pbr-metallic-roughness-webmask-v1";
 }
-function Qo(e, t) {
+function $o(e, t) {
 	e.colorSpace = t === "baseColor-srgb" || t === "emissive-srgb" ? S : "", e.userData.textureSemantic = t;
 }
-function $o(e, t) {
+function es(e, t) {
 	let n = Math.abs(e.normalScale.y);
 	e.normalScale.y = t ? -n : n, e.userData.normalConvention = t ? "directx-green-inverted" : "gltf-opengl";
 }
 //#endregion
 //#region src/assets/StaticMeshProjection.ts
-function es(e) {
+function ts(e) {
 	if (e == null) return null;
 	if (!Array.isArray(e) || e.length !== 16 || !e.every(Number.isFinite)) throw Error("Invalid static payloadToAsset matrix.");
 	return an(e), new o().set(...e);
 }
-function ts(e) {
+function ns(e) {
 	return Array.isArray(e) ? e.flatMap((e) => {
 		if (!e || e.defaultMaterialId === void 0 || e.defaultMaterialId === null) return [];
 		if (typeof e.slotId != "string" || typeof e.defaultMaterialId != "string" || !e.defaultMaterialId) throw Error("Invalid static default material binding.");
@@ -5574,40 +5580,40 @@ U.backup.archiveBytes / 1024 ** 3, U.backup.entries, new TextEncoder(), new Text
 	entries: U.backup.entries,
 	entryBytes: U.import.singlePayloadBytes
 });
-var ns = /* @__PURE__ */ new WeakMap(), rs = /* @__PURE__ */ new WeakSet();
-function is(e) {
+var rs = /* @__PURE__ */ new WeakMap(), is = /* @__PURE__ */ new WeakSet();
+function as(e) {
 	let t = /* @__PURE__ */ new Set();
 	return e.traverse((e) => {
 		e instanceof Me && t.add(e.geometry);
 	}), t;
 }
-function as(e) {
-	return [...is(e)].some((e) => !!ns.get(e));
-}
 function os(e) {
-	let t = is(e), n = !1;
-	return t.forEach((e) => {
-		ns.set(e, (ns.get(e) ?? 0) + 1), rs.delete(e);
-	}), () => {
-		n || (n = !0, t.forEach((e) => ns.set(e, ns.get(e) - 1)));
-	};
+	return [...as(e)].some((e) => !!rs.get(e));
 }
 function ss(e) {
-	for (let t of e) for (let e of is(t)) !ns.get(e) && !rs.has(e) && (e.dispose(), rs.add(e));
+	let t = as(e), n = !1;
+	return t.forEach((e) => {
+		rs.set(e, (rs.get(e) ?? 0) + 1), is.delete(e);
+	}), () => {
+		n || (n = !0, t.forEach((e) => rs.set(e, rs.get(e) - 1)));
+	};
+}
+function cs(e) {
+	for (let t of e) for (let e of as(t)) !rs.get(e) && !is.has(e) && (e.dispose(), is.add(e));
 }
 //#endregion
 //#region src/ue-import/PreviewTemplateResidency.ts
-var cs = /* @__PURE__ */ new WeakMap();
-function ls(e) {
-	let t = cs.get(e);
+var ls = /* @__PURE__ */ new WeakMap();
+function us(e) {
+	let t = ls.get(e);
 	return t || (t = {
 		epoch: 0,
 		leases: /* @__PURE__ */ new Map(),
 		pending: /* @__PURE__ */ new Map()
-	}, cs.set(e, t)), t;
+	}, ls.set(e, t)), t;
 }
-async function us(e, t, n, r) {
-	let i = ls(e);
+async function ds(e, t, n, r) {
+	let i = us(e);
 	i.leases.set(t, (i.leases.get(t) ?? 0) + 1);
 	let a = !1, o = () => {
 		a || (a = !0, i.leases.set(t, i.leases.get(t) - 1));
@@ -5620,7 +5626,7 @@ async function us(e, t, n, r) {
 			if (!o) {
 				let a = i.epoch;
 				o = r(n).then((n) => {
-					if (a !== i.epoch) throw Ga([n]), Error("Retired preview decode");
+					if (a !== i.epoch) throw Ka([n]), Error("Retired preview decode");
 					return e.set(t, n), n;
 				}).finally(() => {
 					i.pending.get(t) === o && i.pending.delete(t);
@@ -5636,24 +5642,24 @@ async function us(e, t, n, r) {
 		throw o(), e;
 	}
 }
-function ds(e, t) {
-	let n = ls(e);
-	for (let [r, i] of e) !n.leases.get(r) && !as(i) && (t.has(r) ? (e.delete(r), Ga([i])) : ss([i]));
+function fs(e, t) {
+	let n = us(e);
+	for (let [r, i] of e) !n.leases.get(r) && !os(i) && (t.has(r) ? (e.delete(r), Ka([i])) : cs([i]));
 }
-function fs(e) {
-	let t = ls(e);
-	t.epoch++, t.pending.clear(), Ga([...e.values()]), e.clear();
+function ps(e) {
+	let t = us(e);
+	t.epoch++, t.pending.clear(), Ka([...e.values()]), e.clear();
 }
 //#endregion
 //#region src/assets/StaticMeshResourceCache.ts
-var ps = class {
+var ms = class {
 	storage;
 	loadTemplate;
 	typedMaterialGeometry;
 	entries = /* @__PURE__ */ new Map();
 	aliases = /* @__PURE__ */ new Map();
 	pendingResolutions = /* @__PURE__ */ new Map();
-	constructor(e, t = ms, n = !1) {
+	constructor(e, t = hs, n = !1) {
 		this.storage = e, this.loadTemplate = t, this.typedMaterialGeometry = n;
 	}
 	async acquire(e) {
@@ -5686,12 +5692,12 @@ var ps = class {
 		if (!i) throw Error(`Unknown revision ${r} for asset ${n.id}.`);
 		let a = t.blobs.find((e) => e.key === i.blobKeys[0]);
 		if (!a) throw Error(`Missing blob for asset ${n.id} revision ${i.id}.`);
-		return es(i.metadata.payloadToAsset), {
+		return ts(i.metadata.payloadToAsset), {
 			metadata: i.metadata,
 			assetId: n.id,
 			revisionId: i.id,
 			bytes: a.bytes,
-			materialSlotIds: _s(i.metadata.materialSlots),
+			materialSlotIds: vs(i.metadata.materialSlots),
 			lod: i.metadata.profile === Er
 		};
 	}
@@ -5699,8 +5705,8 @@ var ps = class {
 		let n = this.entries.get(e);
 		if (!n) {
 			if (!t) throw Error(`Resource cache alias ${e} has no live entry.`);
-			let r = this.typedMaterialGeometry === "geometry-only" || this.typedMaterialGeometry && t.metadata.candidateTypedMaterials === !0 && ts(t.metadata.materialSlots).length === t.materialSlotIds.length ? (e) => ms(e, !0) : this.loadTemplate, i = (t.lod ? this.loadLodTemplate(t.bytes, t.materialSlotIds, r) : r(t.bytes)).then((n) => {
-				let r = es(t.metadata.payloadToAsset);
+			let r = this.typedMaterialGeometry === "geometry-only" || this.typedMaterialGeometry && t.metadata.candidateTypedMaterials === !0 && ns(t.metadata.materialSlots).length === t.materialSlotIds.length ? (e) => hs(e, !0) : this.loadTemplate, i = (t.lod ? this.loadLodTemplate(t.bytes, t.materialSlotIds, r) : r(t.bytes)).then((n) => {
+				let r = ts(t.metadata.payloadToAsset);
 				if (r) {
 					if (t.lod) n.matrixAutoUpdate = !1, n.matrix.copy(r), n.matrixWorldNeedsUpdate = !0;
 					else {
@@ -5708,8 +5714,8 @@ var ps = class {
 						e.matrixAutoUpdate = !1, e.matrix.copy(r), e.matrixWorldNeedsUpdate = !0, e.add(n), n = e;
 					}
 				}
-				n.userData.defaultMaterialSlots = ts(t.metadata.materialSlots);
-				let i = hs(n), a = this.entries.get(e);
+				n.userData.defaultMaterialSlots = ns(t.metadata.materialSlots);
+				let i = gs(n), a = this.entries.get(e);
 				return a && (a.resource = i), (!a || a.leases === 0) && (i.dispose(), this.entries.delete(e)), i;
 			}).catch((t) => {
 				this.entries.delete(e);
@@ -5728,7 +5734,7 @@ var ps = class {
 		return {
 			assetId: a,
 			revisionId: o,
-			instantiate: () => vs(gs(r.object), n.materialSlotIds),
+			instantiate: () => ys(_s(r.object), n.materialSlotIds),
 			release: () => {
 				s || (s = !0, this.release(e));
 			}
@@ -5741,12 +5747,12 @@ var ps = class {
 			hysteresis: r.hysteresis
 		};
 		try {
-			for (let e of r.levels) i.add(vs(await n(e), t));
+			for (let e of r.levels) i.add(ys(await n(e), t));
 			return i.children.forEach((e, t) => {
 				e.visible = t === 0;
 			}), i;
 		} catch (e) {
-			throw hs(i).dispose(), e;
+			throw gs(i).dispose(), e;
 		}
 	}
 	release(e) {
@@ -5757,7 +5763,7 @@ var ps = class {
 		}
 	}
 };
-async function ms(e, t = !1) {
+async function hs(e, t = !1) {
 	let n = new ti();
 	t && n.register(() => ({
 		name: "DT_TYPED_GEOMETRY",
@@ -5766,7 +5772,7 @@ async function ms(e, t = !1) {
 	let r = e.slice().buffer;
 	return (await n.parseAsync(r, "")).scene;
 }
-function hs(e) {
+function gs(e) {
 	return {
 		object: e,
 		dispose: () => {
@@ -5781,23 +5787,23 @@ function hs(e) {
 		}
 	};
 }
-function gs(e) {
+function _s(e) {
 	let t = e.clone(!0);
 	return t.traverse((e) => {
 		e instanceof Me && (Array.isArray(e.material) || (e.userData.staticBatchMaterialId = e.material.uuid), e.material = Array.isArray(e.material) ? e.material.map((e) => e.clone()) : e.material.clone());
 	}), t;
 }
-function _s(e) {
+function vs(e) {
 	return Array.isArray(e) ? e.flatMap((e) => typeof e == "object" && e && typeof e.slotId == "string" ? [e.slotId] : []) : [];
 }
-function vs(e, t) {
-	if (e.userData.staticMeshLod) return e.children.forEach((e) => vs(e, t)), e;
+function ys(e, t) {
+	if (e.userData.staticMeshLod) return e.children.forEach((e) => ys(e, t)), e;
 	let n = 0;
 	return e.traverse((e) => {
 		e instanceof Me && (e.userData.materialSlotId = t[n] ?? `mesh:0/primitive:${n}`, n += 1);
 	}), e;
 }
-function ys(e) {
+function bs(e) {
 	let t = /* @__PURE__ */ new Set();
 	e.traverse((e) => {
 		e instanceof Me && (Array.isArray(e.material) ? e.material : [e.material]).forEach((e) => t.add(e));
@@ -5805,7 +5811,7 @@ function ys(e) {
 }
 //#endregion
 //#region src/ue-import/TextureDisplaySession.ts
-var bs = class {
+var xs = class {
 	layouts;
 	prepare;
 	publish;
@@ -5814,21 +5820,21 @@ var bs = class {
 		maxSize: 128,
 		maps: []
 	};
-	budgetBytes = Pa;
+	budgetBytes = Fa;
 	pending = null;
 	closed = !1;
-	memory = new Na();
+	memory = new Pa();
 	constructor(e, t, n) {
 		this.layouts = e, this.prepare = t, this.publish = n;
 	}
 	estimate(e) {
 		let t = Ur(e);
-		return this.layouts.reduce((e, n) => e + Ua(n, t).reservedBytes, 0);
+		return this.layouts.reduce((e, n) => e + Wa(n, t).reservedBytes, 0);
 	}
 	async apply(e, t, n, r) {
 		if (this.closed) throw Error("닫힌 레벨의 텍스처 설정은 적용할 수 없습니다.");
 		if (this.pending) throw Error("텍스처 적용이 진행 중입니다.");
-		Ia(t);
+		La(t);
 		let i = Ur(e), a = this.estimate(i), o = a + (this.current?.reservedBytes ?? 0);
 		if (t !== 0 && a > 0 && o > t) throw Error(`텍스처 교체 중 예약 추정 ${(o / 1048576).toFixed(1)} MiB가 예산을 초과합니다. 자동 예산을 선택하거나 크기를 줄이세요.`);
 		let s = new AbortController();
@@ -5837,9 +5843,9 @@ var bs = class {
 		n.addEventListener("abort", c, { once: !0 }), n.aborted && s.abort();
 		let l = null;
 		try {
-			t === 0 && await Ea(), s.signal.throwIfAborted(), this.memory.update(a > 0 ? o : this.current?.reservedBytes ?? 0, this.current?.reservedBytes ?? 0, t === 0 && a > 0);
-			let e = t === 0 ? Aa(a > 0 ? o : 0, this.current?.reservedBytes ?? 0) : t;
-			l = await this.prepare(i, e, s.signal, r, t === 0), s.signal.throwIfAborted(), t === 0 && l.reservedBytes > 0 && Aa(l.reservedBytes + (this.current?.reservedBytes ?? 0), this.current?.reservedBytes ?? 0), this.memory.update(l.reservedBytes + (this.current?.reservedBytes ?? 0), this.current?.reservedBytes ?? 0, t === 0 && l.reservedBytes > 0, !0);
+			t === 0 && await Da(), s.signal.throwIfAborted(), this.memory.update(a > 0 ? o : this.current?.reservedBytes ?? 0, this.current?.reservedBytes ?? 0, t === 0 && a > 0);
+			let e = t === 0 ? ja(a > 0 ? o : 0, this.current?.reservedBytes ?? 0) : t;
+			l = await this.prepare(i, e, s.signal, r, t === 0), s.signal.throwIfAborted(), t === 0 && l.reservedBytes > 0 && ja(l.reservedBytes + (this.current?.reservedBytes ?? 0), this.current?.reservedBytes ?? 0), this.memory.update(l.reservedBytes + (this.current?.reservedBytes ?? 0), this.current?.reservedBytes ?? 0, t === 0 && l.reservedBytes > 0, !0);
 			let n = this.current, c = this.options, u = this.budgetBytes;
 			this.current = l, this.options = i, this.budgetBytes = t;
 			try {
@@ -5855,29 +5861,29 @@ var bs = class {
 	dispose() {
 		this.closed = !0, this.memory.dispose(), this.pending?.abort(), this.current?.dispose(), this.current = null;
 	}
-}, xs = class extends Error {
+}, Ss = class extends Error {
 	requiredBytes;
 	budgetBytes;
 	textureLayouts;
-	constructor(e, t = Pa) {
+	constructor(e, t = Fa) {
 		super(`전체 에셋 텍스처 예약 추정 ${(e / 1048576).toFixed(1)} MiB가 표시 예산 ${(t / 1048576).toFixed(0)} MiB를 초과합니다. 예산을 늘리거나 텍스처 크기·맵을 줄이세요.`), this.requiredBytes = e, this.budgetBytes = t;
 	}
-}, Ss = class extends Error {
+}, Cs = class extends Error {
 	textureLayouts;
 	constructor(e) {
 		super(`전체 에셋 텍스처 적용 실패: ${e}`);
 	}
 };
-function Cs(e, t) {
+function ws(e, t) {
 	try {
-		e.textureLayouts = [...t.values()].map(Ha);
+		e.textureLayouts = [...t.values()].map(Ua);
 	} catch {}
 	return e;
 }
-function ws(e) {
+function Ts(e) {
 	let t = [], n = 0;
 	for (let [r, i] of e) {
-		let e = Wa(i);
+		let e = Ga(i);
 		t.push(r), n += e.reservedBytes;
 	}
 	return {
@@ -5885,7 +5891,7 @@ function ws(e) {
 		reservedBytes: n
 	};
 }
-async function Ts(e, t, n, r) {
+async function Es(e, t, n, r) {
 	try {
 		for (let i = 0; i < t.length; i++) {
 			r?.throwIfAborted();
@@ -5899,10 +5905,10 @@ async function Ts(e, t, n, r) {
 		}
 		r?.throwIfAborted();
 	} catch (t) {
-		throw e.clearAppearances(), r?.aborted ? t : new Ss(t instanceof Error ? t.message : String(t));
+		throw e.clearAppearances(), r?.aborted ? t : new Cs(t instanceof Error ? t.message : String(t));
 	}
 }
-var Es = class extends ps {
+var Ds = class extends ms {
 	previewStorage;
 	templates;
 	payloads;
@@ -5919,8 +5925,8 @@ var Es = class extends ps {
 	disposed = !1;
 	appearanceListeners = /* @__PURE__ */ new Set();
 	invalidationListeners = /* @__PURE__ */ new Set();
-	constructor(e, t, n = /* @__PURE__ */ new Map(), r = Ka, i = Pa, a = /* @__PURE__ */ new Map()) {
-		super(e), this.previewStorage = e, this.templates = t, this.payloads = n, this.loadAppearance = r, this.budgetBytes = i, this.defaultMaterials = a, Ia(i);
+	constructor(e, t, n = /* @__PURE__ */ new Map(), r = qa, i = Fa, a = /* @__PURE__ */ new Map()) {
+		super(e), this.previewStorage = e, this.templates = t, this.payloads = n, this.loadAppearance = r, this.budgetBytes = i, this.defaultMaterials = a, La(i);
 	}
 	supportsAppearance(e) {
 		return !!(e && e.revisionPolicy === "pinned" && e.revisionId === `${e.assetId}:preview` && this.payloads.has(e.assetId));
@@ -5953,7 +5959,7 @@ var Es = class extends ps {
 		if (!this.supportsAppearance(e)) throw Error("원본 후보의 고정 리비전만 외형 확인할 수 있습니다.");
 		let n = e.assetId;
 		if (this.appearances.has(n)) throw Error("이미 로딩/표시/해제 중인 에셋입니다.");
-		let r = this.payloads.get(n), i = Wa(r);
+		let r = this.payloads.get(n), i = Ga(r);
 		if (i.reservedBytes + this.appearanceStatus().reservedBytes > this.budgetBytes) {
 			let e = i.reservedBytes > this.budgetBytes ? "이 에셋 하나만으로도 표시 예산을 초과합니다." : "다른 외형을 해제한 후 다시 시도하세요.";
 			throw Error(`텍스처 예산 초과: 이 에셋 예약 추정 ${(i.reservedBytes / 1048576).toFixed(1)} MiB. ${e} 자동 축소하지 않습니다.`);
@@ -5987,13 +5993,13 @@ var Es = class extends ps {
 	}
 	collectAppearance(e) {
 		let t = this.appearances.get(e);
-		t?.cancelled && t.object && t.leases === 0 && (Ga([t.object]), this.appearances.delete(e), this.notifyAppearance());
+		t?.cancelled && t.object && t.leases === 0 && (Ka([t.object]), this.appearances.delete(e), this.notifyAppearance());
 	}
 	async acquire(e) {
 		if (this.disposed) throw Error("Retired preview resources");
 		if (this.textureDisplay?.current) return this.textureDisplay.current.resources.acquire(e);
 		if (!this.templates.has(e.assetId) && !this.payloads.has(e.assetId)) return super.acquire(e);
-		let t = e.revisionPolicy === "pinned" ? e.revisionId : this.previewStorage instanceof vo ? this.previewStorage.currentRevisionId(e.assetId) : (await this.previewStorage.snapshot()).assets.find((t) => t.id === e.assetId)?.currentRevisionId;
+		let t = e.revisionPolicy === "pinned" ? e.revisionId : this.previewStorage instanceof yo ? this.previewStorage.currentRevisionId(e.assetId) : (await this.previewStorage.snapshot()).assets.find((t) => t.id === e.assetId)?.currentRevisionId;
 		if (t !== `${e.assetId}:preview`) return super.acquire(e);
 		let n = e.assetId;
 		this.acquiring.set(n, (this.acquiring.get(n) ?? 0) + 1);
@@ -6008,13 +6014,13 @@ var Es = class extends ps {
 			}
 			let n = this.appearances.get(e.assetId), r = n && !n.cancelled ? n.object : null;
 			r && n.leases++;
-			let i = r ? void 0 : await us(this.templates, e.assetId, this.payloads.get(e.assetId), Os), a = r ?? i.object, o = os(a), s = !1;
+			let i = r ? void 0 : await ds(this.templates, e.assetId, this.payloads.get(e.assetId), ks), a = r ?? i.object, o = ss(a), s = !1;
 			return {
 				assetId: e.assetId,
 				revisionId: `${e.assetId}:preview`,
 				instantiate: () => {
 					if (s) throw Error("Released preview lease");
-					let t = gs(a);
+					let t = _s(a);
 					return t.userData.defaultMaterialSlots = this.defaultMaterials.get(e.assetId) ?? [], t;
 				},
 				release: () => {
@@ -6029,12 +6035,12 @@ var Es = class extends ps {
 		this.textureDisplay?.dispose(), this.clearAppearances(), this.retainedMaterials.splice(0).forEach((e) => e.dispose());
 	}
 	trimUnusedGeometry() {
-		this.textureDisplay?.current?.resources.trimUnusedGeometry(), ds(this.templates, this.payloads);
-		for (let [e, t] of this.appearances) t.object && !t.leases && !t.cancelled && !this.acquiring.get(e) && (Ga([t.object]), this.appearances.delete(e));
+		this.textureDisplay?.current?.resources.trimUnusedGeometry(), fs(this.templates, this.payloads);
+		for (let [e, t] of this.appearances) t.object && !t.leases && !t.cancelled && !this.acquiring.get(e) && (Ka([t.object]), this.appearances.delete(e));
 		this.retainedMaterials.splice(0).forEach((e) => e.dispose()), this.notifyAppearance();
 	}
 	disposeAll() {
-		this.disposed = !0, this.disposeDisplay(), fs(this.templates), this.payloads.clear(), this.appearanceListeners.clear(), this.invalidationListeners.clear(), this.textureDisplay = void 0, this.materialResolver = void 0;
+		this.disposed = !0, this.disposeDisplay(), ps(this.templates), this.payloads.clear(), this.appearanceListeners.clear(), this.invalidationListeners.clear(), this.textureDisplay = void 0, this.materialResolver = void 0;
 	}
 	retainedState() {
 		return {
@@ -6058,9 +6064,9 @@ var Es = class extends ps {
 		this.payloads.forEach((e, t) => this.invalidationListeners.forEach((e) => e(t)));
 	}
 };
-async function Ds(e, t, n, r = { showTextures: !1 }, i, a = !0) {
+async function Os(e, t, n, r = { showTextures: !1 }, i, a = !0) {
 	let o = r.budgetBytes ?? 0;
-	Ia(o), o === 0 && await Ea();
+	La(o), o === 0 && await Da();
 	let s = i ?? /* @__PURE__ */ new Map(), c = /* @__PURE__ */ new Map(), l = new Set(e.assets.revisions.filter((e) => e.metadata.candidateTypedMaterials).map((e) => e.assetId)), u = new Map(e.assets.blobs.map((e) => [e.key, e])), d = /* @__PURE__ */ new Map(), f = 0, p = async (i, a, o, s, c = e.assets, l = r.signal) => {
 		l?.throwIfAborted();
 		let p = c.revisions.find((e) => e.id === a && e.assetId === i);
@@ -6105,20 +6111,20 @@ async function Ds(e, t, n, r = { showTextures: !1 }, i, a = !0) {
 		m = r.showTextures === !1 ? {
 			textured: [],
 			reservedBytes: 0
-		} : ws(h);
-		let e = m.reservedBytes + Ua(g, r.showTextures === !1 ? {
+		} : Ts(h);
+		let e = m.reservedBytes + Wa(g, r.showTextures === !1 ? {
 			...r.optimize,
 			maxSize: r.optimize?.maxSize ?? 1024,
 			maps: []
 		} : r.optimize).reservedBytes;
-		if (o === 0 && (o = Aa(e)), e > o) {
-			let t = new xs(e, o);
-			throw t.textureLayouts = [...h.values()].map(Ha).concat(g), t;
+		if (o === 0 && (o = ja(e)), e > o) {
+			let t = new Ss(e, o);
+			throw t.textureLayouts = [...h.values()].map(Ua).concat(g), t;
 		}
 	} catch (e) {
-		throw e instanceof xs ? e : new Ss(e instanceof Error ? e.message : String(e));
+		throw e instanceof Ss ? e : new Cs(e instanceof Error ? e.message : String(e));
 	}
-	for (let [e, t] of c) r.signal?.throwIfAborted(), n(`저장 레벨 복원 ${s.size}/${c.size}`), s.has(e) || s.set(e, await Os(t));
+	for (let [e, t] of c) r.signal?.throwIfAborted(), n(`저장 레벨 복원 ${s.size}/${c.size}`), s.has(e) || s.set(e, await ks(t));
 	let _ = /* @__PURE__ */ new Map();
 	for (let t of e.recipe.payloads) {
 		let n = e.assets.revisions.find((e) => e.id === t.revisionId).metadata;
@@ -6132,20 +6138,20 @@ async function Ds(e, t, n, r = { showTextures: !1 }, i, a = !0) {
 			tintOverrides: []
 		})));
 	}
-	let v = new Es(t, s, c, Ka, o, _);
-	v.materialResolver = Jo(t, void 0, {
+	let v = new Ds(t, s, c, qa, o, _);
+	v.materialResolver = Yo(t, void 0, {
 		textureMaxSize: r.optimize?.maxSize,
 		textureMapLimits: Jr(e.assets, r.optimize),
 		transformDocument: (e) => Yr(e, r.optimize, r.showTextures !== !1)
 	});
 	try {
-		await Ts(v, m.textured, n, r.signal);
+		await Es(v, m.textured, n, r.signal);
 	} catch (e) {
-		throw e instanceof Ss ? Cs(e, c) : e;
+		throw e instanceof Cs ? ws(e, c) : e;
 	}
 	if (a) {
-		let n = [...h.values()].map(Ha).concat(g), r = v.materialResolver;
-		v.textureDisplay = new bs(n, async (n, r, i, a, o) => {
+		let n = [...h.values()].map(Ua).concat(g), r = v.materialResolver;
+		v.textureDisplay = new xs(n, async (n, r, i, a, o) => {
 			let c;
 			if (t.snapshotCatalog) {
 				let n = await t.snapshotCatalog();
@@ -6167,9 +6173,9 @@ async function Ds(e, t, n, r = { showTextures: !1 }, i, a = !0) {
 				};
 			} else c = await t.snapshot();
 			i.throwIfAborted();
-			let l = Xr(c), d = [...h.values()].map(Ha).concat(l).reduce((e, t) => e + Ua(t, n).reservedBytes, 0);
-			if (o && (r = Aa(d > 0 ? d + (v.textureDisplay.current?.reservedBytes ?? 0) : 0, v.textureDisplay.current?.reservedBytes ?? 0)), d > 0 && d + (v.textureDisplay.current?.reservedBytes ?? 0) > r) throw Error("변경된 에셋의 텍스처 교체 예산을 초과합니다. 먼저 모든 맵을 끄고 적용하세요.");
-			let f = await Ds({
+			let l = Xr(c), d = [...h.values()].map(Ua).concat(l).reduce((e, t) => e + Wa(t, n).reservedBytes, 0);
+			if (o && (r = ja(d > 0 ? d + (v.textureDisplay.current?.reservedBytes ?? 0) : 0, v.textureDisplay.current?.reservedBytes ?? 0)), d > 0 && d + (v.textureDisplay.current?.reservedBytes ?? 0) > r) throw Error("변경된 에셋의 텍스처 교체 예산을 초과합니다. 먼저 모든 맵을 끄고 적용하세요.");
+			let f = await Os({
 				...e,
 				assets: c
 			}, t, a, {
@@ -6194,7 +6200,7 @@ async function Ds(e, t, n, r = { showTextures: !1 }, i, a = !0) {
 	}
 	return v;
 }
-async function Os(e) {
+async function ks(e) {
 	if (kr(e)) {
 		Mr(e);
 		let t = jr(e), n = new T();
@@ -6203,10 +6209,10 @@ async function Os(e) {
 			hysteresis: t.hysteresis
 		};
 		try {
-			for (let e of t.levels) n.add(await Os(e));
+			for (let e of t.levels) n.add(await ks(e));
 			return n.children[1].visible = !1, n;
 		} catch (e) {
-			throw Ga([n]), e;
+			throw Ka([n]), e;
 		}
 	}
 	Yn(e);
@@ -6225,8 +6231,8 @@ async function Os(e) {
 		t?.meshes !== void 0 && t.primitives !== void 0 && (e.userData.materialSlotId = `mesh:${t.meshes}/primitive:${t.primitives}`);
 	});
 	let r = new T();
-	return r.matrixAutoUpdate = !1, r.matrix.copy(ya), r.add(n.scene), r.updateMatrixWorld(!0), r;
+	return r.matrixAutoUpdate = !1, r.matrix.copy(ba), r.add(n.scene), r.updateMatrixWorld(!0), r;
 }
 U.storage.priorVersions, U.storage.historyMetadataBytes;
 //#endregion
-export { fr as $, ca as A, st as At, Xr as B, Na as C, Ct, ka as D, dt as Dt, Ea as E, _t as Et, Zi as F, qe as Ft, Ur as G, Yr as H, Qi as I, Be as It, kr as J, Vr as K, ti as L, D as Lt, aa as M, $e as Mt, sa as N, He as Nt, ja as O, mt as Ot, $i as P, Ke as Pt, gr as Q, $r as R, ze as Rt, Sa as S, bt as St, Da as T, ht as Tt, Pr as U, Jr as V, Fr as W, mr as X, pr as Y, hr as Z, Fa as _, Wt as _t, es as a, Xn as at, Ha as b, Lt as bt, Jo as c, ln as ct, To as d, nn as dt, Cr as et, Fo as f, an as ft, lo as g, Kt as gt, yo as h, Qt as ht, ts as i, Yn as it, la as j, Qe as jt, pa as k, rt as kt, qo as l, dn as lt, vo as m, Gt as mt, ps as n, dr as nt, Yo as o, jn as ot, So as p, rn as pt, Mr as q, ys as r, Jn as rt, Zo as s, cn as st, Ds as t, br as tt, Po as u, tn as ut, Ga as v, $t as vt, ba as w, xt as wt, Ia as x, k as xt, Ua as y, qt as yt, U as z };
+export { gr as $, la as A, rt as At, U as B, Pa as C, bt as Ct, Aa as D, _t as Dt, Da as E, ht as Et, ea as F, Ke as Ft, Fr as G, Jr as H, Zi as I, qe as It, Mr as J, Ur as K, Qi as L, Be as Lt, oa as M, Qe as Mt, ca as N, $e as Nt, Ma as O, dt as Ot, $i as P, He as Pt, hr as Q, ti as R, D as Rt, Ca as S, k as St, Oa as T, xt as Tt, Yr as U, Xr as V, Pr as W, pr as X, kr as Y, mr as Z, Ia as _, Kt as _t, ts as a, Yn as at, Ua as b, qt as bt, Yo as c, cn as ct, Eo as d, tn as dt, fr as et, Io as f, nn as ft, uo as g, Qt as gt, bo as h, Gt as ht, ns as i, Jn as it, ua as j, st as jt, ma as k, mt as kt, Jo as l, ln as lt, yo as m, rn as mt, ms as n, br as nt, Xo as o, Xn as ot, Co as p, an as pt, Vr as q, bs as r, dr as rt, Qo as s, jn as st, Os as t, Cr as tt, Fo as u, dn as ut, Ka as v, Wt as vt, xa as w, Ct as wt, La as x, Lt as xt, Wa as y, $t as yt, $r as z, ze as zt };

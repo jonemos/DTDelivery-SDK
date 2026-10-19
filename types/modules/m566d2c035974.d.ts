@@ -1,7 +1,7 @@
 import type { ActorPlacement, ActorTarget } from './mee8d76b34e4b.js';
 import { DeliveryNavigation } from './m13fea72476c5.js';
 import { RenderQualityController } from './ma031f5c2c822.js';
-import type { ViewportProjection } from './m4b81f2a65714.js';
+import { type ViewportProjection } from './m4b81f2a65714.js';
 import { WebEffectsProjection } from './m38ad504316e8.js';
 import type { ScreenSettings } from './m02427c9e162b.js';
 import type { EquipmentPlacement, EquipmentTarget } from './mac96c8d05045.js';
@@ -18,6 +18,7 @@ export declare class DeliveryViewer {
     readonly addons: DeliveryAddonController;
     readonly session: DeliverySession;
     readonly renderer: WebGLRenderer;
+    private horizontalFovDegrees;
     private perspective;
     private orthographic;
     camera: PerspectiveCamera | OrthographicCamera;

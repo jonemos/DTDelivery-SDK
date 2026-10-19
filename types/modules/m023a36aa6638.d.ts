@@ -58,6 +58,6 @@ export interface CandidateSelection {
 }
 /** Explicit file capabilities only (folder picker or authenticated bounded transfer). Never fetches report URLs. */
 export declare function inspectCandidateFiles(selected: readonly CandidateFile[], signal: AbortSignal): Promise<CandidateSelection>;
-export declare function stageCandidate(selection: CandidateSelection, signal: AbortSignal, progress: (message: string) => void, textureOptions?: TextureImportOptions, projectName?: string, onProgress?: (value: ImportProgress) => void, encode?: WebTextureEncoder, appearanceDecisions?: readonly AppearanceDecision[]): Promise<StaticPreviewBundle>;
+export declare function stageCandidate(selection: CandidateSelection, signal: AbortSignal, progress: (message: string) => void, textureOptions?: TextureImportOptions, projectName?: string, onProgress?: (value: ImportProgress) => void, encode?: WebTextureEncoder, appearanceDecisions?: readonly AppearanceDecision[], validateMaterial?: (bytes: Uint8Array) => void): Promise<StaticPreviewBundle>;
 export declare function saveNewCandidate(bundle: StaticPreviewBundle): Promise<string>;
 export {};

@@ -18,7 +18,10 @@ export declare const WEB_512_RECIPE_HASHES: {
     readonly BASIC_PBR_RENDER_UV_RECIPE: "0ec71d53e44c140bd6d8c284180f9f31d0c869a59bb9e14fc1911f52e126c71c";
     readonly RESILIENT_PBR_RECIPE: "c18890faf86a225142f010f2595ea9ecd9847ef89bcb5922d14a5c6dfc5828eb";
     readonly FALLBACK_PBR_RECIPE: "595162680de8a28f3e7277e247edcc26add21c405096c26c1b78c9f6df15197d";
+    readonly TILED_PBR_RECIPE: "498af64393a7b33dab83d7c3734bb5ec9b7594937d67f3856a784f2cbe7b0268";
+    readonly SECTION_SAFE_PBR_RECIPE: "80d2953b01b1790dbbacdffeb64adc6eafe19ec090dd700dc0000c792f5eb2ad";
 };
+export declare const preservesNativeTiling: (recipeHash: string) => boolean;
 export interface CompatibilityBake {
     version: 1 | 2 | 3;
     policy: 'bake-unsupported-opaque-v1' | 'bake-static-pbr-alpha-v2' | 'basic-pbr-v1';
@@ -41,4 +44,4 @@ export interface CompatibilityBake {
 /** Fixed native recipe and inventory identities only. Descriptors cannot redirect file transfers. */
 export declare function inspectCompatibilityBake(value: unknown, sourceAssets: ReadonlyMap<string, Record<string, unknown>>, components: readonly Record<string, unknown>[], files: ReadonlyMap<string, CandidateFile>, exportedMaterialIds: ReadonlySet<string>, meshSlots?: ReadonlyMap<string, readonly number[]>): CompatibilityBake;
 /** Independent web admission gate for generated UVs, even if a native exporter reports success. */
-export declare function validateCompatibilityBakePayload(bytes: Uint8Array, preserveAlpha?: boolean, basicOnly?: boolean): void;
+export declare function validateCompatibilityBakePayload(bytes: Uint8Array, preserveAlpha?: boolean, basicOnly?: boolean, preserveTiling?: boolean): void;

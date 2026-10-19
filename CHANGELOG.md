@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.15
+
+Align camera clipping and environment defaults with editor/composition and preserve horizontal FOV on resize. Publish the verified tiling/material runtime and current README, host integration and first-delivery guides. Preserve immutable chunk validation, public API and existing release tags.
+
 ## 0.3.14
 
 Publish the current chunk and loading runtime with a shared 512px texture-display ceiling and current recipe declarations. Preserve verified source identities, geometry/material references, alpha handling and direct storage connections. Refresh the README for the current no-install viewer, display controls, optional spatial streaming, public API and update workflow.

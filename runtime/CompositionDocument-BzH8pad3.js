@@ -1,4 +1,4 @@
-import { It as e, Mt as t, jt as n, xt as r } from "./StaticPreviewPersistence-DDh9I7Vj.js";
+import { Lt as e, Mt as t, Nt as n, St as r } from "./StaticPreviewPersistence-BSmfWg2W.js";
 //#region src/composition/CompositionObjects.ts
 var i = [
 	"Empty",
@@ -93,16 +93,16 @@ function u(e) {
 		};
 	});
 }
-function d(e, t, r) {
-	if (!["runtime", "persistent"].includes(r) || !t || typeof t != "object" || Array.isArray(t) || !Object.keys(t).length || Object.keys(t).length > 32) throw Error("Invalid addon property batch");
+function d(e, n, r) {
+	if (!["runtime", "persistent"].includes(r) || !n || typeof n != "object" || Array.isArray(n) || !Object.keys(n).length || Object.keys(n).length > 32) throw Error("Invalid addon property batch");
 	let i = {};
-	for (let [a, o] of Object.entries(t)) {
-		let t = e.properties.find((e) => e.name === a);
-		if (!t || t.access !== "read-write") throw Error(`Addon property is not writable: ${a}`);
-		if (t.storage !== "both" && t.storage !== r) throw Error(`Addon property ${a} does not allow ${r} changes`);
-		let s = e.settings.find((e) => e.key === t.setting);
-		if (n(s, o), t.format === "color" && (typeof o != "string" || !/^#[a-fA-F0-9]{6}$/.test(o))) throw Error(`Invalid color property ${a}`);
-		i[t.setting] = o;
+	for (let [a, o] of Object.entries(n)) {
+		let n = e.properties.find((e) => e.name === a);
+		if (!n || n.access !== "read-write") throw Error(`Addon property is not writable: ${a}`);
+		if (n.storage !== "both" && n.storage !== r) throw Error(`Addon property ${a} does not allow ${r} changes`);
+		let s = e.settings.find((e) => e.key === n.setting);
+		if (t(s, o), n.format === "color" && (typeof o != "string" || !/^#[a-fA-F0-9]{6}$/.test(o))) throw Error(`Invalid color property ${a}`);
+		i[n.setting] = o;
 	}
 	return Object.freeze(i);
 }
@@ -116,8 +116,8 @@ var p = class {
 	remote = {};
 	listeners = /* @__PURE__ */ new Set();
 	revision = 0;
-	constructor(e, n) {
-		this.manifest = e, t(e, n), this.saved = Object.freeze({ ...n });
+	constructor(e, t) {
+		this.manifest = e, n(e, t), this.saved = Object.freeze({ ...t });
 	}
 	get settings() {
 		return Object.freeze({
@@ -139,16 +139,16 @@ var p = class {
 			t(Object.freeze(e));
 		} catch {}
 	}
-	apply(e, n, r, i) {
+	apply(e, t, r, i) {
 		if (r !== this.revision) throw Error("Addon property revision conflict");
-		let a = d(this.manifest, e, n), o = {
+		let a = d(this.manifest, e, t), o = {
 			...this.saved,
 			...a
 		};
-		if (t(this.manifest, n === "persistent" ? o : {
+		if (n(this.manifest, t === "persistent" ? o : {
 			...this.settings,
 			...a
-		}), n === "persistent") {
+		}), t === "persistent") {
 			if (!i) throw Error("Persistent addon edits unavailable in this host");
 			i(Object.freeze(o)), this.saved = Object.freeze(o), this.temporary = Object.freeze(Object.fromEntries(Object.entries(this.temporary).filter(([e]) => !Object.hasOwn(a, e))));
 		} else this.temporary = Object.freeze({
@@ -160,15 +160,15 @@ var p = class {
 		this.notify(s);
 	}
 	restore(e) {
-		t(this.manifest, e), JSON.stringify(this.saved) !== JSON.stringify(e) && (this.saved = Object.freeze({ ...e }), this.revision++, this.notify(this.manifest.properties.map((e) => e.name)));
+		n(this.manifest, e), JSON.stringify(this.saved) !== JSON.stringify(e) && (this.saved = Object.freeze({ ...e }), this.revision++, this.notify(this.manifest.properties.map((e) => e.name)));
 	}
 	mirror(e) {
-		let n = {
+		let t = {
 			...this.saved,
 			...e
 		};
-		t(this.manifest, n);
-		let r = JSON.stringify(this.settings) !== JSON.stringify(n);
+		n(this.manifest, t);
+		let r = JSON.stringify(this.settings) !== JSON.stringify(t);
 		this.remote = Object.freeze({ ...e }), this.temporary = {}, r && (this.revision++, this.notify(this.manifest.properties.map((e) => e.name)));
 	}
 	dispose() {
