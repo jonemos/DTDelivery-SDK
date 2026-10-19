@@ -24,6 +24,7 @@ export declare class CompositionResourcePool {
     private readonly storage;
     readonly textureOptions?: TextureImportOptions | undefined;
     private readonly cacheStaticMatrices;
+    private readonly projectionOptions;
     private sources;
     private reusable?;
     private addonContext;
@@ -39,7 +40,9 @@ export declare class CompositionResourcePool {
             textureCatalog?: AssetRegistrySnapshot;
             layouts?: readonly TextureAppearanceLayout[];
         }>;
-    }, textureOptions?: TextureImportOptions | undefined, cacheStaticMatrices?: boolean);
+    }, textureOptions?: TextureImportOptions | undefined, cacheStaticMatrices?: boolean, projectionOptions?: {
+        geometryOnly?: boolean;
+    });
     private key;
     fork(options: TextureImportOptions): CompositionResourcePool;
     finishFork(): void;

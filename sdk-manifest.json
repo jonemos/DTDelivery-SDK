@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "version": "0.3.13",
-  "baseVersion": "0.3.13",
+  "version": "0.3.14",
+  "baseVersion": "0.3.14",
   "license": "MIT",
   "addonSdkVersion": 5,
   "contracts": [
@@ -25,13 +25,13 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 10647,
-      "sha256": "0a5565cef719363534a8a2c639e135d88074aacd4742edbb2e5916553bbb0351"
+      "bytes": 11028,
+      "sha256": "a71bb33f954969a641d018f72bbb93cb340dcccb64f6b352f982e3b26516880b"
     },
     {
       "path": "docs/API.md",
       "bytes": 12230,
-      "sha256": "9f914d1318f7af989bce5767d62257127ec491e6a6ba6b62f8b18170a67bdac4"
+      "sha256": "1ad46e68f86008bc94634d291aa4f0526448cb93535d1bec23027cde07f57b6f"
     },
     {
       "path": "docs/GITHUB_DESKTOP.md",
@@ -90,8 +90,8 @@
     },
     {
       "path": "docs/guides/10_TEXTURES_BUDGET.md",
-      "bytes": 5776,
-      "sha256": "2c5178a58d70ce4e4bfd7d5ff19d283835df5402c2898b00e8c0f2d8f47dfd30"
+      "bytes": 5958,
+      "sha256": "1515b42c1431e0662b88486fa449842e26160017d9191cf3e813fe407ba159e2"
     },
     {
       "path": "docs/guides/11_SCRIPTS.md",
@@ -144,14 +144,14 @@
       "sha256": "7dd3e3ba1011833cecc798279eb98e45d8dc3ebb319d0f555e4f8795afd1922a"
     },
     {
-      "path": "examples/standalone/assets/index-DV4WOLLX.js",
-      "bytes": 49067,
-      "sha256": "612caaa2752286eb3bb0e39019e2c99969b3988003883d1f85f8c5ef09aee9b1"
+      "path": "examples/standalone/assets/index-DmwrvX_K.js",
+      "bytes": 49060,
+      "sha256": "28222b69cba7a8d76e615b2e7a8eb73c0ed0842b95623978d27e0718eddda57d"
     },
     {
       "path": "examples/standalone/index.html",
       "bytes": 3559,
-      "sha256": "175c1d2599e45b55f35cf0905a762606a68be91525705ae1561ec5028efcb56c"
+      "sha256": "e1c82cbe84d2fb577b7ecd95f245dd1680a799adaf5086edd11410b3d59249c4"
     },
     {
       "path": "examples/test-server.cmd",
@@ -165,8 +165,8 @@
     },
     {
       "path": "examples/web/featureExamples.ts",
-      "bytes": 19302,
-      "sha256": "2c240c94be7611cd7aae9090353002451be07e63eb5a60775977311e82fb1df1"
+      "bytes": 19297,
+      "sha256": "202d4f76c7caa4d69698f592e9781c1467a00039d39973dc8f856d3170ad5cb6"
     },
     {
       "path": "examples/web/featurePanel.ts",
@@ -221,32 +221,57 @@
     {
       "path": "package.json",
       "bytes": 729,
-      "sha256": "b4eaf71cc28cf12227640921232b9f6d7e06a910c26f0e9343c4f714b04d39f9"
+      "sha256": "1912dd19e4cfbcead305961b70587378afe5e9ca35fe334e45de413ea2ed745d"
     },
     {
       "path": "README.md",
-      "bytes": 7483,
-      "sha256": "1b1c1665271574e811dfe2a31d45d224d80936ccda33f915dd882246f58d52b8"
+      "bytes": 8504,
+      "sha256": "aa6d68f419ea5066a69eab80c9d7037e579116add7d7f8d8ed6ca8bde7789434"
+    },
+    {
+      "path": "runtime/CompositionBrowser-DYbIwgIs.js",
+      "bytes": 1596,
+      "sha256": "5dfe5f1d10ae3951e1f56e7d5f202e093050fea3b69112bb88c0c5ff525d47d7"
+    },
+    {
+      "path": "runtime/CompositionDocument-Dw0mUJG2.js",
+      "bytes": 11372,
+      "sha256": "79790b75ddea1bbd912f8e4a3d8142712560dd6bd4b05df53c6df8422a49f33e"
     },
     {
       "path": "runtime/index.js",
       "bytes": 72,
-      "sha256": "dd1b31b7e1674fb4b0d6594ad0f3534d2091003c62f27c23047df444c3bc55dd"
+      "sha256": "b81edc27bcbc5982abfe98bc50f229d29ba6a73ea11016bd4d963e3455e1c530"
     },
     {
-      "path": "runtime/RenderQualityPipeline-BKmcypAp.js",
-      "bytes": 141055,
-      "sha256": "35a7f3e0ed956549d8456d9a493be9b49f645e92ed420dd9502d8ee6edd1ae2d"
+      "path": "runtime/RenderQualityPipeline-CTbOsfcN.js",
+      "bytes": 141107,
+      "sha256": "5ee0d93ed4e1e6517bafdaba811a8c2dded0ac1cf2ae33d49815fbe4fcdf26e2"
     },
     {
-      "path": "runtime/RoomEnvironment-L6rOzO5i.js",
-      "bytes": 763448,
-      "sha256": "09d7c53d46a400e0b8d7eb970090af2b9cfd4e989fde46648b6f2fd7954d45af"
+      "path": "runtime/RenderQualityPreset-BFl3kMLS.js",
+      "bytes": 358905,
+      "sha256": "ee2ee5b267e822c5f1cf88b2640197a362fef4747c09b597653b5b6cbc741d87"
+    },
+    {
+      "path": "runtime/rolldown-runtime-DF993M8W.js",
+      "bytes": 338,
+      "sha256": "f94fa027b64c8f59b2c5a5ffae2cc898f7a2399dc32b0b905091b6fd5e7bbb92"
+    },
+    {
+      "path": "runtime/RoomEnvironment-BlbXOJv5.js",
+      "bytes": 405803,
+      "sha256": "9e4afd9ade1209053525ce26969fdd54eae4c1aaada1313aea8d365e99fe2704"
     },
     {
       "path": "runtime/sdk.js",
-      "bytes": 1010745,
-      "sha256": "18275bba3d5e8c8e0017289df48eb2c99511390c64a99f77c8769bd66048f10b"
+      "bytes": 740833,
+      "sha256": "a72d4631c1a0c5c36d3654a65004f7a53a83aefb958c76fe089aed16149928ee"
+    },
+    {
+      "path": "runtime/StaticPreviewPersistence-DDh9I7Vj.js",
+      "bytes": 264353,
+      "sha256": "bb19a10f43f6938ea531f5a65a6dac73b2f11778f3f0503520ac38e576e0d1a3"
     },
     {
       "path": "runtime/viewport.css",
@@ -280,8 +305,8 @@
     },
     {
       "path": "types/modules/m0f0d622f8bdc.d.ts",
-      "bytes": 4109,
-      "sha256": "066f64da1294511e52530fb9fea56536f7db1cfd44d7c82c16f166d567a73283"
+      "bytes": 4191,
+      "sha256": "74145768f43a1691906207c865f31f2ada8693f8bf94c989a78f10437e8837ee"
     },
     {
       "path": "types/modules/m11599a871c5e.d.ts",
@@ -315,8 +340,8 @@
     },
     {
       "path": "types/modules/m1fc4eeaffa28.d.ts",
-      "bytes": 2279,
-      "sha256": "f2290772286fd372cc40d1fb5f6516864e9a806fea342f96a3417ccda6dc67c3"
+      "bytes": 3238,
+      "sha256": "1dc58f5e988107d4d521ca2a3be9324470e3c90072fbaca57d5c291933aca546"
     },
     {
       "path": "types/modules/m2401b9bcc641.d.ts",
@@ -380,8 +405,8 @@
     },
     {
       "path": "types/modules/m3eac70793537.d.ts",
-      "bytes": 3194,
-      "sha256": "0f282de6a81b23b6be4e587031a2464ffdb7bbe698748e56aea016d327c35b08"
+      "bytes": 3295,
+      "sha256": "53a98d4216b677d25b2792f04bce844bb6ab0f20dc20285f28e78bb7c0909441"
     },
     {
       "path": "types/modules/m3f7a37a09ea0.d.ts",
@@ -410,8 +435,8 @@
     },
     {
       "path": "types/modules/m52ceea7b635b.d.ts",
-      "bytes": 5940,
-      "sha256": "f7e80b63379d5fd346f897b580f19578285c37e973f0a1724072c507b98a1c8b"
+      "bytes": 5978,
+      "sha256": "48477d13e9a2ec550f4f57a485b1756c6ac46ca884a81220849b041a57dd61e0"
     },
     {
       "path": "types/modules/m5389db5360c3.d.ts",
@@ -445,8 +470,8 @@
     },
     {
       "path": "types/modules/m5e4e772c2f57.d.ts",
-      "bytes": 5678,
-      "sha256": "04c4006a987223fb8f803b4f02ea54123d7b021f54fdd4130bd59e5ad0e9b670"
+      "bytes": 5832,
+      "sha256": "f73eca64f3eb35dadb3717688f7bfdb29dc6a84716b92a4cdc08518b8c45d2ee"
     },
     {
       "path": "types/modules/m5e6f4f6908c1.d.ts",
@@ -600,8 +625,8 @@
     },
     {
       "path": "types/modules/mae043aea4362.d.ts",
-      "bytes": 1761,
-      "sha256": "a62655092c8140b20def9d9539c00edd4e535a0b27f719c857d40ba87bad4bf8"
+      "bytes": 1952,
+      "sha256": "d0928f792e65e47dc6055f6a3442e84091302c6c8496810495ec724cffd80533"
     },
     {
       "path": "types/modules/maf17ca296fd1.d.ts",
@@ -705,8 +730,8 @@
     },
     {
       "path": "types/modules/mdfb0ca7fff50.d.ts",
-      "bytes": 1228,
-      "sha256": "d672c6c4a03975f0e67829c7d4dd3cf821b0f3474bca151f7bdb0bfd40857f40"
+      "bytes": 1657,
+      "sha256": "0ae07a2689557e5a2850c7805db67fb34b37116ef680a4a38c8b9d0cdf956cc9"
     },
     {
       "path": "types/modules/me11583edf903.d.ts",
@@ -760,8 +785,8 @@
     },
     {
       "path": "types/modules/mf9caaacbc8b5.d.ts",
-      "bytes": 1408,
-      "sha256": "9af8be2308a2880cbe69475b8de3c8dbf50a78ce231d9edcc9048823855b5079"
+      "bytes": 1426,
+      "sha256": "7022c0911e5d0b527c6669b469770ad29dfcdf4e0f2c04c0ba3cf81812909384"
     },
     {
       "path": "types/modules/mfa47d5bbc044.d.ts",
@@ -772,6 +797,11 @@
       "path": "types/modules/mfc2efa75f19e.d.ts",
       "bytes": 2361,
       "sha256": "07f62195b26c3a54158622ba8438d013646d239701d1b0ea7029df35ad9293a3"
+    },
+    {
+      "path": "types/modules/mfd7cfc87c9c4.d.ts",
+      "bytes": 622,
+      "sha256": "565cc9576e14698623a5aefd4d5823e3b3964a40991fbf054ca325a0ae5580ff"
     },
     {
       "path": "types/viewport.css.d.ts",

@@ -8,9 +8,11 @@ export interface TextureImportOptions {
 export declare const DEFAULT_TEXTURE_IMPORT_OPTIONS: TextureImportOptions;
 export declare const SOURCE_TEXTURE_OPTIONS: TextureImportOptions;
 export declare const WEB_TEXTURE_OPTIONS: TextureImportOptions;
-export declare const WEB_TEXTURE_PROFILE = "u01-web-textures-1024-512-jpeg-png-v1";
+export declare const WEB_TEXTURE_PROFILE = "u01-web-textures-512-jpeg-png-v2";
 export declare function validateTextureImportOptions(options: TextureImportOptions): void;
 export declare function textureMapLimit(options: TextureImportOptions, kind: TextureMapKind): number;
+/** Display-only ceiling; legacy recipes and original source image bytes stay intact. */
+export declare function boundedTextureDisplayOptions(options: TextureImportOptions): TextureImportOptions;
 export interface EncodedWebTexture {
     bytes: Uint8Array;
     mimeType: 'image/png' | 'image/jpeg';

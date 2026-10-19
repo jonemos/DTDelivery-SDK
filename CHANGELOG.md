@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.14
+
+Publish the current chunk and loading runtime with a shared 512px texture-display ceiling and current recipe declarations. Preserve verified source identities, geometry/material references, alpha handling and direct storage connections. Refresh the README for the current no-install viewer, display controls, optional spatial streaming, public API and update workflow.
+
 ## 0.3.13
 
 Publish the current runtime and declarations for validated PBR/UV bake recipes and partial-import metadata. Preserve the existing public client API, direct storage connections and immutable chunk checks. Rewrite the README as a current usage guide with the actual automatic connection flow, page controls, update steps and typed quick start.

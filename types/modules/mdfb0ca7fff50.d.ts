@@ -27,3 +27,14 @@ export declare class ViewportRenderInvalidation {
     invalidate(): void;
     consumeRenderRequest(): boolean;
 }
+/** A resource transaction can change many slots on the same Actor. Reproject it once. */
+export declare class ViewportAssetInvalidationBatch {
+    private readonly flush;
+    private readonly enqueue;
+    private pending;
+    private queued;
+    private disposed;
+    constructor(flush: (assetIds: ReadonlySet<string>) => void, enqueue?: (run: () => void) => void);
+    invalidate(assetId: string): void;
+    dispose(): void;
+}

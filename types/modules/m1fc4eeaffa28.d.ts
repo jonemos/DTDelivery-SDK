@@ -8,6 +8,17 @@ export declare const BASIC_PBR_NATIVE_UV_RECIPE_HASH = "7c4bb176af1f59985d31be12
 export declare const BASIC_PBR_RENDER_UV_RECIPE_HASH = "dfac617c30b2a6e6ee3ad58dd2bcd773ab5e65f2f33c601ce2debdd660b42068";
 export declare const RESILIENT_PBR_RECIPE_HASH = "0ac9026ea91ca259115bffe8c63650648a76446bc71893b50220d0c04b48e87c";
 export declare const FALLBACK_PBR_RECIPE_HASH = "7449fdcf776fb91e6dc2283565e4d42ef53251c21c242968bf8e37f0bce0c5ed";
+/** Exact native 512 recipes; keep the historical 1024 bindings above readable. */
+export declare const WEB_512_RECIPE_HASHES: {
+    readonly COMPAT_RECIPE: "ca89bd30925a4027e08fd32d5c07a23b9444fcd26bc5e8eda472e5d60f68b0a3";
+    readonly PBR_COMPAT_RECIPE: "27bd805c4a6cd685c6a96dc4f6c65fe05c417368c58a1a54deac88bf3939073c";
+    readonly BASIC_PBR_RECIPE: "70fba6ea8cba1043c7f545db8185430969e1ee4ea086f433915f96bd834693a5";
+    readonly BASIC_PBR_UV_REPAIR_RECIPE: "2e77d0ad11c7fffb53204d94a98ba8a708573df572a52f1bf1b282bdf3cbb7d5";
+    readonly BASIC_PBR_NATIVE_UV_RECIPE: "bf4bfd2d89191bb4825549a5988c17120bd6ecd092973b5705a552a877393071";
+    readonly BASIC_PBR_RENDER_UV_RECIPE: "0ec71d53e44c140bd6d8c284180f9f31d0c869a59bb9e14fc1911f52e126c71c";
+    readonly RESILIENT_PBR_RECIPE: "c18890faf86a225142f010f2595ea9ecd9847ef89bcb5922d14a5c6dfc5828eb";
+    readonly FALLBACK_PBR_RECIPE: "595162680de8a28f3e7277e247edcc26add21c405096c26c1b78c9f6df15197d";
+};
 export interface CompatibilityBake {
     version: 1 | 2 | 3;
     policy: 'bake-unsupported-opaque-v1' | 'bake-static-pbr-alpha-v2' | 'basic-pbr-v1';

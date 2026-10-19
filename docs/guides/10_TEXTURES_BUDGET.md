@@ -43,7 +43,7 @@ export function useAutomaticBudget(sdk: DeliveryClient) {
 | control.apply(options,budget,signal,progress) | `Promise<void>`, 준비한 세트를 교체 적용 |
 | session.textureApplying | 현재 텍스처 준비 중인지 |
 
-options.maxSize는0(원본 크기)/128/256/512/1024/2048 px, maps는 baseColor/normal/metallicRoughness/occlusion/emissive/specular 배열입니다. maps[]는 텍스처 없이 표시합니다. mapMaxSizes는 각 map의128–2048 제한, compactBaseColor는 선택적인 베이스 컬러 압축 정책입니다. 공개 루트에 별도 TextureImportOptions export가 없으므로 아래처럼 메서드에서 타입을 얻습니다.
+표시용 options.maxSize는128/256/512px이며 모든 맵의 최대 크기는512px입니다. 이전 코드가0/1024/2048을 요청해도 표시에는512가 적용됩니다. maps는 baseColor/normal/metallicRoughness/occlusion/emissive/specular 배열이며 maps[]는 텍스처 없이 표시합니다. mapMaxSizes도 표시 시 최대512로 제한합니다. 원본 에셋과 저장 레벨은 변경하지 않습니다. compactBaseColor는 선택적인 베이스 컬러 압축 정책입니다. 공개 루트에 별도 TextureImportOptions export가 없으므로 아래처럼 메서드에서 타입을 얻습니다.
 
 ```ts
 import type { DeliveryClient, DeliveryViewer } from '@dt/delivery-sdk';

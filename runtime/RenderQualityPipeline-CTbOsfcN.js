@@ -1,4 +1,5 @@
-import { A as e, B as t, Ct as n, E as r, Ht as i, I as a, Lt as o, M as s, Nt as c, Pt as l, T as u, an as d, cn as f, dn as p, dt as m, en as h, et as g, ft as _, gt as v, i as y, in as b, j as x, l as S, ln as C, mt as w, n as T, nn as E, o as D, on as O, pt as ee, rn as k, s as te, sn as A, t as ne, u as j, vt as M, wt as N, x as re } from "./RoomEnvironment-L6rOzO5i.js";
+import { $t as e, C as t, Ct as n, F as r, J as i, Ln as a, M as o, Mn as s, Nt as c, P as l, Rt as u, S as d, Sr as f, Tr as p, Tt as m, V as h, _ as g, br as _, cr as v, dr as y, fr as b, gr as x, i as S, jt as C, kt as w, mr as T, o as E, or as D, qn as O, r as ee, t as te, ut as ne, wt as k, xr as A, zt as j } from "./RenderQualityPreset-BFl3kMLS.js";
+import { i as M, n as N, t as re } from "./RoomEnvironment-BlbXOJv5.js";
 //#region node_modules/.pnpm/three@0.186.0/node_modules/three/examples/jsm/shaders/CopyShader.js
 var P = {
 	name: "CopyShader",
@@ -17,9 +18,9 @@ var P = {
 		console.error("THREE.Pass: .render() must be implemented in derived pass.");
 	}
 	dispose() {}
-}, ie = new n(-1, 1, 1, -1, 0, 1), I = new class extends re {
+}, ie = new u(-1, 1, 1, -1, 0, 1), I = new class extends g {
 	constructor() {
-		super(), this.setAttribute("position", new a([
+		super(), this.setAttribute("position", new h([
 			-1,
 			3,
 			0,
@@ -29,7 +30,7 @@ var P = {
 			3,
 			-1,
 			0
-		], 3)), this.setAttribute("uv", new a([
+		], 3)), this.setAttribute("uv", new h([
 			0,
 			2,
 			0,
@@ -40,7 +41,7 @@ var P = {
 	}
 }(), L = class {
 	constructor(e) {
-		this._mesh = new _(I, e);
+		this._mesh = new k(I, e);
 	}
 	dispose() {
 		this._mesh.geometry.dispose();
@@ -56,7 +57,7 @@ var P = {
 	}
 }, R = class extends F {
 	constructor(e, t = "tDiffuse") {
-		super(), this.textureID = t, this.uniforms = null, this.material = null, e instanceof i ? (this.uniforms = e.uniforms, this.material = e) : e && (this.uniforms = k.clone(e.uniforms), this.material = new i({
+		super(), this.textureID = t, this.uniforms = null, this.material = null, e instanceof O ? (this.uniforms = e.uniforms, this.material = e) : e && (this.uniforms = y.clone(e.uniforms), this.material = new O({
 			name: e.name === void 0 ? "unspecified" : e.name,
 			defines: Object.assign({}, e.defines),
 			uniforms: this.uniforms,
@@ -88,12 +89,12 @@ var P = {
 		e.state.buffers.stencil.setLocked(!1), e.state.buffers.stencil.setTest(!1);
 	}
 }, oe = class {
-	constructor(e, n) {
-		if (this.renderer = e, this._pixelRatio = e.getPixelRatio(), n === void 0) {
-			let r = e.getSize(new A());
-			this._width = r.width, this._height = r.height, n = new p(this._width * this._pixelRatio, this._height * this._pixelRatio, { type: t }), n.texture.name = "EffectComposer.rt1";
-		} else this._width = n.width, this._height = n.height;
-		this.renderTarget1 = n, this.renderTarget2 = n.clone(), this.renderTarget2.texture.name = "EffectComposer.rt2", this.writeBuffer = this.renderTarget1, this.readBuffer = this.renderTarget2, this.renderToScreen = !0, this.passes = [], this.copyPass = new R(P), this.copyPass.material.blending = 0, this.timer = new E();
+	constructor(e, t) {
+		if (this.renderer = e, this._pixelRatio = e.getPixelRatio(), t === void 0) {
+			let n = e.getSize(new _());
+			this._width = n.width, this._height = n.height, t = new p(this._width * this._pixelRatio, this._height * this._pixelRatio, { type: i }), t.texture.name = "EffectComposer.rt1";
+		} else this._width = t.width, this._height = t.height;
+		this.renderTarget1 = t, this.renderTarget2 = t.clone(), this.renderTarget2.texture.name = "EffectComposer.rt2", this.writeBuffer = this.renderTarget1, this.readBuffer = this.renderTarget2, this.renderToScreen = !0, this.passes = [], this.copyPass = new R(P), this.copyPass.material.blending = 0, this.timer = new v();
 	}
 	swapBuffers() {
 		let e = this.readBuffer;
@@ -133,7 +134,7 @@ var P = {
 	}
 	reset(e) {
 		if (e === void 0) {
-			let t = this.renderer.getSize(new A());
+			let t = this.renderer.getSize(new _());
 			this._pixelRatio = this.renderer.getPixelRatio(), this._width = t.width, this._height = t.height, e = this.renderTarget1.clone(), e.setSize(this._width * this._pixelRatio, this._height * this._pixelRatio);
 		}
 		this.renderTarget1.dispose(), this.renderTarget2.dispose(), this.renderTarget1 = e, this.renderTarget2 = e.clone(), this.writeBuffer = this.renderTarget1, this.readBuffer = this.renderTarget2;
@@ -154,7 +155,7 @@ var P = {
 	constructor(e, t = 1) {
 		super();
 		let n = P;
-		this.map = e, this.opacity = t, this.needsSwap = !1, this.uniforms = k.clone(n.uniforms), this.material = new i({
+		this.map = e, this.opacity = t, this.needsSwap = !1, this.uniforms = y.clone(n.uniforms), this.material = new O({
 			uniforms: this.uniforms,
 			vertexShader: n.vertexShader,
 			fragmentShader: n.fragmentShader,
@@ -185,19 +186,19 @@ var P = {
 		tNormal: { value: null },
 		tDepth: { value: null },
 		tNoise: { value: null },
-		resolution: { value: new A() },
+		resolution: { value: new _() },
 		cameraNear: { value: null },
 		cameraFar: { value: null },
-		cameraProjectionMatrix: { value: new m() },
-		cameraProjectionMatrixInverse: { value: new m() },
-		cameraWorldMatrix: { value: new m() },
+		cameraProjectionMatrix: { value: new n() },
+		cameraProjectionMatrixInverse: { value: new n() },
+		cameraWorldMatrix: { value: new n() },
 		radius: { value: .25 },
 		distanceExponent: { value: 1 },
 		thickness: { value: 1 },
 		distanceFallOff: { value: 1 },
 		scale: { value: 1 },
-		sceneBoxMin: { value: new f(-1, -1, -1) },
-		sceneBoxMax: { value: new f(1, 1, 1) }
+		sceneBoxMin: { value: new A(-1, -1, -1) },
+		sceneBoxMax: { value: new A(1, 1, 1) }
 	},
 	vertexShader: "\n\n		varying vec2 vUv;\n\n		void main() {\n			vUv = uv;\n			gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );\n		}",
 	fragmentShader: "\n		varying vec2 vUv;\n		uniform highp sampler2D tNormal;\n		uniform highp sampler2D tDepth;\n		uniform sampler2D tNoise;\n		uniform vec2 resolution;\n		uniform float cameraNear;\n		uniform float cameraFar;\n		uniform mat4 cameraProjectionMatrix;\n		uniform mat4 cameraProjectionMatrixInverse;\n		uniform mat4 cameraWorldMatrix;\n		uniform float radius;\n		uniform float distanceExponent;\n		uniform float thickness;\n		uniform float distanceFallOff;\n		uniform float scale;\n		#if SCENE_CLIP_BOX == 1\n			uniform vec3 sceneBoxMin;\n			uniform vec3 sceneBoxMax;\n		#endif\n\n		#include <common>\n		#include <packing>\n\n		#ifndef FRAGMENT_OUTPUT\n		#define FRAGMENT_OUTPUT vec4(vec3(ao), 1.)\n		#endif\n\n		vec3 getViewPosition( const in vec2 screenPosition, const in float depth ) {\n			#ifdef USE_REVERSED_DEPTH_BUFFER\n				vec4 clipSpacePosition = vec4( vec2( screenPosition ) * 2.0 - 1.0, depth, 1.0 );\n			#else\n				vec4 clipSpacePosition = vec4( vec3( screenPosition, depth ) * 2.0 - 1.0, 1.0 );\n			#endif\n			vec4 viewSpacePosition = cameraProjectionMatrixInverse * clipSpacePosition;\n			return viewSpacePosition.xyz / viewSpacePosition.w;\n		}\n\n		float getDepth(const vec2 uv) {\n			return textureLod(tDepth, uv.xy, 0.0).DEPTH_SWIZZLING;\n		}\n\n		float fetchDepth(const ivec2 uv) {\n			return texelFetch(tDepth, uv.xy, 0).DEPTH_SWIZZLING;\n		}\n\n		float getViewZ(const in float depth) {\n			#if PERSPECTIVE_CAMERA == 1\n				return perspectiveDepthToViewZ(depth, cameraNear, cameraFar);\n			#else\n				return orthographicDepthToViewZ(depth, cameraNear, cameraFar);\n			#endif\n		}\n\n		vec3 computeNormalFromDepth(const vec2 uv) {\n			vec2 size = vec2(textureSize(tDepth, 0));\n			ivec2 p = ivec2(uv * size);\n			float c0 = fetchDepth(p);\n			float l2 = fetchDepth(p - ivec2(2, 0));\n			float l1 = fetchDepth(p - ivec2(1, 0));\n			float r1 = fetchDepth(p + ivec2(1, 0));\n			float r2 = fetchDepth(p + ivec2(2, 0));\n			float b2 = fetchDepth(p - ivec2(0, 2));\n			float b1 = fetchDepth(p - ivec2(0, 1));\n			float t1 = fetchDepth(p + ivec2(0, 1));\n			float t2 = fetchDepth(p + ivec2(0, 2));\n			float dl = abs((2.0 * l1 - l2) - c0);\n			float dr = abs((2.0 * r1 - r2) - c0);\n			float db = abs((2.0 * b1 - b2) - c0);\n			float dt = abs((2.0 * t1 - t2) - c0);\n			vec3 ce = getViewPosition(uv, c0).xyz;\n			vec3 dpdx = (dl < dr) ? ce - getViewPosition((uv - vec2(1.0 / size.x, 0.0)), l1).xyz : -ce + getViewPosition((uv + vec2(1.0 / size.x, 0.0)), r1).xyz;\n			vec3 dpdy = (db < dt) ? ce - getViewPosition((uv - vec2(0.0, 1.0 / size.y)), b1).xyz : -ce + getViewPosition((uv + vec2(0.0, 1.0 / size.y)), t1).xyz;\n			return normalize(cross(dpdx, dpdy));\n		}\n\n		vec3 getViewNormal(const vec2 uv) {\n			#if NORMAL_VECTOR_TYPE == 2\n				return normalize(textureLod(tNormal, uv, 0.).rgb);\n			#elif NORMAL_VECTOR_TYPE == 1\n				return unpackRGBToNormal(textureLod(tNormal, uv, 0.).rgb);\n			#else\n				return computeNormalFromDepth(uv);\n			#endif\n		}\n\n		vec3 getSceneUvAndDepth(vec3 sampleViewPos) {\n			vec4 sampleClipPos = cameraProjectionMatrix * vec4(sampleViewPos, 1.);\n			vec2 sampleUv = sampleClipPos.xy / sampleClipPos.w * 0.5 + 0.5;\n			float sampleSceneDepth = getDepth(sampleUv);\n			return vec3(sampleUv, sampleSceneDepth);\n		}\n\n		void main() {\n			float depth = getDepth(vUv.xy);\n\n			#ifdef USE_REVERSED_DEPTH_BUFFER\n				if (depth <= 0.0) {\n					discard;\n					return;\n				}\n			#else\n				if (depth >= 1.0) {\n					discard;\n					return;\n				}\n			#endif\n			\n			vec3 viewPos = getViewPosition(vUv, depth);\n			vec3 viewNormal = getViewNormal(vUv);\n\n			float radiusToUse = radius;\n			float distanceFalloffToUse = thickness;\n			#if SCREEN_SPACE_RADIUS == 1\n				float radiusScale = getViewPosition(vec2(0.5 + float(SCREEN_SPACE_RADIUS_SCALE) / resolution.x, 0.0), depth).x;\n				radiusToUse *= radiusScale;\n				distanceFalloffToUse *= radiusScale;\n			#endif\n\n			#if SCENE_CLIP_BOX == 1\n				vec3 worldPos = (cameraWorldMatrix * vec4(viewPos, 1.0)).xyz;\n				float boxDistance = length(max(vec3(0.0), max(sceneBoxMin - worldPos, worldPos - sceneBoxMax)));\n				if (boxDistance > radiusToUse) {\n					discard;\n					return;\n				}\n			#endif\n\n			vec2 noiseResolution = vec2(textureSize(tNoise, 0));\n			vec2 noiseUv = vUv * resolution / noiseResolution;\n			vec4 noiseTexel = textureLod(tNoise, noiseUv, 0.0);\n			vec3 randomVec = noiseTexel.xyz * 2.0 - 1.0;\n			vec3 tangent = normalize(vec3(randomVec.xy, 0.));\n			vec3 bitangent = vec3(-tangent.y, tangent.x, 0.);\n			mat3 kernelMatrix = mat3(tangent, bitangent, vec3(0., 0., 1.));\n\n			const int DIRECTIONS = SAMPLES < 30 ? 3 : 5;\n			const int STEPS = (SAMPLES + DIRECTIONS - 1) / DIRECTIONS;\n			float ao = 0.0;\n			for (int i = 0; i < DIRECTIONS; ++i) {\n\n				float angle = float(i) / float(DIRECTIONS) * PI;\n				vec4 sampleDir = vec4(cos(angle), sin(angle), 0., 0.5 + 0.5 * noiseTexel.w);\n				sampleDir.xyz = normalize(kernelMatrix * sampleDir.xyz);\n\n				vec3 viewDir = normalize(-viewPos.xyz);\n				vec3 sliceBitangent = normalize(cross(sampleDir.xyz, viewDir));\n				vec3 sliceTangent = cross(sliceBitangent, viewDir);\n				vec3 normalInSlice = normalize(viewNormal - sliceBitangent * dot(viewNormal, sliceBitangent));\n\n				vec3 tangentToNormalInSlice = cross(normalInSlice, sliceBitangent);\n				vec2 cosHorizons = vec2(dot(viewDir, tangentToNormalInSlice), dot(viewDir, -tangentToNormalInSlice));\n\n				for (int j = 0; j < STEPS; ++j) {\n					vec3 sampleViewOffset = sampleDir.xyz * radiusToUse * sampleDir.w * pow(float(j + 1) / float(STEPS), distanceExponent);\n\n					vec3 sampleSceneUvDepth = getSceneUvAndDepth(viewPos + sampleViewOffset);\n					vec3 sampleSceneViewPos = getViewPosition(sampleSceneUvDepth.xy, sampleSceneUvDepth.z);\n					vec3 viewDelta = sampleSceneViewPos - viewPos;\n					if (abs(viewDelta.z) < thickness) {\n						float sampleCosHorizon = dot(viewDir, normalize(viewDelta));\n						cosHorizons.x += max(0., (sampleCosHorizon - cosHorizons.x) * mix(1., 2. / float(j + 2), distanceFallOff));\n					}\n\n					sampleSceneUvDepth = getSceneUvAndDepth(viewPos - sampleViewOffset);\n					sampleSceneViewPos = getViewPosition(sampleSceneUvDepth.xy, sampleSceneUvDepth.z);\n					viewDelta = sampleSceneViewPos - viewPos;\n					if (abs(viewDelta.z) < thickness) {\n						float sampleCosHorizon = dot(viewDir, normalize(viewDelta));\n						cosHorizons.y += max(0., (sampleCosHorizon - cosHorizons.y) * mix(1., 2. / float(j + 2), distanceFallOff));\n					}\n				}\n\n				vec2 sinHorizons = sqrt(1. - cosHorizons * cosHorizons);\n				float nx = dot(normalInSlice, sliceTangent);\n				float ny = dot(normalInSlice, viewDir);\n				float nxb = 1. / 2. * (acos(cosHorizons.y) - acos(cosHorizons.x) + sinHorizons.x * cosHorizons.x - sinHorizons.y * cosHorizons.y);\n				float nyb = 1. / 2. * (2. - cosHorizons.x * cosHorizons.x - cosHorizons.y * cosHorizons.y);\n				float occlusion = nx * nxb + ny * nyb;\n				ao += occlusion;\n			}\n\n			ao = clamp(ao / float(DIRECTIONS), 0., 1.);\n		#if SCENE_CLIP_BOX == 1\n			ao = mix(ao, 1., smoothstep(0., radiusToUse, boxDistance));\n		#endif\n			ao = pow(ao, scale);\n\n			gl_FragColor = FRAGMENT_OUTPUT;\n		}"
@@ -220,14 +221,14 @@ var P = {
 	vertexShader: "\n		varying vec2 vUv;\n\n		void main() {\n			vUv = uv;\n			gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );\n		}",
 	fragmentShader: "\n		uniform float intensity;\n		uniform sampler2D tDiffuse;\n		varying vec2 vUv;\n\n		void main() {\n			vec4 texel = texture2D( tDiffuse, vUv );\n			gl_FragColor = vec4(mix(vec3(1.), texel.rgb, intensity), texel.a);\n		}"
 };
-function ce(t = 5) {
-	let n = Math.floor(t) % 2 == 0 ? Math.floor(t) + 1 : Math.floor(t), r = le(n), i = r.length, a = new Uint8Array(i * 4);
-	for (let e = 0; e < i; ++e) {
-		let t = r[e], n = 2 * Math.PI * t / i, o = new f(Math.cos(n), Math.sin(n), 0).normalize();
-		a[e * 4] = (o.x * .5 + .5) * 255, a[e * 4 + 1] = (o.y * .5 + .5) * 255, a[e * 4 + 2] = 127, a[e * 4 + 3] = 255;
+function ce(e = 5) {
+	let t = Math.floor(e) % 2 == 0 ? Math.floor(e) + 1 : Math.floor(e), n = le(t), r = n.length, i = new Uint8Array(r * 4);
+	for (let e = 0; e < r; ++e) {
+		let t = n[e], a = 2 * Math.PI * t / r, o = new A(Math.cos(a), Math.sin(a), 0).normalize();
+		i[e * 4] = (o.x * .5 + .5) * 255, i[e * 4 + 1] = (o.y * .5 + .5) * 255, i[e * 4 + 2] = 127, i[e * 4 + 3] = 255;
 	}
-	let s = new e(a, n, n);
-	return s.wrapS = o, s.wrapT = o, s.needsUpdate = !0, s;
+	let s = new o(i, t, t);
+	return s.wrapS = a, s.wrapT = a, s.needsUpdate = !0, s;
 }
 function le(e) {
 	let t = Math.floor(e) % 2 == 0 ? Math.floor(e) + 1 : Math.floor(e), n = t * t, r = Array(n).fill(0), i = Math.floor(t / 2), a = t - 1;
@@ -255,8 +256,8 @@ var U = {
 		tNormal: { value: null },
 		tDepth: { value: null },
 		tNoise: { value: null },
-		resolution: { value: new A() },
-		cameraProjectionMatrixInverse: { value: new m() },
+		resolution: { value: new _() },
+		cameraProjectionMatrixInverse: { value: new n() },
 		lumaPhi: { value: 5 },
 		depthPhi: { value: 5 },
 		normalPhi: { value: 5 },
@@ -278,7 +279,7 @@ function de(e, t, n) {
 	let r = [];
 	for (let i = 0; i < e; i++) {
 		let a = 2 * Math.PI * t * i / e, o = (i / (e - 1)) ** n;
-		r.push(new f(Math.cos(a), Math.sin(a), o));
+		r.push(new A(Math.cos(a), Math.sin(a), o));
 	}
 	return r;
 }
@@ -944,17 +945,17 @@ var fe = class {
 	noise3d(e, t, n) {
 		let r, i, a, o, s = (e + t + n) * (1 / 3), c = Math.floor(e + s), l = Math.floor(t + s), u = Math.floor(n + s), d = 1 / 6, f = (c + l + u) * d, p = c - f, m = l - f, h = u - f, g = e - p, _ = t - m, v = n - h, y, b, x, S, C, w;
 		g >= _ ? _ >= v ? (y = 1, b = 0, x = 0, S = 1, C = 1, w = 0) : g >= v ? (y = 1, b = 0, x = 0, S = 1, C = 0, w = 1) : (y = 0, b = 0, x = 1, S = 1, C = 0, w = 1) : _ < v ? (y = 0, b = 0, x = 1, S = 0, C = 1, w = 1) : g < v ? (y = 0, b = 1, x = 0, S = 0, C = 1, w = 1) : (y = 0, b = 1, x = 0, S = 1, C = 1, w = 0);
-		let T = g - y + d, E = _ - b + d, D = v - x + d, O = g - S + 2 * d, ee = _ - C + 2 * d, k = v - w + 2 * d, te = g - 1 + 3 * d, A = _ - 1 + 3 * d, ne = v - 1 + 3 * d, j = c & 255, M = l & 255, N = u & 255, re = this.perm[j + this.perm[M + this.perm[N]]] % 12, P = this.perm[j + y + this.perm[M + b + this.perm[N + x]]] % 12, F = this.perm[j + S + this.perm[M + C + this.perm[N + w]]] % 12, ie = this.perm[j + 1 + this.perm[M + 1 + this.perm[N + 1]]] % 12, I = .6 - g * g - _ * _ - v * v;
+		let T = g - y + d, E = _ - b + d, D = v - x + d, O = g - S + 2 * d, ee = _ - C + 2 * d, te = v - w + 2 * d, ne = g - 1 + 3 * d, k = _ - 1 + 3 * d, A = v - 1 + 3 * d, j = c & 255, M = l & 255, N = u & 255, re = this.perm[j + this.perm[M + this.perm[N]]] % 12, P = this.perm[j + y + this.perm[M + b + this.perm[N + x]]] % 12, F = this.perm[j + S + this.perm[M + C + this.perm[N + w]]] % 12, ie = this.perm[j + 1 + this.perm[M + 1 + this.perm[N + 1]]] % 12, I = .6 - g * g - _ * _ - v * v;
 		I < 0 ? r = 0 : (I *= I, r = I * I * this._dot3(this.grad3[re], g, _, v));
 		let L = .6 - T * T - E * E - D * D;
 		L < 0 ? i = 0 : (L *= L, i = L * L * this._dot3(this.grad3[P], T, E, D));
-		let R = .6 - O * O - ee * ee - k * k;
-		R < 0 ? a = 0 : (R *= R, a = R * R * this._dot3(this.grad3[F], O, ee, k));
-		let z = .6 - te * te - A * A - ne * ne;
-		return z < 0 ? o = 0 : (z *= z, o = z * z * this._dot3(this.grad3[ie], te, A, ne)), 32 * (r + i + a + o);
+		let R = .6 - O * O - ee * ee - te * te;
+		R < 0 ? a = 0 : (R *= R, a = R * R * this._dot3(this.grad3[F], O, ee, te));
+		let z = .6 - ne * ne - k * k - A * A;
+		return z < 0 ? o = 0 : (z *= z, o = z * z * this._dot3(this.grad3[ie], ne, k, A)), 32 * (r + i + a + o);
 	}
 	noise4d(e, t, n, r) {
-		let i = this.grad4, a = this.simplex, o = this.perm, s = (Math.sqrt(5) - 1) / 4, c = (5 - Math.sqrt(5)) / 20, l, u, d, f, p, m = (e + t + n + r) * s, h = Math.floor(e + m), g = Math.floor(t + m), _ = Math.floor(n + m), v = Math.floor(r + m), y = (h + g + _ + v) * c, b = h - y, x = g - y, S = _ - y, C = v - y, w = e - b, T = t - x, E = n - S, D = r - C, O = w > T ? 32 : 0, ee = w > E ? 16 : 0, k = T > E ? 8 : 0, te = w > D ? 4 : 0, A = T > D ? 2 : 0, ne = +(E > D), j = O + ee + k + te + A + ne, M = +(a[j][0] >= 3), N = +(a[j][1] >= 3), re = +(a[j][2] >= 3), P = +(a[j][3] >= 3), F = +(a[j][0] >= 2), ie = +(a[j][1] >= 2), I = +(a[j][2] >= 2), L = +(a[j][3] >= 2), R = +(a[j][0] >= 1), z = +(a[j][1] >= 1), ae = +(a[j][2] >= 1), oe = +(a[j][3] >= 1), se = w - M + c, B = T - N + c, V = E - re + c, H = D - P + c, ce = w - F + 2 * c, le = T - ie + 2 * c, U = E - I + 2 * c, ue = D - L + 2 * c, de = w - R + 3 * c, fe = T - z + 3 * c, pe = E - ae + 3 * c, me = D - oe + 3 * c, W = w - 1 + 4 * c, G = T - 1 + 4 * c, K = E - 1 + 4 * c, q = D - 1 + 4 * c, J = h & 255, Y = g & 255, X = _ & 255, Z = v & 255, he = o[J + o[Y + o[X + o[Z]]]] % 32, ge = o[J + M + o[Y + N + o[X + re + o[Z + P]]]] % 32, _e = o[J + F + o[Y + ie + o[X + I + o[Z + L]]]] % 32, ve = o[J + R + o[Y + z + o[X + ae + o[Z + oe]]]] % 32, ye = o[J + 1 + o[Y + 1 + o[X + 1 + o[Z + 1]]]] % 32, Q = .6 - w * w - T * T - E * E - D * D;
+		let i = this.grad4, a = this.simplex, o = this.perm, s = (Math.sqrt(5) - 1) / 4, c = (5 - Math.sqrt(5)) / 20, l, u, d, f, p, m = (e + t + n + r) * s, h = Math.floor(e + m), g = Math.floor(t + m), _ = Math.floor(n + m), v = Math.floor(r + m), y = (h + g + _ + v) * c, b = h - y, x = g - y, S = _ - y, C = v - y, w = e - b, T = t - x, E = n - S, D = r - C, O = w > T ? 32 : 0, ee = w > E ? 16 : 0, te = T > E ? 8 : 0, ne = w > D ? 4 : 0, k = T > D ? 2 : 0, A = +(E > D), j = O + ee + te + ne + k + A, M = +(a[j][0] >= 3), N = +(a[j][1] >= 3), re = +(a[j][2] >= 3), P = +(a[j][3] >= 3), F = +(a[j][0] >= 2), ie = +(a[j][1] >= 2), I = +(a[j][2] >= 2), L = +(a[j][3] >= 2), R = +(a[j][0] >= 1), z = +(a[j][1] >= 1), ae = +(a[j][2] >= 1), oe = +(a[j][3] >= 1), se = w - M + c, B = T - N + c, V = E - re + c, H = D - P + c, ce = w - F + 2 * c, le = T - ie + 2 * c, U = E - I + 2 * c, ue = D - L + 2 * c, de = w - R + 3 * c, fe = T - z + 3 * c, pe = E - ae + 3 * c, me = D - oe + 3 * c, W = w - 1 + 4 * c, G = T - 1 + 4 * c, K = E - 1 + 4 * c, q = D - 1 + 4 * c, J = h & 255, Y = g & 255, X = _ & 255, Z = v & 255, he = o[J + o[Y + o[X + o[Z]]]] % 32, ge = o[J + M + o[Y + N + o[X + re + o[Z + P]]]] % 32, _e = o[J + F + o[Y + ie + o[X + I + o[Z + L]]]] % 32, ve = o[J + R + o[Y + z + o[X + ae + o[Z + oe]]]] % 32, ye = o[J + 1 + o[Y + 1 + o[X + 1 + o[Z + 1]]]] % 32, Q = .6 - w * w - T * T - E * E - D * D;
 		Q < 0 ? l = 0 : (Q *= Q, l = Q * Q * this._dot4(i[he], w, T, E, D));
 		let $ = .6 - se * se - B * B - V * V - H * H;
 		$ < 0 ? u = 0 : ($ *= $, u = $ * $ * this._dot4(i[ge], se, B, V, H));
@@ -974,34 +975,34 @@ var fe = class {
 	_dot4(e, t, n, r, i) {
 		return e[0] * t + e[1] * n + e[2] * r + e[3] * i;
 	}
-}, pe = class n extends F {
-	constructor(e, n, r = 512, a = 512, o, s, c) {
-		super(), this.width = r, this.height = a, this.clear = !0, this.camera = n, this.scene = e, this.output = 0, this._renderGBuffer = !0, this._visibilityCache = [], this.blendIntensity = 1, this.pdRings = 2, this.pdRadiusExponent = 2, this.pdSamples = 16, this.gtaoNoiseTexture = ce(), this.pdNoiseTexture = this._generateNoise(), this.gtaoRenderTarget = new p(this.width, this.height, {
-			type: t,
+}, pe = class t extends F {
+	constructor(e, t, n = 512, r = 512, a, o, s) {
+		super(), this.width = n, this.height = r, this.clear = !0, this.camera = t, this.scene = e, this.output = 0, this._renderGBuffer = !0, this._visibilityCache = [], this.blendIntensity = 1, this.pdRings = 2, this.pdRadiusExponent = 2, this.pdSamples = 16, this.gtaoNoiseTexture = ce(), this.pdNoiseTexture = this._generateNoise(), this.gtaoRenderTarget = new p(this.width, this.height, {
+			type: i,
 			depthBuffer: !1
-		}), this.pdRenderTarget = this.gtaoRenderTarget.clone(), this.gtaoMaterial = new i({
+		}), this.pdRenderTarget = this.gtaoRenderTarget.clone(), this.gtaoMaterial = new O({
 			defines: Object.assign({}, B.defines),
-			uniforms: k.clone(B.uniforms),
+			uniforms: y.clone(B.uniforms),
 			vertexShader: B.vertexShader,
 			fragmentShader: B.fragmentShader,
 			blending: 0,
 			depthTest: !1,
 			depthWrite: !1
-		}), this.gtaoMaterial.defines.PERSPECTIVE_CAMERA = +!!this.camera.isPerspectiveCamera, this.gtaoMaterial.uniforms.tNoise.value = this.gtaoNoiseTexture, this.gtaoMaterial.uniforms.resolution.value.set(this.width, this.height), this.gtaoMaterial.uniforms.cameraNear.value = this.camera.near, this.gtaoMaterial.uniforms.cameraFar.value = this.camera.far, this.normalMaterial = new w(), this.normalMaterial.blending = 0, this.pdMaterial = new i({
+		}), this.gtaoMaterial.defines.PERSPECTIVE_CAMERA = +!!this.camera.isPerspectiveCamera, this.gtaoMaterial.uniforms.tNoise.value = this.gtaoNoiseTexture, this.gtaoMaterial.uniforms.resolution.value.set(this.width, this.height), this.gtaoMaterial.uniforms.cameraNear.value = this.camera.near, this.gtaoMaterial.uniforms.cameraFar.value = this.camera.far, this.normalMaterial = new w(), this.normalMaterial.blending = 0, this.pdMaterial = new O({
 			defines: Object.assign({}, U.defines),
-			uniforms: k.clone(U.uniforms),
+			uniforms: y.clone(U.uniforms),
 			vertexShader: U.vertexShader,
 			fragmentShader: U.fragmentShader,
 			depthTest: !1,
 			depthWrite: !1
-		}), this.pdMaterial.uniforms.tDiffuse.value = this.gtaoRenderTarget.texture, this.pdMaterial.uniforms.tNoise.value = this.pdNoiseTexture, this.pdMaterial.uniforms.resolution.value.set(this.width, this.height), this.pdMaterial.uniforms.lumaPhi.value = 10, this.pdMaterial.uniforms.depthPhi.value = 2, this.pdMaterial.uniforms.normalPhi.value = 3, this.pdMaterial.uniforms.radius.value = 8, this.depthRenderMaterial = new i({
+		}), this.pdMaterial.uniforms.tDiffuse.value = this.gtaoRenderTarget.texture, this.pdMaterial.uniforms.tNoise.value = this.pdNoiseTexture, this.pdMaterial.uniforms.resolution.value.set(this.width, this.height), this.pdMaterial.uniforms.lumaPhi.value = 10, this.pdMaterial.uniforms.depthPhi.value = 2, this.pdMaterial.uniforms.normalPhi.value = 3, this.pdMaterial.uniforms.radius.value = 8, this.depthRenderMaterial = new O({
 			defines: Object.assign({}, V.defines),
-			uniforms: k.clone(V.uniforms),
+			uniforms: y.clone(V.uniforms),
 			vertexShader: V.vertexShader,
 			fragmentShader: V.fragmentShader,
 			blending: 0
-		}), this.depthRenderMaterial.uniforms.cameraNear.value = this.camera.near, this.depthRenderMaterial.uniforms.cameraFar.value = this.camera.far, this.copyMaterial = new i({
-			uniforms: k.clone(P.uniforms),
+		}), this.depthRenderMaterial.uniforms.cameraNear.value = this.camera.near, this.depthRenderMaterial.uniforms.cameraFar.value = this.camera.far, this.copyMaterial = new O({
+			uniforms: y.clone(P.uniforms),
 			vertexShader: P.vertexShader,
 			fragmentShader: P.fragmentShader,
 			transparent: !0,
@@ -1013,8 +1014,8 @@ var fe = class {
 			blendSrcAlpha: 206,
 			blendDstAlpha: 200,
 			blendEquationAlpha: 100
-		}), this.blendMaterial = new i({
-			uniforms: k.clone(H.uniforms),
+		}), this.blendMaterial = new O({
+			uniforms: y.clone(H.uniforms),
 			vertexShader: H.vertexShader,
 			fragmentShader: H.fragmentShader,
 			transparent: !0,
@@ -1027,7 +1028,7 @@ var fe = class {
 			blendSrcAlpha: 206,
 			blendDstAlpha: 200,
 			blendEquationAlpha: 100
-		}), this._fsQuad = new L(null), this._originalClearColor = new u(), this.setGBuffer(o ? o.depthTexture : void 0, o ? o.normalTexture : void 0), s !== void 0 && this.updateGtaoMaterial(s), c !== void 0 && this.updatePdMaterial(c);
+		}), this._fsQuad = new L(null), this._originalClearColor = new d(), this.setGBuffer(a ? a.depthTexture : void 0, a ? a.normalTexture : void 0), o !== void 0 && this.updateGtaoMaterial(o), s !== void 0 && this.updatePdMaterial(s);
 	}
 	setSize(e, t) {
 		this.width = e, this.height = t, this.gtaoRenderTarget.setSize(e, t), this.normalRenderTarget.setSize(e, t), this.pdRenderTarget.setSize(e, t), this.gtaoMaterial.uniforms.resolution.value.set(e, t), this.gtaoMaterial.uniforms.cameraProjectionMatrix.value.copy(this.camera.projectionMatrix), this.gtaoMaterial.uniforms.cameraProjectionMatrixInverse.value.copy(this.camera.projectionMatrixInverse), this.pdMaterial.uniforms.resolution.value.set(e, t), this.pdMaterial.uniforms.cameraProjectionMatrixInverse.value.copy(this.camera.projectionMatrixInverse);
@@ -1038,15 +1039,15 @@ var fe = class {
 	get gtaoMap() {
 		return this.pdRenderTarget.texture;
 	}
-	setGBuffer(e, n) {
-		e === void 0 ? (this.depthTexture = new s(), this.depthTexture.format = x, this.depthTexture.type = d, this.normalRenderTarget = new p(this.width, this.height, {
-			minFilter: M,
-			magFilter: M,
-			type: t,
+	setGBuffer(e, t) {
+		e === void 0 ? (this.depthTexture = new r(), this.depthTexture.format = l, this.depthTexture.type = T, this.normalRenderTarget = new p(this.width, this.height, {
+			minFilter: c,
+			magFilter: c,
+			type: i,
 			depthTexture: this.depthTexture
-		}), this.normalTexture = this.normalRenderTarget.texture, this._renderGBuffer = !0) : (this.depthTexture = e, this.normalTexture = n, this._renderGBuffer = !1);
-		let r = +!!this.normalTexture, i = this.depthTexture === this.normalTexture ? "w" : "x";
-		this.gtaoMaterial.defines.NORMAL_VECTOR_TYPE = r, this.gtaoMaterial.defines.DEPTH_SWIZZLING = i, this.gtaoMaterial.uniforms.tNormal.value = this.normalTexture, this.gtaoMaterial.uniforms.tDepth.value = this.depthTexture, this.pdMaterial.defines.NORMAL_VECTOR_TYPE = r, this.pdMaterial.defines.DEPTH_SWIZZLING = i, this.pdMaterial.uniforms.tNormal.value = this.normalTexture, this.pdMaterial.uniforms.tDepth.value = this.depthTexture, this.depthRenderMaterial.uniforms.tDepth.value = this.normalRenderTarget.depthTexture;
+		}), this.normalTexture = this.normalRenderTarget.texture, this._renderGBuffer = !0) : (this.depthTexture = e, this.normalTexture = t, this._renderGBuffer = !1);
+		let n = +!!this.normalTexture, a = this.depthTexture === this.normalTexture ? "w" : "x";
+		this.gtaoMaterial.defines.NORMAL_VECTOR_TYPE = n, this.gtaoMaterial.defines.DEPTH_SWIZZLING = a, this.gtaoMaterial.uniforms.tNormal.value = this.normalTexture, this.gtaoMaterial.uniforms.tDepth.value = this.depthTexture, this.pdMaterial.defines.NORMAL_VECTOR_TYPE = n, this.pdMaterial.defines.DEPTH_SWIZZLING = a, this.pdMaterial.uniforms.tNormal.value = this.normalTexture, this.pdMaterial.uniforms.tDepth.value = this.depthTexture, this.depthRenderMaterial.uniforms.tDepth.value = this.normalRenderTarget.depthTexture;
 	}
 	setSceneClipBox(e) {
 		e ? (this.gtaoMaterial.needsUpdate = this.gtaoMaterial.defines.SCENE_CLIP_BOX !== 1, this.gtaoMaterial.defines.SCENE_CLIP_BOX = 1, this.gtaoMaterial.uniforms.sceneBoxMin.value.copy(e.min), this.gtaoMaterial.uniforms.sceneBoxMax.value.copy(e.max)) : (this.gtaoMaterial.needsUpdate = this.gtaoMaterial.defines.SCENE_CLIP_BOX === 0, this.gtaoMaterial.defines.SCENE_CLIP_BOX = 0);
@@ -1058,26 +1059,26 @@ var fe = class {
 		let t = !1;
 		e.lumaPhi !== void 0 && (this.pdMaterial.uniforms.lumaPhi.value = e.lumaPhi), e.depthPhi !== void 0 && (this.pdMaterial.uniforms.depthPhi.value = e.depthPhi), e.normalPhi !== void 0 && (this.pdMaterial.uniforms.normalPhi.value = e.normalPhi), e.radius !== void 0 && e.radius !== this.radius && (this.pdMaterial.uniforms.radius.value = e.radius), e.radiusExponent !== void 0 && e.radiusExponent !== this.pdRadiusExponent && (this.pdRadiusExponent = e.radiusExponent, t = !0), e.rings !== void 0 && e.rings !== this.pdRings && (this.pdRings = e.rings, t = !0), e.samples !== void 0 && e.samples !== this.pdSamples && (this.pdSamples = e.samples, t = !0), t && (this.pdMaterial.defines.SAMPLES = this.pdSamples, this.pdMaterial.defines.SAMPLE_VECTORS = ue(this.pdSamples, this.pdRings, this.pdRadiusExponent), this.pdMaterial.needsUpdate = !0);
 	}
-	render(e, t, r) {
+	render(e, n, r) {
 		switch (this._renderGBuffer && (this._overrideVisibility(), this._renderOverride(e, this.normalMaterial, this.normalRenderTarget, 7829503, 1), this._restoreVisibility()), this.gtaoMaterial.uniforms.cameraNear.value = this.camera.near, this.gtaoMaterial.uniforms.cameraFar.value = this.camera.far, this.gtaoMaterial.uniforms.cameraProjectionMatrix.value.copy(this.camera.projectionMatrix), this.gtaoMaterial.uniforms.cameraProjectionMatrixInverse.value.copy(this.camera.projectionMatrixInverse), this.gtaoMaterial.uniforms.cameraWorldMatrix.value.copy(this.camera.matrixWorld), this._renderPass(e, this.gtaoMaterial, this.gtaoRenderTarget, 16777215, 1), this.pdMaterial.uniforms.cameraProjectionMatrixInverse.value.copy(this.camera.projectionMatrixInverse), this._renderPass(e, this.pdMaterial, this.pdRenderTarget, 16777215, 1), this.output) {
-			case n.OUTPUT.Off: break;
-			case n.OUTPUT.Diffuse:
-				this.copyMaterial.uniforms.tDiffuse.value = r.texture, this.copyMaterial.blending = 0, this._renderPass(e, this.copyMaterial, this.renderToScreen ? null : t);
+			case t.OUTPUT.Off: break;
+			case t.OUTPUT.Diffuse:
+				this.copyMaterial.uniforms.tDiffuse.value = r.texture, this.copyMaterial.blending = 0, this._renderPass(e, this.copyMaterial, this.renderToScreen ? null : n);
 				break;
-			case n.OUTPUT.AO:
-				this.copyMaterial.uniforms.tDiffuse.value = this.gtaoRenderTarget.texture, this.copyMaterial.blending = 0, this._renderPass(e, this.copyMaterial, this.renderToScreen ? null : t);
+			case t.OUTPUT.AO:
+				this.copyMaterial.uniforms.tDiffuse.value = this.gtaoRenderTarget.texture, this.copyMaterial.blending = 0, this._renderPass(e, this.copyMaterial, this.renderToScreen ? null : n);
 				break;
-			case n.OUTPUT.Denoise:
-				this.copyMaterial.uniforms.tDiffuse.value = this.pdRenderTarget.texture, this.copyMaterial.blending = 0, this._renderPass(e, this.copyMaterial, this.renderToScreen ? null : t);
+			case t.OUTPUT.Denoise:
+				this.copyMaterial.uniforms.tDiffuse.value = this.pdRenderTarget.texture, this.copyMaterial.blending = 0, this._renderPass(e, this.copyMaterial, this.renderToScreen ? null : n);
 				break;
-			case n.OUTPUT.Depth:
-				this.depthRenderMaterial.uniforms.cameraNear.value = this.camera.near, this.depthRenderMaterial.uniforms.cameraFar.value = this.camera.far, this._renderPass(e, this.depthRenderMaterial, this.renderToScreen ? null : t);
+			case t.OUTPUT.Depth:
+				this.depthRenderMaterial.uniforms.cameraNear.value = this.camera.near, this.depthRenderMaterial.uniforms.cameraFar.value = this.camera.far, this._renderPass(e, this.depthRenderMaterial, this.renderToScreen ? null : n);
 				break;
-			case n.OUTPUT.Normal:
-				this.copyMaterial.uniforms.tDiffuse.value = this.normalRenderTarget.texture, this.copyMaterial.blending = 0, this._renderPass(e, this.copyMaterial, this.renderToScreen ? null : t);
+			case t.OUTPUT.Normal:
+				this.copyMaterial.uniforms.tDiffuse.value = this.normalRenderTarget.texture, this.copyMaterial.blending = 0, this._renderPass(e, this.copyMaterial, this.renderToScreen ? null : n);
 				break;
-			case n.OUTPUT.Default:
-				this.copyMaterial.uniforms.tDiffuse.value = r.texture, this.copyMaterial.blending = 0, this._renderPass(e, this.copyMaterial, this.renderToScreen ? null : t), this.blendMaterial.uniforms.intensity.value = this.blendIntensity, this.blendMaterial.uniforms.tDiffuse.value = this.pdRenderTarget.texture, this._renderPass(e, this.blendMaterial, this.renderToScreen ? null : t);
+			case t.OUTPUT.Default:
+				this.copyMaterial.uniforms.tDiffuse.value = r.texture, this.copyMaterial.blending = 0, this._renderPass(e, this.copyMaterial, this.renderToScreen ? null : n), this.blendMaterial.uniforms.intensity.value = this.blendIntensity, this.blendMaterial.uniforms.tDiffuse.value = this.pdRenderTarget.texture, this._renderPass(e, this.blendMaterial, this.renderToScreen ? null : n);
 				break;
 			default: console.warn("THREE.GTAOPass: Unknown output type.");
 		}
@@ -1109,8 +1110,8 @@ var fe = class {
 			let a = e, o = r;
 			i[(e * t + r) * 4] = (n.noise(a, o) * .5 + .5) * 255, i[(e * t + r) * 4 + 1] = (n.noise(a + t, o) * .5 + .5) * 255, i[(e * t + r) * 4 + 2] = (n.noise(a, o + t) * .5 + .5) * 255, i[(e * t + r) * 4 + 3] = (n.noise(a + t, o + t) * .5 + .5) * 255;
 		}
-		let a = new e(i, t, t, c, b);
-		return a.wrapS = o, a.wrapT = o, a.needsUpdate = !0, a;
+		let s = new o(i, t, t, e, b);
+		return s.wrapS = a, s.wrapT = a, s.needsUpdate = !0, s;
 	}
 };
 pe.OUTPUT = {
@@ -1130,61 +1131,61 @@ var me = {
 		tDiffuse: { value: null },
 		luminosityThreshold: { value: 1 },
 		smoothWidth: { value: 1 },
-		defaultColor: { value: new u(0) },
+		defaultColor: { value: new d(0) },
 		defaultOpacity: { value: 0 }
 	},
 	vertexShader: "\n\n		varying vec2 vUv;\n\n		void main() {\n\n			vUv = uv;\n\n			gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );\n\n		}",
 	fragmentShader: "\n\n		uniform sampler2D tDiffuse;\n		uniform vec3 defaultColor;\n		uniform float defaultOpacity;\n		uniform float luminosityThreshold;\n		uniform float smoothWidth;\n\n		varying vec2 vUv;\n\n		void main() {\n\n			vec4 texel = texture2D( tDiffuse, vUv );\n\n			float v = luminance( texel.xyz );\n\n			vec4 outputColor = vec4( defaultColor.rgb, defaultOpacity );\n\n			float alpha = smoothstep( luminosityThreshold, luminosityThreshold + smoothWidth, v );\n\n			gl_FragColor = mix( outputColor, texel, alpha );\n\n		}"
 }, W = class e extends F {
-	constructor(e, n = 1, r, a) {
-		super(), this.strength = n, this.radius = r, this.threshold = a, this.resolution = e === void 0 ? new A(256, 256) : new A(e.x, e.y), this.clearColor = new u(0, 0, 0), this.needsSwap = !1, this.renderTargetsHorizontal = [], this.renderTargetsVertical = [], this.nMips = 5;
-		let o = Math.round(this.resolution.x / 2), s = Math.round(this.resolution.y / 2);
-		this.renderTargetBright = new p(o, s, {
-			type: t,
+	constructor(e, t = 1, n, r) {
+		super(), this.strength = t, this.radius = n, this.threshold = r, this.resolution = e === void 0 ? new _(256, 256) : new _(e.x, e.y), this.clearColor = new d(0, 0, 0), this.needsSwap = !1, this.renderTargetsHorizontal = [], this.renderTargetsVertical = [], this.nMips = 5;
+		let a = Math.round(this.resolution.x / 2), o = Math.round(this.resolution.y / 2);
+		this.renderTargetBright = new p(a, o, {
+			type: i,
 			depthBuffer: !1
 		}), this.renderTargetBright.texture.name = "UnrealBloomPass.bright", this.renderTargetBright.texture.generateMipmaps = !1;
 		for (let e = 0; e < this.nMips; e++) {
-			let n = new p(o, s, {
-				type: t,
+			let t = new p(a, o, {
+				type: i,
 				depthBuffer: !1
 			});
-			n.texture.name = "UnrealBloomPass.h" + e, n.texture.generateMipmaps = !1, this.renderTargetsHorizontal.push(n);
-			let r = new p(o, s, {
-				type: t,
+			t.texture.name = "UnrealBloomPass.h" + e, t.texture.generateMipmaps = !1, this.renderTargetsHorizontal.push(t);
+			let n = new p(a, o, {
+				type: i,
 				depthBuffer: !1
 			});
-			r.texture.name = "UnrealBloomPass.v" + e, r.texture.generateMipmaps = !1, this.renderTargetsVertical.push(r), o = Math.round(o / 2), s = Math.round(s / 2);
+			n.texture.name = "UnrealBloomPass.v" + e, n.texture.generateMipmaps = !1, this.renderTargetsVertical.push(n), a = Math.round(a / 2), o = Math.round(o / 2);
 		}
-		let c = me;
-		this.highPassUniforms = k.clone(c.uniforms), this.highPassUniforms.luminosityThreshold.value = a, this.highPassUniforms.smoothWidth.value = .01, this.materialHighPassFilter = new i({
+		let s = me;
+		this.highPassUniforms = y.clone(s.uniforms), this.highPassUniforms.luminosityThreshold.value = r, this.highPassUniforms.smoothWidth.value = .01, this.materialHighPassFilter = new O({
 			uniforms: this.highPassUniforms,
-			vertexShader: c.vertexShader,
-			fragmentShader: c.fragmentShader
+			vertexShader: s.vertexShader,
+			fragmentShader: s.fragmentShader
 		}), this.separableBlurMaterials = [];
-		let l = [
+		let c = [
 			6,
 			10,
 			14,
 			18,
 			22
 		];
-		o = Math.round(this.resolution.x / 2), s = Math.round(this.resolution.y / 2);
-		for (let e = 0; e < this.nMips; e++) this.separableBlurMaterials.push(this._getSeparableBlurMaterial(l[e])), this.separableBlurMaterials[e].uniforms.invSize.value = new A(1 / o, 1 / s), o = Math.round(o / 2), s = Math.round(s / 2);
-		this.compositeMaterial = this._getCompositeMaterial(this.nMips), this.compositeMaterial.uniforms.blurTexture1.value = this.renderTargetsVertical[0].texture, this.compositeMaterial.uniforms.blurTexture2.value = this.renderTargetsVertical[1].texture, this.compositeMaterial.uniforms.blurTexture3.value = this.renderTargetsVertical[2].texture, this.compositeMaterial.uniforms.blurTexture4.value = this.renderTargetsVertical[3].texture, this.compositeMaterial.uniforms.blurTexture5.value = this.renderTargetsVertical[4].texture, this.compositeMaterial.uniforms.bloomStrength.value = n, this.compositeMaterial.uniforms.bloomRadius.value = .1;
-		let d = [
+		a = Math.round(this.resolution.x / 2), o = Math.round(this.resolution.y / 2);
+		for (let e = 0; e < this.nMips; e++) this.separableBlurMaterials.push(this._getSeparableBlurMaterial(c[e])), this.separableBlurMaterials[e].uniforms.invSize.value = new _(1 / a, 1 / o), a = Math.round(a / 2), o = Math.round(o / 2);
+		this.compositeMaterial = this._getCompositeMaterial(this.nMips), this.compositeMaterial.uniforms.blurTexture1.value = this.renderTargetsVertical[0].texture, this.compositeMaterial.uniforms.blurTexture2.value = this.renderTargetsVertical[1].texture, this.compositeMaterial.uniforms.blurTexture3.value = this.renderTargetsVertical[2].texture, this.compositeMaterial.uniforms.blurTexture4.value = this.renderTargetsVertical[3].texture, this.compositeMaterial.uniforms.blurTexture5.value = this.renderTargetsVertical[4].texture, this.compositeMaterial.uniforms.bloomStrength.value = t, this.compositeMaterial.uniforms.bloomRadius.value = .1;
+		let l = [
 			1,
 			.8,
 			.6,
 			.4,
 			.2
 		];
-		this.compositeMaterial.uniforms.bloomFactors.value = d, this.bloomTintColors = [
-			new f(1, 1, 1),
-			new f(1, 1, 1),
-			new f(1, 1, 1),
-			new f(1, 1, 1),
-			new f(1, 1, 1)
-		], this.compositeMaterial.uniforms.bloomTintColors.value = this.bloomTintColors, this.copyUniforms = k.clone(P.uniforms), this.blendMaterial = new i({
+		this.compositeMaterial.uniforms.bloomFactors.value = l, this.bloomTintColors = [
+			new A(1, 1, 1),
+			new A(1, 1, 1),
+			new A(1, 1, 1),
+			new A(1, 1, 1),
+			new A(1, 1, 1)
+		], this.compositeMaterial.uniforms.bloomTintColors.value = this.bloomTintColors, this.copyUniforms = y.clone(P.uniforms), this.blendMaterial = new O({
 			uniforms: this.copyUniforms,
 			vertexShader: P.vertexShader,
 			fragmentShader: P.fragmentShader,
@@ -1193,7 +1194,7 @@ var me = {
 			depthTest: !1,
 			depthWrite: !1,
 			transparent: !0
-		}), this._oldClearColor = new u(), this._oldClearAlpha = 1, this._basic = new ee(), this._fsQuad = new L(null);
+		}), this._oldClearColor = new d(), this._oldClearAlpha = 1, this._basic = new m(), this._fsQuad = new L(null);
 	}
 	dispose() {
 		for (let e = 0; e < this.renderTargetsHorizontal.length; e++) this.renderTargetsHorizontal[e].dispose();
@@ -1205,7 +1206,7 @@ var me = {
 	setSize(e, t) {
 		let n = Math.round(e / 2), r = Math.round(t / 2);
 		this.renderTargetBright.setSize(n, r);
-		for (let e = 0; e < this.nMips; e++) this.renderTargetsHorizontal[e].setSize(n, r), this.renderTargetsVertical[e].setSize(n, r), this.separableBlurMaterials[e].uniforms.invSize.value = new A(1 / n, 1 / r), n = Math.round(n / 2), r = Math.round(r / 2);
+		for (let e = 0; e < this.nMips; e++) this.renderTargetsHorizontal[e].setSize(n, r), this.renderTargetsVertical[e].setSize(n, r), this.separableBlurMaterials[e].uniforms.invSize.value = new _(1 / n, 1 / r), n = Math.round(n / 2), r = Math.round(r / 2);
 	}
 	render(t, n, r, i, a) {
 		t.getClearColor(this._oldClearColor), this._oldClearAlpha = t.getClearAlpha();
@@ -1218,27 +1219,27 @@ var me = {
 	_getSeparableBlurMaterial(e) {
 		let t = [], n = e / 3;
 		for (let r = 0; r < e; r++) t.push(.39894 * Math.exp(-.5 * r * r / (n * n)) / n);
-		let r = [], a = [];
+		let r = [], i = [];
 		for (let n = 1; n < e; n += 2) {
-			let i = t[n], o = n + 1 < e ? t[n + 1] : 0, s = i + o;
-			r.push((n * i + (n + 1) * o) / s), a.push(s);
+			let a = t[n], o = n + 1 < e ? t[n + 1] : 0, s = a + o;
+			r.push((n * a + (n + 1) * o) / s), i.push(s);
 		}
-		return new i({
+		return new O({
 			defines: { KERNEL_PAIRS: r.length },
 			uniforms: {
 				colorTexture: { value: null },
-				invSize: { value: new A(.5, .5) },
-				direction: { value: new A(.5, .5) },
+				invSize: { value: new _(.5, .5) },
+				direction: { value: new _(.5, .5) },
 				centerWeight: { value: t[0] },
 				gaussianOffsets: { value: r },
-				gaussianWeights: { value: a }
+				gaussianWeights: { value: i }
 			},
 			vertexShader: "\n\n				varying vec2 vUv;\n\n				void main() {\n\n					vUv = uv;\n					gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );\n\n				}",
 			fragmentShader: "\n\n				#include <common>\n\n				varying vec2 vUv;\n\n				uniform sampler2D colorTexture;\n				uniform vec2 invSize;\n				uniform vec2 direction;\n				uniform float centerWeight;\n				uniform float gaussianOffsets[KERNEL_PAIRS];\n				uniform float gaussianWeights[KERNEL_PAIRS];\n\n				void main() {\n\n					vec3 diffuseSum = texture2D( colorTexture, vUv ).rgb * centerWeight;\n\n					for ( int i = 0; i < KERNEL_PAIRS; i ++ ) {\n\n						vec2 uvOffset = direction * invSize * gaussianOffsets[ i ];\n						vec3 sample1 = texture2D( colorTexture, vUv + uvOffset ).rgb;\n						vec3 sample2 = texture2D( colorTexture, vUv - uvOffset ).rgb;\n						diffuseSum += ( sample1 + sample2 ) * gaussianWeights[ i ];\n\n					}\n\n					gl_FragColor = vec4( diffuseSum, 1.0 );\n\n				}"
 		});
 	}
 	_getCompositeMaterial(e) {
-		return new i({
+		return new O({
 			defines: { NUM_MIPS: e },
 			uniforms: {
 				blurTexture1: { value: null },
@@ -1256,7 +1257,7 @@ var me = {
 		});
 	}
 };
-W.BlurDirectionX = new A(1, 0), W.BlurDirectionY = new A(0, 1);
+W.BlurDirectionX = new _(1, 0), W.BlurDirectionY = new _(0, 1);
 //#endregion
 //#region node_modules/.pnpm/three@0.186.0/node_modules/three/examples/jsm/shaders/SMAAShader.js
 var G = {
@@ -1264,7 +1265,7 @@ var G = {
 	defines: { SMAA_THRESHOLD: "0.1" },
 	uniforms: {
 		tDiffuse: { value: null },
-		resolution: { value: new A(1 / 1024, 1 / 512) }
+		resolution: { value: new _(1 / 1024, 1 / 512) }
 	},
 	vertexShader: "\n\n		uniform vec2 resolution;\n\n		varying vec2 vUv;\n		varying vec4 vOffset[ 3 ];\n\n		void SMAAEdgeDetectionVS( vec2 texcoord ) {\n			vOffset[ 0 ] = texcoord.xyxy + resolution.xyxy * vec4( -1.0, 0.0, 0.0,  1.0 ); // WebGL port note: Changed sign in W component\n			vOffset[ 1 ] = texcoord.xyxy + resolution.xyxy * vec4(  1.0, 0.0, 0.0, -1.0 ); // WebGL port note: Changed sign in W component\n			vOffset[ 2 ] = texcoord.xyxy + resolution.xyxy * vec4( -2.0, 0.0, 0.0,  2.0 ); // WebGL port note: Changed sign in W component\n		}\n\n		void main() {\n\n			vUv = uv;\n\n			SMAAEdgeDetectionVS( vUv );\n\n			gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );\n\n		}",
 	fragmentShader: "\n\n		uniform sampler2D tDiffuse;\n\n		varying vec2 vUv;\n		varying vec4 vOffset[ 3 ];\n\n		vec4 SMAAColorEdgeDetectionPS( vec2 texcoord, vec4 offset[3], sampler2D colorTex ) {\n			vec2 threshold = vec2( SMAA_THRESHOLD, SMAA_THRESHOLD );\n\n			// Calculate color deltas:\n			vec4 delta;\n			vec3 C = texture2D( colorTex, texcoord ).rgb;\n\n			vec3 Cleft = texture2D( colorTex, offset[0].xy ).rgb;\n			vec3 t = abs( C - Cleft );\n			delta.x = max( max( t.r, t.g ), t.b );\n\n			vec3 Ctop = texture2D( colorTex, offset[0].zw ).rgb;\n			t = abs( C - Ctop );\n			delta.y = max( max( t.r, t.g ), t.b );\n\n			// We do the usual threshold:\n			vec2 edges = step( threshold, delta.xy );\n\n			// Then discard if there is no edge:\n			if ( dot( edges, vec2( 1.0, 1.0 ) ) == 0.0 )\n				discard;\n\n			// Calculate right and bottom deltas:\n			vec3 Cright = texture2D( colorTex, offset[1].xy ).rgb;\n			t = abs( C - Cright );\n			delta.z = max( max( t.r, t.g ), t.b );\n\n			vec3 Cbottom  = texture2D( colorTex, offset[1].zw ).rgb;\n			t = abs( C - Cbottom );\n			delta.w = max( max( t.r, t.g ), t.b );\n\n			// Calculate the maximum delta in the direct neighborhood:\n			float maxDelta = max( max( max( delta.x, delta.y ), delta.z ), delta.w );\n\n			// Calculate left-left and top-top deltas:\n			vec3 Cleftleft  = texture2D( colorTex, offset[2].xy ).rgb;\n			t = abs( C - Cleftleft );\n			delta.z = max( max( t.r, t.g ), t.b );\n\n			vec3 Ctoptop = texture2D( colorTex, offset[2].zw ).rgb;\n			t = abs( C - Ctoptop );\n			delta.w = max( max( t.r, t.g ), t.b );\n\n			// Calculate the final maximum delta:\n			maxDelta = max( max( maxDelta, delta.z ), delta.w );\n\n			// Local contrast adaptation in action:\n			edges.xy *= step( 0.5 * maxDelta, delta.xy );\n\n			return vec4( edges, 0.0, 0.0 );\n		}\n\n		void main() {\n\n			gl_FragColor = SMAAColorEdgeDetectionPS( vUv, vOffset, tDiffuse );\n\n		}"
@@ -1280,7 +1281,7 @@ var G = {
 		tDiffuse: { value: null },
 		tArea: { value: null },
 		tSearch: { value: null },
-		resolution: { value: new A(1 / 1024, 1 / 512) }
+		resolution: { value: new _(1 / 1024, 1 / 512) }
 	},
 	vertexShader: "\n\n		uniform vec2 resolution;\n\n		varying vec2 vUv;\n		varying vec4 vOffset[ 3 ];\n		varying vec2 vPixcoord;\n\n		void SMAABlendingWeightCalculationVS( vec2 texcoord ) {\n			vPixcoord = texcoord / resolution;\n\n			// We will use these offsets for the searches later on (see @PSEUDO_GATHER4):\n			vOffset[ 0 ] = texcoord.xyxy + resolution.xyxy * vec4( -0.25, 0.125, 1.25, 0.125 ); // WebGL port note: Changed sign in Y and W components\n			vOffset[ 1 ] = texcoord.xyxy + resolution.xyxy * vec4( -0.125, 0.25, -0.125, -1.25 ); // WebGL port note: Changed sign in Y and W components\n\n			// And these for the searches, they indicate the ends of the loops:\n			vOffset[ 2 ] = vec4( vOffset[ 0 ].xz, vOffset[ 1 ].yw ) + vec4( -2.0, 2.0, -2.0, 2.0 ) * resolution.xxyy * float( SMAA_MAX_SEARCH_STEPS );\n\n		}\n\n		void main() {\n\n			vUv = uv;\n\n			SMAABlendingWeightCalculationVS( vUv );\n\n			gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );\n\n		}",
 	fragmentShader: "\n\n		#define SMAASampleLevelZeroOffset( tex, coord, offset ) texture2D( tex, coord + float( offset ) * resolution, 0.0 )\n\n		uniform sampler2D tDiffuse;\n		uniform sampler2D tArea;\n		uniform sampler2D tSearch;\n		uniform vec2 resolution;\n\n		varying vec2 vUv;\n		varying vec4 vOffset[3];\n		varying vec2 vPixcoord;\n\n		#if __VERSION__ == 100\n		vec2 round( vec2 x ) {\n			return sign( x ) * floor( abs( x ) + 0.5 );\n		}\n		#endif\n\n		float SMAASearchLength( sampler2D searchTex, vec2 e, float bias, float scale ) {\n			// Not required if searchTex accesses are set to point:\n			// float2 SEARCH_TEX_PIXEL_SIZE = 1.0 / float2(66.0, 33.0);\n			// e = float2(bias, 0.0) + 0.5 * SEARCH_TEX_PIXEL_SIZE +\n			//     e * float2(scale, 1.0) * float2(64.0, 32.0) * SEARCH_TEX_PIXEL_SIZE;\n			e.r = bias + e.r * scale;\n			return 255.0 * texture2D( searchTex, e, 0.0 ).r;\n		}\n\n		float SMAASearchXLeft( sampler2D edgesTex, sampler2D searchTex, vec2 texcoord, float end ) {\n			/**\n				* @PSEUDO_GATHER4\n				* This texcoord has been offset by (-0.25, -0.125) in the vertex shader to\n				* sample between edge, thus fetching four edges in a row.\n				* Sampling with different offsets in each direction allows to disambiguate\n				* which edges are active from the four fetched ones.\n				*/\n			vec2 e = vec2( 0.0, 1.0 );\n\n			for ( int i = 0; i < SMAA_MAX_SEARCH_STEPS; i ++ ) { // WebGL port note: Changed while to for\n				e = texture2D( edgesTex, texcoord, 0.0 ).rg;\n				texcoord -= vec2( 2.0, 0.0 ) * resolution;\n				if ( ! ( texcoord.x > end && e.g > 0.8281 && e.r == 0.0 ) ) break;\n			}\n\n			// We correct the previous (-0.25, -0.125) offset we applied:\n			texcoord.x += 0.25 * resolution.x;\n\n			// The searches are bias by 1, so adjust the coords accordingly:\n			texcoord.x += resolution.x;\n\n			// Disambiguate the length added by the last step:\n			texcoord.x += 2.0 * resolution.x; // Undo last step\n			texcoord.x -= resolution.x * SMAASearchLength(searchTex, e, 0.0, 0.5);\n\n			return texcoord.x;\n		}\n\n		float SMAASearchXRight( sampler2D edgesTex, sampler2D searchTex, vec2 texcoord, float end ) {\n			vec2 e = vec2( 0.0, 1.0 );\n\n			for ( int i = 0; i < SMAA_MAX_SEARCH_STEPS; i ++ ) { // WebGL port note: Changed while to for\n				e = texture2D( edgesTex, texcoord, 0.0 ).rg;\n				texcoord += vec2( 2.0, 0.0 ) * resolution;\n				if ( ! ( texcoord.x < end && e.g > 0.8281 && e.r == 0.0 ) ) break;\n			}\n\n			texcoord.x -= 0.25 * resolution.x;\n			texcoord.x -= resolution.x;\n			texcoord.x -= 2.0 * resolution.x;\n			texcoord.x += resolution.x * SMAASearchLength( searchTex, e, 0.5, 0.5 );\n\n			return texcoord.x;\n		}\n\n		float SMAASearchYUp( sampler2D edgesTex, sampler2D searchTex, vec2 texcoord, float end ) {\n			vec2 e = vec2( 1.0, 0.0 );\n\n			for ( int i = 0; i < SMAA_MAX_SEARCH_STEPS; i ++ ) { // WebGL port note: Changed while to for\n				e = texture2D( edgesTex, texcoord, 0.0 ).rg;\n				texcoord += vec2( 0.0, 2.0 ) * resolution; // WebGL port note: Changed sign\n				if ( ! ( texcoord.y > end && e.r > 0.8281 && e.g == 0.0 ) ) break;\n			}\n\n			texcoord.y -= 0.25 * resolution.y; // WebGL port note: Changed sign\n			texcoord.y -= resolution.y; // WebGL port note: Changed sign\n			texcoord.y -= 2.0 * resolution.y; // WebGL port note: Changed sign\n			texcoord.y += resolution.y * SMAASearchLength( searchTex, e.gr, 0.0, 0.5 ); // WebGL port note: Changed sign\n\n			return texcoord.y;\n		}\n\n		float SMAASearchYDown( sampler2D edgesTex, sampler2D searchTex, vec2 texcoord, float end ) {\n			vec2 e = vec2( 1.0, 0.0 );\n\n			for ( int i = 0; i < SMAA_MAX_SEARCH_STEPS; i ++ ) { // WebGL port note: Changed while to for\n				e = texture2D( edgesTex, texcoord, 0.0 ).rg;\n				texcoord -= vec2( 0.0, 2.0 ) * resolution; // WebGL port note: Changed sign\n				if ( ! ( texcoord.y < end && e.r > 0.8281 && e.g == 0.0 ) ) break;\n			}\n\n			texcoord.y += 0.25 * resolution.y; // WebGL port note: Changed sign\n			texcoord.y += resolution.y; // WebGL port note: Changed sign\n			texcoord.y += 2.0 * resolution.y; // WebGL port note: Changed sign\n			texcoord.y -= resolution.y * SMAASearchLength( searchTex, e.gr, 0.5, 0.5 ); // WebGL port note: Changed sign\n\n			return texcoord.y;\n		}\n\n		vec2 SMAAArea( sampler2D areaTex, vec2 dist, float e1, float e2, float offset ) {\n			// Rounding prevents precision errors of bilinear filtering:\n			vec2 texcoord = float( SMAA_AREATEX_MAX_DISTANCE ) * round( 4.0 * vec2( e1, e2 ) ) + dist;\n\n			// We do a scale and bias for mapping to texel space:\n			texcoord = SMAA_AREATEX_PIXEL_SIZE * texcoord + ( 0.5 * SMAA_AREATEX_PIXEL_SIZE );\n\n			// Move to proper place, according to the subpixel offset:\n			texcoord.y += SMAA_AREATEX_SUBTEX_SIZE * offset;\n\n			return texture2D( areaTex, texcoord, 0.0 ).rg;\n		}\n\n		vec4 SMAABlendingWeightCalculationPS( vec2 texcoord, vec2 pixcoord, vec4 offset[ 3 ], sampler2D edgesTex, sampler2D areaTex, sampler2D searchTex, ivec4 subsampleIndices ) {\n			vec4 weights = vec4( 0.0, 0.0, 0.0, 0.0 );\n\n			vec2 e = texture2D( edgesTex, texcoord ).rg;\n\n			if ( e.g > 0.0 ) { // Edge at north\n				vec2 d;\n\n				// Find the distance to the left:\n				vec2 coords;\n				coords.x = SMAASearchXLeft( edgesTex, searchTex, offset[ 0 ].xy, offset[ 2 ].x );\n				coords.y = offset[ 1 ].y; // offset[1].y = texcoord.y - 0.25 * resolution.y (@CROSSING_OFFSET)\n				d.x = coords.x;\n\n				// Now fetch the left crossing edges, two at a time using bilinear\n				// filtering. Sampling at -0.25 (see @CROSSING_OFFSET) enables to\n				// discern what value each edge has:\n				float e1 = texture2D( edgesTex, coords, 0.0 ).r;\n\n				// Find the distance to the right:\n				coords.x = SMAASearchXRight( edgesTex, searchTex, offset[ 0 ].zw, offset[ 2 ].y );\n				d.y = coords.x;\n\n				// We want the distances to be in pixel units (doing this here allow to\n				// better interleave arithmetic and memory accesses):\n				d = d / resolution.x - pixcoord.x;\n\n				// SMAAArea below needs a sqrt, as the areas texture is compressed\n				// quadratically:\n				vec2 sqrt_d = sqrt( abs( d ) );\n\n				// Fetch the right crossing edges:\n				coords.y -= 1.0 * resolution.y; // WebGL port note: Added\n				float e2 = SMAASampleLevelZeroOffset( edgesTex, coords, ivec2( 1, 0 ) ).r;\n\n				// Ok, we know how this pattern looks like, now it is time for getting\n				// the actual area:\n				weights.rg = SMAAArea( areaTex, sqrt_d, e1, e2, float( subsampleIndices.y ) );\n			}\n\n			if ( e.r > 0.0 ) { // Edge at west\n				vec2 d;\n\n				// Find the distance to the top:\n				vec2 coords;\n\n				coords.y = SMAASearchYUp( edgesTex, searchTex, offset[ 1 ].xy, offset[ 2 ].z );\n				coords.x = offset[ 0 ].x; // offset[1].x = texcoord.x - 0.25 * resolution.x;\n				d.x = coords.y;\n\n				// Fetch the top crossing edges:\n				float e1 = texture2D( edgesTex, coords, 0.0 ).g;\n\n				// Find the distance to the bottom:\n				coords.y = SMAASearchYDown( edgesTex, searchTex, offset[ 1 ].zw, offset[ 2 ].w );\n				d.y = coords.y;\n\n				// We want the distances to be in pixel units:\n				d = d / resolution.y - pixcoord.y;\n\n				// SMAAArea below needs a sqrt, as the areas texture is compressed\n				// quadratically:\n				vec2 sqrt_d = sqrt( abs( d ) );\n\n				// Fetch the bottom crossing edges:\n				coords.y -= 1.0 * resolution.y; // WebGL port note: Added\n				float e2 = SMAASampleLevelZeroOffset( edgesTex, coords, ivec2( 0, 1 ) ).g;\n\n				// Get the area for this direction:\n				weights.ba = SMAAArea( areaTex, sqrt_d, e1, e2, float( subsampleIndices.x ) );\n			}\n\n			return weights;\n		}\n\n		void main() {\n\n			gl_FragColor = SMAABlendingWeightCalculationPS( vUv, vPixcoord, vOffset, tDiffuse, tArea, tSearch, ivec4( 0.0 ) );\n\n		}"
@@ -1289,7 +1290,7 @@ var G = {
 	uniforms: {
 		tDiffuse: { value: null },
 		tColor: { value: null },
-		resolution: { value: new A(1 / 1024, 1 / 512) }
+		resolution: { value: new _(1 / 1024, 1 / 512) }
 	},
 	vertexShader: "\n\n		uniform vec2 resolution;\n\n		varying vec2 vUv;\n		varying vec4 vOffset[ 2 ];\n\n		void SMAANeighborhoodBlendingVS( vec2 texcoord ) {\n			vOffset[ 0 ] = texcoord.xyxy + resolution.xyxy * vec4( -1.0, 0.0, 0.0, 1.0 ); // WebGL port note: Changed sign in W component\n			vOffset[ 1 ] = texcoord.xyxy + resolution.xyxy * vec4( 1.0, 0.0, 0.0, -1.0 ); // WebGL port note: Changed sign in W component\n		}\n\n		void main() {\n\n			vUv = uv;\n\n			SMAANeighborhoodBlendingVS( vUv );\n\n			gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );\n\n		}",
 	fragmentShader: "\n\n		uniform sampler2D tDiffuse;\n		uniform sampler2D tColor;\n		uniform vec2 resolution;\n\n		varying vec2 vUv;\n		varying vec4 vOffset[ 2 ];\n\n		vec4 SMAANeighborhoodBlendingPS( vec2 texcoord, vec4 offset[ 2 ], sampler2D colorTex, sampler2D blendTex ) {\n			// Fetch the blending weights for current pixel:\n			vec4 a;\n			a.xz = texture2D( blendTex, texcoord ).xz;\n			a.y = texture2D( blendTex, offset[ 1 ].zw ).g;\n			a.w = texture2D( blendTex, offset[ 1 ].xy ).a;\n\n			// Is there any blending weight with a value greater than 0.0?\n			if ( dot(a, vec4( 1.0, 1.0, 1.0, 1.0 )) < 1e-5 ) {\n				return texture2D( colorTex, texcoord, 0.0 );\n			} else {\n				// Up to 4 lines can be crossing a pixel (one through each edge). We\n				// favor blending by choosing the line with the maximum weight for each\n				// direction:\n				vec2 offset;\n				offset.x = a.a > a.b ? a.a : -a.b; // left vs. right\n				offset.y = a.g > a.r ? -a.g : a.r; // top vs. bottom // WebGL port note: Changed signs\n\n				// Then we go in the direction that has the maximum weight:\n				if ( abs( offset.x ) > abs( offset.y )) { // horizontal vs. vertical\n					offset.y = 0.0;\n				} else {\n					offset.x = 0.0;\n				}\n\n				// Fetch the opposite color and lerp by hand:\n				vec4 C = texture2D( colorTex, texcoord, 0.0 );\n				texcoord += sign( offset ) * resolution;\n				vec4 Cop = texture2D( colorTex, texcoord, 0.0 );\n				float s = abs( offset.x ) > abs( offset.y ) ? abs( offset.x ) : abs( offset.y );\n\n				// WebGL port note: Added gamma correction\n				C.xyz = pow(C.xyz, vec3(2.2));\n				Cop.xyz = pow(Cop.xyz, vec3(2.2));\n				vec4 mixed = mix(C, Cop, s);\n				mixed.xyz = pow(mixed.xyz, vec3(1.0 / 2.2));\n\n				return mixed;\n			}\n		}\n\n		void main() {\n\n			gl_FragColor = SMAANeighborhoodBlendingPS( vUv, vOffset, tColor, tDiffuse );\n\n		}"
@@ -1297,29 +1298,29 @@ var G = {
 	constructor() {
 		super(), this._edgesRT = new p(1, 1, {
 			depthBuffer: !1,
-			type: t
+			type: i
 		}), this._edgesRT.texture.name = "SMAAPass.edges", this._weightsRT = new p(1, 1, {
 			depthBuffer: !1,
-			type: t
+			type: i
 		}), this._weightsRT.texture.name = "SMAAPass.weights";
-		let e = this, n = new Image();
-		n.src = this._getAreaTexture(), n.onload = function() {
+		let e = this, t = new Image();
+		t.src = this._getAreaTexture(), t.onload = function() {
 			e._areaTexture.needsUpdate = !0;
-		}, this._areaTexture = new h(), this._areaTexture.name = "SMAAPass.area", this._areaTexture.image = n, this._areaTexture.minFilter = g, this._areaTexture.generateMipmaps = !1, this._areaTexture.flipY = !1;
-		let r = new Image();
-		r.src = this._getSearchTexture(), r.onload = function() {
+		}, this._areaTexture = new D(), this._areaTexture.name = "SMAAPass.area", this._areaTexture.image = t, this._areaTexture.minFilter = ne, this._areaTexture.generateMipmaps = !1, this._areaTexture.flipY = !1;
+		let n = new Image();
+		n.src = this._getSearchTexture(), n.onload = function() {
 			e._searchTexture.needsUpdate = !0;
-		}, this._searchTexture = new h(), this._searchTexture.name = "SMAAPass.search", this._searchTexture.image = r, this._searchTexture.magFilter = M, this._searchTexture.minFilter = M, this._searchTexture.generateMipmaps = !1, this._searchTexture.flipY = !1, this._uniformsEdges = k.clone(G.uniforms), this._materialEdges = new i({
+		}, this._searchTexture = new D(), this._searchTexture.name = "SMAAPass.search", this._searchTexture.image = n, this._searchTexture.magFilter = c, this._searchTexture.minFilter = c, this._searchTexture.generateMipmaps = !1, this._searchTexture.flipY = !1, this._uniformsEdges = y.clone(G.uniforms), this._materialEdges = new O({
 			defines: Object.assign({}, G.defines),
 			uniforms: this._uniformsEdges,
 			vertexShader: G.vertexShader,
 			fragmentShader: G.fragmentShader
-		}), this._uniformsWeights = k.clone(K.uniforms), this._uniformsWeights.tDiffuse.value = this._edgesRT.texture, this._uniformsWeights.tArea.value = this._areaTexture, this._uniformsWeights.tSearch.value = this._searchTexture, this._materialWeights = new i({
+		}), this._uniformsWeights = y.clone(K.uniforms), this._uniformsWeights.tDiffuse.value = this._edgesRT.texture, this._uniformsWeights.tArea.value = this._areaTexture, this._uniformsWeights.tSearch.value = this._searchTexture, this._materialWeights = new O({
 			defines: Object.assign({}, K.defines),
 			uniforms: this._uniformsWeights,
 			vertexShader: K.vertexShader,
 			fragmentShader: K.fragmentShader
-		}), this._uniformsBlend = k.clone(q.uniforms), this._uniformsBlend.tDiffuse.value = this._weightsRT.texture, this._materialBlend = new i({
+		}), this._uniformsBlend = y.clone(q.uniforms), this._uniformsBlend.tDiffuse.value = this._weightsRT.texture, this._materialBlend = new O({
 			uniforms: this._uniformsBlend,
 			vertexShader: q.vertexShader,
 			fragmentShader: q.fragmentShader
@@ -1350,15 +1351,15 @@ var G = {
 	fragmentShader: "\n\n		precision highp float;\n\n		uniform sampler2D tDiffuse;\n\n		#include <tonemapping_pars_fragment>\n		#include <colorspace_pars_fragment>\n\n		varying vec2 vUv;\n\n		void main() {\n\n			gl_FragColor = texture2D( tDiffuse, vUv );\n\n			// tone mapping\n\n			#ifdef LINEAR_TONE_MAPPING\n\n				gl_FragColor.rgb = LinearToneMapping( gl_FragColor.rgb );\n\n			#elif defined( REINHARD_TONE_MAPPING )\n\n				gl_FragColor.rgb = ReinhardToneMapping( gl_FragColor.rgb );\n\n			#elif defined( CINEON_TONE_MAPPING )\n\n				gl_FragColor.rgb = CineonToneMapping( gl_FragColor.rgb );\n\n			#elif defined( ACES_FILMIC_TONE_MAPPING )\n\n				gl_FragColor.rgb = ACESFilmicToneMapping( gl_FragColor.rgb );\n\n			#elif defined( AGX_TONE_MAPPING )\n\n				gl_FragColor.rgb = AgXToneMapping( gl_FragColor.rgb );\n\n			#elif defined( NEUTRAL_TONE_MAPPING )\n\n				gl_FragColor.rgb = NeutralToneMapping( gl_FragColor.rgb );\n\n			#elif defined( CUSTOM_TONE_MAPPING )\n\n				gl_FragColor.rgb = CustomToneMapping( gl_FragColor.rgb );\n\n			#endif\n\n			// color space\n\n			#ifdef SRGB_TRANSFER\n\n				gl_FragColor = sRGBTransferOETF( gl_FragColor );\n\n			#endif\n\n		}"
 }, X = class extends F {
 	constructor() {
-		super(), this.isOutputPass = !0, this.uniforms = k.clone(Y.uniforms), this.material = new l({
+		super(), this.isOutputPass = !0, this.uniforms = y.clone(Y.uniforms), this.material = new s({
 			name: Y.name,
 			uniforms: this.uniforms,
 			vertexShader: Y.vertexShader,
 			fragmentShader: Y.fragmentShader
 		}), this._fsQuad = new L(this.material), this._outputColorSpace = null, this._toneMapping = null;
 	}
-	render(e, t, n) {
-		this.uniforms.tDiffuse.value = n.texture, this.uniforms.toneMappingExposure.value = e.toneMappingExposure, (this._outputColorSpace !== e.outputColorSpace || this._toneMapping !== e.toneMapping) && (this._outputColorSpace = e.outputColorSpace, this._toneMapping = e.toneMapping, this.material.defines = {}, r.getTransfer(this._outputColorSpace) === "srgb" && (this.material.defines.SRGB_TRANSFER = ""), this._toneMapping === 1 ? this.material.defines.LINEAR_TONE_MAPPING = "" : this._toneMapping === 2 ? this.material.defines.REINHARD_TONE_MAPPING = "" : this._toneMapping === 3 ? this.material.defines.CINEON_TONE_MAPPING = "" : this._toneMapping === 4 ? this.material.defines.ACES_FILMIC_TONE_MAPPING = "" : this._toneMapping === 6 ? this.material.defines.AGX_TONE_MAPPING = "" : this._toneMapping === 7 ? this.material.defines.NEUTRAL_TONE_MAPPING = "" : this._toneMapping === 5 && (this.material.defines.CUSTOM_TONE_MAPPING = ""), this.material.needsUpdate = !0), this.renderToScreen === !0 ? (e.setRenderTarget(null), this._fsQuad.render(e)) : (e.setRenderTarget(t), this.clear && e.clear(e.autoClearColor, e.autoClearDepth, e.autoClearStencil), this._fsQuad.render(e));
+	render(e, n, r) {
+		this.uniforms.tDiffuse.value = r.texture, this.uniforms.toneMappingExposure.value = e.toneMappingExposure, (this._outputColorSpace !== e.outputColorSpace || this._toneMapping !== e.toneMapping) && (this._outputColorSpace = e.outputColorSpace, this._toneMapping = e.toneMapping, this.material.defines = {}, t.getTransfer(this._outputColorSpace) === "srgb" && (this.material.defines.SRGB_TRANSFER = ""), this._toneMapping === 1 ? this.material.defines.LINEAR_TONE_MAPPING = "" : this._toneMapping === 2 ? this.material.defines.REINHARD_TONE_MAPPING = "" : this._toneMapping === 3 ? this.material.defines.CINEON_TONE_MAPPING = "" : this._toneMapping === 4 ? this.material.defines.ACES_FILMIC_TONE_MAPPING = "" : this._toneMapping === 6 ? this.material.defines.AGX_TONE_MAPPING = "" : this._toneMapping === 7 ? this.material.defines.NEUTRAL_TONE_MAPPING = "" : this._toneMapping === 5 && (this.material.defines.CUSTOM_TONE_MAPPING = ""), this.material.needsUpdate = !0), this.renderToScreen === !0 ? (e.setRenderTarget(null), this._fsQuad.render(e)) : (e.setRenderTarget(n), this.clear && e.clear(e.autoClearColor, e.autoClearDepth, e.autoClearStencil), this._fsQuad.render(e));
 	}
 	dispose() {
 		this.material.dispose(), this._fsQuad.dispose();
@@ -1367,7 +1368,7 @@ var G = {
 //#endregion
 //#region src/render/ScreenSpaceSurfaceBuffer.ts
 function Z(e) {
-	return e instanceof v && !e.transparent && !e.userData.unlit && !("transmission" in e && Number(e.transmission) > 0);
+	return e instanceof C && !e.transparent && !e.userData.unlit && !("transmission" in e && Number(e.transmission) > 0);
 }
 function he(e, t = Z(e)) {
 	let n = e.clone();
@@ -1386,10 +1387,10 @@ function he(e, t = Z(e)) {
 var ge = class {
 	target = new p(1, 1, {
 		count: 2,
-		type: t,
-		minFilter: M,
-		magFilter: M,
-		depthTexture: new s(1, 1, O)
+		type: i,
+		minFilter: c,
+		magFilter: c,
+		depthTexture: new r(1, 1, x)
 	});
 	materials = /* @__PURE__ */ new Map();
 	disposed = !1;
@@ -1402,16 +1403,16 @@ var ge = class {
 			target: e.getRenderTarget(),
 			background: t.background,
 			override: t.overrideMaterial,
-			clear: e.getClearColor(new u()),
+			clear: e.getClearColor(new d()),
 			alpha: e.getClearAlpha(),
 			autoClear: e.autoClear,
 			shadow: e.shadowMap.enabled
 		};
 		try {
 			t.traverseVisible((e) => {
-				if (!(e instanceof _)) return;
+				if (!(e instanceof k)) return;
 				let t = e.material, n = (Array.isArray(t) ? t : [t]).map((t) => {
-					if (!T(e) || !(t instanceof v)) return null;
+					if (!N(e) || !(t instanceof C)) return null;
 					i.add(t);
 					let n = Z(t), r = this.materials.get(t);
 					(!r || r.version !== t.version || r.receivesLighting !== n) && (r?.material.dispose(), r = {
@@ -1436,7 +1437,7 @@ var ge = class {
 			for (let [e, t] of this.materials) i.has(e) || (t.material.dispose(), this.materials.delete(e));
 		}
 	}
-	hiddenMaterial = Object.assign(new v(), { visible: !1 });
+	hiddenMaterial = Object.assign(new C(), { visible: !1 });
 	dispose() {
 		this.disposed || (this.disposed = !0, this.materials.forEach((e) => e.material.dispose()), this.materials.clear(), this.hiddenMaterial.dispose(), this.target.dispose());
 	}
@@ -1446,7 +1447,7 @@ var ge = class {
 	camera;
 	surface = new ge();
 	lighting = new p(1, 1, {
-		type: t,
+		type: i,
 		depthBuffer: !1
 	});
 	gather;
@@ -1454,35 +1455,35 @@ var ge = class {
 	gatherQuad;
 	compositeQuad;
 	disposed = !1;
-	constructor(e, t, n, r, a) {
-		super(), this.scene = e, this.settings = n, this.camera = t;
+	constructor(e, t, r, i, a) {
+		super(), this.scene = e, this.settings = r, this.camera = t;
 		let o = {
-			tBeauty: { value: r },
+			tBeauty: { value: i },
 			tSceneDepth: { value: a },
 			tDepth: { value: this.surface.target.depthTexture },
 			tNormal: { value: this.surface.target.textures[0] },
 			tSurface: { value: this.surface.target.textures[1] },
-			cameraProjection: { value: new m() },
-			cameraInverseProjection: { value: new m() },
-			texelSize: { value: new A(1, 1) },
-			giIntensity: { value: n.giIntensity },
-			reflectionIntensity: { value: n.reflectionIntensity },
-			giDistance: { value: n.giDistance },
-			reflectionDistance: { value: n.reflectionDistance },
+			cameraProjection: { value: new n() },
+			cameraInverseProjection: { value: new n() },
+			texelSize: { value: new _(1, 1) },
+			giIntensity: { value: r.giIntensity },
+			reflectionIntensity: { value: r.reflectionIntensity },
+			giDistance: { value: r.giDistance },
+			reflectionDistance: { value: r.reflectionDistance },
 			orthographicCamera: { value: !1 }
 		};
-		this.gather = new i({
+		this.gather = new O({
 			uniforms: o,
 			defines: {
-				GI_SAMPLES: n.giSamples,
-				RAY_STEPS: n.raySteps
+				GI_SAMPLES: r.giSamples,
+				RAY_STEPS: r.raySteps
 			},
 			vertexShader: _e,
 			fragmentShader: ve,
 			toneMapped: !1,
 			depthTest: !1,
 			depthWrite: !1
-		}), this.composite = new i({
+		}), this.composite = new O({
 			uniforms: {
 				tDiffuse: { value: null },
 				tLighting: { value: this.lighting.texture },
@@ -1501,7 +1502,7 @@ var ge = class {
 		}), this.gatherQuad = new L(this.gather), this.compositeQuad = new L(this.composite);
 	}
 	setSize(e, t) {
-		let [n, r] = S(e, t, 1, this.settings.maxPixels, this.settings.maxDimension);
+		let [n, r] = E(e, t, 1, this.settings.maxPixels, this.settings.maxDimension);
 		this.surface.setSize(n, r), this.lighting.setSize(n, r), this.gather.uniforms.texelSize.value.set(1 / n, 1 / r);
 	}
 	render(e, t, n) {
@@ -1534,36 +1535,36 @@ var ge = class {
 	width = 0;
 	height = 0;
 	disposed = !1;
-	constructor(e, n, r) {
-		if (this.renderer = e, this.scene = n, this.settings = D[r], r === te.VIEWPORT) throw Error("Viewport must use the original direct renderer.");
+	constructor(e, t, n) {
+		if (this.renderer = e, this.scene = t, this.settings = ee[n], n === S.VIEWPORT) throw Error("Viewport must use the original direct renderer.");
 		if (!e.extensions.has("EXT_color_buffer_float")) throw Error("이 GPU는 고급 렌더링에 필요한 HDR 버퍼를 지원하지 않습니다");
-		let a = new ne(), o = new j(e);
+		let a = new re(), o = new M(e);
 		try {
 			if (this.environment = o.fromScene(a, .04, .1, 100, { size: this.settings.environmentSize }), !this.settings.smaa) return;
 			this.beauty = new p(1, 1, {
-				type: t,
-				depthTexture: new s(1, 1, O),
+				type: i,
+				depthTexture: new r(1, 1, x),
 				samples: 0
 			});
-			let r = new p(1, 1, {
-				type: t,
+			let n = new p(1, 1, {
+				type: i,
 				depthBuffer: !1,
 				samples: 0
 			});
-			if (this.composer = new oe(e, r), this.composer.setPixelRatio(1), this.composer.renderToScreen = !1, this.texturePass = new se(this.beauty.texture), this.composer.addPass(this.texturePass), this.settings.screenSpaceLighting) {
-				let t = e.getContext();
-				if (t.getParameter(t.MAX_DRAW_BUFFERS) < 2) throw Error("이 GPU는 재질 기반 간접광/반사 버퍼를 지원하지 않습니다");
-				this.screenSpaceLighting = new Q(n, new N(), this.settings.screenSpaceLighting, this.beauty.texture, this.beauty.depthTexture), this.composer.addPass(this.screenSpaceLighting);
+			if (this.composer = new oe(e, n), this.composer.setPixelRatio(1), this.composer.renderToScreen = !1, this.texturePass = new se(this.beauty.texture), this.composer.addPass(this.texturePass), this.settings.screenSpaceLighting) {
+				let n = e.getContext();
+				if (n.getParameter(n.MAX_DRAW_BUFFERS) < 2) throw Error("이 GPU는 재질 기반 간접광/반사 버퍼를 지원하지 않습니다");
+				this.screenSpaceLighting = new Q(t, new j(), this.settings.screenSpaceLighting, this.beauty.texture, this.beauty.depthTexture), this.composer.addPass(this.screenSpaceLighting);
 			}
-			if (this.settings.ao && (this.ao = new pe(n, new N(), 1, 1), this.ao.blendIntensity = this.settings.ao.intensity, this.ao.updateGtaoMaterial({
+			if (this.settings.ao && (this.ao = new pe(t, new j(), 1, 1), this.ao.blendIntensity = this.settings.ao.intensity, this.ao.updateGtaoMaterial({
 				radius: this.settings.ao.radius,
 				samples: this.settings.ao.samples,
 				screenSpaceRadius: !1
 			}), this.ao.updatePdMaterial({ samples: this.settings.ao.denoiseSamples }), this.composer.addPass(this.ao)), this.settings.bloom) {
 				let e = this.settings.bloom;
-				this.bloom = new W(new A(1, 1), e.strength, e.radius, e.threshold), this.composer.addPass(this.bloom);
+				this.bloom = new W(new _(1, 1), e.strength, e.radius, e.threshold), this.composer.addPass(this.bloom);
 			}
-			this.smaa = new J(), this.composer.addPass(this.smaa), this.output = new X(), this.composer.addPass(this.output), this.copyMaterial = new i({
+			this.smaa = new J(), this.composer.addPass(this.smaa), this.output = new X(), this.composer.addPass(this.output), this.copyMaterial = new O({
 				toneMapped: !1,
 				depthTest: !0,
 				depthFunc: 1,
@@ -1592,15 +1593,15 @@ var ge = class {
 			shadowType: a.shadowMap.type,
 			autoClear: a.autoClear,
 			target: a.getRenderTarget(),
-			viewport: a.getViewport(new C()),
-			scissor: a.getScissor(new C()),
+			viewport: a.getViewport(new f()),
+			scissor: a.getScissor(new f()),
 			scissorTest: a.getScissorTest(),
 			layers: e.layers.mask,
 			background: o.background
 		}, c = [];
 		try {
 			if (this.composer && o.traverse((e) => {
-				if (e instanceof _ && !T(e)) {
+				if (e instanceof k && !N(e)) {
 					let t = e.layers.mask;
 					e.layers.set(1), c.push(() => {
 						e.layers.mask = t;
@@ -1624,7 +1625,7 @@ var ge = class {
 		this.disposed || (this.disposed = !0, this.screenSpaceLighting?.dispose(), this.ao?.dispose(), this.bloom?.dispose(), this.smaa?.dispose(), this.output?.dispose(), this.texturePass?.dispose(), this.copy?.dispose(), this.copyMaterial?.dispose(), this.composer?.dispose(), this.beauty?.dispose(), this.environment?.dispose());
 	}
 	resize(e, t) {
-		let [n, r] = S(e, t, this.renderer.getPixelRatio(), this.settings.maxPostProcessPixels, Math.min(y.maxPostProcessDimension, this.renderer.capabilities.maxTextureSize));
+		let [n, r] = E(e, t, this.renderer.getPixelRatio(), this.settings.maxPostProcessPixels, Math.min(te.maxPostProcessDimension, this.renderer.capabilities.maxTextureSize));
 		(this.width !== n || this.height !== r) && (this.width = n, this.height = r, this.beauty.setSize(n, r), this.composer.setSize(n, r), this.ao && this.ao.setSize(Math.max(1, Math.floor(n * this.settings.ao.resolutionScale)), Math.max(1, Math.floor(r * this.settings.ao.resolutionScale))));
 	}
 };

@@ -84,7 +84,7 @@ export declare class PreviewResources extends StaticMeshResourceCache {
         limitBytes: number;
         entries: {
             assetId: string;
-            state: "releasing" | "ready" | "loading";
+            state: "ready" | "releasing" | "loading";
         }[];
     };
     subscribeAppearance(listener: () => void): () => void;
@@ -107,7 +107,7 @@ export declare class PreviewResources extends StaticMeshResourceCache {
         warmMaterials: number;
         dormantAppearances: number;
     };
-    warmMaterials(snapshot: import('./m5e4e772c2f57.js').AssetRegistrySnapshot, signal?: AbortSignal): Promise<void>;
+    warmMaterials(snapshot: import('./m5e4e772c2f57.js').AssetRegistrySnapshot, signal?: AbortSignal, progress?: (message: string) => void): Promise<void>;
     publishDisplay(): void;
 }
 export type PreviewOpenOptions = {

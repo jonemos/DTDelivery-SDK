@@ -15,7 +15,7 @@ export declare class StaticMeshResourceCache {
     private readonly entries;
     private readonly aliases;
     private readonly pendingResolutions;
-    constructor(storage: AssetRegistryStorage, loadTemplate?: TemplateLoader, typedMaterialGeometry?: boolean);
+    constructor(storage: AssetRegistryStorage, loadTemplate?: TemplateLoader, typedMaterialGeometry?: boolean | 'geometry-only');
     acquire(reference: AssetReference): Promise<StaticMeshResourceLease>;
     entryCount(): number;
     /** Ordinary entries release at the last lease; prepared previews also evict rebuildable caches. */

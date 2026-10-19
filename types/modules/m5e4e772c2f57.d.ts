@@ -74,6 +74,8 @@ export interface AssetRegistryStorage {
     snapshot(): Promise<AssetRegistrySnapshot>;
     /** Detached, atomic metadata capture without binary payloads. */
     snapshotCatalog?(): Promise<AssetCatalogSnapshot>;
+    /** Current metadata token only; returns no mutable registry data or binary payloads. */
+    currentRevisionId?(assetId: string): string | undefined;
     /** Detached data for one revision; avoids copying unrelated binary assets during rendering. */
     snapshotAsset?(assetId: string, revisionId?: string): Promise<AssetRegistrySnapshot>;
 }

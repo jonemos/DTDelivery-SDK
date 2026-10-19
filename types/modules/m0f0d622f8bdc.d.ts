@@ -8,6 +8,7 @@ import { type CandidateVersionHistory } from './m84ea7acd5e11.js';
 import { type PartialImportRecord } from './m97ad32a3f8ae.js';
 /** A provisional visualization recipe, NOT a calibrated UEWebPackage/import profile. */
 export interface StaticPreviewRecipe {
+    storedFoliageExclusion?: import('./mfd7cfc87c9c4.js').StoredFoliageExclusion;
     partialImport?: PartialImportRecord;
     levelVersions?: CandidateVersionHistory;
     appearanceReview?: AppearanceReviewRecord;
