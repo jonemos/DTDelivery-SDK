@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.20
+
+Move spatial controls to bottom-right; add viewport UI hide/restore and registered-scope dropdown.
+
 ## 0.3.19
 
 Separate storage endpoint/bucket/path/scope choices, public connection directory, spatial unload controls and composition frame caches.

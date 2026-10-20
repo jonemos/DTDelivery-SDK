@@ -6,6 +6,7 @@ import './style.css';
 const element = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
 const source = element<HTMLSelectElement>('source'), models = element<HTMLSelectElement>('models'), canvas = element<HTMLCanvasElement>('view');
 const status = element('status'), scope = element<HTMLInputElement>('scope'), address = element<HTMLInputElement>('address');
+const publicationScope = element<HTMLSelectElement>('storage-scope');
 const bucket = element<HTMLInputElement>('bucket'), prefix = element<HTMLInputElement>('prefix');
 let storageLocations: StorageLocation[] = [], directoryGeneration = 0;
 let directoryRequest: AbortController | undefined;
@@ -23,15 +24,22 @@ function remember(value: DeliverySource, modelId?: string) {
 function forget(disableDefault = false) { try { localStorage.removeItem(connectionKey); if (disableDefault) localStorage.setItem(disabledKey, '1'); } catch { /* Host storage is optional. */ } }
 
 const connectionFields = () => ({ endpoint: address.value.trim(), bucket: bucket.value.trim(), prefix: prefix.value.trim(), scope: scope.value.trim() });
+function scopeChoices(values: readonly string[], selected = scope.value) {
+  const choices = [...new Set(values.length ? values : [selected])].filter(Boolean).sort();
+  publicationScope.replaceChildren(...choices.map(value => { const option = document.createElement('option'); option.value = value; option.textContent = value; return option; }));
+  if (choices.includes(selected)) publicationScope.value = selected;
+  scope.value = publicationScope.value;
+}
 function applyConnection(url: URL) {
   const value = splitStorageConnection(url);
   address.value = value.endpoint; bucket.value = value.bucket; prefix.value = value.prefix; scope.value = value.scope;
+  scopeChoices([...(storageLocations.find(row => row.bucket === value.bucket && row.prefix === value.prefix)?.scopes ?? []), value.scope], value.scope);
 }
 function storageChoices() {
   const options = (id: string, values: string[]) => element<HTMLDataListElement>(id).replaceChildren(...[...new Set(values)].sort().map(value => { const option = document.createElement('option'); option.value = value; if (!value) option.label = '버킷 루트'; return option; }));
   options('storage-buckets', storageLocations.map(row => row.bucket));
   options('storage-prefixes', storageLocations.filter(row => row.bucket === bucket.value).map(row => row.prefix));
-  options('storage-scopes', storageLocations.filter(row => row.bucket === bucket.value && row.prefix === prefix.value).flatMap(row => row.scopes));
+  scopeChoices(storageLocations.filter(row => row.bucket === bucket.value && row.prefix === prefix.value).flatMap(row => row.scopes));
 }
 async function discoverConnections() {
   const endpoint = storageEndpoint(address.value.trim()), ticket = ++directoryGeneration;
@@ -46,7 +54,7 @@ async function discoverConnections() {
   controller.signal.throwIfAborted(); if (ticket !== directoryGeneration) return;
   const directories = results.flatMap(result => result.status === 'fulfilled' ? [result.value] : []);
   if (!directories.length) { storageChoices(); throw results.find(result => result.status === 'rejected')!.reason; }
-  storageLocations = mergeStorageDirectories(...directories, ...seeds.map(seed => ({ version: 1 as const, locations: [{ bucket: seed.bucket, prefix: seed.prefix, scopes: [seed.scope] }] }))).locations;
+  storageLocations = mergeStorageDirectories(...directories).locations;
   if (!storageLocations.some(row => row.bucket === bucket.value)) { bucket.value = storageLocations[0]?.bucket ?? ''; prefix.value = ''; }
   const paths = storageLocations.filter(row => row.bucket === bucket.value);
   if (!paths.some(row => row.prefix === prefix.value)) prefix.value = paths[0]?.prefix ?? '';
@@ -59,10 +67,12 @@ element<HTMLButtonElement>('discover').onclick = discover;
 address.addEventListener('change', () => { if (source.value !== 'publication') return; try { const url = new URL(address.value.trim()); if (url.pathname !== '/') applyConnection(url); discover(); } catch (error) { message(String(error)); } });
 bucket.addEventListener('change', () => { const rows = storageLocations.filter(row => row.bucket === bucket.value); if (!rows.some(row => row.prefix === prefix.value)) prefix.value = rows[0]?.prefix ?? ''; const scopes = rows.find(row => row.prefix === prefix.value)?.scopes ?? []; if (!scopes.includes(scope.value)) scope.value = scopes[0] ?? ''; storageChoices(); });
 prefix.addEventListener('change', () => { const scopes = storageLocations.find(row => row.bucket === bucket.value && row.prefix === prefix.value)?.scopes ?? []; if (!scopes.includes(scope.value)) scope.value = scopes[0] ?? ''; storageChoices(); });
+publicationScope.addEventListener('change', () => { scope.value = publicationScope.value; });
 element('version').textContent = DELIVERY_SDK_VERSION;
 const message = (value: string, state = 'idle') => { status.textContent = value; status.title = value; status.dataset.state = state; };
 function fields() {
   element('storage-fields').hidden = source.value !== 'publication';
+  element('scope-field').hidden = source.value === 'publication';
   folder.hidden = source.value !== 'local'; element('address-field').hidden = source.value === 'local'; scope.disabled = source.value === 'http';
   element('source-help').textContent = source.value === 'local' ? '전체/변경분 저장 폴더 또는 로컬 게시 저장소를 선택하세요. 폴더는 읽기만 합니다.' : source.value === 'publication' ? '연결 주소는 서버 주소만 유지합니다. 연결 목록 조회 후 버킷·경로·게시 구역을 목록에서 선택하고 목록 조회를 누르세요. 처음 연결하는 서버는 편집기의 SDK 연결 주소를 한 번 붙여넣거나 각 칸에 직접 입력할 수 있습니다. 공개 연결 목록은 게시 완료 시 자동 갱신되며 접속 키는 필요 없습니다.' : '정적 폴더 주소 또는 SDK 연결 주소를 넣으세요. 파일 읽기 권한과 CORS 허용이 필요합니다.';
 }

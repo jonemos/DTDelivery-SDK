@@ -656,7 +656,7 @@ function fr(e, t, n = e) {
 //#region src/delivery/SdkVersion.ts
 var pr = typeof __DT_DELIVERY_SDK_VERSION__ > "u" ? {
 	name: "@dt/delivery-sdk",
-	version: "0.3.19",
+	version: "0.3.20",
 	license: "MIT",
 	addonSdkVersion: 5,
 	contracts: [
@@ -18837,7 +18837,7 @@ function Rc({ value: e, onChange: t, status: n, context: r = "편집기", disabl
 	};
 	return /* @__PURE__ */ (0, W.jsxs)("details", {
 		ref: s,
-		className: `editor-residency-control${r === "SDK" ? " viewport-options-menu" : ""}`,
+		className: `editor-residency-control${r === "SDK" ? " viewport-options-menu delivery-viewport-tools delivery-viewport-residency" : ""}`,
 		children: [/* @__PURE__ */ (0, W.jsxs)("summary", {
 			title: "현재 뷰포트에만 적용하며 원거리 메시가 생략될 수 있습니다. 선택·동적 액터와 사용 중인 자원은 보호합니다.",
 			children: ["공간 자동 언로드", e.enabled ? " · 켜짐" : " · 꺼짐"]
@@ -18911,246 +18911,254 @@ var zc = {
 //#endregion
 //#region src/delivery/DeliveryViewportTools.tsx
 function Bc({ viewer: e, immersive: t, leftOnly: n = !1 }) {
-	let [, r] = (0, U.useState)(0), [i, a] = (0, U.useState)(Cc), [o, s] = (0, U.useState)(!1), [c, l] = (0, U.useState)(() => ({
+	let [, r] = (0, U.useState)(0), [i, a] = (0, U.useState)(Cc), [o, s] = (0, U.useState)(!1), [c, l] = (0, U.useState)(!1), [u, d] = (0, U.useState)(() => ({
 		...zc,
 		...e.session.spatialStreaming?.options ?? {},
 		enabled: !!e.session.spatialStreaming
-	})), u = () => r((e) => e + 1);
-	(0, U.useEffect)(() => (e.onViewChange = u, e.navigation.onAction = (n) => {
+	})), f = () => r((e) => e + 1);
+	(0, U.useEffect)(() => (e.onViewChange = f, e.navigation.onAction = (n) => {
 		if (n === "focus-selection" && e.focusSelection(), n === "toggle-immersive" && t(), n === "toggle-game-view") {
 			let t = !e.helpers;
-			e.helpers = t, e.grid.visible = t, e.invalidate(), u();
+			e.helpers = t, e.grid.visible = t, e.invalidate(), f();
 		}
 	}, () => {
 		e.onViewChange = void 0, e.navigation.onAction = void 0;
 	}), [e, t]);
-	let d = e.quality.snapshot();
-	(0, U.useEffect)(() => e.session.subscribe(u), [e]);
-	let f = e.session.spatialStreaming, p = e.session.busy ? "로드·에셋 작업 완료 후 설정을 변경하세요." : f?.protected ? "실행·편집 중 자원 보호" : f?.paused ? "공간 로드가 중지되었습니다. 다시 열거나 재개하세요." : f ? `요청 셀 ${f.states.filter((e) => e.wanted).length}/${f.states.length} · 선택·동적 액터 보호` : "기본 전체 로드 · 공간 경계가 있는 게시본에서 사용 가능";
-	return /* @__PURE__ */ (0, W.jsxs)(cc, {
-		className: "delivery-viewport-tools",
-		children: [
-			/* @__PURE__ */ (0, W.jsx)(Rc, {
-				context: "SDK",
-				disabled: e.session.busy,
-				value: c,
-				status: p,
-				onChange: (t) => {
-					let { enabled: n, ...r } = t;
-					e.setSpatialStreaming(n ? r : null), l(t);
-				}
-			}),
-			/* @__PURE__ */ (0, W.jsxs)("details", {
-				className: "viewport-options-menu viewport-main-menu",
-				children: [/* @__PURE__ */ (0, W.jsx)("summary", {
-					"aria-label": "뷰포트 옵션",
-					children: /* @__PURE__ */ (0, W.jsx)(lc, { name: "menu" })
-				}), /* @__PURE__ */ (0, W.jsxs)("div", { children: [
-					/* @__PURE__ */ (0, W.jsxs)("button", {
-						onClick: t,
-						children: ["뷰포트 최대화", /* @__PURE__ */ (0, W.jsx)("kbd", { children: "F11" })]
-					}),
-					/* @__PURE__ */ (0, W.jsxs)("button", {
-						onClick: () => e.focusSelection(),
-						children: ["선택에 초점", /* @__PURE__ */ (0, W.jsx)("kbd", { children: "F" })]
-					}),
-					/* @__PURE__ */ (0, W.jsx)("button", {
-						onClick: () => e.fit(),
-						children: "전체 맞춤"
-					}),
-					/* @__PURE__ */ (0, W.jsxs)("details", {
-						className: "camera-options",
-						open: !0,
-						children: [/* @__PURE__ */ (0, W.jsx)("summary", { children: "카메라 설정" }), /* @__PURE__ */ (0, W.jsxs)("div", { children: [/* @__PURE__ */ (0, W.jsxs)("label", { children: ["속도 (m/s)", /* @__PURE__ */ (0, W.jsx)(ec, {
-							label: "Viewport camera speed",
-							value: e.navigation.speed,
-							validate: (e) => ({ ok: typeof e == "number" && Number.isFinite(e) && e >= .25 && e <= 64 }),
-							onCommit: (t) => {
-								e.navigation.setSpeed(t), u();
-							}
-						})] }), [
-							[
-								"horizontalFovDegrees",
-								"수평 FOV",
-								"Viewport horizontal FOV",
-								1,
-								179,
-								1
-							],
-							[
-								"orthographicWidthMeters",
-								"Ortho 폭 (m)",
-								"Viewport orthographic width",
-								.1,
-								void 0,
-								.5
-							],
-							[
-								"nearMeters",
-								"Near (m)",
-								"Viewport near clip",
-								.001,
-								void 0,
-								.01
-							],
-							[
-								"farMeters",
-								"Far (m)",
-								"Viewport far clip",
-								1,
-								void 0,
-								10
-							]
-						].map(([t, n, r, i, a, o]) => /* @__PURE__ */ (0, W.jsxs)("label", { children: [n, /* @__PURE__ */ (0, W.jsx)("input", {
-							type: "number",
-							"aria-label": r,
-							value: e.cameraSettings[t],
-							min: i,
-							max: a,
-							step: o,
-							disabled: t === "horizontalFovDegrees" ? e.projection !== "perspective" : t === "orthographicWidthMeters" && e.projection === "perspective",
-							onChange: (n) => {
-								let r = n.target.valueAsNumber;
-								Number.isFinite(r) && r >= i && (a === void 0 || r <= a) && (t !== "nearMeters" || r < e.cameraSettings.farMeters) && (t !== "farMeters" || r > e.cameraSettings.nearMeters) && e.setCameraSettings({ [t]: r });
-							}
-						})] }, t))] })]
-					}),
-					/* @__PURE__ */ (0, W.jsx)("button", {
-						"aria-label": "Toggle game view",
-						"aria-pressed": !e.helpers,
-						onClick: () => {
-							let t = !e.helpers;
-							e.helpers = t, e.grid.visible = t, e.invalidate(), u();
-						},
-						children: "게임 뷰"
-					}),
-					/* @__PURE__ */ (0, W.jsxs)("p", { children: [
-						"우클릭 + WASD / QE 이동",
-						/* @__PURE__ */ (0, W.jsx)("br", {}),
-						"Alt + 좌클릭 회전 · 휠 확대",
-						/* @__PURE__ */ (0, W.jsx)("br", {}),
-						"가운데 버튼 드래그로 평행 이동"
-					] })
-				] })]
-			}),
-			/* @__PURE__ */ (0, W.jsx)(fc, {
-				value: e.projection,
-				onChange: (t) => e.setProjection(t)
-			}),
-			/* @__PURE__ */ (0, W.jsx)(pc, {
-				value: e.mode,
-				onChange: (t) => e.setMode(t)
-			}),
-			/* @__PURE__ */ (0, W.jsxs)(mc, {
-				preset: d.requested,
-				status: d,
-				disabled: !1,
-				onChange: (t) => {
-					e.quality.apply(t);
-				},
-				children: [/* @__PURE__ */ (0, W.jsxs)("fieldset", { children: [
-					/* @__PURE__ */ (0, W.jsx)("legend", { children: "환경광" }),
-					/* @__PURE__ */ (0, W.jsxs)("label", {
-						className: "quality-checkbox",
-						children: [/* @__PURE__ */ (0, W.jsx)("input", {
-							"aria-label": "Show environment lighting",
+	let p = e.quality.snapshot();
+	(0, U.useEffect)(() => e.session.subscribe(f), [e]);
+	let m = e.session.spatialStreaming, h = e.session.busy ? "로드·에셋 작업 완료 후 설정을 변경하세요." : m?.protected ? "실행·편집 중 자원 보호" : m?.paused ? "공간 로드가 중지되었습니다. 다시 열거나 재개하세요." : m ? `요청 셀 ${m.states.filter((e) => e.wanted).length}/${m.states.length} · 선택·동적 액터 보호` : "기본 전체 로드 · 공간 경계가 있는 게시본에서 사용 가능";
+	return /* @__PURE__ */ (0, W.jsxs)("div", {
+		className: "delivery-viewport-ui",
+		"data-ui-hidden": c,
+		children: [/* @__PURE__ */ (0, W.jsxs)(cc, {
+			className: "delivery-viewport-tools",
+			children: [
+				/* @__PURE__ */ (0, W.jsxs)("details", {
+					className: "viewport-options-menu viewport-main-menu",
+					children: [/* @__PURE__ */ (0, W.jsx)("summary", {
+						"aria-label": "뷰포트 옵션",
+						children: /* @__PURE__ */ (0, W.jsx)(lc, { name: "menu" })
+					}), /* @__PURE__ */ (0, W.jsxs)("div", { children: [
+						/* @__PURE__ */ (0, W.jsxs)("button", {
+							onClick: t,
+							children: ["뷰포트 최대화", /* @__PURE__ */ (0, W.jsx)("kbd", { children: "F11" })]
+						}),
+						/* @__PURE__ */ (0, W.jsxs)("label", { children: [/* @__PURE__ */ (0, W.jsx)("input", {
 							type: "checkbox",
-							checked: e.environment,
-							onChange: (t) => {
-								e.environment = t.target.checked, e.invalidate(), u();
-							}
-						}), "환경광"]
-					}),
-					/* @__PURE__ */ (0, W.jsxs)("label", { children: ["환경광 강도", /* @__PURE__ */ (0, W.jsx)(Ec, {
-						ariaLabel: "뷰포트 환경광 강도",
-						value: e.environmentIntensity,
-						disabled: !e.environment,
-						onCommit: (t) => {
-							e.environmentIntensity = t, e.invalidate(), u();
-						}
-					})] })
-				] }), /* @__PURE__ */ (0, W.jsx)(Tc, {
-					effects: i,
+							checked: c,
+							onChange: (e) => l(e.target.checked)
+						}), "UI 숨김"] }),
+						/* @__PURE__ */ (0, W.jsxs)("button", {
+							onClick: () => e.focusSelection(),
+							children: ["선택에 초점", /* @__PURE__ */ (0, W.jsx)("kbd", { children: "F" })]
+						}),
+						/* @__PURE__ */ (0, W.jsx)("button", {
+							onClick: () => e.fit(),
+							children: "전체 맞춤"
+						}),
+						/* @__PURE__ */ (0, W.jsxs)("details", {
+							className: "camera-options",
+							open: !0,
+							children: [/* @__PURE__ */ (0, W.jsx)("summary", { children: "카메라 설정" }), /* @__PURE__ */ (0, W.jsxs)("div", { children: [/* @__PURE__ */ (0, W.jsxs)("label", { children: ["속도 (m/s)", /* @__PURE__ */ (0, W.jsx)(ec, {
+								label: "Viewport camera speed",
+								value: e.navigation.speed,
+								validate: (e) => ({ ok: typeof e == "number" && Number.isFinite(e) && e >= .25 && e <= 64 }),
+								onCommit: (t) => {
+									e.navigation.setSpeed(t), f();
+								}
+							})] }), [
+								[
+									"horizontalFovDegrees",
+									"수평 FOV",
+									"Viewport horizontal FOV",
+									1,
+									179,
+									1
+								],
+								[
+									"orthographicWidthMeters",
+									"Ortho 폭 (m)",
+									"Viewport orthographic width",
+									.1,
+									void 0,
+									.5
+								],
+								[
+									"nearMeters",
+									"Near (m)",
+									"Viewport near clip",
+									.001,
+									void 0,
+									.01
+								],
+								[
+									"farMeters",
+									"Far (m)",
+									"Viewport far clip",
+									1,
+									void 0,
+									10
+								]
+							].map(([t, n, r, i, a, o]) => /* @__PURE__ */ (0, W.jsxs)("label", { children: [n, /* @__PURE__ */ (0, W.jsx)("input", {
+								type: "number",
+								"aria-label": r,
+								value: e.cameraSettings[t],
+								min: i,
+								max: a,
+								step: o,
+								disabled: t === "horizontalFovDegrees" ? e.projection !== "perspective" : t === "orthographicWidthMeters" && e.projection === "perspective",
+								onChange: (n) => {
+									let r = n.target.valueAsNumber;
+									Number.isFinite(r) && r >= i && (a === void 0 || r <= a) && (t !== "nearMeters" || r < e.cameraSettings.farMeters) && (t !== "farMeters" || r > e.cameraSettings.nearMeters) && e.setCameraSettings({ [t]: r });
+								}
+							})] }, t))] })]
+						}),
+						/* @__PURE__ */ (0, W.jsx)("button", {
+							"aria-label": "Toggle game view",
+							"aria-pressed": !e.helpers,
+							onClick: () => {
+								let t = !e.helpers;
+								e.helpers = t, e.grid.visible = t, e.invalidate(), f();
+							},
+							children: "게임 뷰"
+						}),
+						/* @__PURE__ */ (0, W.jsxs)("p", { children: [
+							"우클릭 + WASD / QE 이동",
+							/* @__PURE__ */ (0, W.jsx)("br", {}),
+							"Alt + 좌클릭 회전 · 휠 확대",
+							/* @__PURE__ */ (0, W.jsx)("br", {}),
+							"가운데 버튼 드래그로 평행 이동"
+						] })
+					] })]
+				}),
+				/* @__PURE__ */ (0, W.jsx)(fc, {
+					value: e.projection,
+					onChange: (t) => e.setProjection(t)
+				}),
+				/* @__PURE__ */ (0, W.jsx)(pc, {
+					value: e.mode,
+					onChange: (t) => e.setMode(t)
+				}),
+				/* @__PURE__ */ (0, W.jsxs)(mc, {
+					preset: p.requested,
+					status: p,
 					disabled: !1,
 					onChange: (t) => {
-						e.setScreenEffects(t), a(t);
-					}
-				})]
-			}),
-			/* @__PURE__ */ (0, W.jsxs)("details", {
-				className: "viewport-options-menu viewport-show-menu",
-				onToggle: uc,
-				children: [/* @__PURE__ */ (0, W.jsx)("summary", { children: "표시" }), /* @__PURE__ */ (0, W.jsxs)("div", { children: [
-					/* @__PURE__ */ (0, W.jsxs)("label", {
-						title: "단일 원근·Lit·Viewport 품질에서 사용합니다. 로딩·선택 중에는 기존 표시로 돌아갑니다.",
-						children: [/* @__PURE__ */ (0, W.jsx)("input", {
-							"aria-label": "정적 메시 배칭",
-							type: "checkbox",
-							checked: e.staticBatchingEnabled,
-							onChange: (t) => e.setStaticBatching(t.target.checked)
-						}), "정적 메시 배칭 (실험적)"]
-					}),
-					e.staticBatchingEnabled && e.staticBatchingStatus.message ? /* @__PURE__ */ (0, W.jsx)("p", {
-						role: "status",
-						children: e.staticBatchingStatus.message
-					}) : null,
-					/* @__PURE__ */ (0, W.jsxs)("label", { children: [/* @__PURE__ */ (0, W.jsx)("input", {
-						"aria-label": "Show grid",
-						type: "checkbox",
-						checked: e.grid.visible,
-						onChange: (t) => {
-							e.grid.visible = t.target.checked, e.invalidate(), u();
-						}
-					}), "그리드"] }),
-					/* @__PURE__ */ (0, W.jsxs)("label", { children: [/* @__PURE__ */ (0, W.jsx)("input", {
-						"aria-label": "Show editor helpers",
-						type: "checkbox",
-						checked: e.helpers,
-						onChange: (t) => {
-							e.helpers = t.target.checked, e.invalidate(), u();
-						}
-					}), "에디터 도우미"] }),
-					/* @__PURE__ */ (0, W.jsxs)("label", { children: [/* @__PURE__ */ (0, W.jsx)("input", {
-						"aria-label": "Show actor bounds",
-						type: "checkbox",
-						checked: e.bounds,
-						onChange: (t) => e.setBounds(t.target.checked)
-					}), "바운드"] }),
-					/* @__PURE__ */ (0, W.jsx)(Lc, {
-						embedded: !0,
-						autoApply: !1,
-						resources: e.session.release ? e.session : void 0,
-						disabled: e.session.busy && !o,
-						onBusy: s,
-						colorControls: {
-							mode: e.mode,
-							environment: e.environment,
-							intensity: e.environmentIntensity,
-							inspect: () => e.setMode("unlit"),
-							light: () => {
-								e.environment = !0, e.environmentIntensity === 0 && (e.environmentIntensity = C.intensity), e.invalidate(), u();
+						e.quality.apply(t);
+					},
+					children: [/* @__PURE__ */ (0, W.jsxs)("fieldset", { children: [
+						/* @__PURE__ */ (0, W.jsx)("legend", { children: "환경광" }),
+						/* @__PURE__ */ (0, W.jsxs)("label", {
+							className: "quality-checkbox",
+							children: [/* @__PURE__ */ (0, W.jsx)("input", {
+								"aria-label": "Show environment lighting",
+								type: "checkbox",
+								checked: e.environment,
+								onChange: (t) => {
+									e.environment = t.target.checked, e.invalidate(), f();
+								}
+							}), "환경광"]
+						}),
+						/* @__PURE__ */ (0, W.jsxs)("label", { children: ["환경광 강도", /* @__PURE__ */ (0, W.jsx)(Ec, {
+							ariaLabel: "뷰포트 환경광 강도",
+							value: e.environmentIntensity,
+							disabled: !e.environment,
+							onCommit: (t) => {
+								e.environmentIntensity = t, e.invalidate(), f();
 							}
+						})] })
+					] }), /* @__PURE__ */ (0, W.jsx)(Tc, {
+						effects: i,
+						disabled: !1,
+						onChange: (t) => {
+							e.setScreenEffects(t), a(t);
 						}
-					})
-				] })]
-			}),
-			!n && /* @__PURE__ */ (0, W.jsxs)("div", {
-				className: "viewport-tool-actions",
-				children: [/* @__PURE__ */ (0, W.jsx)("button", {
-					className: "viewport-layout-toggle",
-					"aria-label": "선택에 초점",
-					title: "선택에 초점 · F",
-					onClick: () => e.focusSelection(),
-					children: /* @__PURE__ */ (0, W.jsx)(lc, { name: "cube" })
-				}), /* @__PURE__ */ (0, W.jsx)("button", {
-					className: "viewport-layout-toggle",
-					"aria-label": "뷰포트 최대화",
-					title: "뷰포트 최대화 · F11",
-					onClick: t,
-					children: /* @__PURE__ */ (0, W.jsx)(lc, { name: "layout" })
-				})]
-			})
-		]
+					})]
+				}),
+				/* @__PURE__ */ (0, W.jsxs)("details", {
+					className: "viewport-options-menu viewport-show-menu",
+					onToggle: uc,
+					children: [/* @__PURE__ */ (0, W.jsx)("summary", { children: "표시" }), /* @__PURE__ */ (0, W.jsxs)("div", { children: [
+						/* @__PURE__ */ (0, W.jsxs)("label", {
+							title: "단일 원근·Lit·Viewport 품질에서 사용합니다. 로딩·선택 중에는 기존 표시로 돌아갑니다.",
+							children: [/* @__PURE__ */ (0, W.jsx)("input", {
+								"aria-label": "정적 메시 배칭",
+								type: "checkbox",
+								checked: e.staticBatchingEnabled,
+								onChange: (t) => e.setStaticBatching(t.target.checked)
+							}), "정적 메시 배칭 (실험적)"]
+						}),
+						e.staticBatchingEnabled && e.staticBatchingStatus.message ? /* @__PURE__ */ (0, W.jsx)("p", {
+							role: "status",
+							children: e.staticBatchingStatus.message
+						}) : null,
+						/* @__PURE__ */ (0, W.jsxs)("label", { children: [/* @__PURE__ */ (0, W.jsx)("input", {
+							"aria-label": "Show grid",
+							type: "checkbox",
+							checked: e.grid.visible,
+							onChange: (t) => {
+								e.grid.visible = t.target.checked, e.invalidate(), f();
+							}
+						}), "그리드"] }),
+						/* @__PURE__ */ (0, W.jsxs)("label", { children: [/* @__PURE__ */ (0, W.jsx)("input", {
+							"aria-label": "Show editor helpers",
+							type: "checkbox",
+							checked: e.helpers,
+							onChange: (t) => {
+								e.helpers = t.target.checked, e.invalidate(), f();
+							}
+						}), "에디터 도우미"] }),
+						/* @__PURE__ */ (0, W.jsxs)("label", { children: [/* @__PURE__ */ (0, W.jsx)("input", {
+							"aria-label": "Show actor bounds",
+							type: "checkbox",
+							checked: e.bounds,
+							onChange: (t) => e.setBounds(t.target.checked)
+						}), "바운드"] }),
+						/* @__PURE__ */ (0, W.jsx)(Lc, {
+							embedded: !0,
+							autoApply: !1,
+							resources: e.session.release ? e.session : void 0,
+							disabled: e.session.busy && !o,
+							onBusy: s,
+							colorControls: {
+								mode: e.mode,
+								environment: e.environment,
+								intensity: e.environmentIntensity,
+								inspect: () => e.setMode("unlit"),
+								light: () => {
+									e.environment = !0, e.environmentIntensity === 0 && (e.environmentIntensity = C.intensity), e.invalidate(), f();
+								}
+							}
+						})
+					] })]
+				}),
+				!n && /* @__PURE__ */ (0, W.jsxs)("div", {
+					className: "viewport-tool-actions",
+					children: [/* @__PURE__ */ (0, W.jsx)("button", {
+						className: "viewport-layout-toggle",
+						"aria-label": "선택에 초점",
+						title: "선택에 초점 · F",
+						onClick: () => e.focusSelection(),
+						children: /* @__PURE__ */ (0, W.jsx)(lc, { name: "cube" })
+					}), /* @__PURE__ */ (0, W.jsx)("button", {
+						className: "viewport-layout-toggle",
+						"aria-label": "뷰포트 최대화",
+						title: "뷰포트 최대화 · F11",
+						onClick: t,
+						children: /* @__PURE__ */ (0, W.jsx)(lc, { name: "layout" })
+					})]
+				})
+			]
+		}), /* @__PURE__ */ (0, W.jsx)(Rc, {
+			context: "SDK",
+			disabled: e.session.busy,
+			value: u,
+			status: h,
+			onChange: (t) => {
+				let { enabled: n, ...r } = t;
+				e.setSpatialStreaming(n ? r : null), d(t);
+			}
+		})]
 	});
 }
 function Vc(e, t, n, r = {}) {
