@@ -57,6 +57,9 @@ export declare class DeliveryViewer {
     private frameTime;
     private spatialTime;
     private addonFrame;
+    private readonly preparation;
+    private preparationGeneration;
+    private readonly presentations;
     private releaseSelection?;
     private frameListeners;
     private disposeListeners;

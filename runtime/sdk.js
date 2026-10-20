@@ -656,7 +656,7 @@ function fr(e, t, n = e) {
 //#region src/delivery/SdkVersion.ts
 var pr = typeof __DT_DELIVERY_SDK_VERSION__ > "u" ? {
 	name: "@dt/delivery-sdk",
-	version: "0.3.18",
+	version: "0.3.19",
 	license: "MIT",
 	addonSdkVersion: 5,
 	contracts: [
@@ -5522,7 +5522,7 @@ var wo = class extends sn {
 			u.traverse((e) => {
 				if (e.userData.assetResourceError || e.userData.attachmentError || e.userData.materialOverrideError) throw Error(String(e.userData.assetResourceError ?? e.userData.attachmentError ?? e.userData.materialOverrideError));
 				e instanceof Ht && (e.intensity = 0);
-			}), u.sealStaticHierarchy(this.cacheStaticMatrices && d.every((e) => e.viewDependentInstancing === !1));
+			}), u.sealStaticHierarchy(this.cacheStaticMatrices && d.every((e) => e.viewDependentInstancing === !1) && !l.actors.some((e) => e.components.some((e) => e.type === "TestScript")));
 			let o = (e) => {
 				u.invalidateMatrices(), u.position.fromArray(e.position), u.quaternion.fromArray(e.rotation), u.visible = e.visible, u.updateWorldMatrix(!0, !1), u.updateMatrixWorld(!0);
 			};
@@ -6670,7 +6670,7 @@ var zo = class {
 				this.activeReader = t, x(), this.runtime.reconcile(ee), this.manifest = s, this.hash = c, this.equipmentIndex = g, this.actorIndex = _, this.changed(), this.pending === a && (this.pending = void 0);
 				return;
 			}
-			let S = h ? new AbortController() : void 0, C = l.source(t, S?.signal ?? o), w = new To(C, this.runtime?.textureControl().options ?? ce), te = this.usage;
+			let S = h ? new AbortController() : void 0, C = l.source(t, S?.signal ?? o), w = new To(C, this.runtime?.textureControl().options ?? ce, !0), te = this.usage;
 			w.configureAddons({
 				environment: "delivery",
 				compositionId: s.id,
@@ -7566,6 +7566,11 @@ var is = (e, t) => e.groupOrder - t.groupOrder || e.renderOrder - t.renderOrder 
 		this.sync([], !1);
 	}
 }, ss = class {
+	generation;
+	prepare(e, t, n, r = 0) {
+		this.generation === t && e.every((e) => e.viewDependentInstancing === !1) || (this.generation = void 0, e.forEach((e) => e.prepareFrame(n, r)), this.generation = t);
+	}
+}, cs = class {
 	canvas;
 	addons = new H(this);
 	session;
@@ -7619,13 +7624,16 @@ var is = (e, t) => e.groupOrder - t.groupOrder || e.renderOrder - t.renderOrder 
 	frameTime = 0;
 	spatialTime = -Infinity;
 	addonFrame = 0;
+	preparation = new ss();
+	preparationGeneration = 0;
+	presentations = /* @__PURE__ */ new WeakMap();
 	releaseSelection;
 	frameListeners = /* @__PURE__ */ new Set();
 	disposeListeners = /* @__PURE__ */ new Set();
 	subscribeFrame(e) {
 		if (this.disposed) throw Error("Viewer disposed");
-		return this.frameListeners.add(e), () => {
-			this.frameListeners.delete(e);
+		return this.frameListeners.add(e), this.preparationGeneration++, () => {
+			this.frameListeners.delete(e) && this.preparationGeneration++;
 		};
 	}
 	subscribeDispose(e) {
@@ -7667,7 +7675,7 @@ var is = (e, t) => e.groupOrder - t.groupOrder || e.renderOrder - t.renderOrder 
 			canvas: e,
 			antialias: !0
 		}), this.renderer.setPixelRatio(Math.min(devicePixelRatio, 2)), this.scene.background = new Ot("#25292e"), this.scene.add(this.session.root), this.renderer.shadowMap.enabled = !0, this.camera.position.set(12, 10, 12), this.controls = new ma(this.camera, e), this.controls.mouseButtons.LEFT = null, this.controls.mouseButtons.MIDDLE = _n.PAN, this.controls.mouseButtons.RIGHT = null, e.addEventListener("pointerdown", this.prepareOrbit, { capture: !0 }), this.controls.addEventListener("change", this.invalidate), this.grid.layers.set(1), this.selection.layers.set(1), this.selection.visible = !1, this.scene.add(this.grid, this.selection), this.quality = new Qi(this.renderer, this.scene, this.invalidate, () => this.onViewChange?.()), this.batchInstances = new Zo(this.scene), this.batching = new Xo(this.renderer, this.scene, this.batchInstances, this.invalidate, () => this.onViewChange?.()), this.unsubscribeBatching = this.session.subscribe(() => {
-			this.batching.invalidate(), this.invalidate();
+			this.preparationGeneration++, this.batching.invalidate(), this.invalidate();
 		}), this.effects = new ia(this.scene, this.renderer), this.navigation = new Gi(this), this.resize = new ResizeObserver(() => {
 			let t = Math.max(1, e.clientWidth), n = Math.max(1, e.clientHeight);
 			this.renderer.setSize(t, n, !1), this.resizeCamera(t / n), this.invalidate();
@@ -7727,14 +7735,20 @@ var is = (e, t) => e.groupOrder - t.groupOrder || e.renderOrder - t.renderOrder 
 			let n = this.frameTime ? (t - this.frameTime) / 1e3 : 0;
 			this.navigation.step(n), this.frameTime = t, this.controls.update();
 			for (let e of [...this.frameListeners]) e(n);
-			if (t - this.spatialTime >= 250 && (this.spatialTime = t, this.session.updateSpatialStreaming(this.camera.position.toArray(), t)), this.session.busy && !this.redraw && this.renderedVersion === this.session.version) return;
-			this.redraw = !1, this.renderedVersion = this.session.version;
-			for (let e of this.session.views) for (let t of e.projections) t.prepareFrame(this.addonFrame, n);
+			t - this.spatialTime >= 250 && (this.spatialTime = t, this.session.updateSpatialStreaming(this.camera.position.toArray(), t));
+			let r = this.session.views.flatMap((e) => [...e.projections]), i = this.frameListeners.size > 0 || this.effects.animated || r.some((e) => e.viewDependentInstancing !== !1) || this.session.objectViews.some((e) => e.viewDependentInstancing !== !1);
+			if (!this.redraw && this.renderedVersion === this.session.version && (this.session.busy || !i)) return;
+			this.redraw = !1, this.renderedVersion = this.session.version, this.preparation.prepare(r, this.frameListeners.size ? ++this.preparationGeneration : this.preparationGeneration, this.addonFrame, n);
+			for (let e of this.session.objectViews) e.prepareFrame(this.addonFrame, n);
 			this.addonFrame++;
-			for (let e of this.session.views) for (let t of e.projections) t.setHelpersVisible?.(this.helpers), t.setIconPresentation?.(this.icons && this.helpers, this.iconScale);
-			for (let e of this.session.objectViews) e.setHelpersVisible?.(this.helpers), e.setIconPresentation?.(this.icons && this.helpers, this.iconScale), e.prepareHelperView?.(this.camera);
+			let a = [
+				this.helpers,
+				this.icons,
+				this.iconScale
+			].join();
+			for (let e of [...r, ...this.session.objectViews]) this.presentations.get(e) !== a && (e.setHelpersVisible?.(this.helpers), e.setIconPresentation?.(this.icons && this.helpers, this.iconScale), this.presentations.set(e, a)), e.prepareHelperView?.(this.camera);
 			this.updateSelection();
-			let r = this.session.views.map((e) => e.prepare(this.camera));
+			let o = this.session.views.map((e) => e.prepare(this.camera));
 			try {
 				let t = this.session.views.filter((e) => e.root.visible), n = [...t.flatMap((e) => [...e.projections]), ...this.session.objectViews];
 				this.actorBounds.sync(n, this.showBounds), this.drawOrder.bind(this.session.release, this.session.version, () => [...t.flatMap((e) => e.projections.map((t) => ({
@@ -7744,7 +7758,7 @@ var is = (e, t) => e.groupOrder - t.groupOrder || e.renderOrder - t.renderOrder 
 					key: JSON.stringify([null, e.actorId]),
 					object: e.object
 				}))]);
-				let r = !this.effects.animated && n.every((e) => !e.viewDependentInstancing && !e.addons?.active), i = this.session.busy ? "로드 및 작업 중에는 기존 표시 사용" : this.selected ? "액터 선택 중에는 기존 표시 사용" : this.projection !== "perspective" || this.mode !== "lit" ? "단일 원근·Lit 화면에서 사용 가능" : this.quality.snapshot().requested !== Yt.VIEWPORT || this.quality.snapshot().state !== "ready" ? "Viewport 품질에서 사용 가능" : this.effects.animated || n.some((e) => e.addons?.active) ? "동적 효과·애드온 실행 중에는 기존 표시 사용" : void 0;
+				let r = !this.effects.animated && n.every((e) => !e.viewDependentInstancing && !e.addons?.active), i = this.session.busy ? "로드 및 작업 중에는 기존 표시 사용" : this.selected ? "액터 선택 중에는 기존 표시 사용" : this.projection !== "perspective" || this.mode !== "lit" ? "단일 원근·Lit 화면에서 사용 가능" : this.quality.snapshot().requested !== Yt.VIEWPORT || this.quality.snapshot().state !== "ready" ? "Viewport 품질에서 사용 가능" : this.frameListeners.size || this.effects.animated || n.some((e) => e.addons?.active) ? "동적 효과·스크립트 실행 중에는 기존 표시 사용" : void 0;
 				this.batching.render({
 					enabled: this.batchEnabled,
 					reason: i,
@@ -7758,11 +7772,12 @@ var is = (e, t) => e.groupOrder - t.groupOrder || e.renderOrder - t.renderOrder 
 				}, () => {
 					this.quality.render(this.camera, e.clientWidth, e.clientHeight, this.mode === "lit", () => R(this.renderer, this.scene, this.camera, this.mode === "lit" ? null : this.wire, this.mode === "unlit"), {
 						environmentLighting: this.environment,
-						environmentIntensity: this.environmentIntensity
+						environmentIntensity: this.environmentIntensity,
+						shadowLightGeneration: this.session.version
 					}), r && !this.session.busy && this.mode === "lit" && this.quality.snapshot().active === Yt.VIEWPORT && this.drawOrder.capture(this.renderer.renderLists.get(this.scene, 0).opaque);
 				});
 			} finally {
-				r.reverse().forEach((e) => e());
+				o.reverse().forEach((e) => e());
 			}
 		});
 	}
@@ -7944,34 +7959,34 @@ var is = (e, t) => e.groupOrder - t.groupOrder || e.renderOrder - t.renderOrder 
 		for (let e of [...this.disposeListeners]) e();
 		this.disposeListeners.clear(), this.frameListeners.clear(), this.actorListeners.clear(), this.onActorSelect = void 0, this.onSelect = void 0, this.onEquipmentSelect = void 0, this.renderer.setAnimationLoop(null), this.resize.disconnect(), this.canvas.removeEventListener("pointerup", this.pick), this.canvas.removeEventListener("pointerdown", this.prepareOrbit, { capture: !0 }), this.navigation.dispose(), this.quality.dispose(), this.effects.dispose(), this.grid.geometry.dispose(), this.grid.material.dispose(), this.selection.geometry.dispose(), (Array.isArray(this.selection.material) ? this.selection.material : [this.selection.material]).forEach((e) => e.dispose()), this.wire.dispose(), this.controls.removeEventListener("change", this.invalidate), this.controls.dispose(), await this.session.dispose(), this.renderer.dispose(), await e;
 	}
-}, cs = class extends Error {
+}, ls = class extends Error {
 	code;
 	constructor(e) {
 		super(`Publication: ${e}`), this.code = e;
 	}
 };
-function ls(e) {
+function us(e) {
 	if (typeof e != "string" || !/^[a-zA-Z0-9][a-zA-Z0-9_-]{0,127}$/.test(e) || [
 		"objects",
 		"releases",
 		"equipment",
 		"deltas"
-	].includes(e)) throw new cs("invalid");
+	].includes(e)) throw new ls("invalid");
 }
 //#endregion
 //#region src/delivery/PublicationConnection.ts
-var us = 65536;
-function ds(e) {
+var ds = 65536;
+function fs(e) {
 	if (!e || typeof e != "object" || !["url,version", "modelIds,url,version"].includes(Object.keys(e).sort().join())) throw Error("잘못된 SDK 기본 연결 설정입니다.");
 	let t = e;
 	if (t.version !== 1 || t.url !== null && (typeof t.url != "string" || t.url.length > 2048)) throw Error("잘못된 SDK 기본 연결 설정입니다.");
 	if (t.url !== null) {
-		let e = hs(new URL(t.url));
+		let e = gs(new URL(t.url));
 		if (e.publication.compositionId) throw Error("SDK 기본 연결은 모델 목록 주소여야 합니다.");
 		if (t.modelIds !== void 0) return {
 			version: 1,
 			url: t.url,
-			modelIds: fs({
+			modelIds: ps({
 				version: 1,
 				scope: e.publication.scope,
 				modelIds: t.modelIds
@@ -7983,13 +7998,13 @@ function ds(e) {
 		url: t.url
 	};
 }
-function fs(e, t) {
-	if (ls(t), !e || typeof e != "object") throw Error("잘못된 SDK 모델 목록입니다.");
+function ps(e, t) {
+	if (us(t), !e || typeof e != "object") throw Error("잘못된 SDK 모델 목록입니다.");
 	let n = e;
 	if (Object.keys(n).sort().join() !== "modelIds,scope,version" || n.version !== 1 || n.scope !== t || !Array.isArray(n.modelIds) || n.modelIds.length > 256) throw Error("잘못된 SDK 모델 목록입니다.");
 	let r = /* @__PURE__ */ new Set();
 	for (let e of n.modelIds) {
-		if (ls(e), r.has(e)) throw Error("SDK 모델 목록에 중복 ID가 있습니다.");
+		if (us(e), r.has(e)) throw Error("SDK 모델 목록에 중복 ID가 있습니다.");
 		r.add(e);
 	}
 	return {
@@ -7998,21 +8013,21 @@ function fs(e, t) {
 		modelIds: [...r].sort()
 	};
 }
-function ps(e) {
-	return ls(e), `levels/${e}/delivery-models.json`;
+function ms(e) {
+	return us(e), `levels/${e}/delivery-models.json`;
 }
-function ms(e, t) {
-	return Di(e), new URL(ps(t), e);
+function hs(e, t) {
+	return Di(e), new URL(ms(t), e);
 }
-function hs(e) {
+function gs(e) {
 	let t = new URL(e);
 	if (!["http:", "https:"].includes(t.protocol) || t.username || t.password || t.search || t.hash) throw Error("잘못된 SDK 연결 주소입니다.");
 	let n = /^(.*\/)levels\/([^/]+)\/delivery-models\.json$/.exec(t.pathname), r = /^(.*\/)levels\/([^/]+)\/([^/]+)\/delivery-head\.json$/.exec(t.pathname), i = n ?? r;
 	if (!i) throw Error("SDK 연결 주소 또는 게시본 주소를 확인하세요.");
 	let a = i[2];
-	ls(a);
+	us(a);
 	let o = r?.[3];
-	return o !== void 0 && ls(o), t.pathname = i[1], Di(t), {
+	return o !== void 0 && us(o), t.pathname = i[1], Di(t), {
 		base: t,
 		publication: {
 			scope: a,
@@ -8020,23 +8035,23 @@ function hs(e) {
 		}
 	};
 }
-var gs = {
+var _s = {
 	version: 1,
 	url: "http://220.93.169.225:9041/twin-assets/test-upload/levels/development/delivery-models.json",
 	modelIds: ["17a6033c-1cdf-47f0-beee-e5cd7c027926"]
 };
 //#endregion
 //#region src/delivery/DeliverySource.ts
-function _s(e = gs) {
-	let t = ds(e);
+function vs(e = _s) {
+	let t = fs(e);
 	if (!t.url) throw Error("이 SDK 배포본에 기본 저장소가 설정되지 않았습니다.");
-	return new Ds(new URL(t.url), void 0, t.modelIds);
+	return new Os(new URL(t.url), void 0, t.modelIds);
 }
-var vs = /^(objects\/[a-f0-9]{64}|releases\/[a-f0-9]{64}\.json)$/, ys = 256;
-function bs(e) {
+var ys = /^(objects\/[a-f0-9]{64}|releases\/[a-f0-9]{64}\.json)$/, bs = 256;
+function xs(e) {
 	return e instanceof Error && e.name === "NotFoundError";
 }
-async function xs(e, t, n) {
+async function Ss(e, t, n) {
 	n.throwIfAborted();
 	let r = await e.getFile();
 	if (n.throwIfAborted(), !Number.isSafeInteger(t) || t < 0 || r.size > t) throw Error("청크 파일 크기 제한을 초과했습니다.");
@@ -8044,32 +8059,32 @@ async function xs(e, t, n) {
 	if (n.throwIfAborted(), i.length > t) throw Error("청크 파일 크기 제한을 초과했습니다.");
 	return i;
 }
-function Ss(e) {
-	if (e.length > ys) throw Error("잘못된 게시본 head입니다.");
+function Cs(e) {
+	if (e.length > bs) throw Error("잘못된 게시본 head입니다.");
 	let t = JSON.parse(new TextDecoder("utf-8", { fatal: !0 }).decode(e));
 	if (!t || typeof t != "object" || Object.keys(t).join() !== "hash" || !Xn(t.hash)) throw Error("잘못된 게시본 head입니다.");
 	return t.hash;
 }
-async function Cs(e, t) {
+async function ws(e, t) {
 	try {
-		return Ss(await xs(await e.getFileHandle("delivery-head.json"), ys, t));
+		return Cs(await Ss(await e.getFileHandle("delivery-head.json"), bs, t));
 	} catch (e) {
-		if (bs(e)) return null;
+		if (xs(e)) return null;
 		throw e;
 	}
 }
-function ws(e, t) {
+function Ts(e, t) {
 	return {
 		authorize: t,
 		async read(n, r, i) {
-			if (!vs.test(n)) throw Error("허용되지 않은 청크 경로입니다.");
+			if (!ys.test(n)) throw Error("허용되지 않은 청크 경로입니다.");
 			i.throwIfAborted(), await t?.(i);
 			let a = n.indexOf("/"), o = n.slice(0, a), s = n.slice(a + 1);
-			return xs(await (await e.getDirectoryHandle(o)).getFileHandle(s), r, i);
+			return Ss(await (await e.getDirectoryHandle(o)).getFileHandle(s), r, i);
 		}
 	};
 }
-async function Ts(e, t, n, r) {
+async function Es(e, t, n, r) {
 	let i = await new Oi(t).manifest(e, n);
 	if (r !== void 0 && i.id !== r) throw Error("게시 경로와 통합레벨 ID가 다릅니다.");
 	return {
@@ -8081,12 +8096,12 @@ async function Ts(e, t, n, r) {
 		provider: t
 	};
 }
-var Es = class {
+var Ds = class {
 	directory;
 	scope;
 	constructor(e, t = {}) {
 		if (this.directory = e, !e || e.kind !== "directory") throw Error("청크 폴더를 선택하세요.");
-		this.scope = t.scope ?? "development", ls(this.scope);
+		this.scope = t.scope ?? "development", us(this.scope);
 	}
 	authorize = async (e) => {
 		if (e.throwIfAborted(), this.directory.queryPermission && await this.directory.queryPermission({ mode: "read" }) !== "granted") throw Error("청크 폴더 읽기 권한이 필요합니다. 폴더를 다시 선택하세요.");
@@ -8094,15 +8109,15 @@ var Es = class {
 	};
 	async plain(e) {
 		await this.authorize(e);
-		let t = await Cs(this.directory, e);
-		return t ? Ts(t, ws(this.directory, this.authorize), e) : null;
+		let t = await ws(this.directory, e);
+		return t ? Es(t, Ts(this.directory, this.authorize), e) : null;
 	}
 	async publication() {
 		let e;
 		try {
 			e = await this.directory.getDirectoryHandle("levels");
 		} catch (t) {
-			if (!bs(t)) throw t;
+			if (!xs(t)) throw t;
 			e = this.directory;
 		}
 		return {
@@ -8118,53 +8133,53 @@ var Es = class {
 		let i = [];
 		for await (let t of r.values()) {
 			if (e.throwIfAborted(), t.kind !== "directory" || t.name === ".dtwe-connection-check") continue;
-			ls(t.name);
-			let a = await Cs(await r.getDirectoryHandle(t.name), e);
+			us(t.name);
+			let a = await ws(await r.getDirectoryHandle(t.name), e);
 			if (a) {
 				if (i.length >= 256) throw Error("게시 구역의 모델 수가 SDK 목록 제한을 초과했습니다.");
-				i.push((await Ts(a, ws(n, this.authorize), e, t.name)).model);
+				i.push((await Es(a, Ts(n, this.authorize), e, t.name)).model);
 			}
 		}
 		return i.sort((e, t) => e.id.localeCompare(t.id));
 	}
 	async resolve(e, t = new AbortController().signal) {
-		ls(e);
+		us(e);
 		let n = await this.plain(t);
 		if (n) {
 			if (n.model.id !== e) throw Error("이 청크 폴더에 해당 통합레벨이 없습니다.");
 			return n;
 		}
-		let { shared: r, scope: i } = await this.publication(), a = await Cs(await i.getDirectoryHandle(e), t);
+		let { shared: r, scope: i } = await this.publication(), a = await ws(await i.getDirectoryHandle(e), t);
 		if (!a) throw Error("아직 게시 완료된 head가 없습니다.");
-		return Ts(a, ws(r, this.authorize), t, e);
+		return Es(a, Ts(r, this.authorize), t, e);
 	}
 	async latestRelease(e, t = new AbortController().signal) {
-		ls(e), await this.authorize(t);
-		let n = await Cs(this.directory, t);
+		us(e), await this.authorize(t);
+		let n = await ws(this.directory, t);
 		if (n) return n;
-		let { scope: r } = await this.publication(), i = await Cs(await r.getDirectoryHandle(e), t);
+		let { scope: r } = await this.publication(), i = await ws(await r.getDirectoryHandle(e), t);
 		if (!i) throw Error("아직 게시 완료된 head가 없습니다.");
 		return i;
 	}
-}, Ds = class {
+}, Os = class {
 	base;
 	publication;
 	provider;
 	knownModelIds;
 	constructor(e, t, n = []) {
-		if (!t && /\/(delivery-models|delivery-head)\.json$/.test(e.pathname) && ({base: e, publication: t} = hs(e)), this.base = new URL(e), Di(this.base), t) {
+		if (!t && /\/(delivery-models|delivery-head)\.json$/.test(e.pathname) && ({base: e, publication: t} = gs(e)), this.base = new URL(e), Di(this.base), t) {
 			if (!["scope", "compositionId,scope"].includes(Object.keys(t).sort().join())) throw Error("원격 게시 구역과 통합레벨 ID를 확인하세요.");
-			ls(t.scope), t.compositionId !== void 0 && ls(t.compositionId), this.publication = Object.freeze({ ...t }), this.provider = Di(new URL("levels/", this.base));
+			us(t.scope), t.compositionId !== void 0 && us(t.compositionId), this.publication = Object.freeze({ ...t }), this.provider = Di(new URL("levels/", this.base));
 		} else this.provider = Di(this.base);
 		if (n.length && (!this.publication || this.publication.compositionId)) throw Error("기본 모델 목록에는 게시 구역 연결이 필요합니다.");
-		this.knownModelIds = this.publication ? fs({
+		this.knownModelIds = this.publication ? ps({
 			version: 1,
 			scope: this.publication.scope,
 			modelIds: n
 		}, this.publication.scope).modelIds : [];
 	}
 	get connectionUrl() {
-		return this.publication ? this.publication.compositionId ? new URL(`levels/${this.publication.scope}/${this.publication.compositionId}/delivery-head.json`, this.base) : ms(this.base, this.publication.scope) : this.base;
+		return this.publication ? this.publication.compositionId ? new URL(`levels/${this.publication.scope}/${this.publication.compositionId}/delivery-head.json`, this.base) : hs(this.base, this.publication.scope) : this.base;
 	}
 	async read(e, t, n) {
 		let r = await fetch(e, {
@@ -8189,25 +8204,25 @@ var Es = class {
 		}
 	}
 	async current(e, t = this.publication?.compositionId) {
-		return Ts(t ? await this.latestRelease(t, e) : Ss(await this.read(new URL("delivery-head.json", this.base), ys, e)), this.provider, e, t);
+		return Es(t ? await this.latestRelease(t, e) : Cs(await this.read(new URL("delivery-head.json", this.base), bs, e)), this.provider, e, t);
 	}
 	async latestRelease(e, t = new AbortController().signal) {
-		if (ls(e), this.publication?.compositionId && e !== this.publication.compositionId) throw Error("정적 청크 주소의 통합레벨 ID가 다릅니다.");
+		if (us(e), this.publication?.compositionId && e !== this.publication.compositionId) throw Error("정적 청크 주소의 통합레벨 ID가 다릅니다.");
 		let n = this.publication ? `levels/${this.publication.scope}/${e}/delivery-head.json` : "delivery-head.json";
-		return Ss(await this.read(new URL(n, this.base), ys, t));
+		return Cs(await this.read(new URL(n, this.base), bs, t));
 	}
 	async listModelIds(e = new AbortController().signal) {
 		if (!this.publication || this.publication.compositionId) throw Error("게시 구역 모델 목록 연결이 필요합니다.");
 		let t;
 		try {
-			t = await this.read(this.connectionUrl, us, e);
+			t = await this.read(this.connectionUrl, ds, e);
 		} catch (t) {
 			if (e.aborted) throw t;
 			if (t instanceof Error && "status" in t && t.status === 404) return [...this.knownModelIds];
 			throw Error("SDK 모델 목록을 읽지 못했습니다. 주소·읽기 권한·CORS를 확인하세요.", { cause: t });
 		}
-		let n = fs(JSON.parse(new TextDecoder("utf-8", { fatal: !0 }).decode(t)), this.publication.scope).modelIds;
-		return fs({
+		let n = ps(JSON.parse(new TextDecoder("utf-8", { fatal: !0 }).decode(t)), this.publication.scope).modelIds;
+		return ps({
 			version: 1,
 			scope: this.publication.scope,
 			modelIds: [.../* @__PURE__ */ new Set([...n, ...this.knownModelIds])]
@@ -8230,12 +8245,12 @@ var Es = class {
 		return n;
 	}
 	async resolve(e, t = new AbortController().signal) {
-		ls(e);
+		us(e);
 		let n = await this.current(t, this.publication ? e : void 0);
 		if (n.model.id !== e) throw Error("정적 청크 주소의 통합레벨 ID가 다릅니다.");
 		return n;
 	}
-}, Os = class {
+}, ks = class {
 	owner;
 	target;
 	generation;
@@ -8290,12 +8305,12 @@ var Es = class {
 		}, r = this.owner.subscribe(n);
 		return n(), r;
 	}
-}, ks = class {
+}, As = class {
 	options;
 	viewport;
 	scripts = {
 		list: () => this.scriptList(),
-		get: (e) => (this.live(), new Os({
+		get: (e) => (this.live(), new ks({
 			snapshot: (e, t) => this.scriptSnapshot(e, t),
 			change: (e, t) => this.applyAddonProperties(e, t),
 			subscribe: (e) => this.subscribeScripts(e)
@@ -8326,10 +8341,10 @@ var Es = class {
 	selected = null;
 	cleanup;
 	constructor(e) {
-		this.options = e, this.source = e.source ?? _s();
+		this.options = e, this.source = e.source ?? vs();
 		let t = typeof e.autoUpdate == "object" ? e.autoUpdate.intervalMs ?? 5e3 : 5e3;
 		if (!Number.isSafeInteger(t) || t < 1e3 || t > 3e5) throw Error("자동 갱신 간격은 1000~300000ms여야 합니다.");
-		this.updateInterval = t, this.update = { state: e.autoUpdate === !1 ? "disabled" : "stopped" }, this.cache = e.cache ?? new Ei(), this.viewport = new ss(e.canvas, this.createReader({ read: async () => {
+		this.updateInterval = t, this.update = { state: e.autoUpdate === !1 ? "disabled" : "stopped" }, this.cache = e.cache ?? new Ei(), this.viewport = new cs(e.canvas, this.createReader({ read: async () => {
 			throw Error("먼저 게시본을 여세요.");
 		} }), e.budget), e.onProgress && this.progressListeners.add(e.onProgress), e.onActorSelect && this.actorListeners.add(e.onActorSelect), this.cleanup = [
 			this.viewport.session.subscribe(() => {
@@ -8417,7 +8432,7 @@ var Es = class {
 			if (n.throwIfAborted(), this.live(), !Array.isArray(e) || e.length > 256) throw Error("잘못된 모델 목록입니다.");
 			let t = /* @__PURE__ */ new Set();
 			for (let n of e) {
-				if (ls(n.id), t.has(n.id) || !Xn(n.releaseHash) || typeof n.name != "string" || !n.name.trim() || n.name.length > 256) throw Error("잘못된 모델 목록입니다.");
+				if (us(n.id), t.has(n.id) || !Xn(n.releaseHash) || typeof n.name != "string" || !n.name.trim() || n.name.length > 256) throw Error("잘못된 모델 목록입니다.");
 				t.add(n.id);
 			}
 			return e.map((e) => ({
@@ -8430,7 +8445,7 @@ var Es = class {
 		}
 	}
 	async open(e, t = {}) {
-		this.live(), ls(e), this.cancel();
+		this.live(), us(e), this.cancel();
 		let n = ++this.generation, r = new AbortController();
 		this.operation = r;
 		let i = t.signal ? AbortSignal.any([r.signal, t.signal]) : r.signal, a = () => {
@@ -8623,10 +8638,95 @@ var Es = class {
 	async dispose() {
 		this.disposed || (this.stopWatching(), this.operation?.abort(/* @__PURE__ */ Error("SDK 연결이 종료되었습니다.")), this.listings.forEach((e) => e.abort()), this.disposed = !0, this.generation++, this.status = "disposed", this.cleanup.forEach((e) => e()), this.progressListeners.clear(), this.actorListeners.clear(), this.scriptListeners.clear(), await this.viewport.dispose(), this.binding = void 0, this.selected = null);
 	}
-};
+}, js = "levels/delivery-connections.json";
+function Ms(e) {
+	let t = new URL(e);
+	if (!["http:", "https:"].includes(t.protocol) || t.username || t.password || t.search || t.hash || t.pathname !== "/") throw Error("연결 주소에는 http(s)://호스트:포트만 입력하세요.");
+	return t.origin;
+}
+function Ns(e) {
+	if (!e || Object.keys(e).sort().join() !== "bucket,prefix,scopes" || typeof e.bucket != "string" || !/^[a-zA-Z0-9][a-zA-Z0-9._-]{0,62}$/.test(e.bucket) || typeof e.prefix != "string" || e.prefix.length > 512 || !Array.isArray(e.scopes) || e.scopes.length > 256) throw Error("잘못된 공개 저장소 목록입니다.");
+	for (let t of e.prefix ? e.prefix.split("/") : []) if (!/^[a-zA-Z0-9][a-zA-Z0-9._-]*$/.test(t)) throw Error("잘못된 저장소 경로입니다.");
+	if (e.scopes.forEach(us), new Set(e.scopes).size !== e.scopes.length) throw Error("중복된 게시 구역입니다.");
+	return {
+		bucket: e.bucket,
+		prefix: e.prefix,
+		scopes: [...e.scopes].sort()
+	};
+}
+function Ps(e) {
+	let t = e;
+	if (!t || Object.keys(t).sort().join() !== "locations,version" || t.version !== 1 || !Array.isArray(t.locations) || t.locations.length > 100) throw Error("잘못된 공개 연결 목록입니다.");
+	let n = t.locations.map(Ns), r = n.map((e) => JSON.stringify([e.bucket, e.prefix]));
+	if (new Set(r).size !== r.length) throw Error("중복된 저장소 경로입니다.");
+	return {
+		version: 1,
+		locations: n.sort((e, t) => e.bucket.localeCompare(t.bucket) || e.prefix.localeCompare(t.prefix))
+	};
+}
+function Fs(...e) {
+	let t = /* @__PURE__ */ new Map();
+	for (let n of e) for (let e of Ps(n).locations) {
+		let n = JSON.stringify([e.bucket, e.prefix]), r = t.get(n);
+		t.set(n, {
+			...e,
+			scopes: [.../* @__PURE__ */ new Set([...r?.scopes ?? [], ...e.scopes])].sort()
+		});
+	}
+	return Ps({
+		version: 1,
+		locations: [...t.values()]
+	});
+}
+function Is(e) {
+	let t = Ms(e.endpoint), n = Ns({
+		bucket: e.bucket,
+		prefix: e.prefix,
+		scopes: [e.scope]
+	});
+	return hs(new URL(`/${n.bucket}/${n.prefix ? n.prefix + "/" : ""}`, t), e.scope);
+}
+function Ls(e) {
+	let { base: t, publication: n } = gs(e), r = t.pathname.slice(1).split("/"), i = r.shift();
+	r.at(-1) === "" && r.pop();
+	let a = {
+		endpoint: t.origin,
+		bucket: i,
+		prefix: r.join("/"),
+		scope: n.scope
+	};
+	return Is(a), a;
+}
+function Rs(e) {
+	return `${e.endpoint} / ${e.bucket} / ${e.prefix || "(루트)"} / ${e.scope}`;
+}
+async function zs(e, t) {
+	let n = new URL(js, new URL("./../../", Is(e))), r = await fetch(n, {
+		signal: AbortSignal.any([t, AbortSignal.timeout(15e3)]),
+		credentials: "omit",
+		redirect: "error",
+		cache: "no-store"
+	});
+	if (!r.ok || !r.body) throw await r.body?.cancel(), Error(`연결 목록 읽기 실패 (${r.status}) · 편집기에서 SDK 연결 목록 갱신과 공개 읽기/CORS를 확인하세요.`);
+	let i = r.body.getReader(), a = [], o = 0;
+	try {
+		for (;;) {
+			t.throwIfAborted();
+			let { done: e, value: n } = await i.read();
+			if (e) break;
+			if (o += n.length, o > 65536) throw Error("공개 연결 목록 크기 제한을 초과했습니다.");
+			a.push(n);
+		}
+	} finally {
+		await i.cancel().catch(() => {}), i.releaseLock();
+	}
+	let s = new Uint8Array(o), c = 0;
+	for (let e of a) s.set(e, c), c += e.length;
+	return Ps(JSON.parse(new TextDecoder("utf-8", { fatal: !0 }).decode(s)));
+}
 //#endregion
 //#region src/delivery/ActorReview.ts
-function As(e, t) {
+function Bs(e, t) {
 	let n = /* @__PURE__ */ new Map(), r = (e) => {
 		let i = t.assets.find((t) => t.id === e.assetId);
 		if (!i) throw Error("Missing actor asset");
@@ -8647,12 +8747,12 @@ function As(e, t) {
 		revision: t.revisions.find((t) => t.assetId === e && t.id === n)
 	}));
 }
-async function js(e, t, n = new AbortController().signal) {
+async function Vs(e, t, n = new AbortController().signal) {
 	let r = await e.manifest(t, n), i = await e.actors(t, n, r), a = /* @__PURE__ */ new Map(), o = new Map(r.files.map((e) => [e.hash, e]));
 	for (let t of r.levels) a.set(t.hash, Ti(JSON.parse(new TextDecoder().decode(await e.file(o.get(t.hash), n))), t, o));
 	let s = [];
 	for (let e of i.actors) {
-		let t = e.levelHash ? a.get(e.levelHash) : null, n = structuredClone(t ? t.envelope.payload.actors.find((t) => t.id === e.actorId) : it(r.objects.find((t) => t.id === e.actorId))), i = As(n, t?.assets ?? {
+		let t = e.levelHash ? a.get(e.levelHash) : null, n = structuredClone(t ? t.envelope.payload.actors.find((t) => t.id === e.actorId) : it(r.objects.find((t) => t.id === e.actorId))), i = Bs(n, t?.assets ?? {
 			assets: [],
 			revisions: [],
 			folders: []
@@ -8701,13 +8801,13 @@ async function js(e, t, n = new AbortController().signal) {
 		levels: a
 	};
 }
-var Ms = (e, t) => new TextDecoder().decode(P(e)) === new TextDecoder().decode(P(t));
-function Ns(e, t) {
+var Hs = (e, t) => new TextDecoder().decode(P(e)) === new TextDecoder().decode(P(t));
+function Us(e, t) {
 	if (e && e.manifest.id !== t.manifest.id) throw Error("Different composition identities");
 	let n = new Map(e?.actors.map((e) => [e.key, e])), r = new Map(t.actors.map((e) => [e.key, e]));
 	return [.../* @__PURE__ */ new Set([...n.keys(), ...r.keys()])].sort().map((e) => {
 		let t = n.get(e), i = r.get(e), a = t ? i ? t.contentHash === i.contentHash ? "unchanged" : "changed" : "removed" : "added", o = [];
-		return t && i && a === "changed" && (t.actor.name !== i.actor.name && o.push("name"), Ms(t.placement.folder, i.placement.folder) || o.push("folder"), Ms(t.placement.worldMatrix, i.placement.worldMatrix) || o.push("transform"), Ms(t.actor.components, i.actor.components) || o.push("components"), Ms(t.dependencies, i.dependencies) || o.push("dependencies"), o.length || o.push("assets_or_placement")), {
+		return t && i && a === "changed" && (t.actor.name !== i.actor.name && o.push("name"), Hs(t.placement.folder, i.placement.folder) || o.push("folder"), Hs(t.placement.worldMatrix, i.placement.worldMatrix) || o.push("transform"), Hs(t.actor.components, i.actor.components) || o.push("components"), Hs(t.dependencies, i.dependencies) || o.push("dependencies"), o.length || o.push("assets_or_placement")), {
 			key: e,
 			kind: a,
 			before: t,
@@ -8718,7 +8818,7 @@ function Ns(e, t) {
 }
 //#endregion
 //#region src/delivery/HostBindings.ts
-function Ps(e) {
+function Ws(e) {
 	if (e.version !== 1 || typeof e.revision != "string" || !e.revision || e.revision.length > 200 || !Array.isArray(e.bindings) || e.bindings.length > 1e5 || P(e).length > 16 * 1024 ** 2 || Object.keys(e).sort().join() !== "bindings,revision,version") throw Error("Invalid host binding snapshot");
 	let t = /* @__PURE__ */ new Set();
 	for (let n of e.bindings) {
@@ -8747,16 +8847,16 @@ function Ps(e) {
 	}
 	return structuredClone(e);
 }
-function Fs(e, t) {
-	let n = Ps(t), r = new Map(e.actors.map((e) => [e.serviceKey, e]));
+function Gs(e, t) {
+	let n = Ws(t), r = new Map(e.actors.map((e) => [e.serviceKey, e]));
 	return n.bindings.map((e) => ({
 		key: e.key,
 		componentId: e.componentId,
 		status: r.has(e.key) ? e.componentId !== null && !r.get(e.key).components.some((t) => t.id === e.componentId) ? "orphan_component" : "bound" : "orphan_actor"
 	}));
 }
-function Is(e, t) {
-	let n = Fs(e, t), r = /* @__PURE__ */ new Set();
+function Ks(e, t) {
+	let n = Gs(e, t), r = /* @__PURE__ */ new Set();
 	for (let i of t.bindings.filter((e) => e.presentation)) {
 		if (n.find((e) => e.key === i.key && e.componentId === i.componentId)?.status !== "bound") continue;
 		let t = e.actors.find((e) => e.serviceKey === i.key), a = i.componentId ?? t.rootComponentId, o = /* @__PURE__ */ new Set([a]);
@@ -8775,7 +8875,7 @@ function Is(e, t) {
 		}
 	}
 }
-function Ls(e, t) {
+function qs(e, t) {
 	let n = e.position.clone(), r = e.visible, i = [];
 	return t.positionMeters && e.position.fromArray(t.positionMeters), t.visible !== void 0 && (e.visible = t.visible), t.color !== void 0 && e.traverse((e) => {
 		if (!(e instanceof M)) return;
@@ -8793,11 +8893,11 @@ function Ls(e, t) {
 		for (let e of i) e.mesh.material = e.original, e.copies.forEach((e) => e.dispose());
 	};
 }
-function Rs(e, t) {
-	let n = Ps(t), r = [], i = !1, a = [], o = () => {
+function Js(e, t) {
+	let n = Ws(t), r = [], i = !1, a = [], o = () => {
 		let t = e.session.actors;
 		if (t && !i) {
-			Is(t, n), a.splice(0).reverse().forEach((e) => e()), r = Fs(t, n);
+			Ks(t, n), a.splice(0).reverse().forEach((e) => e()), r = Gs(t, n);
 			for (let i of n.bindings) {
 				if (!i.presentation || r.find((e) => e.key === i.key && e.componentId === i.componentId)?.status !== "bound") continue;
 				let n = t.actors.find((e) => e.serviceKey === i.key), o = n.mountId === null ? e.session.objectViews.find((e) => e.actorId === n.actorId) : e.session.views.filter((e) => e.root.userData.deliveryMountId === n.mountId).flatMap((e) => e.projections).find((e) => e.actorId === n.actorId);
@@ -8805,7 +8905,7 @@ function Rs(e, t) {
 				let s = i.componentId === null || i.componentId === n.rootComponentId ? o.object : void 0;
 				s || o.object.traverse((e) => {
 					e.userData.componentId === i.componentId && (s = e);
-				}), s && a.push(Ls(s, i.presentation));
+				}), s && a.push(qs(s, i.presentation));
 			}
 			e.invalidate();
 		}
@@ -8818,7 +8918,7 @@ function Rs(e, t) {
 		},
 		update(e) {
 			let t = n;
-			n = Ps(e);
+			n = Ws(e);
 			try {
 				o();
 			} catch (e) {
@@ -8832,7 +8932,7 @@ function Rs(e, t) {
 }
 //#endregion
 //#region node_modules/.pnpm/react@19.3.0/node_modules/react/cjs/react.production.js
-var zs = /* @__PURE__ */ e(((e) => {
+var Ys = /* @__PURE__ */ e(((e) => {
 	var t = Symbol.for("react.transitional.element"), n = Symbol.for("react.portal"), r = Symbol.for("react.fragment"), i = Symbol.for("react.strict_mode"), a = Symbol.for("react.profiler"), o = Symbol.for("react.consumer"), s = Symbol.for("react.context"), c = Symbol.for("react.forward_ref"), l = Symbol.for("react.suspense"), u = Symbol.for("react.memo"), d = Symbol.for("react.lazy"), f = Symbol.for("react.activity"), p = Symbol.for("react.view_transition"), m = Symbol.iterator;
 	function h(e) {
 		return typeof e != "object" || !e ? null : (e = m && e[m] || e["@@iterator"], typeof e == "function" ? e : null);
@@ -9127,9 +9227,9 @@ var zs = /* @__PURE__ */ e(((e) => {
 	}, e.useTransition = function() {
 		return w.H.useTransition();
 	}, e.version = "19.3.0";
-})), Bs = /* @__PURE__ */ e(((e, t) => {
-	t.exports = zs();
-})), Vs = /* @__PURE__ */ e(((e) => {
+})), Xs = /* @__PURE__ */ e(((e, t) => {
+	t.exports = Ys();
+})), Zs = /* @__PURE__ */ e(((e) => {
 	var t = Symbol.for("react.transitional.element"), n = Symbol.for("react.fragment");
 	function r(e, n, r) {
 		var i = null;
@@ -9144,10 +9244,10 @@ var zs = /* @__PURE__ */ e(((e) => {
 		};
 	}
 	e.Fragment = n, e.jsx = r, e.jsxs = r;
-})), Hs = /* @__PURE__ */ e(((e, t) => {
-	t.exports = Vs();
-})), U = Bs(), W = Hs();
-function Us({ value: e, validate: t, onCommit: n, label: r = "테스트 값", parse: i, type: a, scrubRange: o, mixed: s = !1 }) {
+})), Qs = /* @__PURE__ */ e(((e, t) => {
+	t.exports = Zs();
+})), U = Xs(), W = Qs();
+function $s({ value: e, validate: t, onCommit: n, label: r = "테스트 값", parse: i, type: a, scrubRange: o, mixed: s = !1 }) {
 	let [c, l] = (0, U.useState)(null), [u, d] = (0, U.useState)(!1), f = (0, U.useRef)(null), p = (0, U.useRef)(null), m = (0, U.useRef)(null), h = () => {
 		let e = m.current;
 		m.current = null, e?.input.hasPointerCapture(e.id) && e.input.releasePointerCapture(e.id), p.current !== null && clearTimeout(p.current), p.current = null, f.current = null, l(null), d(!1);
@@ -9228,8 +9328,8 @@ function Us({ value: e, validate: t, onCommit: n, label: r = "테스트 값", pa
 		}
 	});
 }
-function Ws(e) {
-	return /* @__PURE__ */ (0, W.jsx)(Us, {
+function ec(e) {
+	return /* @__PURE__ */ (0, W.jsx)($s, {
 		...e,
 		type: "number",
 		parse: (e) => e.trim() === "" ? NaN : Number(e)
@@ -9237,7 +9337,7 @@ function Ws(e) {
 }
 //#endregion
 //#region node_modules/.pnpm/scheduler@0.28.0/node_modules/scheduler/cjs/scheduler.production.js
-var Gs = /* @__PURE__ */ e(((e) => {
+var tc = /* @__PURE__ */ e(((e) => {
 	function t(e, t) {
 		var n = e.length;
 		e.push(t);
@@ -9436,10 +9536,10 @@ var Gs = /* @__PURE__ */ e(((e) => {
 			}
 		};
 	};
-})), Ks = /* @__PURE__ */ e(((e, t) => {
-	t.exports = Gs();
-})), qs = /* @__PURE__ */ e(((e) => {
-	var t = Bs();
+})), nc = /* @__PURE__ */ e(((e, t) => {
+	t.exports = tc();
+})), rc = /* @__PURE__ */ e(((e) => {
+	var t = Xs();
 	function n(e) {
 		var t = "https://react.dev/errors/" + e;
 		if (1 < arguments.length) {
@@ -9566,7 +9666,7 @@ var Gs = /* @__PURE__ */ e(((e) => {
 	}, e.useFormStatus = function() {
 		return l.H.useHostTransitionStatus();
 	}, e.version = "19.3.0";
-})), Js = /* @__PURE__ */ e(((e, t) => {
+})), ic = /* @__PURE__ */ e(((e, t) => {
 	function n() {
 		if (!(typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ > "u" || typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.checkDCE != "function")) try {
 			__REACT_DEVTOOLS_GLOBAL_HOOK__.checkDCE(n);
@@ -9574,9 +9674,9 @@ var Gs = /* @__PURE__ */ e(((e) => {
 			console.error(e);
 		}
 	}
-	n(), t.exports = qs();
-})), Ys = /* @__PURE__ */ e(((e) => {
-	var t = Ks(), n = Bs(), r = Js();
+	n(), t.exports = rc();
+})), ac = /* @__PURE__ */ e(((e) => {
+	var t = nc(), n = Xs(), r = ic();
 	function i(e) {
 		var t = "https://react.dev/errors/" + e;
 		if (1 < arguments.length) {
@@ -12390,7 +12490,7 @@ var Gs = /* @__PURE__ */ e(((e) => {
 			n === null ? t.events = [e] : n.push(e);
 		}
 	}
-	function Vs(e) {
+	function Bs(e) {
 		var t = is().memoizedState;
 		return zs({
 			ref: t,
@@ -12400,13 +12500,13 @@ var Gs = /* @__PURE__ */ e(((e) => {
 			return t.impl.apply(void 0, arguments);
 		};
 	}
-	function Hs(e, t) {
+	function Vs(e, t) {
 		return Is(4, 2, e, t);
 	}
-	function U(e, t) {
+	function Hs(e, t) {
 		return Is(4, 4, e, t);
 	}
-	function W(e, t) {
+	function Us(e, t) {
 		if (typeof t == "function") {
 			e = e();
 			var n = t(e);
@@ -12418,11 +12518,11 @@ var Gs = /* @__PURE__ */ e(((e) => {
 			t.current = null;
 		};
 	}
-	function Us(e, t, n) {
-		n = n == null ? null : n.concat([e]), Is(4, 4, W.bind(null, t, e), n);
+	function Ws(e, t, n) {
+		n = n == null ? null : n.concat([e]), Is(4, 4, Us.bind(null, t, e), n);
 	}
-	function Ws() {}
-	function Gs(e, t) {
+	function Gs() {}
+	function Ks(e, t) {
 		var n = is();
 		t = t === void 0 ? null : t;
 		var r = n.memoizedState;
@@ -12443,11 +12543,11 @@ var Gs = /* @__PURE__ */ e(((e) => {
 		}
 		return n.memoizedState = [r, t], r;
 	}
-	function Ys(e, t, n) {
+	function Js(e, t, n) {
 		return n === void 0 || zo & 1073741824 && !(Y & 261930) ? e.memoizedState = t : (e.memoizedState = n, e = Md(), V.lanes |= e, od |= e, n);
 	}
-	function Xs(e, t, n, r) {
-		return Ur(n, t) ? n : Co.current === null ? !(zo & 106) || zo & 1073741824 && !(Y & 261930) ? (Mc = !0, e.memoizedState = n) : (e = Md(), V.lanes |= e, od |= e, t) : (e = Ys(e, n, r), Ur(e, t) || (Mc = !0), e);
+	function Ys(e, t, n, r) {
+		return Ur(n, t) ? n : Co.current === null ? !(zo & 106) || zo & 1073741824 && !(Y & 261930) ? (Mc = !0, e.memoizedState = n) : (e = Md(), V.lanes |= e, od |= e, t) : (e = Js(e, n, r), Ur(e, t) || (Mc = !0), e);
 	}
 	function Zs(e, t, n, r, i) {
 		var a = O.p;
@@ -12468,14 +12568,14 @@ var Gs = /* @__PURE__ */ e(((e) => {
 		}
 	}
 	function Qs() {}
-	function $s(e, t, n, r) {
+	function U(e, t, n, r) {
 		if (e.tag !== 5) throw Error(i(476));
-		var a = ec(e).queue;
+		var a = W(e).queue;
 		Zs(e, a, t, xe, n === null ? Qs : function() {
-			return tc(e), n(r);
+			return $s(e), n(r);
 		});
 	}
-	function ec(e) {
+	function W(e) {
 		var t = e.memoizedState;
 		if (t !== null) return t;
 		t = {
@@ -12506,17 +12606,17 @@ var Gs = /* @__PURE__ */ e(((e) => {
 			next: null
 		}, e.memoizedState = t, e = e.alternate, e !== null && (e.memoizedState = t), t;
 	}
-	function tc(e) {
-		var t = ec(e);
+	function $s(e) {
+		var t = W(e);
 		t.next === null && (t = e.alternate.memoizedState), cc(e, t.next.queue, {}, jd());
 	}
-	function nc() {
+	function ec() {
 		return Sa(sh);
 	}
-	function rc() {
+	function tc() {
 		return is().memoizedState;
 	}
-	function ic() {
+	function rc() {
 		return is().memoizedState;
 	}
 	function ac(e) {
@@ -12631,7 +12731,7 @@ var Gs = /* @__PURE__ */ e(((e) => {
 		useContext: Sa,
 		useEffect: Ls,
 		useImperativeHandle: function(e, t, n) {
-			n = n == null ? null : n.concat([e]), Fs(4194308, 4, W.bind(null, t, e), n);
+			n = n == null ? null : n.concat([e]), Fs(4194308, 4, Us.bind(null, t, e), n);
 		},
 		useLayoutEffect: function(e, t) {
 			return Fs(4194308, 4, e, t);
@@ -12683,9 +12783,9 @@ var Gs = /* @__PURE__ */ e(((e) => {
 			var t = e.queue, n = sc.bind(null, V, t);
 			return t.dispatch = n, [e.memoizedState, n];
 		},
-		useDebugValue: Ws,
+		useDebugValue: Gs,
 		useDeferredValue: function(e, t) {
-			return Ys(rs(), e, t);
+			return Js(rs(), e, t);
 		},
 		useTransition: function() {
 			var e = ys(!1);
@@ -12715,7 +12815,7 @@ var Gs = /* @__PURE__ */ e(((e) => {
 			} else n = qo++, t = "_" + t + "r_" + n.toString(32) + "_";
 			return e.memoizedState = t;
 		},
-		useHostTransitionStatus: nc,
+		useHostTransitionStatus: ec,
 		useFormState: Os,
 		useActionState: Os,
 		useOptimistic: function(e) {
@@ -12744,64 +12844,64 @@ var Gs = /* @__PURE__ */ e(((e) => {
 	}, hc = {
 		readContext: Sa,
 		use: ss,
-		useCallback: Gs,
+		useCallback: Ks,
 		useContext: Sa,
 		useEffect: Rs,
-		useImperativeHandle: Us,
-		useInsertionEffect: Hs,
-		useLayoutEffect: U,
+		useImperativeHandle: Ws,
+		useInsertionEffect: Vs,
+		useLayoutEffect: Hs,
 		useMemo: qs,
 		useReducer: us,
 		useRef: Ps,
 		useState: function() {
 			return us(ls);
 		},
-		useDebugValue: Ws,
+		useDebugValue: Gs,
 		useDeferredValue: function(e, t) {
-			return Xs(is(), H.memoizedState, e, t);
+			return Ys(is(), H.memoizedState, e, t);
 		},
 		useTransition: function() {
 			var e = us(ls)[0], t = is().memoizedState;
 			return [typeof e == "boolean" ? e : os(e), t];
 		},
 		useSyncExternalStore: ps,
-		useId: rc,
-		useHostTransitionStatus: nc,
+		useId: tc,
+		useHostTransitionStatus: ec,
 		useFormState: ks,
 		useActionState: ks,
 		useOptimistic: function(e, t) {
 			return bs(is(), H, e, t);
 		},
 		useMemoCache: cs,
-		useCacheRefresh: ic,
-		useEffectEvent: Vs
+		useCacheRefresh: rc,
+		useEffectEvent: Bs
 	}, gc = {
 		readContext: Sa,
 		use: ss,
-		useCallback: Gs,
+		useCallback: Ks,
 		useContext: Sa,
 		useEffect: Rs,
-		useImperativeHandle: Us,
-		useInsertionEffect: Hs,
-		useLayoutEffect: U,
+		useImperativeHandle: Ws,
+		useInsertionEffect: Vs,
+		useLayoutEffect: Hs,
 		useMemo: qs,
 		useReducer: fs,
 		useRef: Ps,
 		useState: function() {
 			return fs(ls);
 		},
-		useDebugValue: Ws,
+		useDebugValue: Gs,
 		useDeferredValue: function(e, t) {
 			var n = is();
-			return H === null ? Ys(n, e, t) : Xs(n, H.memoizedState, e, t);
+			return H === null ? Js(n, e, t) : Ys(n, H.memoizedState, e, t);
 		},
 		useTransition: function() {
 			var e = fs(ls)[0], t = is().memoizedState;
 			return [typeof e == "boolean" ? e : os(e), t];
 		},
 		useSyncExternalStore: ps,
-		useId: rc,
-		useHostTransitionStatus: nc,
+		useId: tc,
+		useHostTransitionStatus: ec,
 		useFormState: Ms,
 		useActionState: Ms,
 		useOptimistic: function(e, t) {
@@ -12809,8 +12909,8 @@ var Gs = /* @__PURE__ */ e(((e) => {
 			return H === null ? (n.baseState = e, [e, n.queue.dispatch]) : bs(n, H, e, t);
 		},
 		useMemoCache: cs,
-		useCacheRefresh: ic,
-		useEffectEvent: Vs
+		useCacheRefresh: rc,
+		useEffectEvent: Bs
 	};
 	function _c(e, t, n, r) {
 		t = e.memoizedState, n = n(r, t), n = n == null ? t : C({}, t, n), e.memoizedState = n, e.lanes === 0 && (e.updateQueue.baseState = n);
@@ -15633,14 +15733,14 @@ var Gs = /* @__PURE__ */ e(((e) => {
 						if (r.defaultPrevented) {
 							if (Tf !== 0) {
 								var e = new FormData(i, o);
-								$s(n, {
+								U(n, {
 									pending: !0,
 									data: e,
 									method: i.method,
 									action: a
 								}, null, e);
 							}
-						} else typeof a == "function" && (s.preventDefault(), e = new FormData(i, o), $s(n, {
+						} else typeof a == "function" && (s.preventDefault(), e = new FormData(i, o), U(n, {
 							pending: !0,
 							data: e,
 							method: i.method,
@@ -17156,7 +17256,7 @@ var Gs = /* @__PURE__ */ e(((e) => {
 	}
 	function Cm(e) {
 		var t = Rt(e);
-		t !== null && t.tag === 5 && t.type === "form" ? tc(t) : xm.r(e);
+		t !== null && t.tag === 5 && t.type === "form" ? $s(t) : xm.r(e);
 	}
 	var wm = typeof document > "u" ? null : document;
 	function Tm(e, t, n) {
@@ -17866,7 +17966,7 @@ var Gs = /* @__PURE__ */ e(((e) => {
 					break;
 				}
 				var a = Rt(n);
-				a !== null && (e.splice(t, 3), t -= 3, $s(a, {
+				a !== null && (e.splice(t, 3), t -= 3, U(a, {
 					pending: !0,
 					data: i,
 					method: n.method,
@@ -17986,7 +18086,7 @@ var Gs = /* @__PURE__ */ e(((e) => {
 		var n = !1, r = "", o = Sc, s = Cc, c = wc;
 		return t != null && (!0 === t.unstable_strictMode && (n = !0), t.identifierPrefix !== void 0 && (r = t.identifierPrefix), t.onUncaughtError !== void 0 && (o = t.onUncaughtError), t.onCaughtError !== void 0 && (s = t.onCaughtError), t.onRecoverableError !== void 0 && (c = t.onRecoverableError)), t = lh(e, 1, !1, null, null, n, r, null, o, s, c, Uh), e[kt] = t.current, Wf(e), new Wh(t);
 	};
-})), Xs = (/* @__PURE__ */ e(((e, t) => {
+})), oc = (/* @__PURE__ */ e(((e, t) => {
 	function n() {
 		if (!(typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ > "u" || typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.checkDCE != "function")) try {
 			__REACT_DEVTOOLS_GLOBAL_HOOK__.checkDCE(n);
@@ -17994,11 +18094,11 @@ var Gs = /* @__PURE__ */ e(((e) => {
 			console.error(e);
 		}
 	}
-	n(), t.exports = Ys();
+	n(), t.exports = ac();
 })))();
 //#endregion
 //#region src/ui/useMenuDismiss.ts
-function Zs() {
+function sc() {
 	let e = (0, U.useRef)(null);
 	return (0, U.useEffect)(() => {
 		let t = e.current;
@@ -18024,8 +18124,8 @@ function Zs() {
 }
 //#endregion
 //#region src/ui/ViewportToolbar.tsx
-function Qs({ children: e, className: t }) {
-	let n = Zs();
+function cc({ children: e, className: t }) {
+	let n = sc();
 	return (0, U.useEffect)(() => {
 		let e = n.current, t = e?.parentElement;
 		if (!e || !t) return;
@@ -18040,7 +18140,7 @@ function Qs({ children: e, className: t }) {
 		children: e
 	});
 }
-function $s({ name: e }) {
+function lc({ name: e }) {
 	return /* @__PURE__ */ (0, W.jsx)("svg", {
 		viewBox: "0 0 20 20",
 		"aria-hidden": "true",
@@ -18103,13 +18203,13 @@ function $s({ name: e }) {
 }
 //#endregion
 //#region src/ui/ViewportControls.tsx
-function ec(e) {
+function uc(e) {
 	let t = e.currentTarget, n = t.querySelector(":scope > div");
 	if (!t.open || !n) return;
 	let r = t.getBoundingClientRect();
 	n.style.maxHeight = `${Math.max(80, window.innerHeight - r.bottom - 16)}px`, n.style.left = `${Math.max(8, Math.min(r.left, window.innerWidth - n.offsetWidth - 8)) - r.left}px`;
 }
-function tc(e) {
+function dc(e) {
 	return {
 		perspective: "원근",
 		top: "상단",
@@ -18120,12 +18220,12 @@ function tc(e) {
 		right: "우측"
 	}[e];
 }
-function nc({ value: e, onChange: t }) {
+function fc({ value: e, onChange: t }) {
 	return /* @__PURE__ */ (0, W.jsxs)("details", {
 		className: "viewport-options-menu viewport-projection-menu",
 		children: [/* @__PURE__ */ (0, W.jsxs)("summary", {
 			"aria-label": "Viewport projection",
-			children: [/* @__PURE__ */ (0, W.jsx)($s, { name: "cube" }), tc(e)]
+			children: [/* @__PURE__ */ (0, W.jsx)(lc, { name: "cube" }), dc(e)]
 		}), /* @__PURE__ */ (0, W.jsx)("div", { children: [
 			"perspective",
 			"top",
@@ -18140,16 +18240,16 @@ function nc({ value: e, onChange: t }) {
 			onClick: (e) => {
 				t(n), e.currentTarget.closest("details")?.removeAttribute("open");
 			},
-			children: tc(n)
+			children: dc(n)
 		}, n)) })]
 	});
 }
-function rc({ value: e, onChange: t }) {
+function pc({ value: e, onChange: t }) {
 	return /* @__PURE__ */ (0, W.jsxs)("details", {
 		className: "viewport-options-menu viewport-view-menu",
 		children: [/* @__PURE__ */ (0, W.jsxs)("summary", {
 			"aria-label": "Viewport view mode",
-			children: [/* @__PURE__ */ (0, W.jsx)($s, { name: e }), e === "lit" ? "라이팅포함" : e === "unlit" ? "언릿" : "와이어"]
+			children: [/* @__PURE__ */ (0, W.jsx)(lc, { name: e }), e === "lit" ? "라이팅포함" : e === "unlit" ? "언릿" : "와이어"]
 		}), /* @__PURE__ */ (0, W.jsx)("div", { children: [
 			"lit",
 			"unlit",
@@ -18161,13 +18261,13 @@ function rc({ value: e, onChange: t }) {
 			onClick: (e) => {
 				t(n), e.currentTarget.closest("details")?.removeAttribute("open");
 			},
-			children: [/* @__PURE__ */ (0, W.jsx)($s, { name: n }), n === "lit" ? "라이팅" : n === "unlit" ? "언릿" : "와이어"]
+			children: [/* @__PURE__ */ (0, W.jsx)(lc, { name: n }), n === "lit" ? "라이팅" : n === "unlit" ? "언릿" : "와이어"]
 		}, n)) })]
 	});
 }
 //#endregion
 //#region src/ui/RenderQualityMenu.tsx
-function ic({ preset: e, status: t, disabled: n, onChange: r, children: i }) {
+function mc({ preset: e, status: t, disabled: n, onChange: r, children: i }) {
 	let a = t.state === "failed" ? t.active : e;
 	return /* @__PURE__ */ (0, W.jsxs)("details", {
 		className: "viewport-options-menu render-quality-menu",
@@ -18210,48 +18310,48 @@ function ic({ preset: e, status: t, disabled: n, onChange: r, children: i }) {
 }
 //#endregion
 //#region src/ui/editorPreferences.ts
-var ac = "dt-editor-preference-error", oc = null;
-function sc(e) {
-	oc = `설정 저장 실패: ${e instanceof Error ? e.message : String(e)}`, typeof window < "u" && window.dispatchEvent(new CustomEvent(ac, { detail: oc }));
+var hc = "dt-editor-preference-error", gc = null;
+function _c(e) {
+	gc = `설정 저장 실패: ${e instanceof Error ? e.message : String(e)}`, typeof window < "u" && window.dispatchEvent(new CustomEvent(hc, { detail: gc }));
 }
-var cc = sc, lc = {
+var vc = _c, yc = {
 	getItem: (e) => {
 		try {
 			return typeof localStorage > "u" ? null : localStorage.getItem(e);
 		} catch (e) {
-			return cc(e), null;
+			return vc(e), null;
 		}
 	},
 	setItem: (e, t) => {
 		try {
 			localStorage.setItem(e, t);
 		} catch (e) {
-			cc(e);
+			vc(e);
 		}
 	}
 };
-function uc(e, t) {
-	return t instanceof Set ? Array.isArray(e) && e.every((e) => typeof e == "string") : t === null ? e === null || typeof e == "string" : typeof t == "number" ? typeof e == "number" && Number.isFinite(e) : typeof t == "object" ? typeof e == "object" && !!e && Object.entries(t).every(([t, n]) => uc(e[t], n)) : typeof e == typeof t;
+function bc(e, t) {
+	return t instanceof Set ? Array.isArray(e) && e.every((e) => typeof e == "string") : t === null ? e === null || typeof e == "string" : typeof t == "number" ? typeof e == "number" && Number.isFinite(e) : typeof t == "object" ? typeof e == "object" && !!e && Object.entries(t).every(([t, n]) => bc(e[t], n)) : typeof e == typeof t;
 }
-function dc(e, t, n, r) {
+function xc(e, t, n, r) {
 	try {
 		let i = JSON.parse(e.getItem(t) ?? "null");
-		return (r ? r(i) : uc(i, n)) ? n instanceof Set ? new Set(i) : i : n;
+		return (r ? r(i) : bc(i, n)) ? n instanceof Set ? new Set(i) : i : n;
 	} catch {
 		return n;
 	}
 }
-function fc(e, t, n) {
+function Sc(e, t, n) {
 	e.setItem(t, JSON.stringify(n instanceof Set ? [...n] : n));
 }
 //#endregion
 //#region src/ui/appExecutionPreferences.ts
-var pc = {
+var Cc = {
 	toneMapping: m.toneMapping,
 	exposure: m.exposure,
 	fog: m.fog
 };
-function mc(e) {
+function wc(e) {
 	try {
 		return v({
 			...m,
@@ -18263,21 +18363,21 @@ function mc(e) {
 }
 //#endregion
 //#region src/ui/ScreenEffectsOptions.tsx
-function hc({ effects: e, onChange: t, disabled: n }) {
+function Tc({ effects: e, onChange: t, disabled: n }) {
 	let [r, i] = (0, U.useState)(""), a = (n) => {
 		try {
 			let r = n(e);
-			if (!mc(r)) throw Error("화면 효과 값이 허용 범위를 벗어났습니다.");
+			if (!wc(r)) throw Error("화면 효과 값이 허용 범위를 벗어났습니다.");
 			t(r), i("");
 		} catch (e) {
 			i(e instanceof Error ? e.message : String(e));
 		}
-	}, o = (t, r, o) => /* @__PURE__ */ (0, W.jsx)(Ws, {
+	}, o = (t, r, o) => /* @__PURE__ */ (0, W.jsx)(ec, {
 		label: t,
 		value: r,
 		validate: (t) => {
 			try {
-				if (!mc(o(e, t))) throw Error("화면 효과 값이 허용 범위를 벗어났습니다.");
+				if (!wc(o(e, t))) throw Error("화면 효과 값이 허용 범위를 벗어났습니다.");
 				return i(""), { ok: !0 };
 			} catch (e) {
 				return i(e instanceof Error ? e.message : String(e)), { ok: !1 };
@@ -18359,7 +18459,7 @@ function hc({ effects: e, onChange: t, disabled: n }) {
 }
 //#endregion
 //#region src/ui/EnvironmentIntensityInput.tsx
-function gc({ value: e, onCommit: t, disabled: n, ariaLabel: r }) {
+function Ec({ value: e, onCommit: t, disabled: n, ariaLabel: r }) {
 	let [i, a] = (0, U.useState)(null), [o, s] = (0, U.useState)(!1), c = (0, U.useRef)(null), l = (0, U.useRef)(null), d = () => {
 		l.current !== null && clearTimeout(l.current), l.current = null, c.current = null, a(null), s(!1);
 	};
@@ -18406,10 +18506,10 @@ function gc({ value: e, onCommit: t, disabled: n, ariaLabel: r }) {
 }
 //#endregion
 //#region src/ui/usePreference.ts
-function _c(e, t, n) {
+function Dc(e, t, n) {
 	let r = "dt-web-editor.preferences.v1." + e, [i, a] = (0, U.useState)(() => ({
 		key: r,
-		value: dc(lc, r, t, n)
+		value: xc(yc, r, t, n)
 	})), o = (0, U.useRef)(i), s = (0, U.useRef)({
 		fallback: t,
 		validate: n
@@ -18419,7 +18519,7 @@ function _c(e, t, n) {
 		validate: n
 	}, o.current.key !== r && (o.current = {
 		key: r,
-		value: dc(lc, r, t, n)
+		value: xc(yc, r, t, n)
 	});
 	let c = i.key === r ? i.value : o.current.value;
 	return (0, U.useEffect)(() => {
@@ -18427,10 +18527,10 @@ function _c(e, t, n) {
 			a(o.current);
 			return;
 		}
-		fc(lc, r, i.value);
+		Sc(yc, r, i.value);
 	}, [r, i]), [c, (0, U.useCallback)((e) => {
-		let t = o.current.key === r, n = t ? o.current.value : dc(lc, r, s.current.fallback, s.current.validate), i = typeof e == "function" ? e(n) : e;
-		fc(lc, r, i), t && (o.current = {
+		let t = o.current.key === r, n = t ? o.current.value : xc(yc, r, s.current.fallback, s.current.validate), i = typeof e == "function" ? e(n) : e;
+		Sc(yc, r, i), t && (o.current = {
 			key: r,
 			value: i
 		}, a(o.current));
@@ -18438,13 +18538,13 @@ function _c(e, t, n) {
 }
 //#endregion
 //#region src/ui/textureDisplayPreferences.ts
-var vc = {
+var Oc = {
 	version: 2,
 	options: _(f),
 	budget: 0,
 	budgetMode: "auto"
 };
-function yc(e) {
+function kc(e) {
 	let t = _(e.options);
 	return {
 		...e,
@@ -18455,11 +18555,11 @@ function yc(e) {
 		}
 	};
 }
-function bc() {
-	return yc(dc(lc, "dt-web-editor.preferences.v1.textureDisplay", vc, Cc));
+function Ac() {
+	return kc(xc(yc, "dt-web-editor.preferences.v1.textureDisplay", Oc, Nc));
 }
-var xc = (e) => Cc(e) && e.version === 2 && e.options.maxSize !== 0 && e.options.maxSize <= 512 && Object.values(e.options.mapMaxSizes ?? {}).every((e) => e <= 512), Sc = (e) => e.budgetMode === "manual" ? e.budget : 0;
-function Cc(e) {
+var jc = (e) => Nc(e) && e.version === 2 && e.options.maxSize !== 0 && e.options.maxSize <= 512 && Object.values(e.options.mapMaxSizes ?? {}).every((e) => e <= 512), Mc = (e) => e.budgetMode === "manual" ? e.budget : 0;
+function Nc(e) {
 	try {
 		let t = e;
 		return !t || ![
@@ -18474,7 +18574,7 @@ function Cc(e) {
 }
 //#endregion
 //#region src/ui/ViewportColorGuidance.tsx
-function wc({ controls: e, disabled: t, compact: n = !1 }) {
+function Pc({ controls: e, disabled: t, compact: n = !1 }) {
 	return e.mode !== "lit" || e.environment && e.intensity > 0 ? null : /* @__PURE__ */ (0, W.jsxs)("div", {
 		className: `texture-options-note${n ? " texture-color-guidance" : ""}`,
 		children: [
@@ -18497,16 +18597,16 @@ function wc({ controls: e, disabled: t, compact: n = !1 }) {
 }
 //#endregion
 //#region src/ui/TextureOptionsMenu.tsx
-var Tc = [
+var Fc = [
 	["baseColor", "베이스 컬러"],
 	["normal", "노멀"],
 	["metallicRoughness", "메탈릭·러프니스"],
 	["occlusion", "AO"],
 	["emissive", "이미시브"],
 	["specular", "스페큘러"]
-], Ec = (e) => `${(e / 1048576).toFixed(1)} MiB`;
-function Dc({ resources: e, disabled: t = !1, onBusy: n, autoApply: r = !0, colorControls: i, embedded: a = !1 }) {
-	let o = e?.textureDisplay, s = !o || t, l = Zs(), u = (0, U.useRef)(null), [d, f] = _c("textureDisplay", bc(), xc), { options: p } = d, m = Sc(d), h = (e) => f((t) => ({
+], Ic = (e) => `${(e / 1048576).toFixed(1)} MiB`;
+function Lc({ resources: e, disabled: t = !1, onBusy: n, autoApply: r = !0, colorControls: i, embedded: a = !1 }) {
+	let o = e?.textureDisplay, s = !o || t, l = sc(), u = (0, U.useRef)(null), [d, f] = Dc("textureDisplay", Ac(), jc), { options: p } = d, m = Mc(d), h = (e) => f((t) => ({
 		...t,
 		options: e
 	})), g = (e) => f((t) => ({
@@ -18537,7 +18637,7 @@ function Dc({ resources: e, disabled: t = !1, onBusy: n, autoApply: r = !0, colo
 	}, [d, n]), (0, U.useEffect)(() => {
 		if (!o || !r) return;
 		let e = new AbortController(), t = setTimeout(() => {
-			u.current = e, v(!0), C.current.onBusy(!0), o.apply(C.current.preferences.options, Sc(C.current.preferences), e.signal, b).then(() => {
+			u.current = e, v(!0), C.current.onBusy(!0), o.apply(C.current.preferences.options, Mc(C.current.preferences), e.signal, b).then(() => {
 				e.signal.aborted || (S(o.options), b("공통 텍스처 설정을 적용했습니다."));
 			}).catch((t) => {
 				e.signal.aborted || b("공통 설정 적용 실패: " + (t instanceof Error ? t.message : String(t)));
@@ -18629,7 +18729,7 @@ function Dc({ resources: e, disabled: t = !1, onBusy: n, autoApply: r = !0, colo
 						disabled: _ || t,
 						children: [/* @__PURE__ */ (0, W.jsx)("legend", { children: "사용할 맵" }), /* @__PURE__ */ (0, W.jsx)("div", {
 							className: "texture-options-maps",
-							children: Tc.map(([e, t]) => /* @__PURE__ */ (0, W.jsxs)("label", {
+							children: Fc.map(([e, t]) => /* @__PURE__ */ (0, W.jsxs)("label", {
 								title: w.has(e) ? void 0 : "현재 레벨에 이 맵이 없습니다.",
 								children: [/* @__PURE__ */ (0, W.jsx)("input", {
 									type: "checkbox",
@@ -18643,7 +18743,7 @@ function Dc({ resources: e, disabled: t = !1, onBusy: n, autoApply: r = !0, colo
 							}, e))
 						})]
 					}),
-					x.maps.includes("baseColor") && i ? /* @__PURE__ */ (0, W.jsx)(wc, {
+					x.maps.includes("baseColor") && i ? /* @__PURE__ */ (0, W.jsx)(Pc, {
 						compact: !0,
 						controls: i,
 						disabled: s || _
@@ -18653,9 +18753,9 @@ function Dc({ resources: e, disabled: t = !1, onBusy: n, autoApply: r = !0, colo
 						"aria-live": "polite",
 						title: "텍스처 메모리 예약 추정입니다. 실제 GPU·전체 레벨 메모리와 다를 수 있습니다.",
 						children: [
-							/* @__PURE__ */ (0, W.jsxs)("div", { children: [/* @__PURE__ */ (0, W.jsx)("dt", { children: "적용 후" }), /* @__PURE__ */ (0, W.jsx)("dd", { children: Ec(te) })] }),
-							/* @__PURE__ */ (0, W.jsxs)("div", { children: [/* @__PURE__ */ (0, W.jsx)("dt", { children: "교체 중" }), /* @__PURE__ */ (0, W.jsx)("dd", { children: Ec(T) })] }),
-							/* @__PURE__ */ (0, W.jsxs)("div", { children: [/* @__PURE__ */ (0, W.jsx)("dt", { children: m === 0 ? "자동 한도" : "한도" }), /* @__PURE__ */ (0, W.jsx)("dd", { children: Ec(ne) })] })
+							/* @__PURE__ */ (0, W.jsxs)("div", { children: [/* @__PURE__ */ (0, W.jsx)("dt", { children: "적용 후" }), /* @__PURE__ */ (0, W.jsx)("dd", { children: Ic(te) })] }),
+							/* @__PURE__ */ (0, W.jsxs)("div", { children: [/* @__PURE__ */ (0, W.jsx)("dt", { children: "교체 중" }), /* @__PURE__ */ (0, W.jsx)("dd", { children: Ic(T) })] }),
+							/* @__PURE__ */ (0, W.jsxs)("div", { children: [/* @__PURE__ */ (0, W.jsx)("dt", { children: m === 0 ? "자동 한도" : "한도" }), /* @__PURE__ */ (0, W.jsx)("dd", { children: Ic(ne) })] })
 						]
 					}),
 					/* @__PURE__ */ (0, W.jsx)("p", {
@@ -18710,26 +18810,141 @@ function Dc({ resources: e, disabled: t = !1, onBusy: n, autoApply: r = !0, colo
 	});
 }
 //#endregion
+//#region src/render/EditorResidencyControl.tsx
+function Rc({ value: e, onChange: t, status: n, context: r = "편집기", disabled: i = !1 }) {
+	let [a, o] = (0, U.useState)(""), s = (0, U.useRef)(null);
+	(0, U.useEffect)(() => {
+		let e = s.current, t = (e) => e.stopPropagation(), n = [
+			"pointerdown",
+			"pointermove",
+			"pointerup",
+			"wheel",
+			"keydown",
+			"contextmenu"
+		];
+		return n.forEach((n) => e.addEventListener(n, t)), () => n.forEach((n) => e.removeEventListener(n, t));
+	}, []);
+	let c = (e) => {
+		try {
+			let { enabled: n, ...r } = e;
+			Ro(r), t({
+				enabled: n,
+				...r
+			}), o("");
+		} catch (e) {
+			o(String(e instanceof Error ? e.message : e));
+		}
+	};
+	return /* @__PURE__ */ (0, W.jsxs)("details", {
+		ref: s,
+		className: `editor-residency-control${r === "SDK" ? " viewport-options-menu" : ""}`,
+		children: [/* @__PURE__ */ (0, W.jsxs)("summary", {
+			title: "현재 뷰포트에만 적용하며 원거리 메시가 생략될 수 있습니다. 선택·동적 액터와 사용 중인 자원은 보호합니다.",
+			children: ["공간 자동 언로드", e.enabled ? " · 켜짐" : " · 꺼짐"]
+		}), /* @__PURE__ */ (0, W.jsxs)("div", { children: [/* @__PURE__ */ (0, W.jsxs)("fieldset", {
+			className: "editor-residency-fields",
+			disabled: i,
+			children: [
+				/* @__PURE__ */ (0, W.jsxs)("label", { children: [/* @__PURE__ */ (0, W.jsx)("span", { children: "사용" }), /* @__PURE__ */ (0, W.jsx)("input", {
+					"aria-label": `${r} 자동 언로드`,
+					type: "checkbox",
+					checked: e.enabled,
+					onChange: (t) => c({
+						...e,
+						enabled: t.target.checked
+					})
+				})] }),
+				/* @__PURE__ */ (0, W.jsxs)("label", {
+					title: "카메라에서 이 거리 안에 있는 메시를 로드합니다.",
+					children: [/* @__PURE__ */ (0, W.jsx)("span", { children: "로드 반경 (cm)" }), /* @__PURE__ */ (0, W.jsx)("input", {
+						"aria-label": `${r} 로드 반경 cm`,
+						type: "number",
+						min: 0,
+						value: e.loadDistance * 100,
+						onChange: (t) => c({
+							...e,
+							loadDistance: Number(t.target.value) / 100
+						})
+					})]
+				}),
+				/* @__PURE__ */ (0, W.jsxs)("label", {
+					title: "로드 반경보다 크게 설정하세요. 이 거리 밖의 메시가 언로드 대상입니다.",
+					children: [/* @__PURE__ */ (0, W.jsx)("span", { children: "언로드 반경 (cm)" }), /* @__PURE__ */ (0, W.jsx)("input", {
+						"aria-label": `${r} 언로드 반경 cm`,
+						type: "number",
+						min: 1,
+						value: e.unloadDistance * 100,
+						onChange: (t) => c({
+							...e,
+							unloadDistance: Number(t.target.value) / 100
+						})
+					})]
+				}),
+				/* @__PURE__ */ (0, W.jsxs)("label", {
+					title: "언로드 반경 밖에서 이 시간 동안 머문 메시를 해제합니다.",
+					children: [/* @__PURE__ */ (0, W.jsx)("span", { children: "대기 (초)" }), /* @__PURE__ */ (0, W.jsx)("input", {
+						"aria-label": `${r} 언로드 대기 초`,
+						type: "number",
+						min: 0,
+						max: 300,
+						step: 1,
+						value: e.unloadDelayMs / 1e3,
+						onChange: (t) => c({
+							...e,
+							unloadDelayMs: Number(t.target.value) * 1e3
+						})
+					})]
+				})
+			]
+		}), /* @__PURE__ */ (0, W.jsx)("p", {
+			role: a ? "alert" : "status",
+			children: a || n
+		})] })]
+	});
+}
+//#endregion
+//#region src/render/EditorResidency.ts
+var zc = {
+	enabled: !1,
+	...Lo
+};
+//#endregion
 //#region src/delivery/DeliveryViewportTools.tsx
-function Oc({ viewer: e, immersive: t, leftOnly: n = !1 }) {
-	let [, r] = (0, U.useState)(0), [i, a] = (0, U.useState)(pc), [o, s] = (0, U.useState)(!1), c = () => r((e) => e + 1);
-	(0, U.useEffect)(() => (e.onViewChange = c, e.navigation.onAction = (n) => {
+function Bc({ viewer: e, immersive: t, leftOnly: n = !1 }) {
+	let [, r] = (0, U.useState)(0), [i, a] = (0, U.useState)(Cc), [o, s] = (0, U.useState)(!1), [c, l] = (0, U.useState)(() => ({
+		...zc,
+		...e.session.spatialStreaming?.options ?? {},
+		enabled: !!e.session.spatialStreaming
+	})), u = () => r((e) => e + 1);
+	(0, U.useEffect)(() => (e.onViewChange = u, e.navigation.onAction = (n) => {
 		if (n === "focus-selection" && e.focusSelection(), n === "toggle-immersive" && t(), n === "toggle-game-view") {
 			let t = !e.helpers;
-			e.helpers = t, e.grid.visible = t, e.invalidate(), c();
+			e.helpers = t, e.grid.visible = t, e.invalidate(), u();
 		}
 	}, () => {
 		e.onViewChange = void 0, e.navigation.onAction = void 0;
 	}), [e, t]);
-	let l = e.quality.snapshot();
-	return (0, U.useEffect)(() => e.session.subscribe(c), [e]), /* @__PURE__ */ (0, W.jsxs)(Qs, {
+	let d = e.quality.snapshot();
+	(0, U.useEffect)(() => e.session.subscribe(u), [e]);
+	let f = e.session.spatialStreaming, p = e.session.busy ? "로드·에셋 작업 완료 후 설정을 변경하세요." : f?.protected ? "실행·편집 중 자원 보호" : f?.paused ? "공간 로드가 중지되었습니다. 다시 열거나 재개하세요." : f ? `요청 셀 ${f.states.filter((e) => e.wanted).length}/${f.states.length} · 선택·동적 액터 보호` : "기본 전체 로드 · 공간 경계가 있는 게시본에서 사용 가능";
+	return /* @__PURE__ */ (0, W.jsxs)(cc, {
 		className: "delivery-viewport-tools",
 		children: [
+			/* @__PURE__ */ (0, W.jsx)(Rc, {
+				context: "SDK",
+				disabled: e.session.busy,
+				value: c,
+				status: p,
+				onChange: (t) => {
+					let { enabled: n, ...r } = t;
+					e.setSpatialStreaming(n ? r : null), l(t);
+				}
+			}),
 			/* @__PURE__ */ (0, W.jsxs)("details", {
 				className: "viewport-options-menu viewport-main-menu",
 				children: [/* @__PURE__ */ (0, W.jsx)("summary", {
 					"aria-label": "뷰포트 옵션",
-					children: /* @__PURE__ */ (0, W.jsx)($s, { name: "menu" })
+					children: /* @__PURE__ */ (0, W.jsx)(lc, { name: "menu" })
 				}), /* @__PURE__ */ (0, W.jsxs)("div", { children: [
 					/* @__PURE__ */ (0, W.jsxs)("button", {
 						onClick: t,
@@ -18746,12 +18961,12 @@ function Oc({ viewer: e, immersive: t, leftOnly: n = !1 }) {
 					/* @__PURE__ */ (0, W.jsxs)("details", {
 						className: "camera-options",
 						open: !0,
-						children: [/* @__PURE__ */ (0, W.jsx)("summary", { children: "카메라 설정" }), /* @__PURE__ */ (0, W.jsxs)("div", { children: [/* @__PURE__ */ (0, W.jsxs)("label", { children: ["속도 (m/s)", /* @__PURE__ */ (0, W.jsx)(Ws, {
+						children: [/* @__PURE__ */ (0, W.jsx)("summary", { children: "카메라 설정" }), /* @__PURE__ */ (0, W.jsxs)("div", { children: [/* @__PURE__ */ (0, W.jsxs)("label", { children: ["속도 (m/s)", /* @__PURE__ */ (0, W.jsx)(ec, {
 							label: "Viewport camera speed",
 							value: e.navigation.speed,
 							validate: (e) => ({ ok: typeof e == "number" && Number.isFinite(e) && e >= .25 && e <= 64 }),
 							onCommit: (t) => {
-								e.navigation.setSpeed(t), c();
+								e.navigation.setSpeed(t), u();
 							}
 						})] }), [
 							[
@@ -18805,7 +19020,7 @@ function Oc({ viewer: e, immersive: t, leftOnly: n = !1 }) {
 						"aria-pressed": !e.helpers,
 						onClick: () => {
 							let t = !e.helpers;
-							e.helpers = t, e.grid.visible = t, e.invalidate(), c();
+							e.helpers = t, e.grid.visible = t, e.invalidate(), u();
 						},
 						children: "게임 뷰"
 					}),
@@ -18818,17 +19033,17 @@ function Oc({ viewer: e, immersive: t, leftOnly: n = !1 }) {
 					] })
 				] })]
 			}),
-			/* @__PURE__ */ (0, W.jsx)(nc, {
+			/* @__PURE__ */ (0, W.jsx)(fc, {
 				value: e.projection,
 				onChange: (t) => e.setProjection(t)
 			}),
-			/* @__PURE__ */ (0, W.jsx)(rc, {
+			/* @__PURE__ */ (0, W.jsx)(pc, {
 				value: e.mode,
 				onChange: (t) => e.setMode(t)
 			}),
-			/* @__PURE__ */ (0, W.jsxs)(ic, {
-				preset: l.requested,
-				status: l,
+			/* @__PURE__ */ (0, W.jsxs)(mc, {
+				preset: d.requested,
+				status: d,
 				disabled: !1,
 				onChange: (t) => {
 					e.quality.apply(t);
@@ -18842,19 +19057,19 @@ function Oc({ viewer: e, immersive: t, leftOnly: n = !1 }) {
 							type: "checkbox",
 							checked: e.environment,
 							onChange: (t) => {
-								e.environment = t.target.checked, e.invalidate(), c();
+								e.environment = t.target.checked, e.invalidate(), u();
 							}
 						}), "환경광"]
 					}),
-					/* @__PURE__ */ (0, W.jsxs)("label", { children: ["환경광 강도", /* @__PURE__ */ (0, W.jsx)(gc, {
+					/* @__PURE__ */ (0, W.jsxs)("label", { children: ["환경광 강도", /* @__PURE__ */ (0, W.jsx)(Ec, {
 						ariaLabel: "뷰포트 환경광 강도",
 						value: e.environmentIntensity,
 						disabled: !e.environment,
 						onCommit: (t) => {
-							e.environmentIntensity = t, e.invalidate(), c();
+							e.environmentIntensity = t, e.invalidate(), u();
 						}
 					})] })
-				] }), /* @__PURE__ */ (0, W.jsx)(hc, {
+				] }), /* @__PURE__ */ (0, W.jsx)(Tc, {
 					effects: i,
 					disabled: !1,
 					onChange: (t) => {
@@ -18864,7 +19079,7 @@ function Oc({ viewer: e, immersive: t, leftOnly: n = !1 }) {
 			}),
 			/* @__PURE__ */ (0, W.jsxs)("details", {
 				className: "viewport-options-menu viewport-show-menu",
-				onToggle: ec,
+				onToggle: uc,
 				children: [/* @__PURE__ */ (0, W.jsx)("summary", { children: "표시" }), /* @__PURE__ */ (0, W.jsxs)("div", { children: [
 					/* @__PURE__ */ (0, W.jsxs)("label", {
 						title: "단일 원근·Lit·Viewport 품질에서 사용합니다. 로딩·선택 중에는 기존 표시로 돌아갑니다.",
@@ -18884,7 +19099,7 @@ function Oc({ viewer: e, immersive: t, leftOnly: n = !1 }) {
 						type: "checkbox",
 						checked: e.grid.visible,
 						onChange: (t) => {
-							e.grid.visible = t.target.checked, e.invalidate(), c();
+							e.grid.visible = t.target.checked, e.invalidate(), u();
 						}
 					}), "그리드"] }),
 					/* @__PURE__ */ (0, W.jsxs)("label", { children: [/* @__PURE__ */ (0, W.jsx)("input", {
@@ -18892,7 +19107,7 @@ function Oc({ viewer: e, immersive: t, leftOnly: n = !1 }) {
 						type: "checkbox",
 						checked: e.helpers,
 						onChange: (t) => {
-							e.helpers = t.target.checked, e.invalidate(), c();
+							e.helpers = t.target.checked, e.invalidate(), u();
 						}
 					}), "에디터 도우미"] }),
 					/* @__PURE__ */ (0, W.jsxs)("label", { children: [/* @__PURE__ */ (0, W.jsx)("input", {
@@ -18901,7 +19116,7 @@ function Oc({ viewer: e, immersive: t, leftOnly: n = !1 }) {
 						checked: e.bounds,
 						onChange: (t) => e.setBounds(t.target.checked)
 					}), "바운드"] }),
-					/* @__PURE__ */ (0, W.jsx)(Dc, {
+					/* @__PURE__ */ (0, W.jsx)(Lc, {
 						embedded: !0,
 						autoApply: !1,
 						resources: e.session.release ? e.session : void 0,
@@ -18913,7 +19128,7 @@ function Oc({ viewer: e, immersive: t, leftOnly: n = !1 }) {
 							intensity: e.environmentIntensity,
 							inspect: () => e.setMode("unlit"),
 							light: () => {
-								e.environment = !0, e.environmentIntensity === 0 && (e.environmentIntensity = C.intensity), e.invalidate(), c();
+								e.environment = !0, e.environmentIntensity === 0 && (e.environmentIntensity = C.intensity), e.invalidate(), u();
 							}
 						}
 					})
@@ -18926,21 +19141,21 @@ function Oc({ viewer: e, immersive: t, leftOnly: n = !1 }) {
 					"aria-label": "선택에 초점",
 					title: "선택에 초점 · F",
 					onClick: () => e.focusSelection(),
-					children: /* @__PURE__ */ (0, W.jsx)($s, { name: "cube" })
+					children: /* @__PURE__ */ (0, W.jsx)(lc, { name: "cube" })
 				}), /* @__PURE__ */ (0, W.jsx)("button", {
 					className: "viewport-layout-toggle",
 					"aria-label": "뷰포트 최대화",
 					title: "뷰포트 최대화 · F11",
 					onClick: t,
-					children: /* @__PURE__ */ (0, W.jsx)($s, { name: "layout" })
+					children: /* @__PURE__ */ (0, W.jsx)(lc, { name: "layout" })
 				})]
 			})
 		]
 	});
 }
-function kc(e, t, n, r = {}) {
-	let i = (0, Xs.createRoot)(e);
-	return i.render(/* @__PURE__ */ (0, W.jsx)(Oc, {
+function Vc(e, t, n, r = {}) {
+	let i = (0, oc.createRoot)(e);
+	return i.render(/* @__PURE__ */ (0, W.jsx)(Bc, {
 		viewer: t,
 		immersive: n,
 		leftOnly: r.leftOnly
@@ -18948,7 +19163,7 @@ function kc(e, t, n, r = {}) {
 }
 //#endregion
 //#region src/delivery/EquipmentPanel.ts
-function Ac(e, t, n = e) {
+function Hc(e, t, n = e) {
 	let r = (e, t = "", n = "") => {
 		let r = document.createElement(e);
 		return r.textContent = t, r.className = n, r;
@@ -19025,7 +19240,7 @@ function Ac(e, t, n = e) {
 }
 //#endregion
 //#region src/delivery/BrowserChunkCache.ts
-var jc = class {
+var Uc = class {
 	namespace;
 	budget;
 	entries = /* @__PURE__ */ new Map();
@@ -19101,7 +19316,7 @@ var jc = class {
 };
 //#endregion
 //#region src/delivery/ApplicationManifest.ts
-function Mc(e) {
+function Wc(e) {
 	let t = e;
 	if (!t || Object.keys(t).sort().join() !== "actors,candidateRelease,compositionId,kind,overrideRevision,previous,removed,reviewId,reviewRevision,rollbackOf,version" || t.kind !== "dt-application" || t.version !== 1 || typeof t.compositionId != "string" || !t.compositionId || !Xn(t.candidateRelease) || t.previous !== null && !Xn(t.previous) || t.rollbackOf !== null && !Xn(t.rollbackOf) || typeof t.overrideRevision != "string" || !t.overrideRevision || t.reviewId !== null && typeof t.reviewId != "string" || t.reviewRevision !== null && (!Number.isSafeInteger(t.reviewRevision) || t.reviewRevision < 1) || !Array.isArray(t.actors) || !Array.isArray(t.removed) || t.actors.length > 1e5 || P(t).length > 16 * 1024 ** 2) throw Error("Unsupported application manifest");
 	let n = /* @__PURE__ */ new Set(), r = (e) => {
@@ -19116,11 +19331,11 @@ function Mc(e) {
 	for (let e of t.removed) r(e);
 	return structuredClone(t);
 }
-var Nc = (e) => k(P(Mc(e)));
-async function Pc(e, t, n = new AbortController().signal) {
-	let r = Mc(t), i = /* @__PURE__ */ new Map();
+var Gc = (e) => k(P(Wc(e)));
+async function Kc(e, t, n = new AbortController().signal) {
+	let r = Wc(t), i = /* @__PURE__ */ new Map();
 	for (let t of /* @__PURE__ */ new Set([r.candidateRelease, ...r.actors.map((e) => e.sourceRelease)])) {
-		let a = await js(e, t, n);
+		let a = await Vs(e, t, n);
 		if (a.manifest.id !== r.compositionId) throw Error("Application composition mismatch");
 		i.set(t, a);
 	}
@@ -19131,13 +19346,13 @@ async function Pc(e, t, n = new AbortController().signal) {
 	}), o = new Map(a.map((e) => [e.key, e]));
 	for (let e of a) for (let t of e.dependencies) if (!o.has(t)) throw Error("Application dependency missing");
 	return {
-		releaseHash: await Nc(r),
+		releaseHash: await Gc(r),
 		manifest: i.get(r.candidateRelease).manifest,
 		actors: a,
 		levels: new Map([...i.values()].flatMap((e) => [...e.levels]))
 	};
 }
-async function Fc(e, t, n, r, i) {
+async function qc(e, t, n, r, i) {
 	if (!i.length || new Set(i).size !== i.length || n.releaseHash !== r.candidateRelease || n.manifest.id !== r.compositionId) throw Error("Invalid application selection");
 	let a = /* @__PURE__ */ new Map();
 	for (let e of t?.actors ?? []) a.set(e.key, {
@@ -19156,7 +19371,7 @@ async function Fc(e, t, n, r, i) {
 		}) : a.delete(e);
 	}
 	let o = /* @__PURE__ */ new Map([[n.releaseHash, n]]);
-	for (let t of new Set([...a.values()].map((e) => e.sourceRelease))) o.has(t) || o.set(t, await js(e, t));
+	for (let t of new Set([...a.values()].map((e) => e.sourceRelease))) o.has(t) || o.set(t, await Vs(e, t));
 	let s = new Map([...a.keys()].map((e) => [e, e])), c = /* @__PURE__ */ new Map();
 	for (let e of a.values()) {
 		let t = o.get(e.sourceRelease), n = t.actors.find((t) => t.key === e.key);
@@ -19185,7 +19400,7 @@ async function Fc(e, t, n, r, i) {
 		if (!t) throw Error("Approve the complete attachment/Script dependency group together");
 		for (let n of e) n.sourceRelease = t.releaseHash;
 	}
-	let d = Mc({
+	let d = Wc({
 		kind: "dt-application",
 		version: 1,
 		compositionId: r.compositionId,
@@ -19198,15 +19413,15 @@ async function Fc(e, t, n, r, i) {
 		removed: (t?.actors ?? []).filter((e) => !a.has(e.key)).map((e) => e.key).sort(),
 		rollbackOf: null
 	});
-	return await Pc(e, d), d;
+	return await Kc(e, d), d;
 }
 //#endregion
 //#region src/delivery/ApplicationReader.ts
-async function Ic(e, t, n = new AbortController().signal) {
-	let r = Mc(e), i = /* @__PURE__ */ new Map(), a = /* @__PURE__ */ new Map();
+async function Jc(e, t, n = new AbortController().signal) {
+	let r = Wc(e), i = /* @__PURE__ */ new Map(), a = /* @__PURE__ */ new Map();
 	for (let e of /* @__PURE__ */ new Set([r.candidateRelease, ...r.actors.map((e) => e.sourceRelease)])) {
 		let r = new Oi(t(e));
-		a.set(e, r), i.set(e, await js(r, e, n));
+		a.set(e, r), i.set(e, await Vs(r, e, n));
 	}
 	let o = /* @__PURE__ */ new Map();
 	for (let [e, t] of i) for (let n of t.manifest.files) for (let t of n.chunks) o.set(Zn(t.hash), e);
@@ -19300,7 +19515,7 @@ async function Ic(e, t, n = new AbortController().signal) {
 		spatial: [...v.values()],
 		cells: [..._.values()]
 	}), re = await k(P(ne));
-	return s.set(Qn(re), P(ne)), await Pc(new Oi({ read: async (e, t, n) => {
+	return s.set(Qn(re), P(ne)), await Kc(new Oi({ read: async (e, t, n) => {
 		let r = e.startsWith("releases/") ? e.slice(9, -5) : o.get(e);
 		if (!r || !a.has(r)) throw Error("Unknown provenance");
 		return a.get(r).provider.read(e, t, n);
@@ -19322,18 +19537,18 @@ async function Ic(e, t, n = new AbortController().signal) {
 			}
 		}),
 		hash: re,
-		revision: await Nc(r),
+		revision: await Gc(r),
 		aliases: c
 	};
 }
 //#endregion
 //#region src/delivery/RuntimeCapability.ts
-var Lc = Object.freeze({
+var Yc = Object.freeze({
 	packageId: "dt.mesh-motion",
 	version: "1.0.0",
 	codeHash: "c6b8244101f48f5c489d8da3edaa1f852a59612e3138c952c94c86aa9adfbd4d"
 });
-function Rc(e, t, n, r) {
+function Xc(e, t, n, r) {
 	let i = /* @__PURE__ */ new Set(), a = [];
 	for (let o of e.actors) for (let e of o.components) {
 		if (e.type !== "TestScript") continue;
@@ -19375,7 +19590,7 @@ function Rc(e, t, n, r) {
 }
 //#endregion
 //#region src/runtime/RuntimeSignalState.ts
-var zc = class {
+var Zc = class {
 	producerState;
 	records = /* @__PURE__ */ new Map();
 	time = 0;
@@ -19446,12 +19661,12 @@ var zc = class {
 };
 //#endregion
 //#region src/runtime/RuntimeComponents.ts
-function Bc(e) {
+function Qc(e) {
 	let { reference: t } = s(e), n = ao[t.codeHash] ?? gr(t.codeHash);
 	if (typeof n != "function") throw Error("Installed Script factory is missing.");
 	return n;
 }
-var Vc = class {
+var $c = class {
 	owner;
 	id;
 	wantsEnabled = !0;
@@ -19492,7 +19707,7 @@ var Vc = class {
 			this.alive && this.owner.componentRuntime.report(this, "async", e);
 		});
 	}
-}, Hc = class extends Vc {
+}, el = class extends $c {
 	static typeId = "TestData";
 	typeId = "TestData";
 	currentValue;
@@ -19508,7 +19723,7 @@ var Vc = class {
 	constructor(e, t) {
 		super(e, t), this.currentValue = t.value;
 	}
-}, Uc = class extends Vc {
+}, tl = class extends $c {
 	static typeId = "StaticMesh";
 	typeId = "StaticMesh";
 	getLocalTransform() {
@@ -19517,11 +19732,11 @@ var Vc = class {
 	setLocalTransform(e) {
 		this.owner.componentRuntime.assertAlive(this), this.owner.componentRuntime.spatial.set(this.id, e);
 	}
-}, Wc = class extends Vc {
+}, nl = class extends $c {
 	onRegister() {
 		this.tickEnabled = !0;
 	}
-}, Gc = class extends Wc {
+}, rl = class extends nl {
 	static typeId = "TestScript";
 	typeId = "TestScript";
 	targetComponentId;
@@ -19533,7 +19748,7 @@ var Vc = class {
 	schemaVersion;
 	references;
 	constructor(e, t, n) {
-		super(e, t), this.createBehavior = n ?? Bc(t), this.schemaVersion = t.typeVersion === 1 ? 2 : t.typeVersion, this.settings = Object.freeze({ ...a(t) }), this.references = Xe(t), this.scriptPackage = s(t).reference, this.targetComponentId = t.targetComponentId, this.ratePerSecond = t.ratePerSecond;
+		super(e, t), this.createBehavior = n ?? Qc(t), this.schemaVersion = t.typeVersion === 1 ? 2 : t.typeVersion, this.settings = Object.freeze({ ...a(t) }), this.references = Xe(t), this.scriptPackage = s(t).reference, this.targetComponentId = t.targetComponentId, this.ratePerSecond = t.ratePerSecond;
 	}
 	get requiredComponentIds() {
 		return [...new Set(this.references.map((e) => e.id))];
@@ -19560,7 +19775,7 @@ var Vc = class {
 			let r = () => {
 				this.owner.componentRuntime.assertAlive(this);
 				let e = this.owner.getComponentById(n);
-				if (!(e instanceof Uc)) throw Error("SDK StaticMesh handle is no longer alive.");
+				if (!(e instanceof tl)) throw Error("SDK StaticMesh handle is no longer alive.");
 				return e;
 			};
 			return r(), Object.freeze({
@@ -19589,7 +19804,7 @@ var Vc = class {
 				scriptPackage: this.scriptPackage
 			}).manifest.sdkVersion !== 4) throw Error("Signal API requires SDK 4.");
 			let n = t(e), r = n && this.owner.getComponentById(n.id);
-			if (!(r instanceof Hc)) throw Error("Signal requires a declared TestData reference.");
+			if (!(r instanceof el)) throw Error("Signal requires a declared TestData reference.");
 			return r;
 		};
 		if (this.behavior = this.createBehavior(Object.freeze({
@@ -19652,10 +19867,10 @@ var Vc = class {
 			let t = () => {
 				this.owner.componentRuntime.assertAlive(this);
 				let t = this.owner.getComponentById(e);
-				if (!(t instanceof Hc)) throw Error("SDK TestData handle is no longer alive.");
+				if (!(t instanceof el)) throw Error("SDK TestData handle is no longer alive.");
 				return t;
 			};
-			if (this.owner.componentRuntime.assertAlive(this), this.owner.getComponentById(e) instanceof Hc) return Object.freeze({
+			if (this.owner.componentRuntime.assertAlive(this), this.owner.getComponentById(e) instanceof el) return Object.freeze({
 				id: e,
 				typeId: "TestData",
 				get value() {
@@ -19676,21 +19891,21 @@ var Vc = class {
 			getComponentById: e
 		});
 	}
-}, Kc = class {
+}, il = class {
 	testDataFactory;
 	scriptFactory;
-	constructor(e = (e, t) => new Hc(e, t), t = (e, t) => new Gc(e, t)) {
+	constructor(e = (e, t) => new el(e, t), t = (e, t) => new rl(e, t)) {
 		this.testDataFactory = e, this.scriptFactory = t;
 	}
 	create(e, t) {
 		if (t.ownerActorId !== e.id || !t.id) throw Error("Invalid runtime Component identity/version.");
 		if (!re.has(t.type, t.typeVersion) || re.validate(t.type, t.typeVersion, t, "runtime").length) throw Error("Invalid runtime Component settings.");
 		if (t.type === "TestScript" && ae(t), t.type === "StaticMesh" && !e.componentRuntime.spatial) throw Error("Missing spatial runtime state.");
-		let n = t.type === "StaticMesh" ? new Uc(e, t) : t.type === "TestData" ? this.testDataFactory(e, structuredClone(t)) : this.scriptFactory(e, structuredClone(t));
+		let n = t.type === "StaticMesh" ? new tl(e, t) : t.type === "TestData" ? this.testDataFactory(e, structuredClone(t)) : this.scriptFactory(e, structuredClone(t));
 		if (n.owner !== e || n.id !== t.id || n.typeId !== t.type) throw Error("Runtime factory identity mismatch.");
 		return n;
 	}
-}, qc = class {
+}, al = class {
 	id;
 	componentRuntime;
 	constructor(e, t) {
@@ -19711,13 +19926,13 @@ var Vc = class {
 	removeComponent(e) {
 		this.componentRuntime.remove(this, e);
 	}
-}, Jc = class {
+}, ol = class {
 	sessionId;
 	registry;
 	hasOwner;
 	spatial;
 	diagnostics = [];
-	signals = new zc((e) => {
+	signals = new Zc((e) => {
 		let t = this.entries.find((t) => t.component.id === e);
 		return !t || t.dead || this.stopped ? "removed" : t.faulted ? "faulted" : t.component.enabled ? t.begun ? t.component.tickEnabled ? "running" : "idle" : "starting" : "disabled";
 	});
@@ -19923,7 +20138,7 @@ var Vc = class {
 			this.flushing = !1;
 		}
 	}
-}, Yc = class {
+}, sl = class {
 	records = /* @__PURE__ */ new Map();
 	children = /* @__PURE__ */ new Map();
 	overrides = /* @__PURE__ */ new Map();
@@ -20034,7 +20249,7 @@ var Vc = class {
 	stop() {
 		this.stopped = !0, this.overrides.clear(), this.worldMatrices.clear(), this.physics = void 0;
 	}
-}, Xc = class {
+}, cl = class {
 	factories = /* @__PURE__ */ new Map();
 	register(e, t) {
 		if (this.factories.has(e)) throw Error(`Duplicate runtime class ${e}.`);
@@ -20045,7 +20260,7 @@ var Vc = class {
 		if (!n) throw Error(`Unregistered runtime class ${e}.`);
 		return n(t);
 	}
-}, Zc = class {
+}, ll = class {
 	pawn = null;
 	possess(e) {
 		if (!("position" in e)) throw Error("Only a live Pawn can be possessed.");
@@ -20054,7 +20269,7 @@ var Vc = class {
 	unpossess() {
 		this.pawn = null;
 	}
-}, Qc = class {
+}, ul = class {
 	snapshot;
 	registry;
 	config;
@@ -20064,7 +20279,7 @@ var Vc = class {
 	actors = /* @__PURE__ */ new Map();
 	components;
 	spatial;
-	controller = new Zc();
+	controller = new ll();
 	animationPlayback;
 	state = "stopped";
 	controlState = "editor";
@@ -20074,8 +20289,8 @@ var Vc = class {
 	simulationTickListeners = /* @__PURE__ */ new Set();
 	nextTimerId = 1;
 	startRequested = !1;
-	constructor(e, t, n, r = () => crypto.randomUUID(), i = new Kc()) {
-		this.snapshot = e, this.registry = t, this.config = n, this.snapshot = structuredClone(e), this.sourceHash = $c(e), this.sessionId = r(), this.spatial = new Yc(this.snapshot), this.components = new Jc(this.sessionId, i, (e) => this.actors.get(e.id) === e, this.spatial), this.animationPlayback = new Va("gameplay-runtime", this.sessionId);
+	constructor(e, t, n, r = () => crypto.randomUUID(), i = new il()) {
+		this.snapshot = e, this.registry = t, this.config = n, this.snapshot = structuredClone(e), this.sourceHash = dl(e), this.sessionId = r(), this.spatial = new sl(this.snapshot), this.components = new ol(this.sessionId, i, (e) => this.actors.get(e.id) === e, this.spatial), this.animationPlayback = new Va("gameplay-runtime", this.sessionId);
 	}
 	get configPlayerStartId() {
 		return this.config.playerStartActorId;
@@ -20089,7 +20304,7 @@ var Vc = class {
 		this.startRequested = !0, this.state = "starting";
 		try {
 			b(this.snapshot), ee(this.snapshot);
-			for (let e of this.snapshot.actors) this.actors.set(e.id, Object.assign(new qc(e.id, this.components), {
+			for (let e of this.snapshot.actors) this.actors.set(e.id, Object.assign(new al(e.id, this.components), {
 				classId: e.classId,
 				beginPlayCount: 0,
 				endPlayCount: 0
@@ -20106,7 +20321,7 @@ var Vc = class {
 					0,
 					1
 				]], this.actors.has(r.id)) throw Error("Runtime Pawn ID collides with a document Actor.");
-				let i = Object.assign(new qc(r.id, this.components), r);
+				let i = Object.assign(new al(r.id, this.components), r);
 				this.actors.set(r.id, i), this.controller.possess(i), this.controlState = "player";
 			} else this.controlState = "simulate";
 			this.components.start();
@@ -20164,7 +20379,7 @@ var Vc = class {
 		let t = this.actors.get(e);
 		if (!t) throw Error(`Unknown runtime actor ${e}.`);
 		let { componentRuntime: n, ...r } = t;
-		return el(structuredClone({
+		return fl(structuredClone({
 			...r,
 			components: this.components.components(t).map((e) => ({
 				id: e.id,
@@ -20199,20 +20414,20 @@ var Vc = class {
 		}
 		n() && (t ? this.animationPlayback.stepSimulation(this.tickCount, e) : this.animationPlayback.advanceSimulationTick(this.tickCount, e));
 	}
-}, $c = (e) => JSON.stringify(e), el = (e) => {
+}, dl = (e) => JSON.stringify(e), fl = (e) => {
 	if (e && typeof e == "object") {
 		Object.freeze(e);
-		for (let t of Object.values(e)) el(t);
+		for (let t of Object.values(e)) fl(t);
 	}
 	return e;
 };
 //#endregion
 //#region src/delivery/DeliveryRuntime.ts
-function tl(e, t, n) {
+function pl(e, t, n) {
 	if (e.session.busy || !e.session.document) throw Error("Wait for the complete pinned model before running functions");
 	let r = e.session.views.filter((e) => e.document.actors.some((e) => e.components.some((e) => e.type === "TestScript")));
 	if (!r.length) throw Error("This model has no supported Script functions");
-	for (let n of r) Rc(n.document, t, e.session.document.id, String(n.root.userData.deliveryMountId));
+	for (let n of r) Xc(n.document, t, e.session.document.id, String(n.root.userData.deliveryMountId));
 	let i = e.session.suspendSpatialStreaming(), a = [], o = !1, s = !1, c = () => {}, l = () => {}, u = () => {}, d = () => {
 		for (let { view: e, world: t } of a) {
 			t.stop();
@@ -20227,7 +20442,7 @@ function tl(e, t, n) {
 	};
 	try {
 		for (let e of r) {
-			let t = new Qc(e.document, new Xc(), { defaultPawnClassId: "unused" });
+			let t = new ul(e.document, new cl(), { defaultPawnClassId: "unused" });
 			if (a.push({
 				view: e,
 				world: t
@@ -20277,7 +20492,7 @@ function tl(e, t, n) {
 }
 //#endregion
 //#region src/delivery/LoadingPanel.ts
-function nl(e, t) {
+function ml(e, t) {
 	let n = document.createElement("section");
 	n.className = "dt-loading", n.setAttribute("aria-label", "레벨 로딩 상태"), e.append(n);
 	let r = document.createElement("fieldset"), i = document.createElement("legend");
@@ -20350,4 +20565,4 @@ function nl(e, t) {
 	};
 }
 //#endregion
-export { w as ADDON_SDK_VERSION, jc as BrowserChunkCache, Oi as ChunkReader, Ln as DEFAULT_DELIVERY_CELL_SIZE, Lo as DEFAULT_SPATIAL_STREAMING, Jn as DELIVERY_ADDON_CONTRACT, qn as DELIVERY_CELL_CONTRACT, Wn as DELIVERY_CONTRACT, Lc as DELIVERY_MESH_MOTION, Gn as DELIVERY_OBJECT_CONTRACT, pr as DELIVERY_SDK_VERSION, Kn as DELIVERY_SPATIAL_CONTRACT, Oo as DISPLAY_BUDGET_MIB, H as DeliveryAddonController, ks as DeliveryClient, V as DeliverySession, ss as DeliveryViewer, Ds as HttpChunkSource, Es as LocalChunkSource, Ei as MemoryChunkCache, sr as actorServiceKey, d as addonCapabilityDescriptors, A as addonTargetKey, Nc as applicationHash, Ic as applicationReader, Pc as applicationSnapshot, Rs as bindHostData, Fs as bindingImpacts, _s as defaultDeliverySource, Ns as diffActors, Ao as displayBudget, vr as equipmentPath, Di as httpByteProvider, fr as mountActorPanel, nl as mountDeliveryLoadingPanel, kc as mountDeliveryViewportTools, Ac as mountEquipmentPanel, ms as publicationConnectionUrl, Mo as readDisplayBudgetPreference, js as readReviewSnapshot, Fc as resolveApplication, No as saveDisplayBudgetPreference, tl as startDeliveryRuntime, Mc as validateApplication, nr as validateDelivery, Rc as validateDeliveryRuntime, or as validateDelta, Ps as validateHostBindings };
+export { w as ADDON_SDK_VERSION, Uc as BrowserChunkCache, Oi as ChunkReader, Ln as DEFAULT_DELIVERY_CELL_SIZE, Lo as DEFAULT_SPATIAL_STREAMING, Jn as DELIVERY_ADDON_CONTRACT, qn as DELIVERY_CELL_CONTRACT, Wn as DELIVERY_CONTRACT, Yc as DELIVERY_MESH_MOTION, Gn as DELIVERY_OBJECT_CONTRACT, pr as DELIVERY_SDK_VERSION, Kn as DELIVERY_SPATIAL_CONTRACT, Oo as DISPLAY_BUDGET_MIB, H as DeliveryAddonController, As as DeliveryClient, V as DeliverySession, cs as DeliveryViewer, Os as HttpChunkSource, Ds as LocalChunkSource, Ei as MemoryChunkCache, sr as actorServiceKey, d as addonCapabilityDescriptors, A as addonTargetKey, Gc as applicationHash, Jc as applicationReader, Kc as applicationSnapshot, Js as bindHostData, Gs as bindingImpacts, vs as defaultDeliverySource, Us as diffActors, Ao as displayBudget, vr as equipmentPath, Di as httpByteProvider, Fs as mergeStorageDirectories, fr as mountActorPanel, ml as mountDeliveryLoadingPanel, Vc as mountDeliveryViewportTools, Hc as mountEquipmentPanel, hs as publicationConnectionUrl, Mo as readDisplayBudgetPreference, Vs as readReviewSnapshot, zs as readStorageDirectory, qc as resolveApplication, No as saveDisplayBudgetPreference, Ls as splitStorageConnection, pl as startDeliveryRuntime, Rs as storageConnectionLabel, Is as storageConnectionUrl, Ms as storageEndpoint, Wc as validateApplication, nr as validateDelivery, Xc as validateDeliveryRuntime, or as validateDelta, Ws as validateHostBindings };

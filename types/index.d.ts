@@ -4,6 +4,8 @@ export { DeliveryClient } from './modules/m9e3090309385.js';
 export type { DeliveryClientOptions, DeliveryOpenOptions, DeliveryProgress, DeliveryAutoUpdate, DeliveryUpdateProgress, DeliveryActorSelection, DeliveryScriptTarget, DeliveryScriptSnapshot, DeliveryScriptHandle, DeliveryScripts } from './modules/m9e3090309385.js';
 export { LocalChunkSource, HttpChunkSource, defaultDeliverySource } from './modules/m7917afd94e6d.js';
 export { publicationConnectionUrl } from './modules/ma33be92d4461.js';
+export { storageEndpoint, storageConnectionUrl, splitStorageConnection, readStorageDirectory, mergeStorageDirectories, storageConnectionLabel } from './modules/m0a765a5438a0.js';
+export type { StorageConnection, StorageLocation, StorageDirectory } from './modules/m0a765a5438a0.js';
 export type { DeliverySource, DeliveryModel, DeliveryRelease, DeliveryDirectoryHandle, DeliveryFileHandle } from './modules/m7917afd94e6d.js';
 export { readReviewSnapshot, diffActors } from './modules/m5b5c85898923.js';
 export type { ReviewSnapshot, ReviewActor, ActorDifference } from './modules/m5b5c85898923.js';

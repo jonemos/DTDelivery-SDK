@@ -1,4 +1,4 @@
-# 공개 함수·타입 명세 · SDK 0.3.15
+# 공개 함수·타입 명세 · SDK 0.3.19
 
 API를 화면에 연결하는 순서와 기능별 실행 예제는 [개발 가이드 목차](guides/README.md)를 참고하세요. 이 문서는 함수 계약 요약이며 가이드의 코드도 공개 `@dt/delivery-sdk` import만 사용합니다.
 
@@ -9,6 +9,10 @@ API를 화면에 연결하는 순서와 기능별 실행 예제는 [개발 가�
 0.3.1의 `viewport.setBounds(enabled: boolean)`은 준비된 액터의 실제 월드 바운드를 표시하며 `viewport.bounds`로 현재 설정을 읽습니다. 기본 꺼짐이고, 숨김/로드 해제/종료 시 helper를 정리합니다. 청크·Actor ID·선택용 picking을 변경하지 않습니다. 표시 메뉴에서는 아이콘·아이콘 크기 항목 대신 바운드를 제공합니다.
 
 ## 연결과 모델
+
+`storageConnectionUrl({ endpoint, bucket, prefix, scope })`는 분리된 입력으로 모델 목록 URL을 만들고 `splitStorageConnection(url)`은 기존 전체 연결 URL을 분리합니다. `storageEndpoint(value)`는 http(s)://호스트:포트만 허용합니다. `readStorageDirectory(seed, signal)`은 seed의 버킷·경로 아래 `levels/delivery-connections.json` 한 파일을 공개 GET으로 읽습니다. 최대 64KiB, 100개 위치, 위치별 256개 scope이며 `{ version: 1, locations: [{ bucket, prefix, scopes }] }`의 추가 필드·중복·경로 이탈·URL은 거부합니다. 응답 안에 endpoint·접속 키·실행 코드는 허용하지 않습니다. 버킷 나열이나 다른 origin으로의 redirect는 하지 않습니다. 처음 연결하는 임의 서버는 host가 seed를 한 번 제공해야 합니다.
+
+예제는 주소를 서버 origin으로 유지하고 버킷·경로·scope 선택 목록을 제공합니다. 편집기의 업로드 완료 또는 SDK 연결 목록 갱신으로 이 파일을 게시하며 수동 파일 전달은 필요 없습니다. 목록은 탐색용이고 모델은 기존 head·manifest·chunk 해시 검증을 계속 받습니다. **공간 자동 언로드**는 기존 `viewport.setSpatialStreaming(options | null)` UI이며 API 단위는 m/ms, 화면은 cm/초입니다. 정적 소스의 행렬·프레임 준비를 캐시하고 동적 소스는 매 프레임 갱신합니다.
 
 0.3.10 배포본은 현재 저장소의 공개 모델 목록 주소를 기본 연결로 포함합니다. **첫 게시 때도 사용자에게 ID나 주소를 전달할 필요가 없습니다.** `const sdk = new DeliveryClient({ canvas }); const models = await sdk.listModels();`로 이름 목록을 읽고 선택한 항목의 ID를 내부적으로 `open()`에 전달합니다. `defaultDeliverySource()`는 같은 기본 source를 반환합니다. 다른 저장소나 로컬 파일은 기존 `source` 옵션으로 지정합니다. 기본 연결에는 인증키·비밀번호·게시본 해시가 없으며 네트워크 읽기는 list/open 후에만 수행합니다.
 

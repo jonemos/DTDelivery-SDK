@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.19
+
+Separate storage endpoint/bucket/path/scope choices, public connection directory, spatial unload controls and composition frame caches.
+
 ## 0.3.18
 
 Read independent chunks of a requested file concurrently under the existing four-request limit. Deduplicate repeated chunks within that file, retain chunk/final-file hash verification, and drain aborted sibling reads before returning a failure. Make memory-cache writes atomic. Runtime assets continue to load only when referenced; no public API or package contract changes.

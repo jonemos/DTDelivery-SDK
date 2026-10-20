@@ -200,6 +200,11 @@ body { display: flex; flex-direction: column; }
 .source-field select { width: 134px; }
 .scope-field input { width: 88px; }
 .address-field input { width: 210px; }
+.toolbar-controls { flex-wrap: wrap; overflow: visible; }
+.toolbar-controls > .connection-controls { flex-wrap: wrap; }
+.toolbar-controls > .model-controls { flex-basis: 100%; min-width: 0; padding-left: 0; border-left: 0; }
+#storage-fields input { width: 120px; }
+.delivery-viewport-tools .editor-residency-control > div { width: 270px; }
 .model-field { flex: 1; }
 .toolbar-controls .model-field { min-width: 180px; }
 .model-field select { width: 100%; min-width: 130px; max-width: none; }
