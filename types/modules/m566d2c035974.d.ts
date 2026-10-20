@@ -34,6 +34,8 @@ export declare class DeliveryViewer {
     icons: boolean;
     iconScale: number;
     helpers: boolean;
+    private screen;
+    get screenSettings(): ScreenSettings;
     private showBounds;
     get bounds(): boolean;
     setBounds(enabled: boolean): void;

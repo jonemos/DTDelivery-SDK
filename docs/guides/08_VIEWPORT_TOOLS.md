@@ -4,6 +4,8 @@
 
 예제의 뷰포트 위 아이콘·원근·라이팅·품질·표시 메뉴는 `mountDeliveryViewportTools()`로 생성합니다. 외부 프로젝트의 header 버튼과 별개로, viewer의 기존 동작을 제어하는 선택적 UI입니다.
 
+기본값은 **Normal, 환경광 켜짐/강도 1, ACES Filmic, 그리드·에디터 도우미 꺼짐**입니다. 옵션 메뉴의 선택에 초점·전체 맞춤 항목은 제거했으며 오른쪽 아이콘과 카메라 API/단축키를 사용합니다. `viewer.screenSettings`는 현재 화면 설정의 복사본이며 `setScreenEffects()`로 변경하면 표시 메뉴도 갱신됩니다.
+
 SDK 0.3.20의 **공간 자동 언로드**는 뷰포트 오른쪽 아래에 있고 설정 패널은 위로 펼쳐집니다. **뷰포트 옵션(☰)**의 전체화면 항목 바로 아래 **UI 숨김**을 켜면 옵션 버튼을 제외한 SDK 뷰포트 UI를 숨깁니다. 같은 체크를 끄면 복원되며 카메라·선택·공간 설정은 바뀌지 않습니다. 호스트 페이지의 연결창·아웃라이너·상세 패널은 이 토글의 대상이 아닙니다.
 
 ## 시그니처와 인수
@@ -53,11 +55,12 @@ export function mountTools(
 
 `immersive`는 사용자 메뉴 클릭/뷰포트 단축키에 반응합니다. 전체화면 대신 앱 내부 확대를 원하면 host CSS 클래스 토글 함수를 전달해도 됩니다. browser Fullscreen 요청의 Promise 거부를 처리하고, 호스트의 iframe/fullscreen 권한과 사용자의 브라우저 동작을 확인합니다.
 
-## 메뉴가 호출하는 실제 기능
+## 도구와 카메라 API
 
 | 화면 메뉴 | 연결 |
 |---|---|
-| 선택에 초점 / 전체 맞춤 | viewer.focusSelection() / viewer.fit() |
+| 오른쪽 큐브 아이콘 / F | viewer.focusSelection() |
+| 전체 맞춤 (API) | viewer.fit() |
 | 카메라 속도·FOV·폭·clip | viewer.navigation.setSpeed() / viewer.setCameraSettings() |
 | 원근/정면/상단 등 | viewer.setProjection() |
 | 라이팅 포함/제외/와이어 | viewer.setMode() |

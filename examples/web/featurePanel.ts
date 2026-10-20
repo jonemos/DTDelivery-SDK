@@ -1,4 +1,4 @@
-import { exampleCode, featureExamples, type ExampleContext, type ExampleValues, type ExampleField } from './featureExamples';
+import { exampleCode, featureExamples, featureReference, type ExampleContext, type ExampleValues, type ExampleField } from './featureExamples';
 import type { DeliveryModel, DeliveryScriptSnapshot } from '@dt/delivery-sdk';
 import { DELIVERY_SDK_VERSION } from '@dt/delivery-sdk';
 
@@ -11,16 +11,26 @@ export function mountFeaturePanel(root: HTMLElement, codeRoot: HTMLElement, info
   const make = <T extends keyof HTMLElementTagNameMap>(tag: T, className = '', text = '') => {
     const element = document.createElement(tag); element.className = className; element.textContent = text; return element;
   };
-  const heading = make('div', 'section-heading'), title = make('h2', '', '기능별 예제'), badge = make('span', 'count-label', String(featureExamples.length)); heading.append(title, badge);
+  const heading = make('div', 'section-heading'), title = make('h2', '', '기능 · API 찾기'), badge = make('span', 'count-label', String(featureExamples.length)); heading.append(title, badge);
+  const help = make('div', 'example-help-links');
+  for (const [label, file] of [['처음 사용하기', 'README.md'], ['API 명세', 'docs/API.md']] as const) { const link = make('a', '', label); link.href = `https://github.com/jonemos/DTDelivery-SDK/blob/v${DELIVERY_SDK_VERSION}/${file}`; link.target = '_blank'; link.rel = 'noopener noreferrer'; help.append(link); }
+  const search = make('input'); search.id = 'example-search'; search.type = 'search'; search.placeholder = '기능 · 클래스 · 함수 검색'; search.setAttribute('aria-label', 'SDK 기능 검색');
+  const category = make('select'); category.id = 'example-category'; category.setAttribute('aria-label', 'SDK 기능 분류');
+  category.append(...['모든 기능', ...new Set(featureExamples.map(example => featureReference[example.id]!.category))].map(value => { const option = make('option', '', value); option.value = value === '모든 기능' ? '' : value; return option; }));
+  const searchResults = make('div', 'example-search-results'), searchState = make('p', 'example-search-state'); searchState.setAttribute('role', 'status'); searchState.id = 'example-search-state';
+  const resetSearch = make('button', 'button-quiet', '검색 초기화'); resetSearch.id = 'example-search-reset';
+  const results = make('div', 'example-search-items'); searchResults.append(searchState, results, resetSearch); searchResults.hidden = true;
   const select = make('select'); select.id = 'example-select'; select.setAttribute('aria-label', '기능별 예제');
   select.append(...featureExamples.map(example => { const option = make('option', '', example.title); option.value = example.id; return option; }));
-  const description = make('p', 'example-description'), fields = make('div', 'example-fields');
+  const description = make('p', 'example-description'), requirement = make('p', 'example-requirement'), reference = make('div', 'example-reference'), fields = make('div', 'example-fields');
+  requirement.id = 'example-requirement'; reference.id = 'example-reference';
+  const owner = make('strong'), api = make('div', 'example-api-list'), referenceGuide = make('a', '', '기능 문서 ↗'); referenceGuide.target = '_blank'; referenceGuide.rel = 'noopener noreferrer'; reference.append(owner, api, referenceGuide);
   const actions = make('div', 'example-actions'), run = make('button', 'button-primary', '실행'), stop = make('button', 'button-secondary', '정지 · 복원');
   const viewCode = make('button', 'button-quiet', '코드 보기'), reload = make('button', 'button-quiet', '현재값 읽기');
   run.id = 'example-run'; stop.id = 'example-stop'; viewCode.id = 'example-code-toggle'; reload.id = 'example-reload';
   actions.append(run, stop, viewCode);
   const state = make('p', 'example-state', '예제를 선택하고 실행하세요.'); state.id = 'example-state'; state.setAttribute('role', 'status');
-  root.append(heading, select, description, fields, reload, actions, state);
+  root.append(heading, help, search, category, searchResults, select, description, reference, requirement, fields, reload, actions, state);
 
   const codeHeading = make('div', 'section-heading'), codeTitle = make('h2', '', '예제 코드');
   const close = make('button', 'button-quiet', '닫기'); close.setAttribute('aria-label', '예제 코드 닫기'); codeHeading.append(codeTitle, close);
@@ -30,9 +40,9 @@ export function mountFeaturePanel(root: HTMLElement, codeRoot: HTMLElement, info
   codeActions.append(copy, wrapLabel, guide);
   copy.disabled = !navigator.clipboard;
   if (copy.disabled) copy.title = '클립보드가 지원되는 HTTPS/localhost 환경이 필요합니다.';
-  const parameters = make('pre', 'example-parameters'), code = make('pre', 'example-code wrap'), resultTitle = make('h3', '', '실행 결과'), result = make('pre', 'example-result');
+  const call = make('pre', 'example-call'), parameters = make('pre', 'example-parameters'), code = make('pre', 'example-code wrap'), resultTitle = make('h3', '', '실행 결과'), result = make('pre', 'example-result'); call.id = 'example-call';
   code.id = 'example-code'; parameters.id = 'example-parameters'; result.id = 'example-result'; result.textContent = '아직 실행하지 않았습니다.';
-  codeRoot.append(codeHeading, codeActions, parameters, code, resultTitle, result);
+  codeRoot.append(codeHeading, codeActions, call, parameters, code, resultTitle, result);
   viewCode.setAttribute('aria-controls', codeRoot.id);
 
   let current = featureExamples[0]!, controls = new Map<string, HTMLInputElement | HTMLSelectElement>();
@@ -75,7 +85,7 @@ export function mountFeaturePanel(root: HTMLElement, codeRoot: HTMLElement, info
   };
   const reason = () => {
     const sdk = host.client();
-    if (current.needs && !sdk) return '먼저 청크 폴더 또는 정적 주소를 연결하세요.';
+    if (current.needs && !sdk) return '먼저 상단에서 저장소를 연결하세요.';
     if (current.needs === 'ready' && sdk?.progress.status !== 'ready') return '게시본 열기를 완료한 뒤 실행하세요.';
     if (current.needs === 'loading' && sdk?.progress.status !== 'loading') return '로드가 진행 중일 때 실행할 수 있습니다.';
     if (current.id === 'open' && !controls.get('model')?.value) return '조회된 모델이 없습니다.';
@@ -106,7 +116,8 @@ export function mountFeaturePanel(root: HTMLElement, codeRoot: HTMLElement, info
     const unavailable = reason();
     run.disabled = active || Boolean(unavailable); run.title = unavailable;
     stop.disabled = !controller && !cleanup;
-    description.textContent = unavailable || current.description;
+    description.textContent = current.description;
+    requirement.textContent = unavailable; requirement.hidden = !unavailable;
   };
   const stopCurrent = (announce = true) => {
     ticket++; controller?.abort(); controller = undefined; active = false;
@@ -137,10 +148,28 @@ export function mountFeaturePanel(root: HTMLElement, codeRoot: HTMLElement, info
     for (const field of current.fields ?? []) createField(field);
     codeTitle.textContent = current.title; code.textContent = exampleCode(current.id);
     guide.href = `https://github.com/jonemos/DTDelivery-SDK/blob/v${DELIVERY_SDK_VERSION}/docs/guides/${current.guide}.md`;
+    const data = featureReference[current.id]!; owner.textContent = data.owner; api.replaceChildren(...data.api.map(name => make('code', '', name))); call.textContent = data.call; referenceGuide.href = guide.href;
     parameters.textContent = '입력값은 실행 시 표시합니다.'; result.textContent = '아직 실행하지 않았습니다.';
     state.textContent = '예제를 선택하고 실행하세요.'; state.dataset.state = 'idle';
-    reload.hidden = current.id !== 'property'; refresh();
+    reload.hidden = current.id !== 'property'; refresh(); renderSearch();
   };
+  const renderSearch = () => {
+    const terms = search.value.toLocaleLowerCase().trim().split(/\s+/).filter(Boolean), filtering = terms.length > 0 || category.value !== '';
+    searchResults.hidden = !filtering;
+    const matches = featureExamples.filter(example => {
+      const data = featureReference[example.id]!, text = [example.title, example.description, data.owner, data.category, ...data.api, data.call, ...(example.fields ?? []).flatMap(field => [field.label, field.key, ...(field.options ?? [])])].join(' ').toLocaleLowerCase();
+      return (!category.value || data.category === category.value) && terms.every(term => text.includes(term) || text.replace(/\s/g, '').includes(term));
+    });
+    badge.textContent = filtering ? `${matches.length}/${featureExamples.length}` : String(featureExamples.length);
+    searchState.textContent = matches.length ? `${matches.length}개 기능 · 선택하면 코드와 입력을 봅니다.` : '검색 결과가 없습니다. 검색어나 분류를 바꾸세요.';
+    results.replaceChildren(...matches.map(example => {
+      const button = make('button', 'example-search-result'); button.type = 'button'; button.dataset.example = example.id; button.setAttribute('aria-pressed', String(example.id === current.id));
+      button.append(make('span', '', example.title), make('small', '', featureReference[example.id]!.api[0]));
+      button.onclick = () => { select.value = example.id; choose(); showCode(true); }; return button;
+    }));
+  };
+  search.oninput = renderSearch; category.onchange = renderSearch;
+  resetSearch.onclick = () => { search.value = ''; category.value = ''; renderSearch(); search.focus(); };
   select.addEventListener('change', () => { choose(); showCode(true); });
   stop.onclick = () => stopCurrent(); viewCode.onclick = () => showCode(codeRoot.hidden === true); close.onclick = () => showCode(false);
   reload.onclick = () => { setScriptValue(true); refresh(); };

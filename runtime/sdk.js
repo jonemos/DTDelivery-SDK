@@ -656,7 +656,7 @@ function fr(e, t, n = e) {
 //#region src/delivery/SdkVersion.ts
 var pr = typeof __DT_DELIVERY_SDK_VERSION__ > "u" ? {
 	name: "@dt/delivery-sdk",
-	version: "0.3.20",
+	version: "0.3.21",
 	license: "MIT",
 	addonSdkVersion: 5,
 	contracts: [
@@ -7586,11 +7586,19 @@ var is = (e, t) => e.groupOrder - t.groupOrder || e.renderOrder - t.renderOrder 
 	quality;
 	navigation;
 	effects;
-	environment = C.enabled;
-	environmentIntensity = C.intensity;
+	environment = !0;
+	environmentIntensity = 1;
 	icons = !1;
 	iconScale = 1;
-	helpers = !0;
+	helpers = !1;
+	screen = {
+		toneMapping: "aces",
+		exposure: m.exposure,
+		fog: { ...m.fog }
+	};
+	get screenSettings() {
+		return structuredClone(this.screen);
+	}
 	showBounds = !1;
 	get bounds() {
 		return this.showBounds;
@@ -7674,9 +7682,9 @@ var is = (e, t) => e.groupOrder - t.groupOrder || e.renderOrder - t.renderOrder 
 		}), this.renderer = new Cn({
 			canvas: e,
 			antialias: !0
-		}), this.renderer.setPixelRatio(Math.min(devicePixelRatio, 2)), this.scene.background = new Ot("#25292e"), this.scene.add(this.session.root), this.renderer.shadowMap.enabled = !0, this.camera.position.set(12, 10, 12), this.controls = new ma(this.camera, e), this.controls.mouseButtons.LEFT = null, this.controls.mouseButtons.MIDDLE = _n.PAN, this.controls.mouseButtons.RIGHT = null, e.addEventListener("pointerdown", this.prepareOrbit, { capture: !0 }), this.controls.addEventListener("change", this.invalidate), this.grid.layers.set(1), this.selection.layers.set(1), this.selection.visible = !1, this.scene.add(this.grid, this.selection), this.quality = new Qi(this.renderer, this.scene, this.invalidate, () => this.onViewChange?.()), this.batchInstances = new Zo(this.scene), this.batching = new Xo(this.renderer, this.scene, this.batchInstances, this.invalidate, () => this.onViewChange?.()), this.unsubscribeBatching = this.session.subscribe(() => {
+		}), this.renderer.setPixelRatio(Math.min(devicePixelRatio, 2)), this.scene.background = new Ot("#25292e"), this.scene.add(this.session.root), this.renderer.shadowMap.enabled = !0, this.camera.position.set(12, 10, 12), this.controls = new ma(this.camera, e), this.controls.mouseButtons.LEFT = null, this.controls.mouseButtons.MIDDLE = _n.PAN, this.controls.mouseButtons.RIGHT = null, e.addEventListener("pointerdown", this.prepareOrbit, { capture: !0 }), this.controls.addEventListener("change", this.invalidate), this.grid.layers.set(1), this.grid.visible = !1, this.selection.layers.set(1), this.selection.visible = !1, this.scene.add(this.grid, this.selection), this.quality = new Qi(this.renderer, this.scene, this.invalidate, () => this.onViewChange?.()), this.batchInstances = new Zo(this.scene), this.batching = new Xo(this.renderer, this.scene, this.batchInstances, this.invalidate, () => this.onViewChange?.()), this.unsubscribeBatching = this.session.subscribe(() => {
 			this.preparationGeneration++, this.batching.invalidate(), this.invalidate();
-		}), this.effects = new ia(this.scene, this.renderer), this.navigation = new Gi(this), this.resize = new ResizeObserver(() => {
+		}), this.effects = new ia(this.scene, this.renderer), this.setScreenEffects(this.screen), this.quality.apply(Yt.NORMAL), this.navigation = new Gi(this), this.resize = new ResizeObserver(() => {
 			let t = Math.max(1, e.clientWidth), n = Math.max(1, e.clientHeight);
 			this.renderer.setSize(t, n, !1), this.resizeCamera(t / n), this.invalidate();
 		}), this.resize.observe(e), this.pick = (t) => {
@@ -7770,7 +7778,7 @@ var is = (e, t) => e.groupOrder - t.groupOrder || e.renderOrder - t.renderOrder 
 					nativeSort: r ? this.drawOrder.compare : void 0,
 					geometryAllowance: this.session.automaticBudget ? void 0 : () => Math.max(0, this.session.budget.geometry - this.session.usage.geometry)
 				}, () => {
-					this.quality.render(this.camera, e.clientWidth, e.clientHeight, this.mode === "lit", () => R(this.renderer, this.scene, this.camera, this.mode === "lit" ? null : this.wire, this.mode === "unlit"), {
+					this.quality.render(this.camera, Math.max(1, e.clientWidth), Math.max(1, e.clientHeight), this.mode === "lit", () => R(this.renderer, this.scene, this.camera, this.mode === "lit" ? null : this.wire, this.mode === "unlit"), {
 						environmentLighting: this.environment,
 						environmentIntensity: this.environmentIntensity,
 						shadowLightGeneration: this.session.version
@@ -7901,7 +7909,7 @@ var is = (e, t) => e.groupOrder - t.groupOrder || e.renderOrder - t.renderOrder 
 		this.effects.configure({
 			...m,
 			...e
-		}), this.invalidate();
+		}), this.screen = structuredClone(e), this.invalidate(), this.onViewChange?.();
 	}
 	selectActor(e) {
 		let t = e ? this.session.findActors(e.actorId, e.mountId)[0] : void 0, n = t && this.session.resolveActor(t).loaded ? this.session.retainActor(t) : void 0;
@@ -18344,14 +18352,8 @@ function xc(e, t, n, r) {
 function Sc(e, t, n) {
 	e.setItem(t, JSON.stringify(n instanceof Set ? [...n] : n));
 }
-//#endregion
-//#region src/ui/appExecutionPreferences.ts
-var Cc = {
-	toneMapping: m.toneMapping,
-	exposure: m.exposure,
-	fog: m.fog
-};
-function wc(e) {
+m.toneMapping, m.exposure, m.fog;
+function Cc(e) {
 	try {
 		return v({
 			...m,
@@ -18363,11 +18365,11 @@ function wc(e) {
 }
 //#endregion
 //#region src/ui/ScreenEffectsOptions.tsx
-function Tc({ effects: e, onChange: t, disabled: n }) {
+function wc({ effects: e, onChange: t, disabled: n }) {
 	let [r, i] = (0, U.useState)(""), a = (n) => {
 		try {
 			let r = n(e);
-			if (!wc(r)) throw Error("화면 효과 값이 허용 범위를 벗어났습니다.");
+			if (!Cc(r)) throw Error("화면 효과 값이 허용 범위를 벗어났습니다.");
 			t(r), i("");
 		} catch (e) {
 			i(e instanceof Error ? e.message : String(e));
@@ -18377,7 +18379,7 @@ function Tc({ effects: e, onChange: t, disabled: n }) {
 		value: r,
 		validate: (t) => {
 			try {
-				if (!wc(o(e, t))) throw Error("화면 효과 값이 허용 범위를 벗어났습니다.");
+				if (!Cc(o(e, t))) throw Error("화면 효과 값이 허용 범위를 벗어났습니다.");
 				return i(""), { ok: !0 };
 			} catch (e) {
 				return i(e instanceof Error ? e.message : String(e)), { ok: !1 };
@@ -18459,7 +18461,7 @@ function Tc({ effects: e, onChange: t, disabled: n }) {
 }
 //#endregion
 //#region src/ui/EnvironmentIntensityInput.tsx
-function Ec({ value: e, onCommit: t, disabled: n, ariaLabel: r }) {
+function Tc({ value: e, onCommit: t, disabled: n, ariaLabel: r }) {
 	let [i, a] = (0, U.useState)(null), [o, s] = (0, U.useState)(!1), c = (0, U.useRef)(null), l = (0, U.useRef)(null), d = () => {
 		l.current !== null && clearTimeout(l.current), l.current = null, c.current = null, a(null), s(!1);
 	};
@@ -18506,7 +18508,7 @@ function Ec({ value: e, onCommit: t, disabled: n, ariaLabel: r }) {
 }
 //#endregion
 //#region src/ui/usePreference.ts
-function Dc(e, t, n) {
+function Ec(e, t, n) {
 	let r = "dt-web-editor.preferences.v1." + e, [i, a] = (0, U.useState)(() => ({
 		key: r,
 		value: xc(yc, r, t, n)
@@ -18538,13 +18540,13 @@ function Dc(e, t, n) {
 }
 //#endregion
 //#region src/ui/textureDisplayPreferences.ts
-var Oc = {
+var Dc = {
 	version: 2,
 	options: _(f),
 	budget: 0,
 	budgetMode: "auto"
 };
-function kc(e) {
+function Oc(e) {
 	let t = _(e.options);
 	return {
 		...e,
@@ -18555,11 +18557,11 @@ function kc(e) {
 		}
 	};
 }
-function Ac() {
-	return kc(xc(yc, "dt-web-editor.preferences.v1.textureDisplay", Oc, Nc));
+function kc() {
+	return Oc(xc(yc, "dt-web-editor.preferences.v1.textureDisplay", Dc, Mc));
 }
-var jc = (e) => Nc(e) && e.version === 2 && e.options.maxSize !== 0 && e.options.maxSize <= 512 && Object.values(e.options.mapMaxSizes ?? {}).every((e) => e <= 512), Mc = (e) => e.budgetMode === "manual" ? e.budget : 0;
-function Nc(e) {
+var Ac = (e) => Mc(e) && e.version === 2 && e.options.maxSize !== 0 && e.options.maxSize <= 512 && Object.values(e.options.mapMaxSizes ?? {}).every((e) => e <= 512), jc = (e) => e.budgetMode === "manual" ? e.budget : 0;
+function Mc(e) {
 	try {
 		let t = e;
 		return !t || ![
@@ -18574,7 +18576,7 @@ function Nc(e) {
 }
 //#endregion
 //#region src/ui/ViewportColorGuidance.tsx
-function Pc({ controls: e, disabled: t, compact: n = !1 }) {
+function Nc({ controls: e, disabled: t, compact: n = !1 }) {
 	return e.mode !== "lit" || e.environment && e.intensity > 0 ? null : /* @__PURE__ */ (0, W.jsxs)("div", {
 		className: `texture-options-note${n ? " texture-color-guidance" : ""}`,
 		children: [
@@ -18597,16 +18599,16 @@ function Pc({ controls: e, disabled: t, compact: n = !1 }) {
 }
 //#endregion
 //#region src/ui/TextureOptionsMenu.tsx
-var Fc = [
+var Pc = [
 	["baseColor", "베이스 컬러"],
 	["normal", "노멀"],
 	["metallicRoughness", "메탈릭·러프니스"],
 	["occlusion", "AO"],
 	["emissive", "이미시브"],
 	["specular", "스페큘러"]
-], Ic = (e) => `${(e / 1048576).toFixed(1)} MiB`;
-function Lc({ resources: e, disabled: t = !1, onBusy: n, autoApply: r = !0, colorControls: i, embedded: a = !1 }) {
-	let o = e?.textureDisplay, s = !o || t, l = sc(), u = (0, U.useRef)(null), [d, f] = Dc("textureDisplay", Ac(), jc), { options: p } = d, m = Mc(d), h = (e) => f((t) => ({
+], Fc = (e) => `${(e / 1048576).toFixed(1)} MiB`;
+function Ic({ resources: e, disabled: t = !1, onBusy: n, autoApply: r = !0, colorControls: i, embedded: a = !1 }) {
+	let o = e?.textureDisplay, s = !o || t, l = sc(), u = (0, U.useRef)(null), [d, f] = Ec("textureDisplay", kc(), Ac), { options: p } = d, m = jc(d), h = (e) => f((t) => ({
 		...t,
 		options: e
 	})), g = (e) => f((t) => ({
@@ -18637,7 +18639,7 @@ function Lc({ resources: e, disabled: t = !1, onBusy: n, autoApply: r = !0, colo
 	}, [d, n]), (0, U.useEffect)(() => {
 		if (!o || !r) return;
 		let e = new AbortController(), t = setTimeout(() => {
-			u.current = e, v(!0), C.current.onBusy(!0), o.apply(C.current.preferences.options, Mc(C.current.preferences), e.signal, b).then(() => {
+			u.current = e, v(!0), C.current.onBusy(!0), o.apply(C.current.preferences.options, jc(C.current.preferences), e.signal, b).then(() => {
 				e.signal.aborted || (S(o.options), b("공통 텍스처 설정을 적용했습니다."));
 			}).catch((t) => {
 				e.signal.aborted || b("공통 설정 적용 실패: " + (t instanceof Error ? t.message : String(t)));
@@ -18729,7 +18731,7 @@ function Lc({ resources: e, disabled: t = !1, onBusy: n, autoApply: r = !0, colo
 						disabled: _ || t,
 						children: [/* @__PURE__ */ (0, W.jsx)("legend", { children: "사용할 맵" }), /* @__PURE__ */ (0, W.jsx)("div", {
 							className: "texture-options-maps",
-							children: Fc.map(([e, t]) => /* @__PURE__ */ (0, W.jsxs)("label", {
+							children: Pc.map(([e, t]) => /* @__PURE__ */ (0, W.jsxs)("label", {
 								title: w.has(e) ? void 0 : "현재 레벨에 이 맵이 없습니다.",
 								children: [/* @__PURE__ */ (0, W.jsx)("input", {
 									type: "checkbox",
@@ -18743,7 +18745,7 @@ function Lc({ resources: e, disabled: t = !1, onBusy: n, autoApply: r = !0, colo
 							}, e))
 						})]
 					}),
-					x.maps.includes("baseColor") && i ? /* @__PURE__ */ (0, W.jsx)(Pc, {
+					x.maps.includes("baseColor") && i ? /* @__PURE__ */ (0, W.jsx)(Nc, {
 						compact: !0,
 						controls: i,
 						disabled: s || _
@@ -18753,9 +18755,9 @@ function Lc({ resources: e, disabled: t = !1, onBusy: n, autoApply: r = !0, colo
 						"aria-live": "polite",
 						title: "텍스처 메모리 예약 추정입니다. 실제 GPU·전체 레벨 메모리와 다를 수 있습니다.",
 						children: [
-							/* @__PURE__ */ (0, W.jsxs)("div", { children: [/* @__PURE__ */ (0, W.jsx)("dt", { children: "적용 후" }), /* @__PURE__ */ (0, W.jsx)("dd", { children: Ic(te) })] }),
-							/* @__PURE__ */ (0, W.jsxs)("div", { children: [/* @__PURE__ */ (0, W.jsx)("dt", { children: "교체 중" }), /* @__PURE__ */ (0, W.jsx)("dd", { children: Ic(T) })] }),
-							/* @__PURE__ */ (0, W.jsxs)("div", { children: [/* @__PURE__ */ (0, W.jsx)("dt", { children: m === 0 ? "자동 한도" : "한도" }), /* @__PURE__ */ (0, W.jsx)("dd", { children: Ic(ne) })] })
+							/* @__PURE__ */ (0, W.jsxs)("div", { children: [/* @__PURE__ */ (0, W.jsx)("dt", { children: "적용 후" }), /* @__PURE__ */ (0, W.jsx)("dd", { children: Fc(te) })] }),
+							/* @__PURE__ */ (0, W.jsxs)("div", { children: [/* @__PURE__ */ (0, W.jsx)("dt", { children: "교체 중" }), /* @__PURE__ */ (0, W.jsx)("dd", { children: Fc(T) })] }),
+							/* @__PURE__ */ (0, W.jsxs)("div", { children: [/* @__PURE__ */ (0, W.jsx)("dt", { children: m === 0 ? "자동 한도" : "한도" }), /* @__PURE__ */ (0, W.jsx)("dd", { children: Fc(ne) })] })
 						]
 					}),
 					/* @__PURE__ */ (0, W.jsx)("p", {
@@ -18811,7 +18813,7 @@ function Lc({ resources: e, disabled: t = !1, onBusy: n, autoApply: r = !0, colo
 }
 //#endregion
 //#region src/render/EditorResidencyControl.tsx
-function Rc({ value: e, onChange: t, status: n, context: r = "편집기", disabled: i = !1 }) {
+function Lc({ value: e, onChange: t, status: n, context: r = "편집기", disabled: i = !1 }) {
 	let [a, o] = (0, U.useState)(""), s = (0, U.useRef)(null);
 	(0, U.useEffect)(() => {
 		let e = s.current, t = (e) => e.stopPropagation(), n = [
@@ -18904,32 +18906,32 @@ function Rc({ value: e, onChange: t, status: n, context: r = "편집기", disabl
 }
 //#endregion
 //#region src/render/EditorResidency.ts
-var zc = {
+var Rc = {
 	enabled: !1,
 	...Lo
 };
 //#endregion
 //#region src/delivery/DeliveryViewportTools.tsx
-function Bc({ viewer: e, immersive: t, leftOnly: n = !1 }) {
-	let [, r] = (0, U.useState)(0), [i, a] = (0, U.useState)(Cc), [o, s] = (0, U.useState)(!1), [c, l] = (0, U.useState)(!1), [u, d] = (0, U.useState)(() => ({
-		...zc,
+function zc({ viewer: e, immersive: t, leftOnly: n = !1 }) {
+	let [, r] = (0, U.useState)(0), [i, a] = (0, U.useState)(!1), [o, s] = (0, U.useState)(!1), [c, l] = (0, U.useState)(() => ({
+		...Rc,
 		...e.session.spatialStreaming?.options ?? {},
 		enabled: !!e.session.spatialStreaming
-	})), f = () => r((e) => e + 1);
-	(0, U.useEffect)(() => (e.onViewChange = f, e.navigation.onAction = (n) => {
+	})), u = () => r((e) => e + 1);
+	(0, U.useEffect)(() => (e.onViewChange = u, e.navigation.onAction = (n) => {
 		if (n === "focus-selection" && e.focusSelection(), n === "toggle-immersive" && t(), n === "toggle-game-view") {
 			let t = !e.helpers;
-			e.helpers = t, e.grid.visible = t, e.invalidate(), f();
+			e.helpers = t, e.grid.visible = t, e.invalidate(), u();
 		}
 	}, () => {
 		e.onViewChange = void 0, e.navigation.onAction = void 0;
 	}), [e, t]);
-	let p = e.quality.snapshot();
-	(0, U.useEffect)(() => e.session.subscribe(f), [e]);
-	let m = e.session.spatialStreaming, h = e.session.busy ? "로드·에셋 작업 완료 후 설정을 변경하세요." : m?.protected ? "실행·편집 중 자원 보호" : m?.paused ? "공간 로드가 중지되었습니다. 다시 열거나 재개하세요." : m ? `요청 셀 ${m.states.filter((e) => e.wanted).length}/${m.states.length} · 선택·동적 액터 보호` : "기본 전체 로드 · 공간 경계가 있는 게시본에서 사용 가능";
+	let d = e.quality.snapshot();
+	(0, U.useEffect)(() => e.session.subscribe(u), [e]);
+	let f = e.session.spatialStreaming, p = e.session.busy ? "로드·에셋 작업 완료 후 설정을 변경하세요." : f?.protected ? "실행·편집 중 자원 보호" : f?.paused ? "공간 로드가 중지되었습니다. 다시 열거나 재개하세요." : f ? `요청 셀 ${f.states.filter((e) => e.wanted).length}/${f.states.length} · 선택·동적 액터 보호` : "기본 전체 로드 · 공간 경계가 있는 게시본에서 사용 가능";
 	return /* @__PURE__ */ (0, W.jsxs)("div", {
 		className: "delivery-viewport-ui",
-		"data-ui-hidden": c,
+		"data-ui-hidden": o,
 		children: [/* @__PURE__ */ (0, W.jsxs)(cc, {
 			className: "delivery-viewport-tools",
 			children: [
@@ -18945,17 +18947,9 @@ function Bc({ viewer: e, immersive: t, leftOnly: n = !1 }) {
 						}),
 						/* @__PURE__ */ (0, W.jsxs)("label", { children: [/* @__PURE__ */ (0, W.jsx)("input", {
 							type: "checkbox",
-							checked: c,
-							onChange: (e) => l(e.target.checked)
+							checked: o,
+							onChange: (e) => s(e.target.checked)
 						}), "UI 숨김"] }),
-						/* @__PURE__ */ (0, W.jsxs)("button", {
-							onClick: () => e.focusSelection(),
-							children: ["선택에 초점", /* @__PURE__ */ (0, W.jsx)("kbd", { children: "F" })]
-						}),
-						/* @__PURE__ */ (0, W.jsx)("button", {
-							onClick: () => e.fit(),
-							children: "전체 맞춤"
-						}),
 						/* @__PURE__ */ (0, W.jsxs)("details", {
 							className: "camera-options",
 							open: !0,
@@ -18964,7 +18958,7 @@ function Bc({ viewer: e, immersive: t, leftOnly: n = !1 }) {
 								value: e.navigation.speed,
 								validate: (e) => ({ ok: typeof e == "number" && Number.isFinite(e) && e >= .25 && e <= 64 }),
 								onCommit: (t) => {
-									e.navigation.setSpeed(t), f();
+									e.navigation.setSpeed(t), u();
 								}
 							})] }), [
 								[
@@ -19018,7 +19012,7 @@ function Bc({ viewer: e, immersive: t, leftOnly: n = !1 }) {
 							"aria-pressed": !e.helpers,
 							onClick: () => {
 								let t = !e.helpers;
-								e.helpers = t, e.grid.visible = t, e.invalidate(), f();
+								e.helpers = t, e.grid.visible = t, e.invalidate(), u();
 							},
 							children: "게임 뷰"
 						}),
@@ -19040,8 +19034,8 @@ function Bc({ viewer: e, immersive: t, leftOnly: n = !1 }) {
 					onChange: (t) => e.setMode(t)
 				}),
 				/* @__PURE__ */ (0, W.jsxs)(mc, {
-					preset: p.requested,
-					status: p,
+					preset: d.requested,
+					status: d,
 					disabled: !1,
 					onChange: (t) => {
 						e.quality.apply(t);
@@ -19055,24 +19049,22 @@ function Bc({ viewer: e, immersive: t, leftOnly: n = !1 }) {
 								type: "checkbox",
 								checked: e.environment,
 								onChange: (t) => {
-									e.environment = t.target.checked, e.invalidate(), f();
+									e.environment = t.target.checked, e.invalidate(), u();
 								}
 							}), "환경광"]
 						}),
-						/* @__PURE__ */ (0, W.jsxs)("label", { children: ["환경광 강도", /* @__PURE__ */ (0, W.jsx)(Ec, {
+						/* @__PURE__ */ (0, W.jsxs)("label", { children: ["환경광 강도", /* @__PURE__ */ (0, W.jsx)(Tc, {
 							ariaLabel: "뷰포트 환경광 강도",
 							value: e.environmentIntensity,
 							disabled: !e.environment,
 							onCommit: (t) => {
-								e.environmentIntensity = t, e.invalidate(), f();
+								e.environmentIntensity = t, e.invalidate(), u();
 							}
 						})] })
-					] }), /* @__PURE__ */ (0, W.jsx)(Tc, {
-						effects: i,
+					] }), /* @__PURE__ */ (0, W.jsx)(wc, {
+						effects: e.screenSettings,
 						disabled: !1,
-						onChange: (t) => {
-							e.setScreenEffects(t), a(t);
-						}
+						onChange: (t) => e.setScreenEffects(t)
 					})]
 				}),
 				/* @__PURE__ */ (0, W.jsxs)("details", {
@@ -19097,7 +19089,7 @@ function Bc({ viewer: e, immersive: t, leftOnly: n = !1 }) {
 							type: "checkbox",
 							checked: e.grid.visible,
 							onChange: (t) => {
-								e.grid.visible = t.target.checked, e.invalidate(), f();
+								e.grid.visible = t.target.checked, e.invalidate(), u();
 							}
 						}), "그리드"] }),
 						/* @__PURE__ */ (0, W.jsxs)("label", { children: [/* @__PURE__ */ (0, W.jsx)("input", {
@@ -19105,7 +19097,7 @@ function Bc({ viewer: e, immersive: t, leftOnly: n = !1 }) {
 							type: "checkbox",
 							checked: e.helpers,
 							onChange: (t) => {
-								e.helpers = t.target.checked, e.invalidate(), f();
+								e.helpers = t.target.checked, e.invalidate(), u();
 							}
 						}), "에디터 도우미"] }),
 						/* @__PURE__ */ (0, W.jsxs)("label", { children: [/* @__PURE__ */ (0, W.jsx)("input", {
@@ -19114,19 +19106,19 @@ function Bc({ viewer: e, immersive: t, leftOnly: n = !1 }) {
 							checked: e.bounds,
 							onChange: (t) => e.setBounds(t.target.checked)
 						}), "바운드"] }),
-						/* @__PURE__ */ (0, W.jsx)(Lc, {
+						/* @__PURE__ */ (0, W.jsx)(Ic, {
 							embedded: !0,
 							autoApply: !1,
 							resources: e.session.release ? e.session : void 0,
-							disabled: e.session.busy && !o,
-							onBusy: s,
+							disabled: e.session.busy && !i,
+							onBusy: a,
 							colorControls: {
 								mode: e.mode,
 								environment: e.environment,
 								intensity: e.environmentIntensity,
 								inspect: () => e.setMode("unlit"),
 								light: () => {
-									e.environment = !0, e.environmentIntensity === 0 && (e.environmentIntensity = C.intensity), e.invalidate(), f();
+									e.environment = !0, e.environmentIntensity === 0 && (e.environmentIntensity = C.intensity), e.invalidate(), u();
 								}
 							}
 						})
@@ -19149,21 +19141,21 @@ function Bc({ viewer: e, immersive: t, leftOnly: n = !1 }) {
 					})]
 				})
 			]
-		}), /* @__PURE__ */ (0, W.jsx)(Rc, {
+		}), /* @__PURE__ */ (0, W.jsx)(Lc, {
 			context: "SDK",
 			disabled: e.session.busy,
-			value: u,
-			status: h,
+			value: c,
+			status: p,
 			onChange: (t) => {
 				let { enabled: n, ...r } = t;
-				e.setSpatialStreaming(n ? r : null), d(t);
+				e.setSpatialStreaming(n ? r : null), l(t);
 			}
 		})]
 	});
 }
-function Vc(e, t, n, r = {}) {
+function Bc(e, t, n, r = {}) {
 	let i = (0, oc.createRoot)(e);
-	return i.render(/* @__PURE__ */ (0, W.jsx)(Bc, {
+	return i.render(/* @__PURE__ */ (0, W.jsx)(zc, {
 		viewer: t,
 		immersive: n,
 		leftOnly: r.leftOnly
@@ -19171,7 +19163,7 @@ function Vc(e, t, n, r = {}) {
 }
 //#endregion
 //#region src/delivery/EquipmentPanel.ts
-function Hc(e, t, n = e) {
+function Vc(e, t, n = e) {
 	let r = (e, t = "", n = "") => {
 		let r = document.createElement(e);
 		return r.textContent = t, r.className = n, r;
@@ -19248,7 +19240,7 @@ function Hc(e, t, n = e) {
 }
 //#endregion
 //#region src/delivery/BrowserChunkCache.ts
-var Uc = class {
+var Hc = class {
 	namespace;
 	budget;
 	entries = /* @__PURE__ */ new Map();
@@ -19324,7 +19316,7 @@ var Uc = class {
 };
 //#endregion
 //#region src/delivery/ApplicationManifest.ts
-function Wc(e) {
+function Uc(e) {
 	let t = e;
 	if (!t || Object.keys(t).sort().join() !== "actors,candidateRelease,compositionId,kind,overrideRevision,previous,removed,reviewId,reviewRevision,rollbackOf,version" || t.kind !== "dt-application" || t.version !== 1 || typeof t.compositionId != "string" || !t.compositionId || !Xn(t.candidateRelease) || t.previous !== null && !Xn(t.previous) || t.rollbackOf !== null && !Xn(t.rollbackOf) || typeof t.overrideRevision != "string" || !t.overrideRevision || t.reviewId !== null && typeof t.reviewId != "string" || t.reviewRevision !== null && (!Number.isSafeInteger(t.reviewRevision) || t.reviewRevision < 1) || !Array.isArray(t.actors) || !Array.isArray(t.removed) || t.actors.length > 1e5 || P(t).length > 16 * 1024 ** 2) throw Error("Unsupported application manifest");
 	let n = /* @__PURE__ */ new Set(), r = (e) => {
@@ -19339,9 +19331,9 @@ function Wc(e) {
 	for (let e of t.removed) r(e);
 	return structuredClone(t);
 }
-var Gc = (e) => k(P(Wc(e)));
-async function Kc(e, t, n = new AbortController().signal) {
-	let r = Wc(t), i = /* @__PURE__ */ new Map();
+var Wc = (e) => k(P(Uc(e)));
+async function Gc(e, t, n = new AbortController().signal) {
+	let r = Uc(t), i = /* @__PURE__ */ new Map();
 	for (let t of /* @__PURE__ */ new Set([r.candidateRelease, ...r.actors.map((e) => e.sourceRelease)])) {
 		let a = await Vs(e, t, n);
 		if (a.manifest.id !== r.compositionId) throw Error("Application composition mismatch");
@@ -19354,13 +19346,13 @@ async function Kc(e, t, n = new AbortController().signal) {
 	}), o = new Map(a.map((e) => [e.key, e]));
 	for (let e of a) for (let t of e.dependencies) if (!o.has(t)) throw Error("Application dependency missing");
 	return {
-		releaseHash: await Gc(r),
+		releaseHash: await Wc(r),
 		manifest: i.get(r.candidateRelease).manifest,
 		actors: a,
 		levels: new Map([...i.values()].flatMap((e) => [...e.levels]))
 	};
 }
-async function qc(e, t, n, r, i) {
+async function Kc(e, t, n, r, i) {
 	if (!i.length || new Set(i).size !== i.length || n.releaseHash !== r.candidateRelease || n.manifest.id !== r.compositionId) throw Error("Invalid application selection");
 	let a = /* @__PURE__ */ new Map();
 	for (let e of t?.actors ?? []) a.set(e.key, {
@@ -19408,7 +19400,7 @@ async function qc(e, t, n, r, i) {
 		if (!t) throw Error("Approve the complete attachment/Script dependency group together");
 		for (let n of e) n.sourceRelease = t.releaseHash;
 	}
-	let d = Wc({
+	let d = Uc({
 		kind: "dt-application",
 		version: 1,
 		compositionId: r.compositionId,
@@ -19421,12 +19413,12 @@ async function qc(e, t, n, r, i) {
 		removed: (t?.actors ?? []).filter((e) => !a.has(e.key)).map((e) => e.key).sort(),
 		rollbackOf: null
 	});
-	return await Kc(e, d), d;
+	return await Gc(e, d), d;
 }
 //#endregion
 //#region src/delivery/ApplicationReader.ts
-async function Jc(e, t, n = new AbortController().signal) {
-	let r = Wc(e), i = /* @__PURE__ */ new Map(), a = /* @__PURE__ */ new Map();
+async function qc(e, t, n = new AbortController().signal) {
+	let r = Uc(e), i = /* @__PURE__ */ new Map(), a = /* @__PURE__ */ new Map();
 	for (let e of /* @__PURE__ */ new Set([r.candidateRelease, ...r.actors.map((e) => e.sourceRelease)])) {
 		let r = new Oi(t(e));
 		a.set(e, r), i.set(e, await Vs(r, e, n));
@@ -19523,7 +19515,7 @@ async function Jc(e, t, n = new AbortController().signal) {
 		spatial: [...v.values()],
 		cells: [..._.values()]
 	}), re = await k(P(ne));
-	return s.set(Qn(re), P(ne)), await Kc(new Oi({ read: async (e, t, n) => {
+	return s.set(Qn(re), P(ne)), await Gc(new Oi({ read: async (e, t, n) => {
 		let r = e.startsWith("releases/") ? e.slice(9, -5) : o.get(e);
 		if (!r || !a.has(r)) throw Error("Unknown provenance");
 		return a.get(r).provider.read(e, t, n);
@@ -19545,18 +19537,18 @@ async function Jc(e, t, n = new AbortController().signal) {
 			}
 		}),
 		hash: re,
-		revision: await Gc(r),
+		revision: await Wc(r),
 		aliases: c
 	};
 }
 //#endregion
 //#region src/delivery/RuntimeCapability.ts
-var Yc = Object.freeze({
+var Jc = Object.freeze({
 	packageId: "dt.mesh-motion",
 	version: "1.0.0",
 	codeHash: "c6b8244101f48f5c489d8da3edaa1f852a59612e3138c952c94c86aa9adfbd4d"
 });
-function Xc(e, t, n, r) {
+function Yc(e, t, n, r) {
 	let i = /* @__PURE__ */ new Set(), a = [];
 	for (let o of e.actors) for (let e of o.components) {
 		if (e.type !== "TestScript") continue;
@@ -19598,7 +19590,7 @@ function Xc(e, t, n, r) {
 }
 //#endregion
 //#region src/runtime/RuntimeSignalState.ts
-var Zc = class {
+var Xc = class {
 	producerState;
 	records = /* @__PURE__ */ new Map();
 	time = 0;
@@ -19669,12 +19661,12 @@ var Zc = class {
 };
 //#endregion
 //#region src/runtime/RuntimeComponents.ts
-function Qc(e) {
+function Zc(e) {
 	let { reference: t } = s(e), n = ao[t.codeHash] ?? gr(t.codeHash);
 	if (typeof n != "function") throw Error("Installed Script factory is missing.");
 	return n;
 }
-var $c = class {
+var Qc = class {
 	owner;
 	id;
 	wantsEnabled = !0;
@@ -19715,7 +19707,7 @@ var $c = class {
 			this.alive && this.owner.componentRuntime.report(this, "async", e);
 		});
 	}
-}, el = class extends $c {
+}, $c = class extends Qc {
 	static typeId = "TestData";
 	typeId = "TestData";
 	currentValue;
@@ -19731,7 +19723,7 @@ var $c = class {
 	constructor(e, t) {
 		super(e, t), this.currentValue = t.value;
 	}
-}, tl = class extends $c {
+}, el = class extends Qc {
 	static typeId = "StaticMesh";
 	typeId = "StaticMesh";
 	getLocalTransform() {
@@ -19740,11 +19732,11 @@ var $c = class {
 	setLocalTransform(e) {
 		this.owner.componentRuntime.assertAlive(this), this.owner.componentRuntime.spatial.set(this.id, e);
 	}
-}, nl = class extends $c {
+}, tl = class extends Qc {
 	onRegister() {
 		this.tickEnabled = !0;
 	}
-}, rl = class extends nl {
+}, nl = class extends tl {
 	static typeId = "TestScript";
 	typeId = "TestScript";
 	targetComponentId;
@@ -19756,7 +19748,7 @@ var $c = class {
 	schemaVersion;
 	references;
 	constructor(e, t, n) {
-		super(e, t), this.createBehavior = n ?? Qc(t), this.schemaVersion = t.typeVersion === 1 ? 2 : t.typeVersion, this.settings = Object.freeze({ ...a(t) }), this.references = Xe(t), this.scriptPackage = s(t).reference, this.targetComponentId = t.targetComponentId, this.ratePerSecond = t.ratePerSecond;
+		super(e, t), this.createBehavior = n ?? Zc(t), this.schemaVersion = t.typeVersion === 1 ? 2 : t.typeVersion, this.settings = Object.freeze({ ...a(t) }), this.references = Xe(t), this.scriptPackage = s(t).reference, this.targetComponentId = t.targetComponentId, this.ratePerSecond = t.ratePerSecond;
 	}
 	get requiredComponentIds() {
 		return [...new Set(this.references.map((e) => e.id))];
@@ -19783,7 +19775,7 @@ var $c = class {
 			let r = () => {
 				this.owner.componentRuntime.assertAlive(this);
 				let e = this.owner.getComponentById(n);
-				if (!(e instanceof tl)) throw Error("SDK StaticMesh handle is no longer alive.");
+				if (!(e instanceof el)) throw Error("SDK StaticMesh handle is no longer alive.");
 				return e;
 			};
 			return r(), Object.freeze({
@@ -19812,7 +19804,7 @@ var $c = class {
 				scriptPackage: this.scriptPackage
 			}).manifest.sdkVersion !== 4) throw Error("Signal API requires SDK 4.");
 			let n = t(e), r = n && this.owner.getComponentById(n.id);
-			if (!(r instanceof el)) throw Error("Signal requires a declared TestData reference.");
+			if (!(r instanceof $c)) throw Error("Signal requires a declared TestData reference.");
 			return r;
 		};
 		if (this.behavior = this.createBehavior(Object.freeze({
@@ -19875,10 +19867,10 @@ var $c = class {
 			let t = () => {
 				this.owner.componentRuntime.assertAlive(this);
 				let t = this.owner.getComponentById(e);
-				if (!(t instanceof el)) throw Error("SDK TestData handle is no longer alive.");
+				if (!(t instanceof $c)) throw Error("SDK TestData handle is no longer alive.");
 				return t;
 			};
-			if (this.owner.componentRuntime.assertAlive(this), this.owner.getComponentById(e) instanceof el) return Object.freeze({
+			if (this.owner.componentRuntime.assertAlive(this), this.owner.getComponentById(e) instanceof $c) return Object.freeze({
 				id: e,
 				typeId: "TestData",
 				get value() {
@@ -19899,21 +19891,21 @@ var $c = class {
 			getComponentById: e
 		});
 	}
-}, il = class {
+}, rl = class {
 	testDataFactory;
 	scriptFactory;
-	constructor(e = (e, t) => new el(e, t), t = (e, t) => new rl(e, t)) {
+	constructor(e = (e, t) => new $c(e, t), t = (e, t) => new nl(e, t)) {
 		this.testDataFactory = e, this.scriptFactory = t;
 	}
 	create(e, t) {
 		if (t.ownerActorId !== e.id || !t.id) throw Error("Invalid runtime Component identity/version.");
 		if (!re.has(t.type, t.typeVersion) || re.validate(t.type, t.typeVersion, t, "runtime").length) throw Error("Invalid runtime Component settings.");
 		if (t.type === "TestScript" && ae(t), t.type === "StaticMesh" && !e.componentRuntime.spatial) throw Error("Missing spatial runtime state.");
-		let n = t.type === "StaticMesh" ? new tl(e, t) : t.type === "TestData" ? this.testDataFactory(e, structuredClone(t)) : this.scriptFactory(e, structuredClone(t));
+		let n = t.type === "StaticMesh" ? new el(e, t) : t.type === "TestData" ? this.testDataFactory(e, structuredClone(t)) : this.scriptFactory(e, structuredClone(t));
 		if (n.owner !== e || n.id !== t.id || n.typeId !== t.type) throw Error("Runtime factory identity mismatch.");
 		return n;
 	}
-}, al = class {
+}, il = class {
 	id;
 	componentRuntime;
 	constructor(e, t) {
@@ -19934,13 +19926,13 @@ var $c = class {
 	removeComponent(e) {
 		this.componentRuntime.remove(this, e);
 	}
-}, ol = class {
+}, al = class {
 	sessionId;
 	registry;
 	hasOwner;
 	spatial;
 	diagnostics = [];
-	signals = new Zc((e) => {
+	signals = new Xc((e) => {
 		let t = this.entries.find((t) => t.component.id === e);
 		return !t || t.dead || this.stopped ? "removed" : t.faulted ? "faulted" : t.component.enabled ? t.begun ? t.component.tickEnabled ? "running" : "idle" : "starting" : "disabled";
 	});
@@ -20146,7 +20138,7 @@ var $c = class {
 			this.flushing = !1;
 		}
 	}
-}, sl = class {
+}, ol = class {
 	records = /* @__PURE__ */ new Map();
 	children = /* @__PURE__ */ new Map();
 	overrides = /* @__PURE__ */ new Map();
@@ -20257,7 +20249,7 @@ var $c = class {
 	stop() {
 		this.stopped = !0, this.overrides.clear(), this.worldMatrices.clear(), this.physics = void 0;
 	}
-}, cl = class {
+}, sl = class {
 	factories = /* @__PURE__ */ new Map();
 	register(e, t) {
 		if (this.factories.has(e)) throw Error(`Duplicate runtime class ${e}.`);
@@ -20268,7 +20260,7 @@ var $c = class {
 		if (!n) throw Error(`Unregistered runtime class ${e}.`);
 		return n(t);
 	}
-}, ll = class {
+}, cl = class {
 	pawn = null;
 	possess(e) {
 		if (!("position" in e)) throw Error("Only a live Pawn can be possessed.");
@@ -20277,7 +20269,7 @@ var $c = class {
 	unpossess() {
 		this.pawn = null;
 	}
-}, ul = class {
+}, ll = class {
 	snapshot;
 	registry;
 	config;
@@ -20287,7 +20279,7 @@ var $c = class {
 	actors = /* @__PURE__ */ new Map();
 	components;
 	spatial;
-	controller = new ll();
+	controller = new cl();
 	animationPlayback;
 	state = "stopped";
 	controlState = "editor";
@@ -20297,8 +20289,8 @@ var $c = class {
 	simulationTickListeners = /* @__PURE__ */ new Set();
 	nextTimerId = 1;
 	startRequested = !1;
-	constructor(e, t, n, r = () => crypto.randomUUID(), i = new il()) {
-		this.snapshot = e, this.registry = t, this.config = n, this.snapshot = structuredClone(e), this.sourceHash = dl(e), this.sessionId = r(), this.spatial = new sl(this.snapshot), this.components = new ol(this.sessionId, i, (e) => this.actors.get(e.id) === e, this.spatial), this.animationPlayback = new Va("gameplay-runtime", this.sessionId);
+	constructor(e, t, n, r = () => crypto.randomUUID(), i = new rl()) {
+		this.snapshot = e, this.registry = t, this.config = n, this.snapshot = structuredClone(e), this.sourceHash = ul(e), this.sessionId = r(), this.spatial = new ol(this.snapshot), this.components = new al(this.sessionId, i, (e) => this.actors.get(e.id) === e, this.spatial), this.animationPlayback = new Va("gameplay-runtime", this.sessionId);
 	}
 	get configPlayerStartId() {
 		return this.config.playerStartActorId;
@@ -20312,7 +20304,7 @@ var $c = class {
 		this.startRequested = !0, this.state = "starting";
 		try {
 			b(this.snapshot), ee(this.snapshot);
-			for (let e of this.snapshot.actors) this.actors.set(e.id, Object.assign(new al(e.id, this.components), {
+			for (let e of this.snapshot.actors) this.actors.set(e.id, Object.assign(new il(e.id, this.components), {
 				classId: e.classId,
 				beginPlayCount: 0,
 				endPlayCount: 0
@@ -20329,7 +20321,7 @@ var $c = class {
 					0,
 					1
 				]], this.actors.has(r.id)) throw Error("Runtime Pawn ID collides with a document Actor.");
-				let i = Object.assign(new al(r.id, this.components), r);
+				let i = Object.assign(new il(r.id, this.components), r);
 				this.actors.set(r.id, i), this.controller.possess(i), this.controlState = "player";
 			} else this.controlState = "simulate";
 			this.components.start();
@@ -20387,7 +20379,7 @@ var $c = class {
 		let t = this.actors.get(e);
 		if (!t) throw Error(`Unknown runtime actor ${e}.`);
 		let { componentRuntime: n, ...r } = t;
-		return fl(structuredClone({
+		return dl(structuredClone({
 			...r,
 			components: this.components.components(t).map((e) => ({
 				id: e.id,
@@ -20422,20 +20414,20 @@ var $c = class {
 		}
 		n() && (t ? this.animationPlayback.stepSimulation(this.tickCount, e) : this.animationPlayback.advanceSimulationTick(this.tickCount, e));
 	}
-}, dl = (e) => JSON.stringify(e), fl = (e) => {
+}, ul = (e) => JSON.stringify(e), dl = (e) => {
 	if (e && typeof e == "object") {
 		Object.freeze(e);
-		for (let t of Object.values(e)) fl(t);
+		for (let t of Object.values(e)) dl(t);
 	}
 	return e;
 };
 //#endregion
 //#region src/delivery/DeliveryRuntime.ts
-function pl(e, t, n) {
+function fl(e, t, n) {
 	if (e.session.busy || !e.session.document) throw Error("Wait for the complete pinned model before running functions");
 	let r = e.session.views.filter((e) => e.document.actors.some((e) => e.components.some((e) => e.type === "TestScript")));
 	if (!r.length) throw Error("This model has no supported Script functions");
-	for (let n of r) Xc(n.document, t, e.session.document.id, String(n.root.userData.deliveryMountId));
+	for (let n of r) Yc(n.document, t, e.session.document.id, String(n.root.userData.deliveryMountId));
 	let i = e.session.suspendSpatialStreaming(), a = [], o = !1, s = !1, c = () => {}, l = () => {}, u = () => {}, d = () => {
 		for (let { view: e, world: t } of a) {
 			t.stop();
@@ -20450,7 +20442,7 @@ function pl(e, t, n) {
 	};
 	try {
 		for (let e of r) {
-			let t = new ul(e.document, new cl(), { defaultPawnClassId: "unused" });
+			let t = new ll(e.document, new sl(), { defaultPawnClassId: "unused" });
 			if (a.push({
 				view: e,
 				world: t
@@ -20500,7 +20492,7 @@ function pl(e, t, n) {
 }
 //#endregion
 //#region src/delivery/LoadingPanel.ts
-function ml(e, t) {
+function pl(e, t) {
 	let n = document.createElement("section");
 	n.className = "dt-loading", n.setAttribute("aria-label", "레벨 로딩 상태"), e.append(n);
 	let r = document.createElement("fieldset"), i = document.createElement("legend");
@@ -20573,4 +20565,4 @@ function ml(e, t) {
 	};
 }
 //#endregion
-export { w as ADDON_SDK_VERSION, Uc as BrowserChunkCache, Oi as ChunkReader, Ln as DEFAULT_DELIVERY_CELL_SIZE, Lo as DEFAULT_SPATIAL_STREAMING, Jn as DELIVERY_ADDON_CONTRACT, qn as DELIVERY_CELL_CONTRACT, Wn as DELIVERY_CONTRACT, Yc as DELIVERY_MESH_MOTION, Gn as DELIVERY_OBJECT_CONTRACT, pr as DELIVERY_SDK_VERSION, Kn as DELIVERY_SPATIAL_CONTRACT, Oo as DISPLAY_BUDGET_MIB, H as DeliveryAddonController, As as DeliveryClient, V as DeliverySession, cs as DeliveryViewer, Os as HttpChunkSource, Ds as LocalChunkSource, Ei as MemoryChunkCache, sr as actorServiceKey, d as addonCapabilityDescriptors, A as addonTargetKey, Gc as applicationHash, Jc as applicationReader, Kc as applicationSnapshot, Js as bindHostData, Gs as bindingImpacts, vs as defaultDeliverySource, Us as diffActors, Ao as displayBudget, vr as equipmentPath, Di as httpByteProvider, Fs as mergeStorageDirectories, fr as mountActorPanel, ml as mountDeliveryLoadingPanel, Vc as mountDeliveryViewportTools, Hc as mountEquipmentPanel, hs as publicationConnectionUrl, Mo as readDisplayBudgetPreference, Vs as readReviewSnapshot, zs as readStorageDirectory, qc as resolveApplication, No as saveDisplayBudgetPreference, Ls as splitStorageConnection, pl as startDeliveryRuntime, Rs as storageConnectionLabel, Is as storageConnectionUrl, Ms as storageEndpoint, Wc as validateApplication, nr as validateDelivery, Xc as validateDeliveryRuntime, or as validateDelta, Ws as validateHostBindings };
+export { w as ADDON_SDK_VERSION, Hc as BrowserChunkCache, Oi as ChunkReader, Ln as DEFAULT_DELIVERY_CELL_SIZE, Lo as DEFAULT_SPATIAL_STREAMING, Jn as DELIVERY_ADDON_CONTRACT, qn as DELIVERY_CELL_CONTRACT, Wn as DELIVERY_CONTRACT, Jc as DELIVERY_MESH_MOTION, Gn as DELIVERY_OBJECT_CONTRACT, pr as DELIVERY_SDK_VERSION, Kn as DELIVERY_SPATIAL_CONTRACT, Oo as DISPLAY_BUDGET_MIB, H as DeliveryAddonController, As as DeliveryClient, V as DeliverySession, cs as DeliveryViewer, Os as HttpChunkSource, Ds as LocalChunkSource, Ei as MemoryChunkCache, sr as actorServiceKey, d as addonCapabilityDescriptors, A as addonTargetKey, Wc as applicationHash, qc as applicationReader, Gc as applicationSnapshot, Js as bindHostData, Gs as bindingImpacts, vs as defaultDeliverySource, Us as diffActors, Ao as displayBudget, vr as equipmentPath, Di as httpByteProvider, Fs as mergeStorageDirectories, fr as mountActorPanel, pl as mountDeliveryLoadingPanel, Bc as mountDeliveryViewportTools, Vc as mountEquipmentPanel, hs as publicationConnectionUrl, Mo as readDisplayBudgetPreference, Vs as readReviewSnapshot, zs as readStorageDirectory, Kc as resolveApplication, No as saveDisplayBudgetPreference, Ls as splitStorageConnection, fl as startDeliveryRuntime, Rs as storageConnectionLabel, Is as storageConnectionUrl, Ms as storageEndpoint, Uc as validateApplication, nr as validateDelivery, Yc as validateDeliveryRuntime, or as validateDelta, Ws as validateHostBindings };

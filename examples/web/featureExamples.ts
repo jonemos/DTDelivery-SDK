@@ -1,7 +1,7 @@
 import sourceText from './featureExamples.ts?raw';
 
 // example:common:start
-import { DELIVERY_SDK_VERSION, LocalChunkSource, HttpChunkSource, actorServiceKey, type DeliveryClient, type DeliveryModel, type DeliveryDirectoryHandle, type DeliverySource, type DeliveryScriptSnapshot } from '@dt/delivery-sdk';
+import { DELIVERY_SDK_VERSION, LocalChunkSource, HttpChunkSource, actorServiceKey, readStorageDirectory, splitStorageConnection, type DeliveryClient, type DeliveryModel, type DeliveryDirectoryHandle, type DeliverySource, type DeliveryScriptSnapshot } from '@dt/delivery-sdk';
 
 export type ExampleValues = Record<string, string | number | boolean>;
 export interface ExampleContext {
@@ -221,6 +221,49 @@ export async function disconnect(context: ExampleContext): Promise<ExampleResult
 }
 // example:disconnect:end
 
+// example:directory:start
+export async function connectionDirectory(context: ExampleContext, values: ExampleValues): Promise<ExampleResult> {
+  return { value: await readStorageDirectory(splitStorageConnection(new URL(String(values.address).trim())), context.signal) };
+}
+// example:directory:end
+
+// example:quality:start
+export async function renderQuality(context: ExampleContext, values: ExampleValues): Promise<ExampleResult> {
+  const sdk = client(context), viewer = sdk.viewport, previous = viewer.quality.snapshot().requested, quality = String(values.quality);
+  if (!['VIEWPORT', 'ENHANCED', 'NORMAL', 'HIGH', 'ULTRA'].includes(quality)) throw new Error('지원하는 품질을 선택하세요.');
+  await viewer.quality.apply(quality as Parameters<typeof viewer.quality.apply>[0]);
+  const status = viewer.quality.snapshot(); if (status.state !== 'ready') throw new Error(status.message);
+  return { value: status, cleanup: () => { if (context.client() === sdk) void viewer.quality.apply(previous); } };
+}
+// example:quality:end
+
+// example:lighting:start
+export function environmentLighting(context: ExampleContext, values: ExampleValues): ExampleResult {
+  const sdk = client(context), viewer = sdk.viewport, previous = { enabled: viewer.environment, intensity: viewer.environmentIntensity }, intensity = number(values, 'intensity');
+  if (intensity < 0 || intensity > 4) throw new Error('환경광 강도는 0~4입니다.');
+  const apply = (enabled: boolean, strength: number) => { viewer.environment = enabled; viewer.environmentIntensity = strength; viewer.invalidate(); viewer.onViewChange?.(); };
+  apply(values.enabled === true, intensity);
+  return { value: { enabled: viewer.environment, intensity: viewer.environmentIntensity }, cleanup: () => { if (context.client() === sdk) apply(previous.enabled, previous.intensity); } };
+}
+// example:lighting:end
+
+// example:effects:start
+export function screenEffects(context: ExampleContext, values: ExampleValues): ExampleResult {
+  const sdk = client(context), viewer = sdk.viewport, previous = viewer.screenSettings, toneMapping = String(values.toneMapping);
+  if (toneMapping !== 'aces' && toneMapping !== 'none') throw new Error('지원하는 톤 매핑을 선택하세요.');
+  viewer.setScreenEffects({ ...previous, toneMapping, exposure: number(values, 'exposure') });
+  return { value: viewer.screenSettings, cleanup: () => { if (context.client() === sdk) viewer.setScreenEffects(previous); } };
+}
+// example:effects:end
+
+// example:spatial:start
+export function spatialStreaming(context: ExampleContext, values: ExampleValues): ExampleResult {
+  const sdk = client(context), viewer = sdk.viewport, previous = viewer.session.spatialStreaming?.options ?? null;
+  viewer.setSpatialStreaming(values.enabled === true ? { loadDistance: number(values, 'load') / 100, unloadDistance: number(values, 'unload') / 100, unloadDelayMs: number(values, 'delay') * 1000 } : null);
+  return { value: viewer.session.spatialStreaming ?? { enabled: false }, cleanup: () => { if (context.client() === sdk) viewer.setSpatialStreaming(previous); } };
+}
+// example:spatial:end
+
 export interface ExampleField { key: string; label: string; kind: 'text' | 'number' | 'checkbox' | 'select' | 'models' | 'actors' | 'scripts' | 'property'; value?: string | number | boolean; options?: readonly string[] }
 export interface FeatureExample { id: string; title: string; description: string; guide: string; needs?: 'connection' | 'ready' | 'loading'; fields?: readonly ExampleField[]; run(context: ExampleContext, values: ExampleValues): ExampleResult | Promise<ExampleResult> }
 export const featureExamples: readonly FeatureExample[] = [
@@ -245,7 +288,42 @@ export const featureExamples: readonly FeatureExample[] = [
   { id: 'host', title: '업무 연결 키 · 좌표', description: 'stable serviceKey와 m/cm 좌표를 읽습니다.', guide: '12_HOST_DATA', needs: 'ready', fields: [{ key: 'actor', label: '액터', kind: 'actors' }], run: hostKey },
   { id: 'cancel', title: '진행 중 로드 취소', description: '준비된 화면을 남기고 진행 중 로드를 취소합니다.', guide: '13_LIFECYCLE', needs: 'loading', run: cancelLoading },
   { id: 'disconnect', title: '연결 · 리소스 종료', description: '화면·구독·애드온·renderer를 정리합니다. 다시 연결해야 합니다.', guide: '13_LIFECYCLE', needs: 'connection', run: disconnect },
+  { id: 'directory', title: '저장소 연결 목록', description: '전체 SDK 연결 주소로 등록된 버킷·경로·게시 구역을 읽습니다. 키는 사용하지 않습니다.', guide: '02_HTTP_SOURCE', fields: [{ key: 'address', label: 'SDK 연결 주소', kind: 'text' }], run: connectionDirectory },
+  { id: 'quality', title: '렌더링 품질', description: 'Normal·High 등 품질을 적용합니다. 정지하면 이전 품질로 복원합니다.', guide: '08_VIEWPORT_TOOLS', needs: 'connection', fields: [{ key: 'quality', label: '품질', kind: 'select', value: 'NORMAL', options: ['VIEWPORT', 'ENHANCED', 'NORMAL', 'HIGH', 'ULTRA'] }], run: renderQuality },
+  { id: 'lighting', title: '환경광 · 강도', description: '환경광과 강도(0~4)를 바꿉니다. 정지하면 이전 값으로 복원합니다.', guide: '08_VIEWPORT_TOOLS', needs: 'connection', fields: [{ key: 'enabled', label: '환경광', kind: 'checkbox', value: true }, { key: 'intensity', label: '강도', kind: 'number', value: 1 }], run: environmentLighting },
+  { id: 'effects', title: '톤 매핑 · 노출', description: 'ACES·노출을 설정하고 현재 화면 설정을 읽습니다. 정지하면 복원합니다.', guide: '08_VIEWPORT_TOOLS', needs: 'connection', fields: [{ key: 'toneMapping', label: '톤 매핑', kind: 'select', value: 'aces', options: ['aces', 'none'] }, { key: 'exposure', label: '노출', kind: 'number', value: 1 }], run: screenEffects },
+  { id: 'spatial', title: '공간 자동 언로드', description: '거리와 대기로 공간 로드를 제어합니다. 공간 경계가 있는 게시본이 필요합니다.', guide: '10_TEXTURES_BUDGET', needs: 'ready', fields: [{ key: 'enabled', label: '자동 언로드', kind: 'checkbox', value: false }, { key: 'load', label: '로드 반경 (cm)', kind: 'number', value: 5000 }, { key: 'unload', label: '언로드 반경 (cm)', kind: 'number', value: 7500 }, { key: 'delay', label: '대기 (초)', kind: 'number', value: 3 }], run: spatialStreaming },
 ];
+
+export interface FeatureReference { category: string; owner: string; api: readonly string[]; call: string }
+export const featureReference: Readonly<Record<string, FeatureReference>> = {
+  info: { category: '시작·연결', owner: 'DeliveryClient', api: ['DELIVERY_SDK_VERSION', 'DeliveryClient.model', 'DeliveryClient.progress'], call: 'sdk.model; sdk.progress' },
+  local: { category: '시작·연결', owner: 'LocalChunkSource', api: ['LocalChunkSource', 'DeliveryDirectoryHandle'], call: 'new LocalChunkSource(directory, { scope })' },
+  http: { category: '시작·연결', owner: 'HttpChunkSource', api: ['HttpChunkSource', 'storageConnectionUrl', 'defaultDeliverySource'], call: 'new HttpChunkSource(connectionUrl)' },
+  directory: { category: '시작·연결', owner: '저장소 연결 함수', api: ['readStorageDirectory', 'splitStorageConnection', 'storageConnectionUrl'], call: 'await readStorageDirectory(connection, signal)' },
+  models: { category: '모델·로드', owner: 'DeliveryClient', api: ['DeliveryClient.listModels'], call: 'await sdk.listModels(signal)' },
+  open: { category: '모델·로드', owner: 'DeliveryClient', api: ['DeliveryClient.open', 'DeliveryClient.model'], call: 'await sdk.open(modelId, { progressive: true })' },
+  progress: { category: '모델·로드', owner: 'DeliveryClient', api: ['DeliveryClient.subscribeProgress', 'DeliveryClient.progress'], call: 'const unsubscribe = sdk.subscribeProgress(listener)' },
+  actors: { category: '액터·업무', owner: 'DeliveryClient', api: ['DeliveryClient.actors', 'ActorPlacement'], call: 'sdk.actors(query)' },
+  select: { category: '액터·업무', owner: 'DeliveryClient', api: ['DeliveryClient.selectActor', 'DeliveryClient.selectedActor'], call: 'sdk.selectActor({ mountId, actorId })' },
+  focus: { category: '액터·업무', owner: 'DeliveryClient', api: ['DeliveryClient.focusActor', 'DeliveryViewer.focusSelection'], call: 'sdk.focusActor({ mountId, actorId })' },
+  clear: { category: '액터·업무', owner: 'DeliveryClient', api: ['DeliveryClient.selectActor'], call: 'sdk.selectActor(null)' },
+  host: { category: '액터·업무', owner: '업무 연결 함수', api: ['actorServiceKey', 'ActorPlacement.positionMeters', 'ActorPlacement.positionUeCm'], call: 'actorServiceKey(actor)' },
+  projection: { category: '카메라·표시', owner: 'DeliveryClient', api: ['DeliveryClient.setProjection', 'DeliveryViewer.projection'], call: "sdk.setProjection('top')" },
+  mode: { category: '카메라·표시', owner: 'DeliveryClient', api: ['DeliveryClient.setViewMode', 'DeliveryViewer.mode'], call: "sdk.setViewMode('unlit')" },
+  camera: { category: '카메라·표시', owner: 'DeliveryViewer', api: ['DeliveryViewer.setCameraSettings', 'DeliveryViewer.cameraSettings', 'DeliveryViewer.navigation.setSpeed'], call: 'sdk.viewport.setCameraSettings({ horizontalFovDegrees: 70 })' },
+  display: { category: '카메라·표시', owner: 'DeliveryViewer', api: ['DeliveryViewer.grid.visible', 'DeliveryViewer.helpers', 'DeliveryViewer.setBounds'], call: 'sdk.viewport.setBounds(true)' },
+  fit: { category: '카메라·표시', owner: 'DeliveryViewer', api: ['DeliveryViewer.fit'], call: 'sdk.viewport.fit()' },
+  quality: { category: '카메라·표시', owner: 'DeliveryViewer', api: ['DeliveryViewer.quality.apply', 'DeliveryViewer.quality.snapshot'], call: "await sdk.viewport.quality.apply(preset)" },
+  lighting: { category: '카메라·표시', owner: 'DeliveryViewer', api: ['DeliveryViewer.environment', 'DeliveryViewer.environmentIntensity', 'DeliveryViewer.invalidate'], call: 'sdk.viewport.environmentIntensity = 1; sdk.viewport.invalidate()' },
+  effects: { category: '카메라·표시', owner: 'DeliveryViewer', api: ['DeliveryViewer.setScreenEffects', 'DeliveryViewer.screenSettings'], call: 'sdk.viewport.setScreenEffects(settings)' },
+  textures: { category: '텍스처·공간', owner: 'DeliverySession', api: ['DeliverySession.textureDisplay.estimate', 'DeliverySession.textureDisplay.apply', 'displayBudget'], call: 'await sdk.viewport.session.textureDisplay.apply(options, budgetBytes, signal)' },
+  spatial: { category: '텍스처·공간', owner: 'DeliveryViewer / DeliverySession', api: ['DeliveryViewer.setSpatialStreaming', 'DeliverySession.spatialStreaming'], call: 'sdk.viewport.setSpatialStreaming(optionsOrNull)' },
+  scripts: { category: '스크립트', owner: 'DeliveryScripts', api: ['DeliveryClient.scripts.list', 'DeliveryScriptSnapshot'], call: 'sdk.scripts.list()' },
+  property: { category: '스크립트', owner: 'DeliveryScriptHandle', api: ['DeliveryClient.scripts.get', 'DeliveryScriptHandle.setProperties'], call: 'await sdk.scripts.get(target).setProperties(values, { expectedRevision })' },
+  cancel: { category: '종료·정리', owner: 'DeliveryClient', api: ['DeliveryClient.cancel'], call: 'sdk.cancel()' },
+  disconnect: { category: '종료·정리', owner: 'DeliveryClient', api: ['DeliveryClient.dispose'], call: 'await sdk.dispose()' },
+};
 
 export function exampleCode(id: string) {
   if (!featureExamples.some(example => example.id === id)) throw new Error('알 수 없는 예제입니다.');

@@ -1,8 +1,10 @@
-# 16 · 기능을 선택해서 실행하고 코드 보기 · SDK 0.3.3
+# 16 · 기능·클래스·함수 검색과 실행 · SDK 0.3.21
 
 [목차](README.md) · [전체 페이지 구조](14_PAGE_LAYOUT.md)
 
-SDK 루트의 `examples/test-server.cmd`를 실행하고 왼쪽 **기능별 예제**를 사용하세요. 뷰포트와 기본 메뉴는 그대로이며 기존 좌우 패널에 실행 UI와 코드 보기를 추가했습니다. 연결이 없어도 SDK/연결 정보 코드는 실행할 수 있습니다. 모델이 필요한 예제는 실제 청크를 연결해야 합니다.
+SDK 루트의 `examples/test-server.cmd`를 실행하고 왼쪽 **기능 · API 찾기**를 사용하세요. 검색어는 기능명·클래스명·함수명입니다. `카메라`, `DeliveryClient`, `setScreenEffects`, `setSpatialStreaming`처럼 입력하거나 분류를 고릅니다. 검색은 현재 예제를 실행·정지하거나 표시 설정을 바꾸지 않습니다. 검색 결과를 선택해야 예제가 바뀝니다. 결과가 없으면 검색어/분류를 바꾸거나 검색 초기화를 누르세요.
+
+선택한 기능에는 목적, 클래스·관련 API, 준비 조건이 표시됩니다. 오른쪽에서 대표 호출과 실제 실행 코드·입력·결과를 봅니다. 코드·문서는 연결 없이 확인할 수 있습니다. 연결이 없어도 SDK/연결 정보 예제는 실행할 수 있고, 모델이 필요한 예제는 실제 게시본을 먼저 열어야 합니다.
 
 ## 실행 순서
 
@@ -18,6 +20,7 @@ SDK 루트의 `examples/test-server.cmd`를 실행하고 왼쪽 **기능별 예�
 |---|---|
 | SDK/연결 정보 | DELIVERY_SDK_VERSION, client.model/progress |
 | 로컬·정적 HTTP | LocalChunkSource/HttpChunkSource, 호스트 connect |
+| 공개 연결 목록 | splitStorageConnection(), readStorageDirectory(), 전체 SDK 연결 주소 입력 |
 | 목록·모델 열기 | listModels(), open(id,{progressive,signal}) |
 | 진행 상태 | 현재 progress + subscribeProgress(), 정지 시 unsubscribe |
 | 이름 검색 | actors(query), 최대100개 snapshot 결과 표시 |
@@ -27,11 +30,15 @@ SDK 루트의 `examples/test-server.cmd`를 실행하고 왼쪽 **기능별 예�
 | 그리드·도우미·바운드 | grid.visible, helpers, setBounds() |
 | 전체 맞춤 | viewport.fit() |
 | 텍스처 | textureDisplay.estimate()/apply(), 지원 맵만 선택 가능 |
+| 렌더링 품질 | viewport.quality.apply()/snapshot(), 정지 시 이전 품질 복원 |
+| 환경광·강도 | environment/environmentIntensity, 정지 시 복원 |
+| 톤 매핑·노출 | screenSettings/setScreenEffects(), 정지 시 복원 |
+| 공간 자동 언로드 | setSpatialStreaming(), UI cm/초를 API m/ms로 변환, 정지 시 이전 정책 복원 |
 | 스크립트 목록·공개 속성 | scripts.list()/get(), handle.setProperties(expectedRevision) |
 | 업무 key·좌표 | actorServiceKey(), positionMeters/positionUeCm |
 | 로드 취소·연결 종료 | cancel(), 호스트 cleanup + dispose() |
 
-총21개의 실행 항목입니다. 연결/로드 완료/지원 액터/실행 스크립트가 없으면 해당 실행 버튼을 비활성화하고 실제 이유를 표시합니다. 진행 중 로드 취소는 실제 loading일 때만 사용합니다. 실패한 API의 오류는 결과 영역에 표시하며 성공으로 바꾸지 않습니다.
+총26개의 실행 항목입니다. 연결/로드 완료/지원 액터/실행 스크립트가 없으면 해당 실행 버튼을 비활성화하고 실제 이유를 표시합니다. 기능 설명은 준비 조건과 별도로 유지합니다. 진행 중 로드 취소는 실제 loading일 때만 사용합니다. 실패한 API의 오류는 결과 영역에 표시하며 성공으로 바꾸지 않습니다. 관련 API는 기능의 연관 함수·타입이며 실제로 호출되는 코드는 오른쪽 코드에서 확인합니다.
 
 ## 코드와 값
 

@@ -127,6 +127,25 @@ canvas[hidden] { visibility: hidden; }
 /* Feature examples occupy the existing side panels; the viewport keeps its size and styles. */
 .feature-lab { margin: 0 0 14px; padding: 0 0 12px; border-bottom: 1px solid #2d3f4c; }
 .feature-lab > select { width: 100%; margin: 8px 0 0; }
+.feature-lab > input[type="search"] { width: 100%; margin: 5px 0 0; }
+.example-help-links { display: flex; gap: 10px; margin: 4px 0; font-size: 10px; }
+.example-help-links a { color: #a2cbbf; }
+.example-search-results { margin: 6px 0; padding: 6px; border: 1px solid #344653; border-radius: 4px; background: #101922; }
+.example-search-state { margin: 0 0 5px; font-size: 10px; line-height: 1.5; color: #a6bdcd; }
+.example-search-items { display: grid; gap: 4px; max-height: 170px; overflow: auto; }
+.example-search-items .example-search-result { width: 100%; height: auto; min-height: 30px; padding: 5px; text-align: left; white-space: normal; }
+.example-search-result span, .example-search-result small { display: block; overflow-wrap: anywhere; }
+.example-search-result small { font: 10px/1.5 Consolas, monospace; color: #9eb6c7; }
+.example-search-result[aria-pressed="true"] { border-color: #78dac5; }
+#example-search-reset { width: 100%; margin-top: 5px; font-size: 10px; }
+.example-reference { display: grid; gap: 4px; margin: 7px 0; padding: 7px; border: 1px solid #30414e; border-radius: 4px; background: #111b24; font-size: 10px; overflow-wrap: anywhere; }
+.example-api-list { display: grid; gap: 3px; }
+.example-api-list code { font: 10px/1.5 Consolas, monospace; color: #a9d7cc; overflow-wrap: anywhere; }
+.example-reference a { color: #78dac5; }
+.example-requirement { padding: 6px; border-left: 2px solid #c7a466; background: #29291e; color: #d0c39c; font-size: 10px; line-height: 1.6; }
+.example-code-panel .example-call { white-space: pre-wrap; overflow-wrap: anywhere; border-color: #426455; color: #a9e0ca; }
+.viewer-layout:has(#example-code-panel:not([hidden])) { grid-template-columns: 200px minmax(0, 1fr) minmax(360px, 32%); }
+@media (max-width: 1100px) { .viewer-layout:has(#example-code-panel:not([hidden])) { grid-template-columns: 180px minmax(0, 1fr) 340px; } }
 .example-description, .example-state { margin: 8px 0; color: #90a7b8; font-size: 11px; line-height: 1.6; overflow-wrap: anywhere; }
 .example-state[data-state="failed"] { color: #f0a7a7; }
 .example-state[data-state="ready"] { color: #78dac5; }

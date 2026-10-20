@@ -165,8 +165,6 @@ async function connect(value: DeliverySource, signal?: AbortSignal, fromExample 
   fields();
   models.disabled = true; open.disabled = true;
   sdk = new DeliveryClient({ canvas, source: value, onProgress: value => { if (ticket === generation) progress(value); } });
-  // A standalone inspection page needs fill light even when the source contains no lights.
-  sdk.viewport.environment = true;
   cleanups = [mountActorPanel(element('actors'), sdk.viewport, element('actor-details')), mountDeliveryViewportTools(element('viewport-tools'), sdk.viewport, () => { void element('viewport').requestFullscreen().catch(error => message(String(error))); }), sdk.subscribeActorSelection(() => examples?.refresh()), sdk.scripts.subscribe(() => { if (ticket === generation) { scripts(); examples?.refresh(); } })];
   const listed = await sdk.listModels(signal); if (ticket !== generation) return []; catalog = listed;
   models.replaceChildren(...catalog.map(model => { const option = document.createElement('option'); option.value = model.id; option.textContent = model.name; return option; }));
@@ -203,7 +201,7 @@ open.onclick = () => {
 element<HTMLButtonElement>('close').onclick = () => { forget(true); void disconnect().then(() => message('연결을 해제했습니다.')).catch(error => message(String(error))); };
 source.onchange = () => { forget(true); void disconnect(); models.replaceChildren(); models.disabled = true; open.disabled = true; fields(); message('청크 연결을 선택하세요.'); };
 const examples = mountFeaturePanel(element('examples'), element('example-code-panel'), element('viewer-information'), {
-  client: () => sdk, catalog: () => catalog, address: () => address.value, scope: () => scope.value,
+  client: () => sdk, catalog: () => catalog, address: () => { try { return source.value === 'publication' ? storageConnectionUrl(connectionFields()).href : address.value; } catch { return address.value; } }, scope: () => scope.value,
   connect: (value, signal) => connect(value, signal, true),
   disconnect: async () => { await disconnect(false); message('연결을 해제했습니다.'); },
   showViewport: () => { canvas.hidden = false; },

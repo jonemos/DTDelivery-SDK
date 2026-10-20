@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.21
+
+Set SDK viewport defaults and rewrite the beginner README with a searchable 26-example class and API guide.
+
 ## 0.3.20
 
 Move spatial controls to bottom-right; add viewport UI hide/restore and registered-scope dropdown.

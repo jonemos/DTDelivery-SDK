@@ -1,4 +1,6 @@
-# 공개 함수·타입 명세 · SDK 0.3.20
+# 공개 함수·타입 명세 · SDK 0.3.21
+
+뷰포트 기본값은 `NORMAL`, 환경광 `true`/강도 `1`, 톤 매핑 `aces`, 그리드·에디터 도우미 `false`입니다. `viewport.screenSettings`는 현재 톤 매핑/노출/안개 설정의 복사본을 반환하며 `viewport.setScreenEffects(settings)`로 검증·적용합니다. 호스트에서 변경해도 뷰포트 컨트롤이 갱신됩니다.
 
 API를 화면에 연결하는 순서와 기능별 실행 예제는 [개발 가이드 목차](guides/README.md)를 참고하세요. 이 문서는 함수 계약 요약이며 가이드의 코드도 공개 `@dt/delivery-sdk` import만 사용합니다.
 
