@@ -29,7 +29,7 @@ export declare class CompositionResourcePool {
     private reusable?;
     private addonContext;
     configureAddons(context: Partial<typeof this.addonContext>): void;
-    constructor(storage: Pick<CompositionStorage, 'source'> & {
+    constructor(storage: Pick<CompositionStorage, 'source' | 'sourceForDisplay'> & {
         resourceKey?(info: LevelSourceInfo): string;
         projectDocument?(document: SceneDocument, info: LevelSourceInfo): SceneDocument;
         prepared?(info: LevelSourceInfo, signal: AbortSignal, textureBudget: TextureAdmission, textureOptions?: TextureImportOptions): Promise<{

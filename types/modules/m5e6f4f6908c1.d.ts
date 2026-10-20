@@ -18,6 +18,7 @@ export declare class MemoryChunkCache implements ChunkCache {
     private bytes;
     constructor(budget?: number);
     get(hash: string): Promise<Uint8Array<ArrayBuffer> | undefined>;
+    private forget;
     remove(hash: string): Promise<void>;
     put(hash: string, bytes: Uint8Array): Promise<void>;
 }

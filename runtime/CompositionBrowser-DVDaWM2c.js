@@ -1,5 +1,5 @@
-import "./StaticPreviewPersistence-BSmfWg2W.js";
-import { n as e } from "./CompositionDocument-BzH8pad3.js";
+import "./StaticPreviewPersistence-DVsi8wqY.js";
+import { n as e } from "./CompositionDocument-DldF5SEF.js";
 //#region src/composition/CompositionBrowser.ts
 var t = "dt-web-editor-compositions-v1", n = "dt-web-editor-composition-sources-v1";
 function r(e) {

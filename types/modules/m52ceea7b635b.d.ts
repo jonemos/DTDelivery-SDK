@@ -67,8 +67,13 @@ export declare class PreviewResources extends StaticMeshResourceCache {
     private readonly loadAppearance;
     private readonly budgetBytes;
     private readonly defaultMaterials;
+    private readonly deferredAppearances;
     materialResolver?: MaterialResolver;
     textureDisplay?: TextureDisplaySession<PreviewResources>;
+    sceneDocument?: () => SceneDocument;
+    private readonly loadingPayloads;
+    private readonly deferredPayloads;
+    private readonly pendingAppearances;
     private readonly retainedMaterials;
     private readonly appearances;
     private readonly wantedAppearances;
@@ -77,8 +82,9 @@ export declare class PreviewResources extends StaticMeshResourceCache {
     private disposed;
     private readonly appearanceListeners;
     private readonly invalidationListeners;
-    constructor(previewStorage: AssetRegistryStorage, templates: Map<string, Object3D>, payloads?: Map<string, Uint8Array<ArrayBufferLike>>, loadAppearance?: typeof loadPreviewAppearance, budgetBytes?: number, defaultMaterials?: ReadonlyMap<string, readonly MaterialSlotOverride[]>);
+    constructor(previewStorage: AssetRegistryStorage, templates: Map<string, Object3D>, payloads?: Map<string, Uint8Array<ArrayBufferLike>>, loadAppearance?: typeof loadPreviewAppearance, budgetBytes?: number, defaultMaterials?: ReadonlyMap<string, readonly MaterialSlotOverride[]>, deferredPayloads?: ReadonlyMap<string, () => Promise<Uint8Array>>, deferredAppearances?: ReadonlySet<string>);
     supportsAppearance(reference: AssetReference | null): boolean;
+    private ensurePayload;
     appearanceStatus(): {
         reservedBytes: number;
         limitBytes: number;

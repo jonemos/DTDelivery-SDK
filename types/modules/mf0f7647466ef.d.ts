@@ -1,7 +1,7 @@
 import { type CompositionObject } from './m2c49f1915315.js';
 import type { QuaternionXyzw, Vec3 } from './m69ba5f67c309.js';
 import type { StoredSceneEnvelope } from './m3f7a37a09ea0.js';
-import type { AssetRegistrySnapshot } from './m5e4e772c2f57.js';
+import type { AssetCatalogSnapshot, AssetRegistrySnapshot } from './m5e4e772c2f57.js';
 import type { StaticPreviewRecipe } from './m0f0d622f8bdc.js';
 import { type AddonOverride } from './mb2c6243e72dc.js';
 export type LevelLocator = {
@@ -30,7 +30,12 @@ export interface LevelSourceData {
     envelope: StoredSceneEnvelope;
     assets: AssetRegistrySnapshot;
     recipe?: StaticPreviewRecipe;
+    /** Native large-source responses carry metadata only; binary reads stay pinned and bounded. */
+    deferredAssets?: boolean;
+    assetCatalog?: AssetCatalogSnapshot;
 }
+export declare const COMPOSITION_BLOB_CHUNK_BYTES: number;
+export declare const COMPOSITION_BLOB_BATCH_COUNT = 128;
 export interface LevelMount {
     id: string;
     name: string;
@@ -76,6 +81,19 @@ export type CompositionRequest = {
 } | {
     op: 'source';
     pin: LevelPin;
+} | {
+    op: 'catalog';
+    pin: LevelPin;
+} | {
+    op: 'blob';
+    pin: LevelPin;
+    key: string;
+    offset: number;
+    length: number;
+} | {
+    op: 'blobs';
+    pin: LevelPin;
+    keys: string[];
 };
 export declare function validateLocator(value: unknown): asserts value is LevelLocator;
 export declare function validatePin(value: unknown): asserts value is LevelPin;

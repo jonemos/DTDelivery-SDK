@@ -1,16 +1,22 @@
 # Changelog
 
+## 0.3.18
+
+Read independent chunks of a requested file concurrently under the existing four-request limit. Deduplicate repeated chunks within that file, retain chunk/final-file hash verification, and drain aborted sibling reads before returning a failure. Make memory-cache writes atomic. Runtime assets continue to load only when referenced; no public API or package contract changes.
+
+Share conservative scene dependency selection and deferred preview preparation with the editor. Preserve full preparation for ambiguous references and retain exact revision/hash checks. Rewrite the README around the current no-install viewer, default storage, deferred reads, host integration and verified update workflow. Editor timing results are not SDK performance guarantees.
+
 ## 0.3.17
 
-Decode native Git paths as UTF-8 during SDK updates and restore the caller encoding after success or failure. Verify Korean/space/ampersand Windows paths and preserve file validation, backups, tags, and the documented one-time clone/update.cmd workflow.
+Decode native Git output as UTF-8 during SDK updates and restore the caller's encoding after success or failure. Prevent Windows CMD code pages from corrupting Korean SDK folder paths. Preserve update validation, backups and existing tags.
 
 ## 0.3.16
 
-Document the recommended one-time Git clone and single-command SDK update workflow, server restart, validation and backup recovery. Clarify separate external application and model updates. Preserve viewer/updater behavior, immutable file checks and all existing release tags.
+Document the recommended one-time Git clone and single-command SDK update workflow, the required server restart, verification and backup recovery. Clarify that external application dependencies and published models update separately. Refresh first-delivery instructions without changing the viewer or updater behavior.
 
 ## 0.3.15
 
-Align camera clipping and environment defaults with editor/composition and preserve horizontal FOV on resize. Publish the verified tiling/material runtime and current README, host integration and first-delivery guides. Preserve immutable chunk validation, public API and existing release tags.
+Align SDK camera and environment defaults with the editor/composition and preserve horizontal FOV through resize. Publish the current validated tiling/material runtime and declarations. Document matching viewport settings, external host integration and first delivery. Preserve immutable chunk validation, source material coordinates and the existing public API.
 
 ## 0.3.14
 

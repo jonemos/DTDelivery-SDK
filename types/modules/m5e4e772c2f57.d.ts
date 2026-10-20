@@ -56,6 +56,8 @@ export interface AssetRevisionEdit {
 /** Capture and reject ambiguous batches before any storage mutation. */
 export declare function captureRevisionEdits(edits: readonly AssetRevisionEdit[]): AssetRevisionEdit[];
 export interface AssetRegistryStorage {
+    /** Transient read-ahead hint only. Never restricts explicit reads or changes durable metadata. */
+    setReadAheadScope?(assetIds: readonly string[]): void;
     commitImport(prepared: PreparedAssetImport): Promise<AssetRecord>;
     commitRevision(assetId: string, revision: AssetRevision, blob: AssetBlob, dependencies?: readonly AssetReference[], expectedRevisionId?: string): Promise<void>;
     /** All edits succeed in one transaction, or none are published. */

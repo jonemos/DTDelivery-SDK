@@ -1,6 +1,6 @@
 import { t as e } from "./rolldown-runtime-DF993M8W.js";
-import { A as t, At as n, B as r, C as i, Ct as a, D as o, Dt as s, E as c, Et as l, F as u, Ft as d, G as f, H as p, I as m, It as h, J as g, K as _, L as v, Lt as y, M as b, N as ee, O as x, Ot as S, P as C, Pt as w, R as te, Rt as T, S as ne, St as re, T as ie, Tt as ae, U as oe, V as se, W as ce, Y as le, _ as ue, _t as de, a as fe, at as pe, b as me, bt as E, c as he, ct as ge, d as _e, dt as ve, f as ye, ft as be, g as D, gt as O, h as xe, ht as Se, i as Ce, it as we, j as Te, jt as k, k as Ee, kt as De, l as Oe, lt as ke, m as Ae, mt as je, n as Me, nt as Ne, o as Pe, ot as Fe, p as Ie, pt as Le, q as Re, r as ze, rt as Be, s as Ve, st as He, t as Ue, tt as We, u as Ge, ut as Ke, v as qe, vt as Je, w as Ye, wt as Xe, x as Ze, xt as Qe, y as $e, yt as et, z as tt, zt as nt } from "./StaticPreviewPersistence-BSmfWg2W.js";
-import { a as rt, c as A, d as it, i as at, l as ot, o as st, r as ct, s as lt, t as ut, u as dt } from "./CompositionDocument-BzH8pad3.js";
+import { A as t, At as n, B as r, C as i, Ct as a, D as o, Dt as s, E as c, Et as l, F as u, Ft as d, G as f, H as p, I as m, It as h, J as g, K as _, L as v, Lt as y, M as b, N as ee, O as x, Ot as S, P as C, Pt as w, R as te, Rt as T, S as ne, St as re, T as ie, Tt as ae, U as oe, V as se, W as ce, Y as le, _ as ue, _t as de, a as fe, at as pe, b as me, bt as E, c as he, ct as ge, d as _e, dt as ve, f as ye, ft as be, g as D, gt as O, h as xe, ht as Se, i as Ce, it as we, j as Te, jt as k, k as Ee, kt as De, l as Oe, lt as ke, m as Ae, mt as je, n as Me, nt as Ne, o as Pe, ot as Fe, p as Ie, pt as Le, q as Re, r as ze, rt as Be, s as Ve, st as He, t as Ue, tt as We, u as Ge, ut as Ke, v as qe, vt as Je, w as Ye, wt as Xe, x as Ze, xt as Qe, y as $e, yt as et, z as tt, zt as nt } from "./StaticPreviewPersistence-DVsi8wqY.js";
+import { a as rt, c as A, d as it, i as at, l as ot, o as st, r as ct, s as lt, t as ut, u as dt } from "./CompositionDocument-DldF5SEF.js";
 import { $t as ft, Bt as pt, Ct as mt, Ht as ht, I as gt, Jn as _t, K as vt, Kn as yt, Kt as bt, L as xt, Lt as St, M as Ct, Nn as wt, Pn as Tt, Qn as Et, Rt as Dt, S as Ot, T as kt, Tt as At, U as jt, Ut as Mt, V as Nt, Vt as Pt, Wt as Ft, Yn as It, Z as Lt, _ as Rt, _t as zt, a as Bt, ar as Vt, at as Ht, b as Ut, br as Wt, d as Gt, er as Kt, g as qt, h as Jt, i as Yt, ir as Xt, jt as j, k as Zt, l as Qt, lt as $t, m as en, n as tn, nr as nn, or as rn, ot as an, p as on, q as sn, r as cn, rr as ln, st as un, t as dn, tr as fn, vt as pn, w as mn, wt as M, xr as N, xt as hn, y as gn, yt as _n, zn as vn, zt as yn } from "./RenderQualityPreset-BFl3kMLS.js";
 import { a as bn, i as xn, n as Sn, o as Cn, r as wn, t as Tn } from "./RoomEnvironment-BlbXOJv5.js";
 //#region src/domain/defaultScene.ts
@@ -656,7 +656,7 @@ function fr(e, t, n = e) {
 //#region src/delivery/SdkVersion.ts
 var pr = typeof __DT_DELIVERY_SDK_VERSION__ > "u" ? {
 	name: "@dt/delivery-sdk",
-	version: "0.3.17",
+	version: "0.3.18",
 	license: "MIT",
 	addonSdkVersion: 5,
 	contracts: [
@@ -2052,13 +2052,16 @@ var Ei = class {
 		let t = this.values.get(e);
 		return t && (this.values.delete(e), this.values.set(e, t)), t?.slice();
 	}
-	async remove(e) {
+	forget(e) {
 		let t = this.values.get(e);
 		t && (this.bytes -= t.length), this.values.delete(e);
 	}
+	async remove(e) {
+		this.forget(e);
+	}
 	async put(e, t) {
-		if (await this.remove(e), !(t.length > this.budget)) {
-			for (; this.bytes + t.length > this.budget;) await this.remove(this.values.keys().next().value);
+		if (this.forget(e), !(t.length > this.budget)) {
+			for (; this.bytes + t.length > this.budget;) this.forget(this.values.keys().next().value);
 			this.values.set(e, t.slice()), this.bytes += t.length;
 		}
 	}
@@ -2147,45 +2150,65 @@ var Oi = class {
 		return await this.hydrateAddons(r, t), r;
 	}
 	async file(e, t) {
-		if (await this.provider.authorize?.(t), t.throwIfAborted(), e.bytes > Yn.file) throw Error("File allocation limit");
-		let n = new Uint8Array(e.bytes), r = 0;
-		for (let i of e.chunks) {
-			t.throwIfAborted();
-			let e;
-			try {
-				e = await this.cache.get(i.hash);
-			} catch {
-				this.stats.cacheFailures++;
-				try {
-					await this.cache.remove(i.hash);
-				} catch {
-					this.stats.cacheFailures++;
-				}
-			}
-			if (e && (e.length !== i.bytes || await k(e) !== i.hash)) {
-				e = void 0, this.stats.corruptCache++;
-				try {
-					await this.cache.remove(i.hash);
-				} catch {
-					this.stats.cacheFailures++;
-				}
-			}
-			if (e) this.stats.cacheHits++;
-			else {
-				if (e = await this.read(Zn(i.hash), i.bytes, t), this.stats.downloaded += e.length, t.throwIfAborted(), e.length !== i.bytes || await k(e) !== i.hash) throw Error(`Chunk integrity failure: ${i.hash}`);
-				try {
-					await this.cache.put(i.hash, e);
-				} catch {
-					this.stats.cacheFailures++;
-				}
-			}
-			t.throwIfAborted(), n.set(e, r), r += e.length;
-			try {
-				this.onProgress?.({ ...this.stats });
-			} catch {}
+		if (await this.provider.authorize?.(t), t.throwIfAborted(), !Number.isSafeInteger(e.bytes) || e.bytes < 0 || e.bytes > Yn.file) throw Error("File allocation limit");
+		let n = /* @__PURE__ */ new Map(), r = 0;
+		for (let t of e.chunks) {
+			if (!Xn(t.hash) || !Number.isSafeInteger(t.bytes) || t.bytes <= 0 || t.bytes > Un || r + t.bytes > e.bytes) throw Error("Invalid file chunk");
+			let i = n.get(t.hash);
+			if (i && i.bytes !== t.bytes) throw Error("Conflicting file chunk");
+			i || (i = {
+				...t,
+				offsets: []
+			}, n.set(t.hash, i)), i.offsets.push(r), r += t.bytes;
 		}
-		if (r !== e.bytes || await k(n) !== e.hash) throw Error(`File integrity failure: ${e.hash}`);
-		return n;
+		if (r !== e.bytes) throw Error("File length mismatch");
+		let i = new Uint8Array(e.bytes), a = [...n.values()], o = new AbortController(), s = AbortSignal.any([t, o.signal]), c = 0, l = !1, u;
+		if (await Promise.allSettled(Array.from({ length: Math.min(4, a.length) }, async () => {
+			try {
+				for (;;) {
+					s.throwIfAborted();
+					let e = a[c++];
+					if (!e) return;
+					let t;
+					try {
+						t = await this.cache.get(e.hash);
+					} catch {
+						this.stats.cacheFailures++;
+						try {
+							await this.cache.remove(e.hash);
+						} catch {
+							this.stats.cacheFailures++;
+						}
+					}
+					if (t && (t.length !== e.bytes || await k(t) !== e.hash)) {
+						t = void 0, this.stats.corruptCache++;
+						try {
+							await this.cache.remove(e.hash);
+						} catch {
+							this.stats.cacheFailures++;
+						}
+					}
+					if (t) this.stats.cacheHits++;
+					else {
+						if (t = await this.read(Zn(e.hash), e.bytes, s), this.stats.downloaded += t.length, s.throwIfAborted(), t.length !== e.bytes || await k(t) !== e.hash) throw Error(`Chunk integrity failure: ${e.hash}`);
+						try {
+							await this.cache.put(e.hash, t);
+						} catch {
+							this.stats.cacheFailures++;
+						}
+					}
+					s.throwIfAborted();
+					for (let n of e.offsets) i.set(t, n);
+					try {
+						this.onProgress?.({ ...this.stats });
+					} catch {}
+				}
+			} catch (e) {
+				throw l || (l = !0, u = e, o.abort(e)), e;
+			}
+		})), l) throw u;
+		if (t.throwIfAborted(), await k(i) !== e.hash) throw Error(`File integrity failure: ${e.hash}`);
+		return i;
 	}
 	async catalogs(e, t, n) {
 		let r = n ?? await this.manifest(e, t);
@@ -5330,7 +5353,9 @@ var wo = class extends sn {
 				transformDocument: (e) => oe(e, this.textureOptions, !this.textureOptions || this.textureOptions.maps.length > 0)
 			}), i = s.preview, c = s.shared ??= {
 				users: 1,
-				dispose: () => i.disposeAll()
+				dispose: () => {
+					i.disposeAll(), s.releaseStorage?.();
+				}
 			};
 			c.users++, o = {
 				...s,
@@ -5369,60 +5394,74 @@ var wo = class extends sn {
 				message: "원본 데이터 읽는 중",
 				detail: t.name
 			});
-			let s = await this.storage.source(e.pin);
-			if (n.throwIfAborted(), s.envelope.revision !== e.pin.revision || s.envelope.payload.actors.length !== e.actors || s.assets.blobs.reduce((e, t) => e + t.bytes.byteLength, 0) > e.bytes) throw Error("원본의 개수/크기가 사전 검사와 다릅니다.");
-			i?.({
-				message: "메시·텍스처 검사 중",
-				detail: t.name
-			});
-			let c = this.projectionOptions.geometryOnly ? [] : [se(s.assets)];
-			if (s.recipe && !this.projectionOptions.geometryOnly) for (let e of s.recipe.payloads) {
-				if (s.assets.revisions.find((t) => t.id === e.revisionId)?.metadata.candidateTypedMaterials) continue;
-				let t = s.assets.blobs.find((t) => t.key === e.blobKey);
-				if (!t) throw Error("Missing source payload");
-				c.push(me(t.bytes));
-			}
-			let l = c.reduce((e, t) => e + $e(t, this.textureOptions).reservedBytes, 0), u = x(r, l);
-			if (l > u) throw Error(`기존 표시와 새 레벨을 합한 텍스처 예약 예산이 부족합니다. 새 레벨 ${(l / 1048576).toFixed(1)} MiB / 남은 한도 ${(u / 1048576).toFixed(1)} MiB. 표시·텍스처 예산을 자동으로 선택하거나 텍스처 크기를 줄이세요.`);
-			let d = new Ae();
-			await d.importSnapshot(s.assets), this.cacheStaticMatrices && _e(d);
-			let f = /* @__PURE__ */ new Map(), m;
+			let s = (e, n) => i?.({
+				message: "원본 에셋 읽는 중",
+				detail: t.name,
+				completed: e,
+				total: n
+			}), c = await this.storage.sourceForDisplay?.(e.pin, n, s);
 			try {
-				let r = ue.find((e) => e >= l) ?? ue.at(-1);
-				s.recipe && !this.projectionOptions.geometryOnly && (m = await Ue({
-					version: 1,
-					...s,
-					recipe: s.recipe
-				}, d, (e) => i?.({
-					message: e,
+				let l = c?.data ?? await this.storage.source(e.pin, n, s);
+				if (n.throwIfAborted(), c && c.totalSourceBytes !== e.bytes) throw Error("Source catalog byte summary mismatch");
+				if (l.envelope.revision !== e.pin.revision || l.envelope.payload.actors.length !== e.actors || l.assets.blobs.reduce((e, t) => e + t.bytes.byteLength, 0) > e.bytes) throw Error("원본의 개수/크기가 사전 검사와 다릅니다.");
+				i?.({
+					message: "메시·텍스처 검사 중",
 					detail: t.name
-				}), {
-					showTextures: !this.textureOptions || this.textureOptions.maps.length > 0,
-					optimize: this.textureOptions?.maps.length ? this.textureOptions : void 0,
-					signal: n,
-					budgetBytes: r
-				}, f, !1)), n.throwIfAborted(), o = {
-					layouts: c,
-					reservedTextures: l,
-					references: 0,
-					encodedBytes: e.bytes,
-					info: e,
-					document: s.envelope.payload,
-					storage: d,
-					staticMeshes: m ?? new Me(d, void 0, this.projectionOptions.geometryOnly ? "geometry-only" : !1),
-					skeletalMeshes: new ii(d),
-					material: m?.materialResolver ?? he(d, void 0, {
-						textureMaxSize: this.textureOptions?.maxSize,
-						textureMapLimits: p(s.assets, this.textureOptions),
-						transformDocument: (e) => oe(e, this.textureOptions, !this.textureOptions || this.textureOptions.maps.length > 0)
-					}),
-					...m ? { preview: m } : {}
-				}, this.cacheStaticMatrices && m && s.recipe?.payloads.length && s.recipe.payloads.every((e) => s.assets.revisions.find((t) => t.id === e.revisionId)?.metadata.candidateTypedMaterials === !0) && s.envelope.payload.actors.every((e) => e.components.every((e) => e.type !== "SkeletalMesh")) && (o.textureCatalog = {
-					...s.assets,
-					blobs: []
-				}), this.sources.set(a, o);
-			} catch (e) {
-				throw m ? m.disposeAll() : qe([...f.values()]), e;
+				});
+				let u = this.projectionOptions.geometryOnly ? [] : [se(l.assets, !!c)];
+				if (l.recipe && !this.projectionOptions.geometryOnly) for (let e of l.recipe.payloads) {
+					if (l.assets.revisions.find((t) => t.id === e.revisionId)?.metadata.candidateTypedMaterials) continue;
+					let t = l.assets.blobs.find((t) => t.key === e.blobKey) ?? (c ? (await c.storage.snapshotAsset(e.assetId, e.revisionId)).blobs.find((t) => t.key === e.blobKey) : void 0);
+					if (!t) throw Error("Missing source payload");
+					u.push(me(t.bytes));
+				}
+				let d = u.reduce((e, t) => e + $e(t, this.textureOptions).reservedBytes, 0), f = x(r, d);
+				if (d > f) throw Error(`기존 표시와 새 레벨을 합한 텍스처 예약 예산이 부족합니다. 새 레벨 ${(d / 1048576).toFixed(1)} MiB / 남은 한도 ${(f / 1048576).toFixed(1)} MiB. 표시·텍스처 예산을 자동으로 선택하거나 텍스처 크기를 줄이세요.`);
+				let m = c?.storage ?? new Ae();
+				c || await m.importSnapshot(l.assets), this.cacheStaticMatrices && _e(m);
+				let h = /* @__PURE__ */ new Map(), g;
+				try {
+					let r = ue.find((e) => e >= d) ?? ue.at(-1);
+					l.recipe && !this.projectionOptions.geometryOnly && (g = await Ue({
+						version: 1,
+						...l,
+						recipe: l.recipe
+					}, m, (e) => i?.({
+						message: e,
+						detail: t.name
+					}), {
+						showTextures: !this.textureOptions || this.textureOptions.maps.length > 0,
+						optimize: this.textureOptions?.maps.length ? this.textureOptions : void 0,
+						signal: n,
+						budgetBytes: r
+					}, h, !1)), n.throwIfAborted(), o = {
+						layouts: u,
+						reservedTextures: d,
+						references: 0,
+						get encodedBytes() {
+							return c?.retainedBytes ?? e.bytes;
+						},
+						releaseStorage: c?.dispose,
+						info: e,
+						document: l.envelope.payload,
+						storage: m,
+						staticMeshes: g ?? new Me(m, void 0, this.projectionOptions.geometryOnly ? "geometry-only" : !1),
+						skeletalMeshes: new ii(m),
+						material: g?.materialResolver ?? he(m, void 0, {
+							textureMaxSize: this.textureOptions?.maxSize,
+							textureMapLimits: p(l.assets, this.textureOptions),
+							transformDocument: (e) => oe(e, this.textureOptions, !this.textureOptions || this.textureOptions.maps.length > 0)
+						}),
+						...g ? { preview: g } : {}
+					}, this.cacheStaticMatrices && g && l.recipe?.payloads.length && l.recipe.payloads.every((e) => l.assets.revisions.find((t) => t.id === e.revisionId)?.metadata.candidateTypedMaterials === !0) && l.envelope.payload.actors.every((e) => e.components.every((e) => e.type !== "SkeletalMesh")) && (o.textureCatalog = {
+						...l.assets,
+						blobs: []
+					}), this.sources.set(a, o);
+				} catch (e) {
+					throw g ? g.disposeAll() : qe([...h.values()]), e;
+				}
+			} finally {
+				o || c?.dispose();
 			}
 		}
 		let c = o, l = this.storage.projectDocument?.(c.document, e) ?? c.document;
@@ -5446,7 +5485,7 @@ var wo = class extends sn {
 			}, r = m.projectActor(n);
 			return r.setHelpersVisible?.(!1), r.setIconPresentation?.(!1, 1), r;
 		}, g = !1, _ = () => {
-			g || (g = !0, u.removeFromParent(), d.forEach((e) => e.dispose()), f.stop(), u.clear(), --c.references === 0 && (c.shared ? (c.preview?.disposeDisplay(), --c.shared.users === 0 && c.shared.dispose()) : c.preview?.disposeAll(), this.sources.delete(a)));
+			g || (g = !0, u.removeFromParent(), d.forEach((e) => e.dispose()), f.stop(), u.clear(), --c.references === 0 && (c.shared ? (c.preview?.disposeDisplay(), --c.shared.users === 0 && c.shared.dispose()) : (c.preview?.disposeAll(), c.releaseStorage?.()), this.sources.delete(a)));
 		};
 		try {
 			let r = 0;
