@@ -9,7 +9,7 @@ export interface ShowFlags {
 }
 export declare function createViewMaterial(source: Material, mode: Exclude<ViewMode, 'bounds' | 'collision'>): Material;
 /** Render actors without light-dependent shaders, then draw helpers without painting over the first pass. */
-export declare function renderViewportPasses(renderer: WebGLRenderer, scene: Scene, camera: Camera, override: Material | null, unlit?: boolean): void;
+export declare function renderViewportPasses(renderer: WebGLRenderer, scene: Scene, camera: Camera, override: Material | null, unlit?: boolean, visibleLayers?: number): void;
 export declare function requireCollisionGeometry(hasCookedCollision: boolean): void;
 export declare class ViewportShowFlagState {
     private flags;

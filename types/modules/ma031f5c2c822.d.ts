@@ -1,6 +1,7 @@
 import type { Camera, Scene, WebGLRenderer } from 'three';
 import { RenderQualityPreset } from './mcca2b868acda.js';
 export interface RenderQualityViewOptions {
+    readonly antialias?: boolean;
     readonly environmentLighting?: boolean;
     readonly environmentIntensity?: number;
     /** Opt-in light inventory cache; caller must bump after scene light add/remove/reparent. */
@@ -30,6 +31,8 @@ export declare class RenderQualityController {
     private disposed;
     private previewEnvironment;
     private environmentError;
+    private antialias;
+    private depthView;
     private status;
     constructor(renderer: WebGLRenderer, scene: Scene, invalidate: () => void, report: (status: RenderQualityStatus) => void, load?: Loader);
     snapshot(): RenderQualityStatus;

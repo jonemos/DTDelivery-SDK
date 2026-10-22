@@ -2,7 +2,7 @@ import { type BuildSettings } from './ma4050e894135.js';
 import { type WebEffects } from './m4f9bb8de04da.js';
 import type { SceneDocument } from './mcec497bf55e6.js';
 export declare const buildPreferenceKey = "dt-web-editor.preferences.v1.buildSettings";
-export type ScreenSettings = Pick<WebEffects, 'toneMapping' | 'exposure' | 'fog'>;
+export type ScreenSettings = Pick<WebEffects, 'toneMapping' | 'exposure' | 'fog' | 'sunlight' | 'antialias'>;
 export declare const defaultScreenSettings: ScreenSettings;
 export declare function isScreenSettings(value: unknown): value is ScreenSettings;
 export declare function isAppBuildSettings(value: unknown): value is BuildSettings | null;

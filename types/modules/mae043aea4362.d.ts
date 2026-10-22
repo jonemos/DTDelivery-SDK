@@ -18,6 +18,11 @@ export interface EncodedWebTexture {
     mimeType: 'image/png' | 'image/jpeg';
 }
 export type WebTextureEncoder = (bytes: Uint8Array, mimeType: string, width: number, height: number, colorOnly: boolean, signal: AbortSignal) => Promise<EncodedWebTexture>;
+/** Only image decode/resize/encode failures may exclude an individual mesh. */
+export declare class TextureConversionError extends Error {
+    constructor(cause: unknown);
+}
+export declare function convertWebTexture(encode: WebTextureEncoder, ...args: Parameters<WebTextureEncoder>): Promise<EncodedWebTexture>;
 /** PNG preserves data channels/alpha after resize. Only opaque color-only input may use JPEG. */
 export declare const encodeWebTexture: WebTextureEncoder;
 export declare function resizeImportedImage(bytes: Uint8Array, mimeType: string, width: number, height: number, signal: AbortSignal): Promise<Uint8Array>;

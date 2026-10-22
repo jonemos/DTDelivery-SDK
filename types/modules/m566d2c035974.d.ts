@@ -3,7 +3,7 @@ import { DeliveryNavigation } from './m13fea72476c5.js';
 import { RenderQualityController } from './ma031f5c2c822.js';
 import { type ViewportProjection } from './m4b81f2a65714.js';
 import { WebEffectsProjection } from './m38ad504316e8.js';
-import type { ScreenSettings } from './m02427c9e162b.js';
+import { type ScreenSettings } from './m02427c9e162b.js';
 import type { EquipmentPlacement, EquipmentTarget } from './mac96c8d05045.js';
 import { Box3Helper, GridHelper, OrthographicCamera, PerspectiveCamera, Scene, WebGLRenderer } from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';

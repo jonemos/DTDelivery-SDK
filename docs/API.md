@@ -1,6 +1,8 @@
-# 공개 함수·타입 명세 · SDK 0.3.21
+# 공개 함수·타입 명세 · SDK 0.3.24
 
-뷰포트 기본값은 `NORMAL`, 환경광 `true`/강도 `1`, 톤 매핑 `aces`, 그리드·에디터 도우미 `false`입니다. `viewport.screenSettings`는 현재 톤 매핑/노출/안개 설정의 복사본을 반환하며 `viewport.setScreenEffects(settings)`로 검증·적용합니다. 호스트에서 변경해도 뷰포트 컨트롤이 갱신됩니다.
+뷰포트 기본값은 `NORMAL`, 환경광 `true`/강도 `1`, 톤 매핑 `aces`, 그리드·에디터 도우미 `false`, 안티앨리어싱 `false`, 카메라 Near `0.1m`입니다. 지원 GPU에서는 Reverse-Z와 32비트 부동소수 깊이로 장면을 표시하고 미지원 기기는 기존 경로를 사용합니다. `viewport.screenSettings`는 현재 화면·태양광 설정의 복사본을 반환하며 `viewport.setScreenEffects(settings)`로 검증·적용합니다. 호스트에서 변경해도 뷰포트 컨트롤이 갱신됩니다. 안개 UI는 제공하지 않으며 기존 `fog` 데이터는 왕복 보존합니다.
+
+`ScreenSettings.sunlight?: SunlightSettings`는 `enabled`, `intensity`(0–20), `temperatureKelvin`(1000–12000 K), `timeOfDay`(0–24시), `azimuthDegrees`(0–360°), `castShadow`, `shadowIntensity`(0–1)입니다. 기본은 `true/3/6500/14/135/true/1`이며 `DEFAULT_SUNLIGHT`를 export합니다. 시간대는 06시 일출·12시 남중·18시 일몰의 단순 경로이며 위치/날짜 기반 천문 계산은 아닙니다. `antialias?: boolean`은 품질과 독립된 FXAA 토글이며 기본은 꺼짐입니다. 옛 설정에서 새 필드를 생략하면 기본값을 적용하고, 알 수 없는 필드나 잘못된 값은 적용 전에 거부합니다.
 
 API를 화면에 연결하는 순서와 기능별 실행 예제는 [개발 가이드 목차](guides/README.md)를 참고하세요. 이 문서는 함수 계약 요약이며 가이드의 코드도 공개 `@dt/delivery-sdk` import만 사용합니다.
 

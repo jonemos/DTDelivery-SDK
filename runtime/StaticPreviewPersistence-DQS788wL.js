@@ -1,25 +1,25 @@
 import "./rolldown-runtime-DF993M8W.js";
-import { $ as e, $n as t, At as n, B as r, C as i, Cr as a, Ct as o, Ft as s, Gt as c, Ht as l, I as u, It as d, Kt as f, Ln as p, Lt as m, Mt as h, Nt as g, Pt as _, Qn as v, Rt as y, S as b, Tt as x, Ut as ee, Wn as S, Wt as te, X as ne, Y as re, Z as ie, Zn as ae, _ as oe, a as se, br as C, bt as w, c as ce, ct as le, dt as ue, et as de, f as fe, ft as pe, g as me, gt as he, ht as ge, i as _e, jt as ve, lt as ye, nr as be, nt as xe, or as Se, ot as Ce, p as we, pt as Te, q as T, qt as Ee, rt as De, sr as Oe, st as ke, tt as Ae, ut as je, wt as Me, x as Ne, xr as E, xt as Pe, y as Fe, zt as Ie } from "./RenderQualityPreset-BFl3kMLS.js";
+import { $n as e, B as t, Bt as n, C as r, Et as i, Ft as a, Gn as o, Gt as s, I as c, It as l, J as u, Jt as d, Kt as f, Lt as p, Mt as m, Nt as h, Pt as g, Q as _, Qn as v, Rn as y, Rt as b, S as x, Sr as S, St as ee, Tt as C, Ut as te, Wt as ne, X as re, Z as ie, _ as ae, _t as oe, a as w, c as se, cr as ce, ct as le, dt as ue, er as de, et as fe, f as pe, ft as me, g as he, gt as ge, i as _e, it as ve, jt as T, lt as ye, mt as be, nt as xe, p as Se, pt as Ce, qt as we, rr as Te, rt as Ee, sr as De, st as Oe, tt as ke, ut as Ae, wr as je, wt as Me, x as Ne, xr as Pe, xt as Fe, y as Ie, zt as Le } from "./RenderQualityPreset-C-TDZc9R.js";
 //#region src/domain/scene.ts
-var Le = [
+var Re = [
 	"Cube",
 	"Sphere",
 	"Cylinder",
 	"Cone",
 	"Plane"
 ];
-function Re(e) {
-	return Le.some((t) => t === e);
+function ze(e) {
+	return Re.some((t) => t === e);
 }
-function D(e) {
+function E(e) {
 	return e.type !== "TestData" && e.type !== "TestScript";
 }
-function ze(e) {
+function Be(e) {
 	let t = e.components.find((t) => t.id === e.rootComponentId);
-	if (!t || !D(t)) throw Error(`Actor ${e.id} requires a SceneComponent root.`);
+	if (!t || !E(t)) throw Error(`Actor ${e.id} requires a SceneComponent root.`);
 	return t;
 }
-function Be(e, t, n) {
+function Ve(e, t, n) {
 	let r = {
 		id: n,
 		ownerActorId: t,
@@ -44,7 +44,7 @@ function Be(e, t, n) {
 				1
 			]
 		}
-	}, i = Re(e) ? {
+	}, i = ze(e) ? {
 		...r,
 		type: "PrimitiveCube",
 		shape: e,
@@ -78,7 +78,7 @@ function Be(e, t, n) {
 	return {
 		id: t,
 		name: e,
-		classId: Re(e) ? "PrimitiveCubeActor" : `${e}Actor`,
+		classId: ze(e) ? "PrimitiveCubeActor" : `${e}Actor`,
 		rootComponentId: n,
 		components: [i],
 		tags: []
@@ -86,26 +86,26 @@ function Be(e, t, n) {
 }
 //#endregion
 //#region out/component-packages/installed.json
-var Ve = /*#__PURE__*/ JSON.parse("[{\"manifest\":{\"formatVersion\":3,\"packageId\":\"dt.mesh-motion\",\"version\":\"1.0.0\",\"sdkVersion\":3,\"typeId\":\"TestScript\",\"typeVersion\":3,\"displayName\":\"Mesh 이동·회전 스크립트\",\"entry\":\"src/index.ts\",\"capabilities\":[\"owner.testData\",\"owner.staticMesh\"],\"settings\":[{\"key\":\"targetMesh\",\"fieldId\":\"script.mesh\",\"kind\":\"component-reference\",\"componentType\":\"StaticMesh\",\"required\":true,\"label\":\"대상 Mesh\",\"defaultValue\":\"\"},{\"key\":\"speedMetersPerSecond\",\"fieldId\":\"script.speed\",\"kind\":\"number\",\"label\":\"X 이동 속도 (m/s)\",\"defaultValue\":1,\"min\":-10,\"max\":10},{\"key\":\"radiansPerSecond\",\"fieldId\":\"script.angularSpeed\",\"kind\":\"number\",\"label\":\"Y 회전 속도 (rad/s)\",\"defaultValue\":1,\"min\":-10,\"max\":10}]},\"reference\":{\"packageId\":\"dt.mesh-motion\",\"version\":\"1.0.0\",\"codeHash\":\"c6b8244101f48f5c489d8da3edaa1f852a59612e3138c952c94c86aa9adfbd4d\"}},{\"manifest\":{\"formatVersion\":3,\"packageId\":\"dt.mesh-pulse-effect\",\"version\":\"1.0.0\",\"sdkVersion\":3,\"typeId\":\"TestScript\",\"typeVersion\":3,\"displayName\":\"Mesh 맥동 Effect\",\"entry\":\"src/index.ts\",\"capabilities\":[\"owner.testData\",\"owner.staticMesh\"],\"settings\":[{\"key\":\"alarmData\",\"fieldId\":\"script.alarmData\",\"kind\":\"component-reference\",\"componentType\":\"TestData\",\"required\":true,\"label\":\"경보값 입력 (0/1)\",\"defaultValue\":\"\"},{\"key\":\"targetMesh\",\"fieldId\":\"script.targetMesh\",\"kind\":\"component-reference\",\"componentType\":\"StaticMesh\",\"required\":true,\"label\":\"효과 Mesh\",\"defaultValue\":\"\"},{\"key\":\"amplitude\",\"fieldId\":\"script.amplitude\",\"kind\":\"number\",\"label\":\"확대 비율\",\"defaultValue\":0.25,\"min\":0,\"max\":1},{\"key\":\"frequencyHz\",\"fieldId\":\"script.frequencyHz\",\"kind\":\"number\",\"label\":\"맥동 주파수 (Hz)\",\"defaultValue\":1,\"min\":0.1,\"max\":5}]},\"reference\":{\"packageId\":\"dt.mesh-pulse-effect\",\"version\":\"1.0.0\",\"codeHash\":\"2362c62a36074d101aa69ef8a6174f3dc6de05e8d4b10aa68d5523988f74bbfc\"}},{\"manifest\":{\"formatVersion\":4,\"packageId\":\"dt.mesh-pulse-effect\",\"version\":\"2.0.0\",\"sdkVersion\":4,\"typeId\":\"TestScript\",\"typeVersion\":3,\"displayName\":\"Mesh 맥동 Effect · 유효성\",\"entry\":\"src/index.ts\",\"capabilities\":[\"owner.testData\",\"owner.staticMesh\",\"owner.signals\"],\"settings\":[{\"key\":\"alarmData\",\"fieldId\":\"script.alarmData\",\"kind\":\"component-reference\",\"componentType\":\"TestData\",\"required\":true,\"label\":\"경보값 입력 (0/1)\",\"defaultValue\":\"\"},{\"key\":\"targetMesh\",\"fieldId\":\"script.targetMesh\",\"kind\":\"component-reference\",\"componentType\":\"StaticMesh\",\"required\":true,\"label\":\"효과 Mesh\",\"defaultValue\":\"\"},{\"key\":\"amplitude\",\"fieldId\":\"script.amplitude\",\"kind\":\"number\",\"label\":\"확대 비율\",\"defaultValue\":0.25,\"min\":0,\"max\":1},{\"key\":\"frequencyHz\",\"fieldId\":\"script.frequencyHz\",\"kind\":\"number\",\"label\":\"맥동 주파수 (Hz)\",\"defaultValue\":1,\"min\":0.1,\"max\":5},{\"key\":\"maxAgeSeconds\",\"fieldId\":\"script.maxAgeSeconds\",\"kind\":\"number\",\"label\":\"최대 데이터 나이 (초)\",\"defaultValue\":0.5,\"min\":0.05,\"max\":60}]},\"reference\":{\"packageId\":\"dt.mesh-pulse-effect\",\"version\":\"2.0.0\",\"codeHash\":\"df99d8749c6e8d3a095ecd5364fc8cf4ea5c0d9f70b1a7c7ccc52727390e2ae6\"}},{\"manifest\":{\"formatVersion\":3,\"packageId\":\"dt.position-sensor\",\"version\":\"1.0.0\",\"sdkVersion\":3,\"typeId\":\"TestScript\",\"typeVersion\":3,\"displayName\":\"위치 Sensor\",\"entry\":\"src/index.ts\",\"capabilities\":[\"owner.testData\",\"owner.staticMesh\"],\"settings\":[{\"key\":\"sourceMesh\",\"fieldId\":\"script.sourceMesh\",\"kind\":\"component-reference\",\"componentType\":\"StaticMesh\",\"required\":true,\"label\":\"측정 Mesh\",\"defaultValue\":\"\"},{\"key\":\"outputData\",\"fieldId\":\"script.outputData\",\"kind\":\"component-reference\",\"componentType\":\"TestData\",\"required\":true,\"label\":\"측정값 출력\",\"defaultValue\":\"\"}]},\"reference\":{\"packageId\":\"dt.position-sensor\",\"version\":\"1.0.0\",\"codeHash\":\"6938f1b7cdc3ef225be8a9f165a6d9543111142b7b6b14d931e8db0526620c66\"}},{\"manifest\":{\"formatVersion\":4,\"packageId\":\"dt.position-sensor\",\"version\":\"2.0.0\",\"sdkVersion\":4,\"typeId\":\"TestScript\",\"typeVersion\":3,\"displayName\":\"위치 Sensor · 유효성\",\"entry\":\"src/index.ts\",\"capabilities\":[\"owner.testData\",\"owner.staticMesh\",\"owner.signals\"],\"settings\":[{\"key\":\"sourceMesh\",\"fieldId\":\"script.sourceMesh\",\"kind\":\"component-reference\",\"componentType\":\"StaticMesh\",\"required\":true,\"label\":\"측정 Mesh\",\"defaultValue\":\"\"},{\"key\":\"outputData\",\"fieldId\":\"script.outputData\",\"kind\":\"component-reference\",\"componentType\":\"TestData\",\"required\":true,\"label\":\"측정값 출력\",\"defaultValue\":\"\"}]},\"reference\":{\"packageId\":\"dt.position-sensor\",\"version\":\"2.0.0\",\"codeHash\":\"4f5e2994bf0aad90cc545725cfd9a44d14b7035d70ba646d0a00b1ba88b7d8fc\"}},{\"manifest\":{\"formatVersion\":1,\"packageId\":\"dt.test-data-script\",\"version\":\"1.0.0\",\"sdkVersion\":1,\"typeId\":\"TestScript\",\"typeVersion\":2,\"displayName\":\"테스트 스크립트\",\"entry\":\"src/index.ts\",\"capabilities\":[\"owner.testData\"],\"settings\":[{\"key\":\"targetComponentId\",\"fieldId\":\"script.target\",\"kind\":\"component-reference\",\"componentType\":\"TestData\",\"required\":true,\"label\":\"대상 테스트 데이터\",\"defaultValue\":\"\"},{\"key\":\"ratePerSecond\",\"fieldId\":\"script.rate\",\"kind\":\"number\",\"label\":\"초당 증분\",\"defaultValue\":1}]},\"reference\":{\"packageId\":\"dt.test-data-script\",\"version\":\"1.0.0\",\"codeHash\":\"cc22c8fb6e95f1090a51c0a00086d2db881af1f038898053e5f993b53eeea2ea\"}},{\"manifest\":{\"formatVersion\":2,\"packageId\":\"dt.test-data-settings\",\"version\":\"1.0.0\",\"sdkVersion\":2,\"typeId\":\"TestScript\",\"typeVersion\":3,\"displayName\":\"테스트 설정 스크립트\",\"entry\":\"src/index.ts\",\"capabilities\":[\"owner.testData\"],\"settings\":[{\"key\":\"sourceData\",\"fieldId\":\"script.source\",\"kind\":\"component-reference\",\"componentType\":\"TestData\",\"required\":true,\"label\":\"입력 데이터\",\"defaultValue\":\"\"},{\"key\":\"targetData\",\"fieldId\":\"script.destination\",\"kind\":\"component-reference\",\"componentType\":\"TestData\",\"required\":true,\"label\":\"출력 데이터\",\"defaultValue\":\"\"},{\"key\":\"gain\",\"fieldId\":\"script.gain\",\"kind\":\"number\",\"label\":\"배율\",\"defaultValue\":1,\"min\":0,\"max\":120},{\"key\":\"running\",\"fieldId\":\"script.running\",\"kind\":\"boolean\",\"label\":\"계산 사용\",\"defaultValue\":true},{\"key\":\"note\",\"fieldId\":\"script.note\",\"kind\":\"string\",\"label\":\"설정 메모\",\"defaultValue\":\"\",\"maxLength\":64},{\"key\":\"mirrorData\",\"fieldId\":\"script.mirror\",\"kind\":\"component-reference\",\"componentType\":\"TestData\",\"required\":false,\"label\":\"복사 데이터 (선택)\",\"defaultValue\":null}]},\"reference\":{\"packageId\":\"dt.test-data-settings\",\"version\":\"1.0.0\",\"codeHash\":\"e3c24fd4266ff8ddd5556b8f3923b01689363e6244aaa60be6b3abfdfe3867c3\"}},{\"manifest\":{\"formatVersion\":2,\"packageId\":\"dt.test-data-settings\",\"version\":\"2.0.0\",\"sdkVersion\":2,\"typeId\":\"TestScript\",\"typeVersion\":3,\"displayName\":\"테스트 설정 스크립트 v2\",\"entry\":\"src/index.ts\",\"capabilities\":[\"owner.testData\"],\"settings\":[{\"key\":\"sourceData\",\"fieldId\":\"script.source\",\"kind\":\"component-reference\",\"componentType\":\"TestData\",\"required\":true,\"label\":\"입력 데이터\",\"defaultValue\":\"\"},{\"key\":\"targetData\",\"fieldId\":\"script.destination\",\"kind\":\"component-reference\",\"componentType\":\"TestData\",\"required\":true,\"label\":\"출력 데이터\",\"defaultValue\":\"\"},{\"key\":\"multiplier\",\"fieldId\":\"script.gain\",\"kind\":\"number\",\"label\":\"입력 배율\",\"defaultValue\":1,\"min\":0,\"max\":120},{\"key\":\"running\",\"fieldId\":\"script.running\",\"kind\":\"boolean\",\"label\":\"계산 사용\",\"defaultValue\":true},{\"key\":\"note\",\"fieldId\":\"script.note\",\"kind\":\"string\",\"label\":\"설정 메모\",\"defaultValue\":\"\",\"maxLength\":64},{\"key\":\"mirrorData\",\"fieldId\":\"script.mirror\",\"kind\":\"component-reference\",\"componentType\":\"TestData\",\"required\":false,\"label\":\"복사 데이터 (선택)\",\"defaultValue\":null},{\"key\":\"bias\",\"fieldId\":\"script.bias\",\"kind\":\"number\",\"label\":\"추가 증분\",\"defaultValue\":0,\"min\":-120,\"max\":120}]},\"reference\":{\"packageId\":\"dt.test-data-settings\",\"version\":\"2.0.0\",\"codeHash\":\"d80e628947af12069f65a193212a42aa02e49df8b936acc1e09a5a1b36c9235f\"}},{\"manifest\":{\"formatVersion\":1,\"packageId\":\"dt.test-data-subtract\",\"version\":\"1.0.0\",\"sdkVersion\":1,\"typeId\":\"TestScript\",\"typeVersion\":2,\"displayName\":\"테스트 감소 스크립트\",\"entry\":\"src/index.ts\",\"capabilities\":[\"owner.testData\"],\"settings\":[{\"key\":\"targetComponentId\",\"fieldId\":\"script.target\",\"kind\":\"component-reference\",\"componentType\":\"TestData\",\"required\":true,\"label\":\"대상 테스트 데이터\",\"defaultValue\":\"\"},{\"key\":\"ratePerSecond\",\"fieldId\":\"script.rate\",\"kind\":\"number\",\"label\":\"초당 감소량\",\"defaultValue\":2}]},\"reference\":{\"packageId\":\"dt.test-data-subtract\",\"version\":\"1.0.0\",\"codeHash\":\"c2c5c8a5908fbcbcb08cb54762d1d4c5d5965be8be1dda8e779da3912423ea29\"}},{\"manifest\":{\"formatVersion\":2,\"packageId\":\"dt.threshold-alarm\",\"version\":\"1.0.0\",\"sdkVersion\":2,\"typeId\":\"TestScript\",\"typeVersion\":3,\"displayName\":\"임계값 Alarm\",\"entry\":\"src/index.ts\",\"capabilities\":[\"owner.testData\"],\"settings\":[{\"key\":\"sourceData\",\"fieldId\":\"script.sourceData\",\"kind\":\"component-reference\",\"componentType\":\"TestData\",\"required\":true,\"label\":\"측정값 입력\",\"defaultValue\":\"\"},{\"key\":\"alarmData\",\"fieldId\":\"script.alarmData\",\"kind\":\"component-reference\",\"componentType\":\"TestData\",\"required\":true,\"label\":\"경보값 출력 (0/1)\",\"defaultValue\":\"\"},{\"key\":\"threshold\",\"fieldId\":\"script.threshold\",\"kind\":\"number\",\"label\":\"발생 임계값\",\"defaultValue\":1},{\"key\":\"hysteresis\",\"fieldId\":\"script.hysteresis\",\"kind\":\"number\",\"label\":\"해제 여유값\",\"defaultValue\":0.2,\"min\":0}]},\"reference\":{\"packageId\":\"dt.threshold-alarm\",\"version\":\"1.0.0\",\"codeHash\":\"cdbea140c73c56e518a2fb35e45fa9cfb4792bbf730aee8c87bb82d1fe81691d\"}},{\"manifest\":{\"formatVersion\":4,\"packageId\":\"dt.threshold-alarm\",\"version\":\"2.0.0\",\"sdkVersion\":4,\"typeId\":\"TestScript\",\"typeVersion\":3,\"displayName\":\"임계값 Alarm · 유효성\",\"entry\":\"src/index.ts\",\"capabilities\":[\"owner.testData\",\"owner.staticMesh\",\"owner.signals\"],\"settings\":[{\"key\":\"sourceData\",\"fieldId\":\"script.sourceData\",\"kind\":\"component-reference\",\"componentType\":\"TestData\",\"required\":true,\"label\":\"측정값 입력\",\"defaultValue\":\"\"},{\"key\":\"alarmData\",\"fieldId\":\"script.alarmData\",\"kind\":\"component-reference\",\"componentType\":\"TestData\",\"required\":true,\"label\":\"경보값 출력 (0/1)\",\"defaultValue\":\"\"},{\"key\":\"threshold\",\"fieldId\":\"script.threshold\",\"kind\":\"number\",\"label\":\"발생 임계값\",\"defaultValue\":1},{\"key\":\"hysteresis\",\"fieldId\":\"script.hysteresis\",\"kind\":\"number\",\"label\":\"해제 여유값\",\"defaultValue\":0.2,\"min\":0},{\"key\":\"maxAgeSeconds\",\"fieldId\":\"script.maxAgeSeconds\",\"kind\":\"number\",\"label\":\"최대 데이터 나이 (초)\",\"defaultValue\":0.5,\"min\":0.05,\"max\":60}]},\"reference\":{\"packageId\":\"dt.threshold-alarm\",\"version\":\"2.0.0\",\"codeHash\":\"083d838ccf78d6ceb520a49516ac2a8ba6356a263f86a741363ff5c6ec088151\"}}]"), He = 5, Ue = [
+var He = /*#__PURE__*/ JSON.parse("[{\"manifest\":{\"formatVersion\":3,\"packageId\":\"dt.mesh-motion\",\"version\":\"1.0.0\",\"sdkVersion\":3,\"typeId\":\"TestScript\",\"typeVersion\":3,\"displayName\":\"Mesh 이동·회전 스크립트\",\"entry\":\"src/index.ts\",\"capabilities\":[\"owner.testData\",\"owner.staticMesh\"],\"settings\":[{\"key\":\"targetMesh\",\"fieldId\":\"script.mesh\",\"kind\":\"component-reference\",\"componentType\":\"StaticMesh\",\"required\":true,\"label\":\"대상 Mesh\",\"defaultValue\":\"\"},{\"key\":\"speedMetersPerSecond\",\"fieldId\":\"script.speed\",\"kind\":\"number\",\"label\":\"X 이동 속도 (m/s)\",\"defaultValue\":1,\"min\":-10,\"max\":10},{\"key\":\"radiansPerSecond\",\"fieldId\":\"script.angularSpeed\",\"kind\":\"number\",\"label\":\"Y 회전 속도 (rad/s)\",\"defaultValue\":1,\"min\":-10,\"max\":10}]},\"reference\":{\"packageId\":\"dt.mesh-motion\",\"version\":\"1.0.0\",\"codeHash\":\"c6b8244101f48f5c489d8da3edaa1f852a59612e3138c952c94c86aa9adfbd4d\"}},{\"manifest\":{\"formatVersion\":3,\"packageId\":\"dt.mesh-pulse-effect\",\"version\":\"1.0.0\",\"sdkVersion\":3,\"typeId\":\"TestScript\",\"typeVersion\":3,\"displayName\":\"Mesh 맥동 Effect\",\"entry\":\"src/index.ts\",\"capabilities\":[\"owner.testData\",\"owner.staticMesh\"],\"settings\":[{\"key\":\"alarmData\",\"fieldId\":\"script.alarmData\",\"kind\":\"component-reference\",\"componentType\":\"TestData\",\"required\":true,\"label\":\"경보값 입력 (0/1)\",\"defaultValue\":\"\"},{\"key\":\"targetMesh\",\"fieldId\":\"script.targetMesh\",\"kind\":\"component-reference\",\"componentType\":\"StaticMesh\",\"required\":true,\"label\":\"효과 Mesh\",\"defaultValue\":\"\"},{\"key\":\"amplitude\",\"fieldId\":\"script.amplitude\",\"kind\":\"number\",\"label\":\"확대 비율\",\"defaultValue\":0.25,\"min\":0,\"max\":1},{\"key\":\"frequencyHz\",\"fieldId\":\"script.frequencyHz\",\"kind\":\"number\",\"label\":\"맥동 주파수 (Hz)\",\"defaultValue\":1,\"min\":0.1,\"max\":5}]},\"reference\":{\"packageId\":\"dt.mesh-pulse-effect\",\"version\":\"1.0.0\",\"codeHash\":\"2362c62a36074d101aa69ef8a6174f3dc6de05e8d4b10aa68d5523988f74bbfc\"}},{\"manifest\":{\"formatVersion\":4,\"packageId\":\"dt.mesh-pulse-effect\",\"version\":\"2.0.0\",\"sdkVersion\":4,\"typeId\":\"TestScript\",\"typeVersion\":3,\"displayName\":\"Mesh 맥동 Effect · 유효성\",\"entry\":\"src/index.ts\",\"capabilities\":[\"owner.testData\",\"owner.staticMesh\",\"owner.signals\"],\"settings\":[{\"key\":\"alarmData\",\"fieldId\":\"script.alarmData\",\"kind\":\"component-reference\",\"componentType\":\"TestData\",\"required\":true,\"label\":\"경보값 입력 (0/1)\",\"defaultValue\":\"\"},{\"key\":\"targetMesh\",\"fieldId\":\"script.targetMesh\",\"kind\":\"component-reference\",\"componentType\":\"StaticMesh\",\"required\":true,\"label\":\"효과 Mesh\",\"defaultValue\":\"\"},{\"key\":\"amplitude\",\"fieldId\":\"script.amplitude\",\"kind\":\"number\",\"label\":\"확대 비율\",\"defaultValue\":0.25,\"min\":0,\"max\":1},{\"key\":\"frequencyHz\",\"fieldId\":\"script.frequencyHz\",\"kind\":\"number\",\"label\":\"맥동 주파수 (Hz)\",\"defaultValue\":1,\"min\":0.1,\"max\":5},{\"key\":\"maxAgeSeconds\",\"fieldId\":\"script.maxAgeSeconds\",\"kind\":\"number\",\"label\":\"최대 데이터 나이 (초)\",\"defaultValue\":0.5,\"min\":0.05,\"max\":60}]},\"reference\":{\"packageId\":\"dt.mesh-pulse-effect\",\"version\":\"2.0.0\",\"codeHash\":\"df99d8749c6e8d3a095ecd5364fc8cf4ea5c0d9f70b1a7c7ccc52727390e2ae6\"}},{\"manifest\":{\"formatVersion\":3,\"packageId\":\"dt.position-sensor\",\"version\":\"1.0.0\",\"sdkVersion\":3,\"typeId\":\"TestScript\",\"typeVersion\":3,\"displayName\":\"위치 Sensor\",\"entry\":\"src/index.ts\",\"capabilities\":[\"owner.testData\",\"owner.staticMesh\"],\"settings\":[{\"key\":\"sourceMesh\",\"fieldId\":\"script.sourceMesh\",\"kind\":\"component-reference\",\"componentType\":\"StaticMesh\",\"required\":true,\"label\":\"측정 Mesh\",\"defaultValue\":\"\"},{\"key\":\"outputData\",\"fieldId\":\"script.outputData\",\"kind\":\"component-reference\",\"componentType\":\"TestData\",\"required\":true,\"label\":\"측정값 출력\",\"defaultValue\":\"\"}]},\"reference\":{\"packageId\":\"dt.position-sensor\",\"version\":\"1.0.0\",\"codeHash\":\"6938f1b7cdc3ef225be8a9f165a6d9543111142b7b6b14d931e8db0526620c66\"}},{\"manifest\":{\"formatVersion\":4,\"packageId\":\"dt.position-sensor\",\"version\":\"2.0.0\",\"sdkVersion\":4,\"typeId\":\"TestScript\",\"typeVersion\":3,\"displayName\":\"위치 Sensor · 유효성\",\"entry\":\"src/index.ts\",\"capabilities\":[\"owner.testData\",\"owner.staticMesh\",\"owner.signals\"],\"settings\":[{\"key\":\"sourceMesh\",\"fieldId\":\"script.sourceMesh\",\"kind\":\"component-reference\",\"componentType\":\"StaticMesh\",\"required\":true,\"label\":\"측정 Mesh\",\"defaultValue\":\"\"},{\"key\":\"outputData\",\"fieldId\":\"script.outputData\",\"kind\":\"component-reference\",\"componentType\":\"TestData\",\"required\":true,\"label\":\"측정값 출력\",\"defaultValue\":\"\"}]},\"reference\":{\"packageId\":\"dt.position-sensor\",\"version\":\"2.0.0\",\"codeHash\":\"4f5e2994bf0aad90cc545725cfd9a44d14b7035d70ba646d0a00b1ba88b7d8fc\"}},{\"manifest\":{\"formatVersion\":1,\"packageId\":\"dt.test-data-script\",\"version\":\"1.0.0\",\"sdkVersion\":1,\"typeId\":\"TestScript\",\"typeVersion\":2,\"displayName\":\"테스트 스크립트\",\"entry\":\"src/index.ts\",\"capabilities\":[\"owner.testData\"],\"settings\":[{\"key\":\"targetComponentId\",\"fieldId\":\"script.target\",\"kind\":\"component-reference\",\"componentType\":\"TestData\",\"required\":true,\"label\":\"대상 테스트 데이터\",\"defaultValue\":\"\"},{\"key\":\"ratePerSecond\",\"fieldId\":\"script.rate\",\"kind\":\"number\",\"label\":\"초당 증분\",\"defaultValue\":1}]},\"reference\":{\"packageId\":\"dt.test-data-script\",\"version\":\"1.0.0\",\"codeHash\":\"cc22c8fb6e95f1090a51c0a00086d2db881af1f038898053e5f993b53eeea2ea\"}},{\"manifest\":{\"formatVersion\":2,\"packageId\":\"dt.test-data-settings\",\"version\":\"1.0.0\",\"sdkVersion\":2,\"typeId\":\"TestScript\",\"typeVersion\":3,\"displayName\":\"테스트 설정 스크립트\",\"entry\":\"src/index.ts\",\"capabilities\":[\"owner.testData\"],\"settings\":[{\"key\":\"sourceData\",\"fieldId\":\"script.source\",\"kind\":\"component-reference\",\"componentType\":\"TestData\",\"required\":true,\"label\":\"입력 데이터\",\"defaultValue\":\"\"},{\"key\":\"targetData\",\"fieldId\":\"script.destination\",\"kind\":\"component-reference\",\"componentType\":\"TestData\",\"required\":true,\"label\":\"출력 데이터\",\"defaultValue\":\"\"},{\"key\":\"gain\",\"fieldId\":\"script.gain\",\"kind\":\"number\",\"label\":\"배율\",\"defaultValue\":1,\"min\":0,\"max\":120},{\"key\":\"running\",\"fieldId\":\"script.running\",\"kind\":\"boolean\",\"label\":\"계산 사용\",\"defaultValue\":true},{\"key\":\"note\",\"fieldId\":\"script.note\",\"kind\":\"string\",\"label\":\"설정 메모\",\"defaultValue\":\"\",\"maxLength\":64},{\"key\":\"mirrorData\",\"fieldId\":\"script.mirror\",\"kind\":\"component-reference\",\"componentType\":\"TestData\",\"required\":false,\"label\":\"복사 데이터 (선택)\",\"defaultValue\":null}]},\"reference\":{\"packageId\":\"dt.test-data-settings\",\"version\":\"1.0.0\",\"codeHash\":\"e3c24fd4266ff8ddd5556b8f3923b01689363e6244aaa60be6b3abfdfe3867c3\"}},{\"manifest\":{\"formatVersion\":2,\"packageId\":\"dt.test-data-settings\",\"version\":\"2.0.0\",\"sdkVersion\":2,\"typeId\":\"TestScript\",\"typeVersion\":3,\"displayName\":\"테스트 설정 스크립트 v2\",\"entry\":\"src/index.ts\",\"capabilities\":[\"owner.testData\"],\"settings\":[{\"key\":\"sourceData\",\"fieldId\":\"script.source\",\"kind\":\"component-reference\",\"componentType\":\"TestData\",\"required\":true,\"label\":\"입력 데이터\",\"defaultValue\":\"\"},{\"key\":\"targetData\",\"fieldId\":\"script.destination\",\"kind\":\"component-reference\",\"componentType\":\"TestData\",\"required\":true,\"label\":\"출력 데이터\",\"defaultValue\":\"\"},{\"key\":\"multiplier\",\"fieldId\":\"script.gain\",\"kind\":\"number\",\"label\":\"입력 배율\",\"defaultValue\":1,\"min\":0,\"max\":120},{\"key\":\"running\",\"fieldId\":\"script.running\",\"kind\":\"boolean\",\"label\":\"계산 사용\",\"defaultValue\":true},{\"key\":\"note\",\"fieldId\":\"script.note\",\"kind\":\"string\",\"label\":\"설정 메모\",\"defaultValue\":\"\",\"maxLength\":64},{\"key\":\"mirrorData\",\"fieldId\":\"script.mirror\",\"kind\":\"component-reference\",\"componentType\":\"TestData\",\"required\":false,\"label\":\"복사 데이터 (선택)\",\"defaultValue\":null},{\"key\":\"bias\",\"fieldId\":\"script.bias\",\"kind\":\"number\",\"label\":\"추가 증분\",\"defaultValue\":0,\"min\":-120,\"max\":120}]},\"reference\":{\"packageId\":\"dt.test-data-settings\",\"version\":\"2.0.0\",\"codeHash\":\"d80e628947af12069f65a193212a42aa02e49df8b936acc1e09a5a1b36c9235f\"}},{\"manifest\":{\"formatVersion\":1,\"packageId\":\"dt.test-data-subtract\",\"version\":\"1.0.0\",\"sdkVersion\":1,\"typeId\":\"TestScript\",\"typeVersion\":2,\"displayName\":\"테스트 감소 스크립트\",\"entry\":\"src/index.ts\",\"capabilities\":[\"owner.testData\"],\"settings\":[{\"key\":\"targetComponentId\",\"fieldId\":\"script.target\",\"kind\":\"component-reference\",\"componentType\":\"TestData\",\"required\":true,\"label\":\"대상 테스트 데이터\",\"defaultValue\":\"\"},{\"key\":\"ratePerSecond\",\"fieldId\":\"script.rate\",\"kind\":\"number\",\"label\":\"초당 감소량\",\"defaultValue\":2}]},\"reference\":{\"packageId\":\"dt.test-data-subtract\",\"version\":\"1.0.0\",\"codeHash\":\"c2c5c8a5908fbcbcb08cb54762d1d4c5d5965be8be1dda8e779da3912423ea29\"}},{\"manifest\":{\"formatVersion\":2,\"packageId\":\"dt.threshold-alarm\",\"version\":\"1.0.0\",\"sdkVersion\":2,\"typeId\":\"TestScript\",\"typeVersion\":3,\"displayName\":\"임계값 Alarm\",\"entry\":\"src/index.ts\",\"capabilities\":[\"owner.testData\"],\"settings\":[{\"key\":\"sourceData\",\"fieldId\":\"script.sourceData\",\"kind\":\"component-reference\",\"componentType\":\"TestData\",\"required\":true,\"label\":\"측정값 입력\",\"defaultValue\":\"\"},{\"key\":\"alarmData\",\"fieldId\":\"script.alarmData\",\"kind\":\"component-reference\",\"componentType\":\"TestData\",\"required\":true,\"label\":\"경보값 출력 (0/1)\",\"defaultValue\":\"\"},{\"key\":\"threshold\",\"fieldId\":\"script.threshold\",\"kind\":\"number\",\"label\":\"발생 임계값\",\"defaultValue\":1},{\"key\":\"hysteresis\",\"fieldId\":\"script.hysteresis\",\"kind\":\"number\",\"label\":\"해제 여유값\",\"defaultValue\":0.2,\"min\":0}]},\"reference\":{\"packageId\":\"dt.threshold-alarm\",\"version\":\"1.0.0\",\"codeHash\":\"cdbea140c73c56e518a2fb35e45fa9cfb4792bbf730aee8c87bb82d1fe81691d\"}},{\"manifest\":{\"formatVersion\":4,\"packageId\":\"dt.threshold-alarm\",\"version\":\"2.0.0\",\"sdkVersion\":4,\"typeId\":\"TestScript\",\"typeVersion\":3,\"displayName\":\"임계값 Alarm · 유효성\",\"entry\":\"src/index.ts\",\"capabilities\":[\"owner.testData\",\"owner.staticMesh\",\"owner.signals\"],\"settings\":[{\"key\":\"sourceData\",\"fieldId\":\"script.sourceData\",\"kind\":\"component-reference\",\"componentType\":\"TestData\",\"required\":true,\"label\":\"측정값 입력\",\"defaultValue\":\"\"},{\"key\":\"alarmData\",\"fieldId\":\"script.alarmData\",\"kind\":\"component-reference\",\"componentType\":\"TestData\",\"required\":true,\"label\":\"경보값 출력 (0/1)\",\"defaultValue\":\"\"},{\"key\":\"threshold\",\"fieldId\":\"script.threshold\",\"kind\":\"number\",\"label\":\"발생 임계값\",\"defaultValue\":1},{\"key\":\"hysteresis\",\"fieldId\":\"script.hysteresis\",\"kind\":\"number\",\"label\":\"해제 여유값\",\"defaultValue\":0.2,\"min\":0},{\"key\":\"maxAgeSeconds\",\"fieldId\":\"script.maxAgeSeconds\",\"kind\":\"number\",\"label\":\"최대 데이터 나이 (초)\",\"defaultValue\":0.5,\"min\":0.05,\"max\":60}]},\"reference\":{\"packageId\":\"dt.threshold-alarm\",\"version\":\"2.0.0\",\"codeHash\":\"083d838ccf78d6ceb520a49516ac2a8ba6356a263f86a741363ff5c6ec088151\"}}]"), Ue = 5, We = [
 	"editor",
 	"play",
 	"composition",
 	"delivery"
-], We = /* @__PURE__ */ new Map();
-function Ge(e) {
-	if (!/^[a-z][a-zA-Z0-9.-]{2,95}$/.test(e.id) || We.has(e.id) || !e.environments.length || e.environments.some((e) => !Ue.includes(e)) || ![
+], Ge = /* @__PURE__ */ new Map();
+function Ke(e) {
+	if (!/^[a-z][a-zA-Z0-9.-]{2,95}$/.test(e.id) || Ge.has(e.id) || !e.environments.length || e.environments.some((e) => !We.includes(e)) || ![
 		"read",
 		"runtime",
 		"persistent"
 	].includes(e.scope)) throw Error("Invalid/duplicate addon capability");
-	We.set(e.id, Object.freeze({
+	Ge.set(e.id, Object.freeze({
 		...e,
 		environments: Object.freeze([...e.environments])
 	}));
 }
-var Ke = () => [...We.values()];
-function qe(e, t) {
-	let n = We.get(e);
+var qe = () => [...Ge.values()];
+function Je(e, t) {
+	let n = Ge.get(e);
 	if (!n) throw Error(`Unsupported addon capability: ${e}`);
 	if (t && !n.environments.includes(t)) throw Error(`Addon capability ${e} is unavailable in ${t}`);
 	return n;
@@ -131,31 +131,31 @@ for (let e of [
 		scope: "persistent",
 		description: "Explicit validated setting edits through host commands and Undo."
 	}
-]) Ge({
+]) Ke({
 	...e,
-	environments: e.id === "document.edit" ? ["editor", "composition"] : Ue
+	environments: e.id === "document.edit" ? ["editor", "composition"] : We
 });
-function Je(e, t) {
-	if (!Array.isArray(e) || !e.length || e.length > 32 || new Set(e).size !== e.length || !Array.isArray(t) || !t.length || new Set(t).size !== t.length || t.some((e) => !Ue.includes(e))) throw Error("Invalid addon capabilities/environments");
+function Ye(e, t) {
+	if (!Array.isArray(e) || !e.length || e.length > 32 || new Set(e).size !== e.length || !Array.isArray(t) || !t.length || new Set(t).size !== t.length || t.some((e) => !We.includes(e))) throw Error("Invalid addon capabilities/environments");
 	for (let n of e) {
 		if (typeof n != "string") throw Error("Invalid addon capability identifier");
-		for (let e of t) qe(n, e);
+		for (let e of t) Je(n, e);
 	}
 }
 //#endregion
 //#region src/component-packages/ComponentPackageManifest.ts
-function Ye(e) {
+function Xe(e) {
 	if (!e || typeof e != "object" || Array.isArray(e)) throw Error("Invalid Component package object.");
 	return e;
 }
-function O(e, t) {
+function D(e, t) {
 	if (Object.keys(e).length !== t.length || Object.keys(e).some((e) => !t.includes(e))) throw Error("Unknown/missing Component package field.");
 }
-function Xe(e) {
+function Ze(e) {
 	return typeof e == "string" && e.trim().length > 0 && e.length <= 120;
 }
-function Ze(e) {
-	let t = Ye(e), n = t.formatVersion === 5 && t.sdkVersion === 5 && t.typeVersion === 3;
+function Qe(e) {
+	let t = Xe(e), n = t.formatVersion === 5 && t.sdkVersion === 5 && t.typeVersion === 3;
 	if (![
 		1,
 		2,
@@ -163,7 +163,7 @@ function Ze(e) {
 		4,
 		5
 	].includes(Number(t.sdkVersion))) throw Error("Unsupported Component SDK version.");
-	O(t, [
+	D(t, [
 		"formatVersion",
 		"packageId",
 		"version",
@@ -179,14 +179,14 @@ function Ze(e) {
 	let r = t.formatVersion === 1 && t.sdkVersion === 1 && t.typeVersion === 2, i = t.formatVersion === 4 && t.sdkVersion === 4 && t.typeVersion === 3, a = i || t.formatVersion === 3 && t.sdkVersion === 3 && t.typeVersion === 3;
 	if (!r && !a && !n && (t.formatVersion !== 2 || t.sdkVersion !== 2 || t.typeVersion !== 3) || t.typeId !== "TestScript") throw Error("Unsupported Component SDK/type/version.");
 	if (typeof t.packageId != "string" || !/^[a-z][a-z0-9.-]{2,95}$/.test(t.packageId) || typeof t.version != "string" || !/^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/.test(t.version)) throw Error("Invalid Component package identity/version.");
-	if (t.entry !== "src/index.ts" || !Xe(t.displayName)) throw Error("Unsupported Component entry.");
-	if (n) Je(t.capabilities, t.environments);
+	if (t.entry !== "src/index.ts" || !Ze(t.displayName)) throw Error("Unsupported Component entry.");
+	if (n) Ye(t.capabilities, t.environments);
 	else if (JSON.stringify(t.capabilities) !== (i ? "[\"owner.testData\",\"owner.staticMesh\",\"owner.signals\"]" : a ? "[\"owner.testData\",\"owner.staticMesh\"]" : "[\"owner.testData\"]")) throw Error("Unsupported Component entry/capabilities.");
 	if (!r) {
 		if (!Array.isArray(t.settings) || !n && !t.settings.length || t.settings.length > 32) throw Error("Unsupported Component settings schema.");
 		let r = /* @__PURE__ */ new Set(), i = /* @__PURE__ */ new Set();
 		for (let e of t.settings) {
-			let t = Ye(e), o = [
+			let t = Xe(e), o = [
 				"key",
 				"fieldId",
 				"kind",
@@ -197,27 +197,27 @@ function Ze(e) {
 				"constructor",
 				"prototype",
 				"__proto__"
-			].includes(t.key) || typeof t.fieldId != "string" || !/^script\.[a-z][a-zA-Z0-9-]{0,63}$/.test(t.fieldId) || ["script.package", "script.settings"].includes(t.fieldId) || !Xe(t.label) || r.has(t.key) || i.has(t.fieldId)) throw Error("Invalid/duplicate Script setting identity.");
+			].includes(t.key) || typeof t.fieldId != "string" || !/^script\.[a-z][a-zA-Z0-9-]{0,63}$/.test(t.fieldId) || ["script.package", "script.settings"].includes(t.fieldId) || !Ze(t.label) || r.has(t.key) || i.has(t.fieldId)) throw Error("Invalid/duplicate Script setting identity.");
 			if (r.add(t.key), i.add(t.fieldId), t.kind === "number") {
-				if (O(t, [...o, ...["min", "max"].filter((e) => e in t)]), ["min", "max"].some((e) => e in t && (typeof t[e] != "number" || !Number.isFinite(t[e]))) || typeof t.min == "number" && typeof t.max == "number" && t.min > t.max) throw Error("Invalid Script number bounds.");
-			} else if (t.kind === "boolean") O(t, o);
+				if (D(t, [...o, ...["min", "max"].filter((e) => e in t)]), ["min", "max"].some((e) => e in t && (typeof t[e] != "number" || !Number.isFinite(t[e]))) || typeof t.min == "number" && typeof t.max == "number" && t.min > t.max) throw Error("Invalid Script number bounds.");
+			} else if (t.kind === "boolean") D(t, o);
 			else if (t.kind === "string") {
-				if (O(t, [...o, "maxLength"]), !Number.isInteger(t.maxLength) || Number(t.maxLength) < 1 || Number(t.maxLength) > 4096) throw Error("Invalid Script string limit.");
+				if (D(t, [...o, "maxLength"]), !Number.isInteger(t.maxLength) || Number(t.maxLength) < 1 || Number(t.maxLength) > 4096) throw Error("Invalid Script string limit.");
 			} else if (t.kind === "component-reference") {
-				if (O(t, [
+				if (D(t, [
 					...o,
 					"componentType",
 					"required"
 				]), !(t.componentType === "TestData" || (a || n) && t.componentType === "StaticMesh") || typeof t.required != "boolean" || t.defaultValue !== (t.required ? "" : null)) throw Error("Invalid Script Component reference contract.");
 			} else throw Error("Unsupported Script setting kind.");
-			t.kind !== "component-reference" && Qe(t, t.defaultValue);
+			t.kind !== "component-reference" && $e(t, t.defaultValue);
 		}
 		if (n) {
 			if (!Array.isArray(t.properties) || t.properties.length > 32) throw Error("Invalid exposed addon properties");
 			let e = /* @__PURE__ */ new Set(), n = /* @__PURE__ */ new Set();
 			for (let i of t.properties) {
-				let a = Ye(i);
-				if (O(a, [
+				let a = Xe(i);
+				if (D(a, [
 					"name",
 					"setting",
 					"access",
@@ -241,8 +241,8 @@ function Ze(e) {
 		return structuredClone(e);
 	}
 	if (!Array.isArray(t.settings) || t.settings.length !== 2) throw Error("Unsupported Component settings schema.");
-	let o = Ye(t.settings[0]), s = Ye(t.settings[1]);
-	if (O(o, [
+	let o = Xe(t.settings[0]), s = Xe(t.settings[1]);
+	if (D(o, [
 		"key",
 		"fieldId",
 		"kind",
@@ -250,61 +250,61 @@ function Ze(e) {
 		"required",
 		"label",
 		"defaultValue"
-	]), O(s, [
+	]), D(s, [
 		"key",
 		"fieldId",
 		"kind",
 		"label",
 		"defaultValue"
-	]), o.key !== "targetComponentId" || o.fieldId !== "script.target" || o.kind !== "component-reference" || o.componentType !== "TestData" || o.required !== !0 || o.defaultValue !== "" || !Xe(o.label) || s.key !== "ratePerSecond" || s.fieldId !== "script.rate" || s.kind !== "number" || !Xe(s.label) || typeof s.defaultValue != "number" || !Number.isFinite(s.defaultValue)) throw Error("Unsupported Component settings schema.");
+	]), o.key !== "targetComponentId" || o.fieldId !== "script.target" || o.kind !== "component-reference" || o.componentType !== "TestData" || o.required !== !0 || o.defaultValue !== "" || !Ze(o.label) || s.key !== "ratePerSecond" || s.fieldId !== "script.rate" || s.kind !== "number" || !Ze(s.label) || typeof s.defaultValue != "number" || !Number.isFinite(s.defaultValue)) throw Error("Unsupported Component settings schema.");
 	return structuredClone(e);
 }
-function Qe(e, t) {
+function $e(e, t) {
 	if (!(e.kind === "number" ? typeof t == "number" && Number.isFinite(t) && (e.min === void 0 || t >= e.min) && (e.max === void 0 || t <= e.max) : e.kind === "boolean" ? typeof t == "boolean" : e.kind === "string" ? typeof t == "string" && t.length <= e.maxLength : t === null ? !e.required : typeof t == "string" && t.length > 0)) throw Error(`Invalid Script setting ${e.fieldId}.`);
 }
-function $e(e, t) {
-	let n = Ye(t);
-	O(n, e.settings.map((e) => e.key));
-	for (let t of e.settings) Qe(t, n[t.key]);
+function et(e, t) {
+	let n = Xe(t);
+	D(n, e.settings.map((e) => e.key));
+	for (let t of e.settings) $e(t, n[t.key]);
 	if (e.sdkVersion === 5) {
 		for (let t of e.properties) if (t.format === "color" && (typeof n[t.setting] != "string" || !/^#[a-fA-F0-9]{6}$/.test(n[t.setting]))) throw Error(`Invalid color property ${t.name}`);
 	}
 }
-function et(e, t) {
-	let n = Ye(e);
-	if (O(n, [
+function tt(e, t) {
+	let n = Xe(e);
+	if (D(n, [
 		"packageId",
 		"version",
 		"codeHash"
 	]), n.packageId !== t.packageId || n.version !== t.version || n.codeHash !== t.codeHash) throw Error("Script package is missing or changed. Restore the matching app/package build; settings were not migrated.");
 }
-var tt = {
+var nt = {
 	packageId: "dt.test-data-script",
 	version: "1.0.0",
 	codeHash: "cc22c8fb6e95f1090a51c0a00086d2db881af1f038898053e5f993b53eeea2ea"
 };
 //#endregion
 //#region src/assets/AssetRegistry.ts
-function nt(e) {
+function rt(e) {
 	let t = structuredClone([...e]);
 	if (!t.length || t.length > 1e4 || new Set(t.map((e) => e.assetId)).size !== t.length || new Set(t.map((e) => e.revision.id)).size !== t.length || t.some((e) => !e.expectedRevisionId || e.revision.assetId !== e.assetId || !e.revision.blobKeys.includes(e.blob.key))) throw Error("Invalid or duplicate batch revision identities.");
 	return t;
 }
-function rt(e, t, n) {
+function it(e, t, n) {
 	return e.snapshotAsset ? e.snapshotAsset(t, n) : e.snapshot();
 }
-var it = class extends Error {}, at = class extends Error {
+var at = class extends Error {}, ot = class extends Error {
 	assetId;
 	references;
 	constructor(e, t) {
 		super(`Asset ${e} is referenced by ${t.length} owner(s).`), this.assetId = e, this.references = t;
 	}
-}, ot = class extends Error {};
-async function st(e) {
+}, st = class extends Error {};
+async function ct(e) {
 	let t = e.buffer instanceof ArrayBuffer ? new Uint8Array(e.buffer, e.byteOffset, e.byteLength) : e.slice(), n = await crypto.subtle.digest("SHA-256", t);
 	return Array.from(new Uint8Array(n), (e) => e.toString(16).padStart(2, "0")).join("");
 }
-function ct(e) {
+function lt(e) {
 	return {
 		asset: structuredClone(e.asset),
 		revision: structuredClone(e.revision),
@@ -316,22 +316,22 @@ function ct(e) {
 }
 //#endregion
 //#region src/component-packages/ScriptAddonRegistry.ts
-var lt = [], ut = /* @__PURE__ */ new Set(), dt = () => lt;
-async function ft(e) {
+var ut = [], dt = /* @__PURE__ */ new Set(), ft = () => ut;
+async function pt(e) {
 	if (!Array.isArray(e) || e.length > 64) throw Error("애드온 보관 한도는 64개 버전입니다.");
 	let t = /* @__PURE__ */ new Set(), n = 0, r = [];
 	for (let i of e) {
 		if (!i || Object.keys(i).sort().join(",") !== "active,code,manifest,reference" || typeof i.active != "boolean" || typeof i.code != "string" || !i.code.trim()) throw Error("Invalid addon record.");
-		let e = Ze(i.manifest);
-		if (Ve.some((t) => t.reference.packageId === e.packageId)) throw Error("앱 내장 패키지 ID는 사용할 수 없습니다.");
+		let e = Qe(i.manifest);
+		if (He.some((t) => t.reference.packageId === e.packageId)) throw Error("앱 내장 패키지 ID는 사용할 수 없습니다.");
 		let a = new TextEncoder().encode(i.code);
 		if (n += a.length, a.length > 1048576 || n > 33554432 || JSON.stringify(e).length > 65536) throw Error("Addon size limit exceeded.");
 		let o = {
 			packageId: e.packageId,
 			version: e.version,
-			codeHash: await st(new TextEncoder().encode(JSON.stringify(e) + "\n" + i.code))
+			codeHash: await ct(new TextEncoder().encode(JSON.stringify(e) + "\n" + i.code))
 		};
-		et(i.reference, o);
+		tt(i.reference, o);
 		let s = `${o.packageId}@${o.version}`;
 		if (t.has(s)) throw Error("같은 ID/버전의 중복 애드온입니다. 수정본은 version을 올리세요.");
 		t.add(s), r.push(Object.freeze({
@@ -343,36 +343,36 @@ async function ft(e) {
 	}
 	return Object.freeze(r);
 }
-async function pt(e) {
-	lt = await ft(e);
-	for (let e of ut) e();
-}
 async function mt(e) {
-	let t = await ft(e);
+	ut = await pt(e);
+	for (let e of dt) e();
+}
+async function ht(e) {
+	let t = await pt(e);
 	for (let e of t) {
-		let t = lt.find((t) => t.reference.packageId === e.reference.packageId && t.reference.version === e.reference.version);
+		let t = ut.find((t) => t.reference.packageId === e.reference.packageId && t.reference.version === e.reference.version);
 		if (t && t.reference.codeHash !== e.reference.codeHash) throw Error("Addon version/hash conflict.");
 	}
-	await pt([...lt, ...t.filter((e) => !lt.some((t) => t.reference.codeHash === e.reference.codeHash))]);
+	await mt([...ut, ...t.filter((e) => !ut.some((t) => t.reference.codeHash === e.reference.codeHash))]);
 }
 //#endregion
 //#region src/component-packages/InstalledScriptPackage.ts
-var ht = Object.freeze(Ve.map((e) => {
-	let t = Object.freeze(Ze(e.manifest)), n = Object.freeze({ ...e.reference });
+var gt = Object.freeze(He.map((e) => {
+	let t = Object.freeze(Qe(e.manifest)), n = Object.freeze({ ...e.reference });
 	if (n.packageId !== t.packageId || n.version !== t.version || !/^[a-f0-9]{64}$/.test(n.codeHash)) throw Error("Invalid installed Script identity.");
 	return Object.freeze({
 		manifest: t,
 		reference: n
 	});
 }));
-if (new Set(ht.map((e) => `${e.reference.packageId}@${e.reference.version}`)).size !== ht.length) throw Error("Duplicate installed Script package.");
-function gt(e = tt.packageId, t) {
-	let n = [...ht, ...dt()].find((n) => n.reference.packageId === e && (t === void 0 || n.reference.version === t));
+if (new Set(gt.map((e) => `${e.reference.packageId}@${e.reference.version}`)).size !== gt.length) throw Error("Duplicate installed Script package.");
+function _t(e = nt.packageId, t) {
+	let n = [...gt, ...ft()].find((n) => n.reference.packageId === e && (t === void 0 || n.reference.version === t));
 	if (!n) throw Error("Script package is missing. Restore the matching app/package build.");
 	return n;
 }
-function _t(e) {
-	let t = e.typeVersion === 1 && e.scriptPackage === void 0 ? tt : e.scriptPackage;
+function vt(e) {
+	let t = e.typeVersion === 1 && e.scriptPackage === void 0 ? nt : e.scriptPackage;
 	if (![
 		1,
 		2,
@@ -380,26 +380,26 @@ function _t(e) {
 	].includes(e.typeVersion) || e.typeVersion === 1 && e.scriptPackage !== void 0) throw Error("Unsupported TestScript version.");
 	if (!t || typeof t != "object" || !("packageId" in t) || typeof t.packageId != "string") throw Error("Invalid Script package reference.");
 	if (!("version" in t) || typeof t.version != "string") throw Error("Invalid Script package version.");
-	let n = gt(t.packageId, t.version);
-	if (et(t, n.reference), n.manifest.typeVersion !== (e.typeVersion === 1 ? 2 : e.typeVersion)) throw Error("Script package schema/version mismatch.");
+	let n = _t(t.packageId, t.version);
+	if (tt(t, n.reference), n.manifest.typeVersion !== (e.typeVersion === 1 ? 2 : e.typeVersion)) throw Error("Script package schema/version mismatch.");
 	return n;
 }
-function vt(e) {
-	_t(e);
+function yt(e) {
+	vt(e);
 }
 //#endregion
 //#region src/component-packages/ScriptSettings.ts
-function yt(e) {
+function bt(e) {
 	return Object.fromEntries(e.settings.map((e) => [e.key, e.defaultValue]));
 }
-function bt(e) {
+function xt(e) {
 	return e.typeVersion === 3 ? e.settings : {
 		targetComponentId: e.targetComponentId,
 		ratePerSecond: e.ratePerSecond
 	};
 }
-function xt(e) {
-	let { manifest: t } = _t(e);
+function St(e) {
+	let { manifest: t } = vt(e);
 	if (e.typeVersion === 3 && Object.keys(e).some((e) => ![
 		"id",
 		"ownerActorId",
@@ -409,15 +409,15 @@ function xt(e) {
 		"settings",
 		"recovery"
 	].includes(e))) throw Error("Unknown Script Component field.");
-	$e(t, bt(e));
-	let n = St(e);
+	et(t, xt(e));
+	let n = Ct(e);
 	if (n) {
-		let e = _t(n);
+		let e = vt(n);
 		if (e.reference.packageId !== t.packageId || e.reference.version === t.version) throw Error("Invalid Script recovery version.");
-		$e(e.manifest, n.settings);
+		et(e.manifest, n.settings);
 	}
 }
-function St(e) {
+function Ct(e) {
 	if (e.typeVersion !== 3 || !("recovery" in e)) return;
 	let t = e.recovery;
 	if (!t || typeof t != "object" || Array.isArray(t) || Object.keys(t).sort().join(",") !== "scriptPackage,settings") throw Error("Invalid Script recovery checkpoint.");
@@ -430,16 +430,16 @@ function St(e) {
 		settings: t.settings
 	};
 }
-function Ct(e) {
-	xt(e);
-	let t = bt(e);
-	return _t(e).manifest.settings.flatMap((e) => e.kind === "component-reference" && typeof t[e.key] == "string" ? [{
+function wt(e) {
+	St(e);
+	let t = xt(e);
+	return vt(e).manifest.settings.flatMap((e) => e.kind === "component-reference" && typeof t[e.key] == "string" ? [{
 		field: e,
 		id: t[e.key]
 	}] : []);
 }
-function wt(e) {
-	let t = _t(e).manifest;
+function Tt(e) {
+	let t = vt(e).manifest;
 	return t.settings.map((n) => ({
 		fieldId: n.fieldId,
 		path: e.typeVersion === 3 ? ["settings", n.key] : [n.key],
@@ -454,7 +454,7 @@ function wt(e) {
 		],
 		validate: (e) => {
 			try {
-				if (Qe(n, e), t.sdkVersion === 5 && t.properties.some((e) => e.setting === n.key && e.format === "color") && (typeof e != "string" || !/^#[a-fA-F0-9]{6}$/.test(e))) throw Error("색상은 #RRGGBB로 입력하세요.");
+				if ($e(n, e), t.sdkVersion === 5 && t.properties.some((e) => e.setting === n.key && e.format === "color") && (typeof e != "string" || !/^#[a-fA-F0-9]{6}$/.test(e))) throw Error("색상은 #RRGGBB로 입력하세요.");
 				return { ok: !0 };
 			} catch (e) {
 				return {
@@ -467,7 +467,7 @@ function wt(e) {
 }
 //#endregion
 //#region src/domain/properties/PropertyRegistry.ts
-function Tt(e, t) {
+function Et(e, t) {
 	let n = e;
 	for (let e of t) {
 		if (typeof n != "object" || !n || !(e in n)) return;
@@ -475,7 +475,7 @@ function Tt(e, t) {
 	}
 	return n;
 }
-var Et = class {
+var Dt = class {
 	descriptors = /* @__PURE__ */ new Map();
 	register(e) {
 		let t = this.key(e.typeId, e.typeVersion);
@@ -499,7 +499,7 @@ var Et = class {
 		let i = this.get(e, t), a = [];
 		for (let e of i.fields) {
 			if (!e.editableContexts.includes(r)) continue;
-			let t = e.validate(Tt(n, e.path));
+			let t = e.validate(Et(n, e.path));
 			t.ok || a.push({
 				fieldId: e.fieldId,
 				reason: t.reason ?? "invalid_value"
@@ -510,21 +510,21 @@ var Et = class {
 	key(e, t) {
 		return `${e}@${t}`;
 	}
-}, Dt = [
+}, Ot = [
 	"details",
 	"load",
 	"runtime"
 ];
-function Ot(e, t) {
+function kt(e, t) {
 	return Array.isArray(e) && e.length === t && e.every((e) => typeof e == "number" && Number.isFinite(e));
 }
-function kt(e) {
+function At(e) {
 	return e ? {
 		ok: !1,
 		reason: e
 	} : { ok: !0 };
 }
-var At = {
+var jt = {
 	typeId: "PrimitiveCube",
 	typeVersion: 1,
 	fields: [
@@ -539,8 +539,8 @@ var At = {
 			],
 			units: "meters",
 			referenceKind: null,
-			editableContexts: Dt,
-			validate: (e) => kt(Ot(e, 3) ? null : "position_requires_finite_vec3")
+			editableContexts: Ot,
+			validate: (e) => At(kt(e, 3) ? null : "position_requires_finite_vec3")
 		},
 		{
 			fieldId: "transform.rotation",
@@ -554,11 +554,11 @@ var At = {
 			],
 			units: "unitless",
 			referenceKind: null,
-			editableContexts: Dt,
+			editableContexts: Ot,
 			validate: (e) => {
-				if (!Ot(e, 4)) return kt("rotation_requires_finite_xyzw");
+				if (!kt(e, 4)) return At("rotation_requires_finite_xyzw");
 				let t = Math.hypot(...e);
-				return kt(Math.abs(t - 1) <= 1e-6 ? null : "rotation_requires_unit_quaternion");
+				return At(Math.abs(t - 1) <= 1e-6 ? null : "rotation_requires_unit_quaternion");
 			}
 		},
 		{
@@ -572,8 +572,8 @@ var At = {
 			],
 			units: "unitless",
 			referenceKind: null,
-			editableContexts: Dt,
-			validate: (e) => kt(Ot(e, 3) && e.every((e) => e > 0) ? null : "scale_requires_positive_finite_vec3")
+			editableContexts: Ot,
+			validate: (e) => At(kt(e, 3) && e.every((e) => e > 0) ? null : "scale_requires_positive_finite_vec3")
 		},
 		{
 			fieldId: "appearance.color",
@@ -582,15 +582,15 @@ var At = {
 			defaultValue: 16777215,
 			units: "packed-srgb",
 			referenceKind: null,
-			editableContexts: Dt,
-			validate: (e) => kt(typeof e == "number" && Number.isInteger(e) && e >= 0 && e <= 16777215 ? null : "color_requires_24_bit_integer")
+			editableContexts: Ot,
+			validate: (e) => At(typeof e == "number" && Number.isInteger(e) && e >= 0 && e <= 16777215 ? null : "color_requires_24_bit_integer")
 		}
 	]
-}, k = new Et();
-k.register(At);
+}, O = new Dt();
+O.register(jt);
 //#endregion
 //#region src/domain/ComponentRegistry.ts
-var jt = {
+var Mt = {
 	typeId: "TestData",
 	typeVersion: 1,
 	fields: [{
@@ -611,8 +611,8 @@ var jt = {
 		}
 	}]
 };
-k.has(jt.typeId, jt.typeVersion) || k.register(jt);
-var Mt = {
+O.has(Mt.typeId, Mt.typeVersion) || O.register(Mt);
+var Nt = {
 	typeId: "TestScript",
 	typeVersion: 1,
 	fields: [{
@@ -643,13 +643,13 @@ var Mt = {
 			"load",
 			"runtime"
 		],
-		validate: jt.fields[0].validate
+		validate: Mt.fields[0].validate
 	}]
 };
-k.has(Mt.typeId, 1) || k.register(Mt), k.has(Mt.typeId, 2) || k.register({
-	...Mt,
+O.has(Nt.typeId, 1) || O.register(Nt), O.has(Nt.typeId, 2) || O.register({
+	...Nt,
 	typeVersion: 2,
-	fields: [...Mt.fields, {
+	fields: [...Nt.fields, {
 		fieldId: "script.package",
 		path: ["scriptPackage"],
 		valueType: "json",
@@ -659,7 +659,7 @@ k.has(Mt.typeId, 1) || k.register(Mt), k.has(Mt.typeId, 2) || k.register({
 		editableContexts: ["load", "runtime"],
 		validate: (e) => {
 			try {
-				return vt({
+				return yt({
 					typeVersion: 2,
 					scriptPackage: e
 				}), { ok: !0 };
@@ -671,7 +671,7 @@ k.has(Mt.typeId, 1) || k.register(Mt), k.has(Mt.typeId, 2) || k.register({
 			}
 		}
 	}]
-}), k.has("TestScript", 3) || k.register({
+}), O.has("TestScript", 3) || O.register({
 	typeId: "TestScript",
 	typeVersion: 3,
 	fields: [{
@@ -685,11 +685,11 @@ k.has(Mt.typeId, 1) || k.register(Mt), k.has(Mt.typeId, 2) || k.register({
 		validate: (e) => ({ ok: !!e && typeof e == "object" && !Array.isArray(e) })
 	}]
 });
-function Nt(e) {
+function Pt(e) {
 	return e.type === "TestScript" ? {
 		typeId: e.type,
 		typeVersion: e.typeVersion,
-		fields: [...wt(e), {
+		fields: [...Tt(e), {
 			fieldId: "script.package",
 			path: ["scriptPackage"],
 			valueType: "json",
@@ -699,13 +699,13 @@ function Nt(e) {
 			editableContexts: ["load", "runtime"],
 			validate: () => ({ ok: !0 })
 		}]
-	} : k.get(e.type, e.typeVersion);
+	} : O.get(e.type, e.typeVersion);
 }
-function Pt(e, t) {
+function Ft(e, t) {
 	if (e.type !== "TestScript") return e;
-	let n = { ...bt(e) };
-	for (let { field: r, id: i } of Ct(e)) n[r.key] = t.get(i) ?? i;
-	let r = St(e), i = r ? Pt(r, t) : void 0;
+	let n = { ...xt(e) };
+	for (let { field: r, id: i } of wt(e)) n[r.key] = t.get(i) ?? i;
+	let r = Ct(e), i = r ? Ft(r, t) : void 0;
 	return e.typeVersion === 3 ? {
 		...e,
 		settings: n,
@@ -718,18 +718,18 @@ function Pt(e, t) {
 		...n
 	};
 }
-function Ft(e) {
+function It(e) {
 	for (let t of e.components) {
 		if (t.type !== "TestScript") continue;
-		let n = St(t);
-		for (let { id: r, field: i } of [...Ct(t), ...n ? Ct(n) : []]) if (!e.components.some((e) => e.id === r && i.kind === "component-reference" && e.type === i.componentType)) throw Error(`TestScript ${t.id} requires ${i.kind === "component-reference" ? i.componentType : "Component"} ${r} in the same Actor.`);
+		let n = Ct(t);
+		for (let { id: r, field: i } of [...wt(t), ...n ? wt(n) : []]) if (!e.components.some((e) => e.id === r && i.kind === "component-reference" && e.type === i.componentType)) throw Error(`TestScript ${t.id} requires ${i.kind === "component-reference" ? i.componentType : "Component"} ${r} in the same Actor.`);
 	}
 }
-function It(e, t, n, r = {}) {
+function Lt(e, t, n, r = {}) {
 	if (e !== "TestData" && e !== "TestScript") throw Error(`Unsupported authoring Component ${e}.`);
 	if (!n || !t) throw Error("Component identity and owner are required.");
-	let i = e === "TestScript" ? gt(r.scriptPackage?.packageId, r.scriptPackage?.version) : void 0;
-	i && r.scriptPackage && _t({
+	let i = e === "TestScript" ? _t(r.scriptPackage?.packageId, r.scriptPackage?.version) : void 0;
+	i && r.scriptPackage && vt({
 		typeVersion: i.manifest.typeVersion,
 		scriptPackage: r.scriptPackage
 	});
@@ -746,7 +746,7 @@ function It(e, t, n, r = {}) {
 		typeVersion: 3,
 		scriptPackage: { ...i.reference },
 		settings: {
-			...yt(i.manifest),
+			...bt(i.manifest),
 			...r.scriptSettings
 		}
 	} : {
@@ -757,13 +757,13 @@ function It(e, t, n, r = {}) {
 		scriptPackage: { ...i.reference },
 		targetComponentId: r.targetComponentId ?? "",
 		ratePerSecond: r.ratePerSecond ?? Number(i.manifest.settings.find((e) => e.key === "ratePerSecond").defaultValue)
-	}, o = k.validate(e, a.typeVersion, a, "load");
+	}, o = O.validate(e, a.typeVersion, a, "load");
 	if (o.length) throw Error(`Invalid ${e}: ${o.map((e) => e.reason).join(", ")}.`);
-	return a.type === "TestScript" && xt(a), a;
+	return a.type === "TestScript" && St(a), a;
 }
-var Lt = { create: It }, Rt = Math.PI / 180;
+var Rt = { create: Lt }, zt = Math.PI / 180;
 180 / Math.PI;
-var zt = [
+var Bt = [
 	0,
 	1,
 	0,
@@ -774,10 +774,10 @@ var zt = [
 	0,
 	0
 ];
-function Bt(e, t) {
+function Vt(e, t) {
 	if (!e.every(Number.isFinite)) throw Error(`${t} must contain only finite numbers.`);
 }
-function Vt(e, t) {
+function Ht(e, t) {
 	return [
 		e[0] * t[0] + e[1] * t[3] + e[2] * t[6],
 		e[0] * t[1] + e[1] * t[4] + e[2] * t[7],
@@ -790,7 +790,7 @@ function Vt(e, t) {
 		e[6] * t[2] + e[7] * t[5] + e[8] * t[8]
 	];
 }
-function Ht(e) {
+function Ut(e) {
 	return [
 		e[0],
 		e[3],
@@ -803,66 +803,66 @@ function Ht(e) {
 		e[8]
 	];
 }
-function Ut(e, t) {
+function Wt(e, t) {
 	return [
 		e[0] * t[0] + e[1] * t[1] + e[2] * t[2],
 		e[3] * t[0] + e[4] * t[1] + e[5] * t[2],
 		e[6] * t[0] + e[7] * t[1] + e[8] * t[2]
 	];
 }
-function Wt(e) {
-	return Bt(e, "UE position"), [
+function Gt(e) {
+	return Vt(e, "UE position"), [
 		e[1] / 100,
 		e[2] / 100,
 		-e[0] / 100
 	];
 }
-function Gt(e) {
-	return Bt(e, "Internal position"), [
+function Kt(e) {
+	return Vt(e, "Internal position"), [
 		-e[2] * 100,
 		e[0] * 100,
 		e[1] * 100
 	];
 }
-function Kt(e) {
-	return Bt(e, "UE direction"), Ut(zt, e);
-}
 function qt(e) {
-	return Bt(e, "UE scale"), [
+	return Vt(e, "UE direction"), Wt(Bt, e);
+}
+function Jt(e) {
+	return Vt(e, "UE scale"), [
 		e[1],
 		e[2],
 		e[0]
 	];
 }
-function Jt(e) {
-	let t = Math.cos(e), n = Math.sin(e);
-	return [
-		1,
-		0,
-		0,
-		0,
-		t,
-		-n,
-		0,
-		n,
-		t
-	];
-}
 function Yt(e) {
 	let t = Math.cos(e), n = Math.sin(e);
 	return [
-		t,
-		0,
-		n,
-		0,
 		1,
 		0,
+		0,
+		0,
+		t,
 		-n,
 		0,
+		n,
 		t
 	];
 }
 function Xt(e) {
+	let t = Math.cos(e), n = Math.sin(e);
+	return [
+		t,
+		0,
+		n,
+		0,
+		1,
+		0,
+		-n,
+		0,
+		t
+	];
+}
+function Zt(e) {
 	let t = Math.cos(e), n = Math.sin(e);
 	return [
 		t,
@@ -876,12 +876,12 @@ function Xt(e) {
 		1
 	];
 }
-function Zt(e) {
-	Bt(e, "UE rotator");
-	let [t, n, r] = e.map((e) => e * Rt), i = Vt(Vt(Xt(r), Yt(-n)), Jt(-t)), a = Ht(zt);
-	return Vt(Vt(zt, i), a);
-}
 function Qt(e) {
+	Vt(e, "UE rotator");
+	let [t, n, r] = e.map((e) => e * zt), i = Ht(Ht(Zt(r), Xt(-n)), Yt(-t)), a = Ut(Bt);
+	return Ht(Ht(Bt, i), a);
+}
+function $t(e) {
 	let t = e[0] + e[4] + e[8], n, r, i, a;
 	if (t > 0) {
 		let o = Math.sqrt(t + 1) * 2;
@@ -904,10 +904,10 @@ function Qt(e) {
 		a / o
 	];
 }
-function $t(e) {
-	return Qt(Zt(e));
-}
 function en(e) {
+	return $t(Qt(e));
+}
+function tn(e) {
 	if (!e.every(Number.isFinite)) throw Error("Internal quaternion must contain only finite numbers.");
 	let t = Math.hypot(...e);
 	if (t === 0) throw Error("Internal quaternion must have non-zero length.");
@@ -926,7 +926,7 @@ function en(e) {
 }
 //#endregion
 //#region src/domain/transformMatrix.ts
-var tn = [
+var nn = [
 	1,
 	0,
 	0,
@@ -944,14 +944,14 @@ var tn = [
 	0,
 	1
 ];
-function nn(e) {
+function rn(e) {
 	if (![
 		...e.positionMeters,
 		...e.rotationXyzw,
 		...e.scale
 	].every(Number.isFinite)) throw Error("Transform matrix input must be finite.");
 	if (!e.scale.every((e) => e > 0)) throw Error("Transform matrix scale must be positive.");
-	let t = en(e.rotationXyzw), [n, r, i] = e.scale, [a, o, s] = e.positionMeters;
+	let t = tn(e.rotationXyzw), [n, r, i] = e.scale, [a, o, s] = e.positionMeters;
 	return [
 		t[0] * n,
 		t[1] * r,
@@ -971,12 +971,12 @@ function nn(e) {
 		1
 	];
 }
-function rn(e, t) {
+function an(e, t) {
 	let n = Array(16).fill(0);
 	for (let r = 0; r < 4; r += 1) for (let i = 0; i < 4; i += 1) for (let a = 0; a < 4; a += 1) n[r * 4 + i] += e[r * 4 + a] * t[a * 4 + i];
 	return n;
 }
-function an(e, t = 1e-6) {
+function on(e, t = 1e-6) {
 	if (!e.every(Number.isFinite)) throw Error("Reparent failed: transform is non-finite.");
 	let n = [
 		e[0],
@@ -1014,31 +1014,31 @@ function an(e, t = 1e-6) {
 			e[7],
 			e[11]
 		],
-		rotationXyzw: Qt(o),
+		rotationXyzw: $t(o),
 		scale: a
-	}, c = nn(s), l = Math.max(...e.map(Math.abs), 1), u = Math.max(...e.map((e, t) => Math.abs(e - c[t]))) / l;
+	}, c = rn(s), l = Math.max(...e.map(Math.abs), 1), u = Math.max(...e.map((e, t) => Math.abs(e - c[t]))) / l;
 	if (!Number.isFinite(u) || u > t) throw Error(`Reparent failed: result contains unsupported shear (residual ${u.toExponential(3)}).`);
 	return s;
 }
 //#endregion
 //#region src/domain/sceneHierarchy.ts
-function on(e, t) {
-	let n = ze(pn(e, t));
+function sn(e, t) {
+	let n = Be(mn(e, t));
 	if (!n) throw Error(`Actor ${t} has no root component.`);
 	return n.attachmentParent;
 }
-function sn(e) {
+function cn(e) {
 	let t = new Set(e.actors.map((e) => e.id));
 	if (t.size !== e.actors.length) throw Error("Duplicate Actor ID.");
 	for (let n of e.actors) {
-		ze(n);
+		Be(n);
 		for (let e of n.components) {
 			if (t.has(e.id)) throw Error(`Duplicate Component ID ${e.id}.`);
 			if (t.add(e.id), e.ownerActorId !== n.id) throw Error(`Component ${e.id} owner mismatch.`);
-			if (D(e) && e.parentComponentId !== null) {
+			if (E(e) && e.parentComponentId !== null) {
 				if (e.id === n.rootComponentId) throw Error("Root Component cannot have an internal parent.");
 				let t = n.components.find((t) => t.id === e.parentComponentId);
-				if (!t || !D(t)) throw Error("Component parent must be a SceneComponent of the same Actor.");
+				if (!t || !E(t)) throw Error("Component parent must be a SceneComponent of the same Actor.");
 			}
 		}
 	}
@@ -1059,62 +1059,62 @@ function sn(e) {
 	}
 	let a = /* @__PURE__ */ new Set();
 	for (let t of e.authoring.actorFolders) {
-		if (pn(e, t.actorId), a.has(t.actorId)) throw Error(`Duplicate folder membership for Actor ${t.actorId}.`);
+		if (mn(e, t.actorId), a.has(t.actorId)) throw Error(`Duplicate folder membership for Actor ${t.actorId}.`);
 		if (a.add(t.actorId), t.folderId !== null && !n.has(t.folderId)) throw Error(`Unknown Outliner folder ${t.folderId}.`);
 	}
-	for (let t of e.actors) un(e, t), Ft(t);
-	for (let t of e.actors) for (let n of t.components.filter(D)) dn(e, {
+	for (let t of e.actors) dn(e, t), It(t);
+	for (let t of e.actors) for (let n of t.components.filter(E)) fn(e, {
 		actorId: t.id,
 		componentId: n.id
 	});
 }
-function cn(e, t) {
-	return dn(e, {
+function ln(e, t) {
+	return fn(e, {
 		actorId: t,
-		componentId: pn(e, t).rootComponentId
+		componentId: mn(e, t).rootComponentId
 	}, /* @__PURE__ */ new Set());
 }
-function ln(e, t) {
-	return an(cn(e, t));
-}
 function un(e, t) {
-	for (let e of t.components.filter(D)) if (e.id !== t.rootComponentId && e.attachmentParent !== null) throw Error(`Only root Component ${t.rootComponentId} may have an external attachment.`);
-	let n = on(e, t.id);
+	return on(ln(e, t));
+}
+function dn(e, t) {
+	for (let e of t.components.filter(E)) if (e.id !== t.rootComponentId && e.attachmentParent !== null) throw Error(`Only root Component ${t.rootComponentId} may have an external attachment.`);
+	let n = sn(e, t.id);
 	if (!n) return;
-	let r = pn(e, n.actorId).components.find((e) => e.id === n.componentId);
-	if (!r || !D(r)) throw Error(`Unknown spatial attachment Component ${n.componentId}.`);
+	let r = mn(e, n.actorId).components.find((e) => e.id === n.componentId);
+	if (!r || !E(r)) throw Error(`Unknown spatial attachment Component ${n.componentId}.`);
 	if (n.kind === "bone" || n.kind === "socket") {
 		if (r.type !== "SkeletalMesh") throw Error(`Skeletal attachment target ${n.componentId} is not a SkeletalMesh.`);
 		if (r.skinBinding.skeletonAsset.assetId !== n.skeletonAssetId || r.sourceBinding.sourceSkeletonAssetId !== n.sourceSkeletonAssetId || r.skinBinding.bindingSignature !== n.bindingSignature) throw Error(`Skeletal attachment identity does not match Component ${n.componentId}.`);
 	}
 }
-function dn(e, t, n = /* @__PURE__ */ new Set()) {
+function fn(e, t, n = /* @__PURE__ */ new Set()) {
 	let r = `${t.actorId}:${t.componentId}`;
 	if (n.has(r)) throw Error("Reparent failed: attachment cycle detected.");
 	let i = new Set(n);
 	i.add(r);
-	let { actor: a, component: o } = fn(e, t), s = tn;
-	return o.id === a.rootComponentId ? o.attachmentParent && (s = dn(e, o.attachmentParent, i)) : o.parentComponentId && (s = dn(e, {
+	let { actor: a, component: o } = pn(e, t), s = nn;
+	return o.id === a.rootComponentId ? o.attachmentParent && (s = fn(e, o.attachmentParent, i)) : o.parentComponentId && (s = fn(e, {
 		actorId: a.id,
 		componentId: o.parentComponentId
-	}, i)), rn(s, nn(o.localTransform));
+	}, i)), an(s, rn(o.localTransform));
 }
-function fn(e, t) {
-	let n = pn(e, t.actorId), r = n.components.find((e) => e.id === t.componentId);
-	if (!r || !D(r)) throw Error(`Unknown spatial attachment Component ${t.componentId}.`);
+function pn(e, t) {
+	let n = mn(e, t.actorId), r = n.components.find((e) => e.id === t.componentId);
+	if (!r || !E(r)) throw Error(`Unknown spatial attachment Component ${t.componentId}.`);
 	return {
 		actor: n,
 		component: r
 	};
 }
-function pn(e, t) {
+function mn(e, t) {
 	let n = e.actors.find((e) => e.id === t);
 	if (!n) throw Error(`Unknown Actor ${t}.`);
 	return n;
 }
 //#endregion
 //#region src/domain/TwinExport.ts
-function mn(e) {
+function hn(e) {
 	let t = [], n = (e, n, r) => {
 		let i = new Set(n.map(String)), a = Object.fromEntries(Object.entries(e).filter(([e]) => !i.has(e)));
 		return Object.keys(a).length && t.push({
@@ -1189,14 +1189,14 @@ function mn(e) {
 		extensions: t
 	};
 }
-function hn(e, t) {
+function gn(e, t) {
 	if (e === t) return !0;
 	if (!e || !t || typeof e != "object" || typeof t != "object" || Array.isArray(e) !== Array.isArray(t)) return !1;
 	let n = Object.entries(e), r = Object.entries(t);
-	return n.length === r.length && n.every(([e, n]) => Object.hasOwn(t, e) && hn(n, t[e]));
+	return n.length === r.length && n.every(([e, n]) => Object.hasOwn(t, e) && gn(n, t[e]));
 }
-function gn(e) {
-	let t = vn();
+function _n(e) {
+	let t = yn();
 	for (let n of e) {
 		for (let [e, r] of [
 			["objects", "objectId"],
@@ -1206,28 +1206,28 @@ function gn(e) {
 			["presentationSlots", "name"]
 		]) {
 			let i = new Map(t[e].map((e) => [e[r], e]));
-			for (let t of n.document[e]) i.has(t[r]) && !hn(i.get(t[r]), t) && A(n.name + ": " + e + " ID 충돌: " + String(t[r]) + ". 기존 파일을 재등록하거나 ID를 구분하세요."), i.set(t[r], t);
+			for (let t of n.document[e]) i.has(t[r]) && !gn(i.get(t[r]), t) && k(n.name + ": " + e + " ID 충돌: " + String(t[r]) + ". 기존 파일을 재등록하거나 ID를 구분하세요."), i.set(t[r], t);
 			Object.assign(t, { [e]: [...i.values()] });
 		}
-		for (let [e, r] of Object.entries(n.document)) Object.hasOwn(vn(), e) || (Object.hasOwn(t, e) && !hn(t[e], r) && A(n.name + ": 확장 필드 충돌: " + e), Object.assign(t, { [e]: r }));
+		for (let [e, r] of Object.entries(n.document)) Object.hasOwn(yn(), e) || (Object.hasOwn(t, e) && !gn(t[e], r) && k(n.name + ": 확장 필드 충돌: " + e), Object.assign(t, { [e]: r }));
 	}
-	return Object.assign(t, { twinDescription: [...new Set(e.map((e) => e.document.twinDescription).filter(Boolean))].join("\n\n") }), wn(t), t;
+	return Object.assign(t, { twinDescription: [...new Set(e.map((e) => e.document.twinDescription).filter(Boolean))].join("\n\n") }), Tn(t), t;
 }
-function _n(e) {
-	Sn(e), yn(e), e.length > 100 && A("등록 JSON은 최대 100개입니다.");
+function vn(e) {
+	Cn(e), bn(e), e.length > 100 && k("등록 JSON은 최대 100개입니다.");
 	let t = /* @__PURE__ */ new Set();
-	for (let n of e) if (j(n), M(n.id, !0), M(n.name, !0), (n.name.length > 160 || [...n.name].some((e) => e.charCodeAt(0) < 32 || e.charCodeAt(0) === 127) || t.has(n.id)) && A("등록 JSON 이름 또는 ID가 올바르지 않습니다."), t.add(n.id), wn(n.document), n.idRemaps !== void 0) {
-		yn(n.idRemaps);
-		for (let e of n.idRemaps) j(e), M(e.from, !0), M(e.to, !0), [
+	for (let n of e) if (A(n), j(n.id, !0), j(n.name, !0), (n.name.length > 160 || [...n.name].some((e) => e.charCodeAt(0) < 32 || e.charCodeAt(0) === 127) || t.has(n.id)) && k("등록 JSON 이름 또는 ID가 올바르지 않습니다."), t.add(n.id), Tn(n.document), n.idRemaps !== void 0) {
+		bn(n.idRemaps);
+		for (let e of n.idRemaps) A(e), j(e.from, !0), j(e.to, !0), [
 			"objects",
 			"semanticGroups",
 			"capabilities",
 			"presentationTemplates",
 			"presentationSlots"
-		].includes(String(e.kind)) || A("원본 ID 매핑 종류가 올바르지 않습니다.");
+		].includes(String(e.kind)) || k("원본 ID 매핑 종류가 올바르지 않습니다.");
 	}
 }
-var vn = () => ({
+var yn = () => ({
 	schemaVersion: "1.0",
 	twinDescription: "",
 	objects: [],
@@ -1236,91 +1236,91 @@ var vn = () => ({
 	presentationTemplates: [],
 	presentationSlots: []
 });
-function A(e) {
+function k(e) {
 	throw Error(`설비 정보: ${e}`);
 }
-function j(e) {
-	(!e || typeof e != "object" || Array.isArray(e)) && A("객체 형식이 필요합니다.");
+function A(e) {
+	(!e || typeof e != "object" || Array.isArray(e)) && k("객체 형식이 필요합니다.");
 }
-function M(e, t = !1) {
-	(typeof e != "string" || e.length > 1e5 || t && !e.trim()) && A("문자열 또는 ID가 올바르지 않습니다.");
-}
-function yn(e) {
-	(!Array.isArray(e) || e.length > 1e4) && A("목록은 최대 10,000개입니다.");
+function j(e, t = !1) {
+	(typeof e != "string" || e.length > 1e5 || t && !e.trim()) && k("문자열 또는 ID가 올바르지 않습니다.");
 }
 function bn(e) {
-	yn(e), e.forEach((e) => M(e, !0)), new Set(e).size !== e.length && A("목록 ID가 중복됩니다.");
+	(!Array.isArray(e) || e.length > 1e4) && k("목록은 최대 10,000개입니다.");
 }
 function xn(e) {
-	j(e), Object.keys(e).length || A("표시 이름이 필요합니다."), Object.values(e).forEach((e) => M(e));
+	bn(e), e.forEach((e) => j(e, !0)), new Set(e).size !== e.length && k("목록 ID가 중복됩니다.");
 }
 function Sn(e) {
+	A(e), Object.keys(e).length || k("표시 이름이 필요합니다."), Object.values(e).forEach((e) => j(e));
+}
+function Cn(e) {
 	let t = 0, n = (e, r) => {
-		if ((++t > 2e5 || r > 24) && A("JSON 구조 한도를 초과했습니다."), !(e === null || typeof e == "string" || typeof e == "boolean" || typeof e == "number" && Number.isFinite(e))) {
+		if ((++t > 2e5 || r > 24) && k("JSON 구조 한도를 초과했습니다."), !(e === null || typeof e == "string" || typeof e == "boolean" || typeof e == "number" && Number.isFinite(e))) {
 			if (Array.isArray(e)) {
 				e.forEach((e) => n(e, r + 1));
 				return;
 			}
-			j(e), Object.getPrototypeOf(e) !== Object.prototype && Object.getPrototypeOf(e) !== null && A("일반 JSON 객체만 사용할 수 있습니다.");
+			A(e), Object.getPrototypeOf(e) !== Object.prototype && Object.getPrototypeOf(e) !== null && k("일반 JSON 객체만 사용할 수 있습니다.");
 			for (let [t, i] of Object.entries(e)) [
 				"__proto__",
 				"prototype",
 				"constructor"
-			].includes(t) && A("허용하지 않는 JSON 키입니다."), n(i, r + 1);
+			].includes(t) && k("허용하지 않는 JSON 키입니다."), n(i, r + 1);
 		}
 	};
-	n(e, 0), new TextEncoder().encode(JSON.stringify(e)).length > 8388608 && A("JSON은 최대 8 MiB입니다.");
-}
-function Cn(e) {
-	j(e), M(e.objectId, !0), xn(e.displayName), M(e.description), j(e.aliases), Object.hasOwn(e, "equipmentType") && (typeof e.equipmentType != "string" || e.equipmentType.length > 1e5) && A("equipmentType은 문자열이어야 합니다."), bn(e.capabilityIds), e.purpose !== void 0 && M(e.purpose), Object.hasOwn(e, "relations") && ((!Array.isArray(e.relations) || e.relations.length > 1e4) && A("relations는 최대 10,000개의 관계를 담은 배열이어야 합니다."), e.relations.forEach((e) => {
-		j(e), M(e.targetObjectId, !0), M(e.kind, !0), M(e.description);
-	}));
+	n(e, 0), new TextEncoder().encode(JSON.stringify(e)).length > 8388608 && k("JSON은 최대 8 MiB입니다.");
 }
 function wn(e) {
-	Sn(e), j(e), e.schemaVersion !== "1.0" && A("지원하는 스키마는 1.0입니다."), M(e.twinDescription), yn(e.objects), e.objects.forEach(Cn), yn(e.semanticGroups), e.semanticGroups.forEach((e) => {
-		j(e), M(e.groupId, !0), xn(e.displayName), M(e.description), j(e.aliases), bn(e.memberObjectIds), bn(e.capabilityIds);
-	}), yn(e.capabilities), e.capabilities.forEach((e) => {
-		j(e), M(e.capabilityId, !0), M(e.description), bn(e.supportedTargetTypes), e.supportedTargetTypes.some((e) => !["object", "semanticGroup"].includes(e)) && A("지원 대상 종류가 올바르지 않습니다."), yn(e.arguments), e.arguments.forEach((e) => {
-			j(e), M(e.name, !0), (![
+	A(e), j(e.objectId, !0), Sn(e.displayName), j(e.description), A(e.aliases), Object.hasOwn(e, "equipmentType") && (typeof e.equipmentType != "string" || e.equipmentType.length > 1e5) && k("equipmentType은 문자열이어야 합니다."), xn(e.capabilityIds), e.purpose !== void 0 && j(e.purpose), Object.hasOwn(e, "relations") && ((!Array.isArray(e.relations) || e.relations.length > 1e4) && k("relations는 최대 10,000개의 관계를 담은 배열이어야 합니다."), e.relations.forEach((e) => {
+		A(e), j(e.targetObjectId, !0), j(e.kind, !0), j(e.description);
+	}));
+}
+function Tn(e) {
+	Cn(e), A(e), e.schemaVersion !== "1.0" && k("지원하는 스키마는 1.0입니다."), j(e.twinDescription), bn(e.objects), e.objects.forEach(wn), bn(e.semanticGroups), e.semanticGroups.forEach((e) => {
+		A(e), j(e.groupId, !0), Sn(e.displayName), j(e.description), A(e.aliases), xn(e.memberObjectIds), xn(e.capabilityIds);
+	}), bn(e.capabilities), e.capabilities.forEach((e) => {
+		A(e), j(e.capabilityId, !0), j(e.description), xn(e.supportedTargetTypes), e.supportedTargetTypes.some((e) => !["object", "semanticGroup"].includes(e)) && k("지원 대상 종류가 올바르지 않습니다."), bn(e.arguments), e.arguments.forEach((e) => {
+			A(e), j(e.name, !0), (![
 				"number",
 				"string",
 				"boolean"
-			].includes(String(e.type)) || typeof e.required != "boolean") && A("동작 인수 형식이 올바르지 않습니다."), e.enumSource !== void 0 && !["presentationTemplates", "presentationSlots"].includes(String(e.enumSource)) && A("인수 목록 참조가 올바르지 않습니다.");
-		}), Tn(e.arguments, "name");
+			].includes(String(e.type)) || typeof e.required != "boolean") && k("동작 인수 형식이 올바르지 않습니다."), e.enumSource !== void 0 && !["presentationTemplates", "presentationSlots"].includes(String(e.enumSource)) && k("인수 목록 참조가 올바르지 않습니다.");
+		}), En(e.arguments, "name");
 	});
-	for (let [t, n] of [["presentationTemplates", "key"], ["presentationSlots", "name"]]) yn(e[t]), e[t].forEach((e) => {
-		j(e), M(e[n], !0), M(e.description);
-	}), Tn(e[t], n);
-	Tn(e.objects, "objectId"), Tn(e.semanticGroups, "groupId"), Tn(e.capabilities, "capabilityId"), En(e);
+	for (let [t, n] of [["presentationTemplates", "key"], ["presentationSlots", "name"]]) bn(e[t]), e[t].forEach((e) => {
+		A(e), j(e[n], !0), j(e.description);
+	}), En(e[t], n);
+	En(e.objects, "objectId"), En(e.semanticGroups, "groupId"), En(e.capabilities, "capabilityId"), Dn(e);
 }
-function Tn(e, t) {
+function En(e, t) {
 	let n = e.map((e) => e[t]);
-	new Set(n).size !== n.length && A(`${t}가 중복됩니다.`);
-}
-function En(e) {
-	let t = new Set(e.objects.map((e) => e.objectId)), n = new Set(e.capabilities.map((e) => e.capabilityId));
-	for (let r of e.objects) {
-		for (let e of r.relations ?? []) t.has(e.targetObjectId) || A(`연결 설비가 없습니다: ${e.targetObjectId}`);
-		for (let e of r.capabilityIds) n.has(e) || A(`동작 정의가 없습니다: ${e}`);
-	}
-	for (let r of e.semanticGroups) {
-		for (let e of r.memberObjectIds) t.has(e) || A(`그룹 설비가 없습니다: ${e}`);
-		for (let e of r.capabilityIds) n.has(e) || A(`그룹 동작 정의가 없습니다: ${e}`);
-	}
+	new Set(n).size !== n.length && k(`${t}가 중복됩니다.`);
 }
 function Dn(e) {
-	Sn(e), j(e), Cn(e.object), bn(e.groupIds);
-	for (let t of ["targetComponentId", "instanceSourceId"]) e[t] !== null && M(e[t], !0);
-	e.instanceSourceId !== null && e.targetComponentId === null && A("인스턴스는 대상 컴포넌트가 필요합니다.");
+	let t = new Set(e.objects.map((e) => e.objectId)), n = new Set(e.capabilities.map((e) => e.capabilityId));
+	for (let r of e.objects) {
+		for (let e of r.relations ?? []) t.has(e.targetObjectId) || k(`연결 설비가 없습니다: ${e.targetObjectId}`);
+		for (let e of r.capabilityIds) n.has(e) || k(`동작 정의가 없습니다: ${e}`);
+	}
+	for (let r of e.semanticGroups) {
+		for (let e of r.memberObjectIds) t.has(e) || k(`그룹 설비가 없습니다: ${e}`);
+		for (let e of r.capabilityIds) n.has(e) || k(`그룹 동작 정의가 없습니다: ${e}`);
+	}
 }
 function On(e) {
-	return e.actors.flatMap((e) => e.components.filter((e) => e.type === "TwinMetadata"));
+	Cn(e), A(e), wn(e.object), xn(e.groupIds);
+	for (let t of ["targetComponentId", "instanceSourceId"]) e[t] !== null && j(e[t], !0);
+	e.instanceSourceId !== null && e.targetComponentId === null && k("인스턴스는 대상 컴포넌트가 필요합니다.");
 }
 function kn(e) {
-	let t = On(e), n = /* @__PURE__ */ new Set();
-	e.authoring.twinCatalogFiles !== void 0 && (_n(e.authoring.twinCatalogFiles), hn(gn(e.authoring.twinCatalogFiles), e.authoring.digitalTwin) || A("등록 파일과 통합 목록이 일치하지 않습니다.")), e.authoring.digitalTwin !== void 0 && wn(e.authoring.digitalTwin);
+	return e.actors.flatMap((e) => e.components.filter((e) => e.type === "TwinMetadata"));
+}
+function An(e) {
+	let t = kn(e), n = /* @__PURE__ */ new Set();
+	e.authoring.twinCatalogFiles !== void 0 && (vn(e.authoring.twinCatalogFiles), gn(_n(e.authoring.twinCatalogFiles), e.authoring.digitalTwin) || k("등록 파일과 통합 목록이 일치하지 않습니다.")), e.authoring.digitalTwin !== void 0 && Tn(e.authoring.digitalTwin);
 	for (let r of t) {
-		Dn(r.metadata);
+		On(r.metadata);
 		for (let [e, t] of [
 			["positionMeters", [
 				0,
@@ -1340,23 +1340,23 @@ function kn(e) {
 			]]
 		]) {
 			let n = r.localTransform?.[e];
-			(!Array.isArray(n) || n.length !== t.length || n.some((e, n) => e !== t[n])) && A("설비 정보 컴포넌트에는 공간 변환을 적용할 수 없습니다.");
+			(!Array.isArray(n) || n.length !== t.length || n.some((e, n) => e !== t[n])) && k("설비 정보 컴포넌트에는 공간 변환을 적용할 수 없습니다.");
 		}
 		let t = e.actors.find((e) => e.id === r.ownerActorId);
-		if ((!t || t.rootComponentId === r.id || r.parentComponentId !== t.rootComponentId || r.attachmentParent !== null) && A("설비 정보는 액터 루트에 소유된 데이터 컴포넌트입니다."), (t.components.some((e) => D(e) && (e.parentComponentId === r.id || e.attachmentParent?.componentId === r.id)) || e.actors.some((e) => e.components.some((e) => D(e) && e.attachmentParent?.componentId === r.id))) && A("설비 정보에 공간 컴포넌트를 부착할 수 없습니다."), n.has(r.metadata.object.objectId) && A(`액터에 연결된 설비 ID가 중복됩니다: ${r.metadata.object.objectId}`), n.add(r.metadata.object.objectId), r.metadata.targetComponentId !== null) {
+		if ((!t || t.rootComponentId === r.id || r.parentComponentId !== t.rootComponentId || r.attachmentParent !== null) && k("설비 정보는 액터 루트에 소유된 데이터 컴포넌트입니다."), (t.components.some((e) => E(e) && (e.parentComponentId === r.id || e.attachmentParent?.componentId === r.id)) || e.actors.some((e) => e.components.some((e) => E(e) && e.attachmentParent?.componentId === r.id))) && k("설비 정보에 공간 컴포넌트를 부착할 수 없습니다."), n.has(r.metadata.object.objectId) && k(`액터에 연결된 설비 ID가 중복됩니다: ${r.metadata.object.objectId}`), n.add(r.metadata.object.objectId), r.metadata.targetComponentId !== null) {
 			let n = t.components.find((e) => e.id === r.metadata.targetComponentId);
-			(!n || !D(n) || n.type === "TwinMetadata") && A("같은 액터의 대상 컴포넌트가 필요합니다.");
+			(!n || !E(n) || n.type === "TwinMetadata") && k("같은 액터의 대상 컴포넌트가 필요합니다.");
 			let i = e.authoring.ueImport?.components.find((e) => e.webId === n.id);
-			r.metadata.instanceSourceId !== null && (n.type !== "StaticMesh" || i?.sourceKind !== "InstancedStaticMesh" || !i.instances.some((e) => e.sourceId === r.metadata.instanceSourceId)) && A("대상 인스턴스의 원본 ID가 없습니다.");
+			r.metadata.instanceSourceId !== null && (n.type !== "StaticMesh" || i?.sourceKind !== "InstancedStaticMesh" || !i.instances.some((e) => e.sourceId === r.metadata.instanceSourceId)) && k("대상 인스턴스의 원본 ID가 없습니다.");
 		}
 	}
-	wn(An(e));
+	Tn(jn(e));
 }
-function An(e) {
-	let t = e.authoring.digitalTwin ?? vn(), n = On(e), r = new Map(t.objects.map((e) => [e.objectId, e]));
+function jn(e) {
+	let t = e.authoring.digitalTwin ?? yn(), n = kn(e), r = new Map(t.objects.map((e) => [e.objectId, e]));
 	n.forEach((e) => r.set(e.metadata.object.objectId, e.metadata.object));
 	let i = new Set(n.map((e) => e.metadata.object.objectId));
-	for (let e of n) for (let n of e.metadata.groupIds) t.semanticGroups.some((e) => e.groupId === n) || A(`그룹 정의가 없습니다: ${n}`);
+	for (let e of n) for (let n of e.metadata.groupIds) t.semanticGroups.some((e) => e.groupId === n) || k(`그룹 정의가 없습니다: ${n}`);
 	return {
 		...t,
 		objects: [...r.values()],
@@ -1366,10 +1366,10 @@ function An(e) {
 		}))
 	};
 }
-function jn(e, t) {
-	kn(e);
-	let { twin: n, extensions: r } = mn(An(e)), i = On(e), a = e.authoring.ueImport;
-	return wn(n), {
+function Mn(e, t) {
+	An(e);
+	let { twin: n, extensions: r } = hn(jn(e)), i = kn(e), a = e.authoring.ueImport;
+	return Tn(n), {
 		twin: n,
 		bindings: {
 			schemaVersion: 1,
@@ -1406,37 +1406,37 @@ function jn(e, t) {
 }
 //#endregion
 //#region src/domain/properties/sceneComponentDescriptors.ts
-var Mn = [
+var Nn = [
 	"details",
 	"load",
 	"runtime"
-], N = (e) => e ? {
+], M = (e) => e ? {
 	ok: !1,
 	reason: e
-} : { ok: !0 }, Nn = (e) => typeof e == "number" && Number.isFinite(e), Pn = (e) => N(Nn(e) && e > 0 ? null : "requires_positive_number"), Fn = (e) => N(Nn(e) && e >= 0 ? null : "requires_nonnegative_number"), In = (e) => N(typeof e == "number" && Number.isInteger(e) && e >= 0 && e <= 16777215 ? null : "requires_color"), Ln = (e) => typeof e == "object" && !!e && e.kind === "asset" && typeof e.assetId == "string" && e.assetId.length > 0 && ["live", "pinned"].includes(String(e.revisionPolicy)), Rn = (e) => N(Array.isArray(e) && e.every((e) => {
+} : { ok: !0 }, Pn = (e) => typeof e == "number" && Number.isFinite(e), Fn = (e) => M(Pn(e) && e > 0 ? null : "requires_positive_number"), In = (e) => M(Pn(e) && e >= 0 ? null : "requires_nonnegative_number"), Ln = (e) => M(typeof e == "number" && Number.isInteger(e) && e >= 0 && e <= 16777215 ? null : "requires_color"), Rn = (e) => typeof e == "object" && !!e && e.kind === "asset" && typeof e.assetId == "string" && e.assetId.length > 0 && ["live", "pinned"].includes(String(e.revisionPolicy)), zn = (e) => M(Array.isArray(e) && e.every((e) => {
 	if (typeof e != "object" || !e) return !1;
 	let t = e;
 	return typeof t.slotId == "string" && t.slotId.length > 0 && t.materialAsset?.kind === "asset" && typeof t.materialAsset.assetId == "string" && Array.isArray(t.tintOverrides) && t.tintOverrides.every((e) => {
 		if (typeof e != "object" || !e) return !1;
 		let t = e;
-		return Number.isInteger(t.layerIndex) && t.layerIndex >= 0 && Array.isArray(t.tintLinear) && t.tintLinear.length === 3 && t.tintLinear.every(Nn) && Nn(t.strength) && t.strength >= 0 && t.strength <= 1;
+		return Number.isInteger(t.layerIndex) && t.layerIndex >= 0 && Array.isArray(t.tintLinear) && t.tintLinear.length === 3 && t.tintLinear.every(Pn) && Pn(t.strength) && t.strength >= 0 && t.strength <= 1;
 	});
-}) ? null : "requires_material_slot_overrides"), zn = (e) => {
-	if (typeof e != "object" || !e) return N("requires_skin_binding");
+}) ? null : "requires_material_slot_overrides"), Bn = (e) => {
+	if (typeof e != "object" || !e) return M("requires_skin_binding");
 	let t = e;
-	return N(Ln(t.skeletonAsset) && typeof t.bindingSignature == "string" && /^[0-9a-f]{64}$/u.test(t.bindingSignature) && Number.isInteger(t.skinIndex) && Number(t.skinIndex) >= 0 ? null : "requires_skin_binding");
-}, Bn = (e) => {
-	if (typeof e != "object" || !e) return N("requires_animation_playback");
+	return M(Rn(t.skeletonAsset) && typeof t.bindingSignature == "string" && /^[0-9a-f]{64}$/u.test(t.bindingSignature) && Number.isInteger(t.skinIndex) && Number(t.skinIndex) >= 0 ? null : "requires_skin_binding");
+}, Vn = (e) => {
+	if (typeof e != "object" || !e) return M("requires_animation_playback");
 	let t = e;
-	return N((t.clipAsset === null || Ln(t.clipAsset)) && Nn(t.rate) && Nn(t.initialTimeSeconds) && t.initialTimeSeconds >= 0 && (t.loop === "once" || t.loop === "repeat") && typeof t.playing == "boolean" && (t.clipAsset === null ? t.rootMotionMode === null : [
+	return M((t.clipAsset === null || Rn(t.clipAsset)) && Pn(t.rate) && Pn(t.initialTimeSeconds) && t.initialTimeSeconds >= 0 && (t.loop === "once" || t.loop === "repeat") && typeof t.playing == "boolean" && (t.clipAsset === null ? t.rootMotionMode === null : [
 		"in_bone",
 		"in_place",
 		"baked_actor_track"
 	].includes(String(t.rootMotionMode))) ? null : "requires_animation_playback");
-}, Vn = (e) => {
-	if (typeof e != "object" || !e) return N("requires_imported_source_binding");
+}, Hn = (e) => {
+	if (typeof e != "object" || !e) return M("requires_imported_source_binding");
 	let t = e;
-	return N([
+	return M([
 		"packageId",
 		"sourceProjectId",
 		"sourceSnapshotId",
@@ -1445,73 +1445,192 @@ var Mn = [
 		"sourceMeshAssetId",
 		"sourceSkeletonAssetId"
 	].every((e) => typeof t[e] == "string" && String(t[e]).length > 0) && (t.sourceAnimationAssetId === null || typeof t.sourceAnimationAssetId == "string" && t.sourceAnimationAssetId.length > 0) ? null : "requires_imported_source_binding");
-}, Hn = k.get("PrimitiveCube", 1).fields.filter((e) => e.fieldId.startsWith("transform.")), P = (e, t, n, r, i, a, o = null) => ({
+}, Un = O.get("PrimitiveCube", 1).fields.filter((e) => e.fieldId.startsWith("transform.")), N = (e, t, n, r, i, a, o = null) => ({
 	fieldId: e,
 	path: t,
 	valueType: n,
 	defaultValue: r,
 	units: i,
 	referenceKind: o,
-	editableContexts: Mn,
+	editableContexts: Nn,
 	validate: a
-}), Un = (e, t) => ({
+}), Wn = (e, t) => ({
 	typeId: e,
 	typeVersion: 1,
-	fields: [...Hn, ...t]
-}), Wn = [
+	fields: [...Un, ...t]
+}), Gn = [
 	{
 		typeId: "TwinMetadata",
 		typeVersion: 1,
-		fields: [P("twin.metadata", ["metadata"], "json", null, "unitless", (e) => {
+		fields: [N("twin.metadata", ["metadata"], "json", null, "unitless", (e) => {
 			try {
-				return Dn(e), { ok: !0 };
+				return On(e), { ok: !0 };
 			} catch (e) {
 				return {
 					ok: !1,
 					reason: e instanceof Error ? e.message : "invalid_twin_metadata"
 				};
 			}
-		}), P("twin.target-component", ["metadata", "targetComponentId"], "reference", null, "unitless", (e) => N(e === null || typeof e == "string" ? null : "requires_component_reference"), "scene-object")]
+		}), N("twin.target-component", ["metadata", "targetComponentId"], "reference", null, "unitless", (e) => M(e === null || typeof e == "string" ? null : "requires_component_reference"), "scene-object")]
 	},
-	Un("SceneNode", []),
-	Un("StaticMesh", [
-		P("mesh.mobility", ["mobility"], "enum", "static", "unitless", (e) => N(e === void 0 || e === "static" || e === "movable" ? null : "requires_web_mesh_mobility")),
-		P("mesh.builtin-shape", ["shape"], "enum", void 0, "unitless", (e) => N(e === void 0 || typeof e == "string" && Re(e) ? null : "requires_builtin_shape")),
-		P("mesh.asset", ["meshAsset"], "reference", null, "unitless", (e) => N(e === null || Ln(e) ? null : "requires_asset_reference"), "asset"),
-		P("appearance.color", ["color"], "integer", 9086152, "packed-srgb", In),
-		P("material.overrides", ["materialOverrides"], "json", [], "unitless", Rn)
+	Wn("SceneNode", []),
+	Wn("StaticMesh", [
+		N("mesh.mobility", ["mobility"], "enum", "static", "unitless", (e) => M(e === void 0 || e === "static" || e === "movable" ? null : "requires_web_mesh_mobility")),
+		N("mesh.builtin-shape", ["shape"], "enum", void 0, "unitless", (e) => M(e === void 0 || typeof e == "string" && ze(e) ? null : "requires_builtin_shape")),
+		N("mesh.asset", ["meshAsset"], "reference", null, "unitless", (e) => M(e === null || Rn(e) ? null : "requires_asset_reference"), "asset"),
+		N("appearance.color", ["color"], "integer", 9086152, "packed-srgb", Ln),
+		N("material.overrides", ["materialOverrides"], "json", [], "unitless", zn)
 	]),
-	Un("SkeletalMesh", [
-		P("mesh.asset", ["meshAsset"], "reference", null, "unitless", (e) => N(Ln(e) ? null : "requires_asset_reference"), "asset"),
-		P("skin.binding", ["skinBinding"], "json", null, "unitless", zn),
-		P("animation.playback", ["playback"], "json", null, "unitless", Bn),
-		P("import.source-binding", ["sourceBinding"], "json", null, "unitless", Vn),
-		P("material.overrides", ["materialOverrides"], "json", [], "unitless", Rn)
+	Wn("SkeletalMesh", [
+		N("mesh.asset", ["meshAsset"], "reference", null, "unitless", (e) => M(Rn(e) ? null : "requires_asset_reference"), "asset"),
+		N("skin.binding", ["skinBinding"], "json", null, "unitless", Bn),
+		N("animation.playback", ["playback"], "json", null, "unitless", Vn),
+		N("import.source-binding", ["sourceBinding"], "json", null, "unitless", Hn),
+		N("material.overrides", ["materialOverrides"], "json", [], "unitless", zn)
 	]),
-	Un("Camera", [P("camera.horizontal-fov", ["horizontalFovDegrees"], "number", 90, "degrees", Pn)]),
-	Un("PlayerStart", []),
+	Wn("Camera", [N("camera.horizontal-fov", ["horizontalFovDegrees"], "number", 90, "degrees", Fn)]),
+	Wn("PlayerStart", []),
 	...[
 		"DirectionalLight",
 		"PointLight",
 		"SpotLight"
-	].map((e) => Un(e, [
-		P("light.color", ["color"], "integer", 16777215, "packed-srgb", In),
-		P("light.intensity", ["intensity"], "number", 1, "unitless", Fn),
-		P("light.range", ["rangeMeters"], "number", 10, "meters", Pn),
-		P("light.inner-cone", ["innerConeDegrees"], "number", 20, "degrees", Fn),
-		P("light.outer-cone", ["outerConeDegrees"], "number", 40, "degrees", Pn),
-		P("light.cast-shadow", ["castShadow"], "boolean", !1, "unitless", (e) => N(typeof e == "boolean" ? null : "requires_boolean"))
+	].map((e) => Wn(e, [
+		N("light.color", ["color"], "integer", 16777215, "packed-srgb", Ln),
+		N("light.intensity", ["intensity"], "number", 1, "unitless", In),
+		N("light.range", ["rangeMeters"], "number", 10, "meters", Fn),
+		N("light.inner-cone", ["innerConeDegrees"], "number", 20, "degrees", In),
+		N("light.outer-cone", ["outerConeDegrees"], "number", 40, "degrees", Fn),
+		N("light.cast-shadow", ["castShadow"], "boolean", !1, "unitless", (e) => M(typeof e == "boolean" ? null : "requires_boolean"))
 	]))
 ];
-for (let e of Wn) k.has(e.typeId, e.typeVersion) || k.register(e);
+for (let e of Gn) O.has(e.typeId, e.typeVersion) || O.register(e);
+//#endregion
+//#region src/domain/Sunlight.ts
+var Kn = {
+	enabled: !0,
+	intensity: 3,
+	temperatureKelvin: 6500,
+	timeOfDay: 14,
+	azimuthDegrees: 135,
+	castShadow: !0,
+	shadowIntensity: 1
+};
+function qn(e) {
+	if (!e || typeof e != "object" || Array.isArray(e) || Object.keys(e).sort().join(",") !== Object.keys(Kn).sort().join(",")) throw Error("잘못된 태양광 설정입니다.");
+	let t = e;
+	if (typeof t.enabled != "boolean" || typeof t.castShadow != "boolean") throw Error("잘못된 태양광 활성 값입니다.");
+	for (let [e, n, r] of [
+		[
+			t.intensity,
+			0,
+			20
+		],
+		[
+			t.temperatureKelvin,
+			1e3,
+			12e3
+		],
+		[
+			t.timeOfDay,
+			0,
+			24
+		],
+		[
+			t.azimuthDegrees,
+			0,
+			360
+		],
+		[
+			t.shadowIntensity,
+			0,
+			1
+		]
+	]) if (typeof e != "number" || !Number.isFinite(e) || e < n || e > r) throw Error("태양광 수치가 허용 범위를 벗어났습니다.");
+}
+//#endregion
+//#region src/domain/WebEffects.ts
+var Jn = {
+	schemaVersion: 1,
+	toneMapping: "none",
+	exposure: 1,
+	fog: {
+		enabled: !1,
+		color: 6649221,
+		nearMeters: 10,
+		farMeters: 100
+	},
+	particles: {
+		enabled: !1,
+		style: "steam",
+		color: 14477812,
+		count: 128,
+		originMeters: [
+			0,
+			0,
+			0
+		],
+		spreadMeters: .5,
+		speedMetersPerSecond: .5,
+		lifetimeSeconds: 3,
+		sizeMeters: .1,
+		seed: 1
+	}
+};
+function Yn(e) {
+	let t = (e, t) => {
+		if (!e || typeof e != "object" || Array.isArray(e) || Object.keys(e).sort().join(",") !== [...t].sort().join(",")) throw Error("지원하지 않는 웹 효과 형식입니다.");
+		return e;
+	}, n = (e, t, n) => {
+		if (typeof e != "number" || !Number.isFinite(e) || e < t || e > n) throw Error("웹 효과 수치가 허용 범위를 벗어났습니다.");
+	}, r = (e) => {
+		if (n(e, 0, 16777215), !Number.isInteger(e)) throw Error("웹 효과 색상은 정수여야 합니다.");
+	}, i = ["sunlight", "antialias"].filter((t) => !!e && Object.prototype.hasOwnProperty.call(e, t)), a = t(e, [
+		"schemaVersion",
+		"toneMapping",
+		"exposure",
+		"fog",
+		"particles",
+		...i
+	]);
+	if (a.schemaVersion !== 1 || !["none", "aces"].includes(String(a.toneMapping))) throw Error("지원하지 않는 웹 효과 버전/톤 매핑입니다.");
+	if (n(a.exposure, .1, 8), i.includes("sunlight") && qn(a.sunlight), i.includes("antialias") && typeof a.antialias != "boolean") throw Error("잘못된 안티앨리어싱 설정입니다.");
+	let o = t(a.fog, [
+		"enabled",
+		"color",
+		"nearMeters",
+		"farMeters"
+	]);
+	if (typeof o.enabled != "boolean") throw Error("잘못된 안개 활성 값");
+	if (r(o.color), n(o.nearMeters, 0, 1e5), n(o.farMeters, .01, 1e5), Number(o.nearMeters) >= Number(o.farMeters)) throw Error("안개 끝 거리는 시작 거리보다 커야 합니다.");
+	let s = t(a.particles, [
+		"enabled",
+		"style",
+		"color",
+		"count",
+		"originMeters",
+		"spreadMeters",
+		"speedMetersPerSecond",
+		"lifetimeSeconds",
+		"sizeMeters",
+		"seed"
+	]);
+	if (typeof s.enabled != "boolean" || ![
+		"steam",
+		"sparks",
+		"beacon"
+	].includes(String(s.style))) throw Error("잘못된 파티클 종류");
+	if (r(s.color), n(s.count, 1, 2048), n(s.seed, 0, 4294967295), !Number.isInteger(s.count) || !Number.isInteger(s.seed)) throw Error("파티클 개수와 seed는 정수여야 합니다.");
+	if (!Array.isArray(s.originMeters) || s.originMeters.length !== 3) throw Error("잘못된 파티클 위치");
+	s.originMeters.forEach((e) => n(e, -1e5, 1e5)), n(s.spreadMeters, 0, 100), n(s.speedMetersPerSecond, 0, 100), n(s.lifetimeSeconds, .1, 60), n(s.sizeMeters, .001, 10);
+}
 //#endregion
 //#region src/assets/GlbStaticMeshImporter.ts
-var Gn = 1179937895, Kn = 1313821514, qn = 5130562, Jn = class extends ot {
+var Xn = 1179937895, Zn = 1313821514, Qn = 5130562, $n = class extends st {
 	code;
 	constructor(e, t) {
 		super(t), this.code = e, this.name = "GlbImportError";
 	}
-}, F = {
+}, P = {
 	singleImportBytes: 268435456,
 	meshVertices: 2e6,
 	meshIndices: 12e6,
@@ -1520,71 +1639,71 @@ var Gn = 1179937895, Kn = 1313821514, qn = 5130562, Jn = class extends ot {
 	imageDimension: 8192,
 	singleDecodedImageBytes: 268435456
 };
-function Yn(e, t = F) {
-	e.byteLength > t.singleImportBytes && L("resource-limit", `GLB exceeds the ${t.singleImportBytes} byte decode budget.`), e.byteLength < 20 && L("invalid-container", "GLB header or JSON chunk is incomplete.");
+function er(e, t = P) {
+	e.byteLength > t.singleImportBytes && I("resource-limit", `GLB exceeds the ${t.singleImportBytes} byte decode budget.`), e.byteLength < 20 && I("invalid-container", "GLB header or JSON chunk is incomplete.");
 	let n = new DataView(e.buffer, e.byteOffset, e.byteLength);
-	n.getUint32(0, !0) !== Gn && L("invalid-container", "File signature is not GLB."), n.getUint32(4, !0) !== 2 && L("unsupported-profile", "Only GLB version 2 is supported."), n.getUint32(8, !0) !== e.byteLength && L("invalid-container", "GLB declared length does not match the file size.");
+	n.getUint32(0, !0) !== Xn && I("invalid-container", "File signature is not GLB."), n.getUint32(4, !0) !== 2 && I("unsupported-profile", "Only GLB version 2 is supported."), n.getUint32(8, !0) !== e.byteLength && I("invalid-container", "GLB declared length does not match the file size.");
 	let r = 12, i = 0, a = null, o = null;
 	for (; r < e.byteLength;) {
-		r + 8 > e.byteLength && L("invalid-container", "GLB chunk header is truncated.");
+		r + 8 > e.byteLength && I("invalid-container", "GLB chunk header is truncated.");
 		let t = n.getUint32(r, !0), s = n.getUint32(r + 4, !0);
-		r += 8, (t % 4 != 0 || r + t > e.byteLength) && L("invalid-container", "GLB chunk length is invalid.");
+		r += 8, (t % 4 != 0 || r + t > e.byteLength) && I("invalid-container", "GLB chunk length is invalid.");
 		let c = e.subarray(r, r + t);
-		i === 0 && s !== Kn && L("invalid-container", "The first GLB chunk must contain JSON."), s === Kn ? (a && L("invalid-container", "GLB contains more than one JSON chunk."), a = c) : s === qn && (o && L("invalid-container", "GLB contains more than one binary chunk."), o = c), r += t, i += 1;
+		i === 0 && s !== Zn && I("invalid-container", "The first GLB chunk must contain JSON."), s === Zn ? (a && I("invalid-container", "GLB contains more than one JSON chunk."), a = c) : s === Qn && (o && I("invalid-container", "GLB contains more than one binary chunk."), o = c), r += t, i += 1;
 	}
-	a || L("missing-data", "GLB JSON chunk is missing.");
+	a || I("missing-data", "GLB JSON chunk is missing.");
 	let s;
 	try {
-		let e = JSON.parse(sr(a));
-		or(e) || L("invalid-container", "GLB JSON root must be an object."), s = e;
+		let e = JSON.parse(fr(a));
+		dr(e) || I("invalid-container", "GLB JSON root must be an object."), s = e;
 	} catch {
-		L("invalid-container", "GLB JSON chunk is not valid UTF-8 JSON.");
+		I("invalid-container", "GLB JSON chunk is not valid UTF-8 JSON.");
 	}
-	s.asset?.version !== "2.0" && L("unsupported-profile", "glTF asset.version must be 2.0.");
-	let c = ir(s.extensionsRequired, "extensionsRequired");
-	c.length > 0 && L("unsupported-extension", `Unsupported required extension: ${c.join(", ")}.`), (nr(s.skins).length > 0 || nr(s.animations).length > 0) && L("unsupported-profile", "The initial StaticMesh profile does not support skins or animations.");
-	let l = rr(s.buffers);
-	l.length !== 1 && L("missing-data", "A self-contained GLB must declare exactly one buffer.");
+	s.asset?.version !== "2.0" && I("unsupported-profile", "glTF asset.version must be 2.0.");
+	let c = lr(s.extensionsRequired, "extensionsRequired");
+	c.length > 0 && I("unsupported-extension", `Unsupported required extension: ${c.join(", ")}.`), (sr(s.skins).length > 0 || sr(s.animations).length > 0) && I("unsupported-profile", "The initial StaticMesh profile does not support skins or animations.");
+	let l = cr(s.buffers);
+	l.length !== 1 && I("missing-data", "A self-contained GLB must declare exactly one buffer.");
 	let u = l[0];
-	typeof u.uri == "string" && tr(u.uri, "buffer.uri");
-	let d = I(u.byteLength, "buffer.byteLength");
-	(!o || d > o.byteLength) && L("missing-data", "The embedded binary chunk is missing or shorter than buffer.byteLength.");
-	let f = rr(s.bufferViews);
-	for (let [e, n] of nr(s.images).entries()) {
+	typeof u.uri == "string" && or(u.uri, "buffer.uri");
+	let d = F(u.byteLength, "buffer.byteLength");
+	(!o || d > o.byteLength) && I("missing-data", "The embedded binary chunk is missing or shorter than buffer.byteLength.");
+	let f = cr(s.bufferViews);
+	for (let [e, n] of sr(s.images).entries()) {
 		let r = n;
-		if (or(r) && typeof r.uri == "string" && tr(r.uri, "image.uri"), or(r) && r.bufferView !== void 0) {
-			(!Number.isInteger(r.bufferView) || !f[r.bufferView] || typeof r.mimeType != "string") && L("missing-data", `Image ${e} has an invalid embedded source.`);
-			let n = f[r.bufferView], i = ar(n.byteOffset, `image ${e}.byteOffset`), a = I(n.byteLength, `image ${e}.byteLength`);
-			Xn(o.subarray(i, i + a), r.mimeType, t);
+		if (dr(r) && typeof r.uri == "string" && or(r.uri, "image.uri"), dr(r) && r.bufferView !== void 0) {
+			(!Number.isInteger(r.bufferView) || !f[r.bufferView] || typeof r.mimeType != "string") && I("missing-data", `Image ${e} has an invalid embedded source.`);
+			let n = f[r.bufferView], i = ur(n.byteOffset, `image ${e}.byteOffset`), a = F(n.byteLength, `image ${e}.byteLength`);
+			tr(o.subarray(i, i + a), r.mimeType, t);
 		}
 	}
-	for (let [e, t] of f.entries()) t.buffer !== 0 && L("missing-data", `bufferView ${e} does not reference the embedded buffer.`), ar(t.byteOffset, `bufferView ${e}.byteOffset`) + I(t.byteLength, `bufferView ${e}.byteLength`) > d && L("missing-data", `bufferView ${e} exceeds the embedded buffer.`);
-	let p = rr(s.accessors), m = rr(s.meshes);
-	m.length === 0 && L("missing-data", "GLB does not contain a mesh.");
+	for (let [e, t] of f.entries()) t.buffer !== 0 && I("missing-data", `bufferView ${e} does not reference the embedded buffer.`), ur(t.byteOffset, `bufferView ${e}.byteOffset`) + F(t.byteLength, `bufferView ${e}.byteLength`) > d && I("missing-data", `bufferView ${e} exceeds the embedded buffer.`);
+	let p = cr(s.accessors), m = cr(s.meshes);
+	m.length === 0 && I("missing-data", "GLB does not contain a mesh.");
 	let h = 0, g = 0, _ = 0, v = null, y = [];
 	for (let [e, n] of m.entries()) {
-		let r = rr(n.primitives);
-		r.length === 0 && L("missing-data", `Mesh ${e} has no primitives.`);
+		let r = cr(n.primitives);
+		r.length === 0 && I("missing-data", `Mesh ${e} has no primitives.`);
 		for (let [n, i] of r.entries()) {
-			nr(i.targets).length > 0 && L("unsupported-profile", "Morph targets are outside the initial StaticMesh profile.");
-			let r = (or(i.attributes) ? i.attributes : null)?.POSITION;
-			(!Number.isInteger(r) || r < 0 || r >= p.length) && L("missing-data", `Mesh ${e} primitive ${n} has no valid POSITION accessor.`);
+			sr(i.targets).length > 0 && I("unsupported-profile", "Morph targets are outside the initial StaticMesh profile.");
+			let r = (dr(i.attributes) ? i.attributes : null)?.POSITION;
+			(!Number.isInteger(r) || r < 0 || r >= p.length) && I("missing-data", `Mesh ${e} primitive ${n} has no valid POSITION accessor.`);
 			let a = p[r];
-			if ((!Number.isInteger(a.bufferView) || !f[a.bufferView]) && L("missing-data", `POSITION accessor ${String(r)} has no valid bufferView.`), (a.componentType !== 5126 || a.type !== "VEC3") && L("unsupported-profile", "POSITION must use FLOAT VEC3 in the initial profile."), g += I(a.count, `accessor ${String(r)}.count`), g > t.meshVertices && L("resource-limit", `Mesh exceeds the ${t.meshVertices} vertex budget.`), i.indices !== void 0) {
+			if ((!Number.isInteger(a.bufferView) || !f[a.bufferView]) && I("missing-data", `POSITION accessor ${String(r)} has no valid bufferView.`), (a.componentType !== 5126 || a.type !== "VEC3") && I("unsupported-profile", "POSITION must use FLOAT VEC3 in the initial profile."), g += F(a.count, `accessor ${String(r)}.count`), g > t.meshVertices && I("resource-limit", `Mesh exceeds the ${t.meshVertices} vertex budget.`), i.indices !== void 0) {
 				let r = Number(i.indices);
-				(!Number.isInteger(r) || r < 0 || r >= p.length) && L("missing-data", `Mesh ${e} primitive ${n} has invalid indices.`), _ += I(p[r].count, `accessor ${r}.count`), _ > t.meshIndices && L("resource-limit", `Mesh exceeds the ${t.meshIndices} index budget.`);
+				(!Number.isInteger(r) || r < 0 || r >= p.length) && I("missing-data", `Mesh ${e} primitive ${n} has invalid indices.`), _ += F(p[r].count, `accessor ${r}.count`), _ > t.meshIndices && I("resource-limit", `Mesh exceeds the ${t.meshIndices} index budget.`);
 			}
 			v ??= a;
-			let o = i.material === void 0 ? null : I(i.material, `Mesh ${e} primitive ${n}.material`);
-			o !== null && o >= nr(s.materials).length && L("missing-data", `Mesh ${e} primitive ${n} has an invalid material.`), y.push({
+			let o = i.material === void 0 ? null : F(i.material, `Mesh ${e} primitive ${n}.material`);
+			o !== null && o >= sr(s.materials).length && I("missing-data", `Mesh ${e} primitive ${n} has an invalid material.`), y.push({
 				slotId: `mesh:${e}/primitive:${n}`,
 				sourceMaterialIndex: o
 			}), h += 1;
 		}
 	}
-	let b = nr(s.nodes).length;
-	b > t.modelNodes && L("resource-limit", `GLB exceeds the ${t.modelNodes} node budget.`);
-	let x = er(o, f, v, t.worldBoundsMeters);
+	let b = sr(s.nodes).length;
+	b > t.modelNodes && I("resource-limit", `GLB exceeds the ${t.modelNodes} node budget.`);
+	let x = ar(o, f, v, t.worldBoundsMeters);
 	return {
 		profile: "self-contained-static-mesh-glb-v1",
 		gltfVersion: "2.0",
@@ -1592,20 +1711,20 @@ function Yn(e, t = F) {
 		primitiveCount: h,
 		vertexCount: g,
 		indexCount: _,
-		materialCount: nr(s.materials).length,
+		materialCount: sr(s.materials).length,
 		nodeCount: b,
 		embeddedByteLength: d,
 		materialSlots: y,
 		...x
 	};
 }
-function Xn(e, t, n = F) {
-	let r = t === "image/png" ? Zn(e) : t === "image/jpeg" ? Qn(e) : t === "image/webp" ? $n(e) : null;
-	r || L("unsupported-profile", `Unsupported or invalid embedded image ${t}.`);
+function tr(e, t, n = P) {
+	let r = t === "image/png" ? nr(e) : t === "image/jpeg" ? rr(e) : t === "image/webp" ? ir(e) : null;
+	r || I("unsupported-profile", `Unsupported or invalid embedded image ${t}.`);
 	let { width: i, height: a } = r;
-	return (i <= 0 || a <= 0 || i > n.imageDimension || a > n.imageDimension) && L("resource-limit", `Image ${i}×${a} exceeds the ${n.imageDimension}px dimension budget.`), i * a * 4 > n.singleDecodedImageBytes && L("resource-limit", `Image decoded RGBA size exceeds the ${n.singleDecodedImageBytes} byte budget.`), r;
+	return (i <= 0 || a <= 0 || i > n.imageDimension || a > n.imageDimension) && I("resource-limit", `Image ${i}×${a} exceeds the ${n.imageDimension}px dimension budget.`), i * a * 4 > n.singleDecodedImageBytes && I("resource-limit", `Image decoded RGBA size exceeds the ${n.singleDecodedImageBytes} byte budget.`), r;
 }
-function Zn(e) {
+function nr(e) {
 	if (e.byteLength < 24 || ![
 		137,
 		80,
@@ -1618,7 +1737,7 @@ function Zn(e) {
 		height: t.getUint32(20)
 	};
 }
-function Qn(e) {
+function rr(e) {
 	if (e[0] !== 255 || e[1] !== 216) return null;
 	let t = 2;
 	for (; t + 8 < e.byteLength;) {
@@ -1633,7 +1752,7 @@ function Qn(e) {
 	}
 	return null;
 }
-function $n(e) {
+function ir(e) {
 	if (e.byteLength < 30 || new TextDecoder().decode(e.subarray(0, 4)) !== "RIFF" || new TextDecoder().decode(e.subarray(8, 12)) !== "WEBP") return null;
 	let t = new TextDecoder().decode(e.subarray(12, 16));
 	if (t === "VP8 " && e[23] === 157 && e[24] === 1 && e[25] === 42) {
@@ -1651,9 +1770,9 @@ function $n(e) {
 		height: 1 + e[27] + (e[28] << 8) + (e[29] << 16)
 	} : null;
 }
-function er(e, t, n, r) {
-	let i = t[n.bufferView], a = ar(i.byteOffset, "thumbnail bufferView.byteOffset"), o = ar(n.byteOffset, "thumbnail accessor.byteOffset"), s = i.byteStride === void 0 ? 12 : I(i.byteStride, "thumbnail bufferView.byteStride"), c = I(n.count, "thumbnail accessor.count");
-	(s < 12 || a + o + Math.max(0, c - 1) * s + 12 > e.byteLength) && L("missing-data", "POSITION bytes exceed the embedded buffer.");
+function ar(e, t, n, r) {
+	let i = t[n.bufferView], a = ur(i.byteOffset, "thumbnail bufferView.byteOffset"), o = ur(n.byteOffset, "thumbnail accessor.byteOffset"), s = i.byteStride === void 0 ? 12 : F(i.byteStride, "thumbnail bufferView.byteStride"), c = F(n.count, "thumbnail accessor.count");
+	(s < 12 || a + o + Math.max(0, c - 1) * s + 12 > e.byteLength) && I("missing-data", "POSITION bytes exceed the embedded buffer.");
 	let l = new DataView(e.buffer, e.byteOffset, e.byteLength), u = [], d = Math.max(1, Math.ceil(c / 256)), f = Infinity, p = Infinity, m = Infinity, h = -Infinity, g = -Infinity, _ = -Infinity;
 	for (let e = 0; e < c; e += 1) {
 		let t = a + o + e * s, n = l.getFloat32(t, !0), i = l.getFloat32(t + 4, !0), c = l.getFloat32(t + 8, !0);
@@ -1661,7 +1780,7 @@ function er(e, t, n, r) {
 			n,
 			i,
 			c
-		].every(Number.isFinite) || L("invalid-container", "POSITION contains a non-finite value."), Math.max(Math.abs(n), Math.abs(i), Math.abs(c)) > r && L("precision-range", `POSITION exceeds the validated ±${r}m world profile.`), f = Math.min(f, n), h = Math.max(h, n), p = Math.min(p, i), g = Math.max(g, i), m = Math.min(m, c), _ = Math.max(_, c), e % d === 0 && u.length < 256 && u.push([n, i]);
+		].every(Number.isFinite) || I("invalid-container", "POSITION contains a non-finite value."), Math.max(Math.abs(n), Math.abs(i), Math.abs(c)) > r && I("precision-range", `POSITION exceeds the validated ±${r}m world profile.`), f = Math.min(f, n), h = Math.max(h, n), p = Math.min(p, i), g = Math.max(g, i), m = Math.min(m, c), _ = Math.max(_, c), e % d === 0 && u.length < 256 && u.push([n, i]);
 	}
 	let v = Math.max(h - f, 1e-6), y = Math.max(g - p, 1e-6), b = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 48"><rect width="64" height="48" fill="#151515"/><polygon points="${u.map(([e, t]) => {
 		let n = 7 + (e - f) / v * 50, r = 41 - (t - p) / y * 34;
@@ -1681,108 +1800,108 @@ function er(e, t, n, r) {
 		]
 	};
 }
-function tr(e, t) {
+function or(e, t) {
 	let n = e.replaceAll("\\", "/"), r = /^[a-z][a-z0-9+.-]*:/iu.test(n) || n.startsWith("/") || /^[a-z]:\//iu.test(n), i = n.split("/").some((e) => e === "..");
-	(r || i) && L("security-uri", `${t} contains a remote, absolute, or traversal URI.`), L("missing-data", `${t} references external data; the initial GLB profile requires embedded data.`);
-}
-function nr(e) {
-	return Array.isArray(e) ? e : [];
-}
-function rr(e) {
-	return nr(e);
-}
-function ir(e, t) {
-	return e === void 0 ? [] : ((!Array.isArray(e) || e.some((e) => typeof e != "string")) && L("invalid-container", `${t} must be an array of strings.`), e);
-}
-function I(e, t) {
-	return (!Number.isInteger(e) || e < 0) && L("invalid-container", `${t} must be a non-negative integer.`), e;
-}
-function ar(e, t) {
-	return e === void 0 ? 0 : I(e, t);
-}
-function or(e) {
-	return typeof e == "object" && !!e && !Array.isArray(e);
+	(r || i) && I("security-uri", `${t} contains a remote, absolute, or traversal URI.`), I("missing-data", `${t} references external data; the initial GLB profile requires embedded data.`);
 }
 function sr(e) {
+	return Array.isArray(e) ? e : [];
+}
+function cr(e) {
+	return sr(e);
+}
+function lr(e, t) {
+	return e === void 0 ? [] : ((!Array.isArray(e) || e.some((e) => typeof e != "string")) && I("invalid-container", `${t} must be an array of strings.`), e);
+}
+function F(e, t) {
+	return (!Number.isInteger(e) || e < 0) && I("invalid-container", `${t} must be a non-negative integer.`), e;
+}
+function ur(e, t) {
+	return e === void 0 ? 0 : F(e, t);
+}
+function dr(e) {
+	return typeof e == "object" && !!e && !Array.isArray(e);
+}
+function fr(e) {
 	let t = e.byteLength;
 	for (; t > 0 && (e[t - 1] === 0 || e[t - 1] === 32);) --t;
 	return new TextDecoder("utf-8", { fatal: !0 }).decode(e.subarray(0, t));
 }
-function L(e, t) {
-	throw new Jn(e, t);
+function I(e, t) {
+	throw new $n(e, t);
 }
 //#endregion
 //#region src/assets/BakedMaterialBinding.ts
-function cr(e, t) {
+function pr(e, t) {
 	if (!e || typeof e != "object" || Array.isArray(e) || Object.keys(e).sort().join(",") !== [...t].sort().join(",")) throw Error("Invalid bake binding fields.");
 	return e;
 }
-function R(e) {
+function L(e) {
 	if (typeof e != "string" || !e.trim() || e.length > 4096 || [...e].some((e) => e.charCodeAt(0) < 32)) throw Error("Invalid bake binding identity.");
 	return e;
 }
-function lr(e) {
+function mr(e) {
 	if (typeof e != "string" || !/^[a-f0-9]{64}$/.test(e)) throw Error("Invalid bake binding hash.");
 	return e;
 }
-function ur(e) {
-	let t = cr(e, [
+function hr(e) {
+	let t = pr(e, [
 		"version",
 		"source",
 		"inputs",
 		"target"
 	]);
 	if (t.version !== 1) throw Error("Unsupported bake binding version.");
-	let n = cr(t.source, [
+	let n = pr(t.source, [
 		"projectId",
 		"meshId",
 		"materialId",
 		"slotId",
 		"placementId"
-	]), r = cr(t.inputs, [
+	]), r = pr(t.inputs, [
 		"sourceMeshHash",
 		"effectiveMaterialHash",
 		"recipeHash",
 		"bakedPayloadHash"
-	]), i = cr(t.target, [
+	]), i = pr(t.target, [
 		"meshAssetId",
 		"meshRevisionId",
 		"meshPayloadHash",
 		"slotId",
 		"placement"
-	]), a = i.placement === null ? null : cr(i.placement, ["componentId"]);
+	]), a = i.placement === null ? null : pr(i.placement, ["componentId"]);
 	if (n.placementId === null != (a === null)) throw Error("Bake binding placement scope mismatch.");
 	return {
 		version: 1,
 		source: {
-			projectId: R(n.projectId),
-			meshId: R(n.meshId),
-			materialId: R(n.materialId),
-			slotId: R(n.slotId),
-			placementId: n.placementId === null ? null : R(n.placementId)
+			projectId: L(n.projectId),
+			meshId: L(n.meshId),
+			materialId: L(n.materialId),
+			slotId: L(n.slotId),
+			placementId: n.placementId === null ? null : L(n.placementId)
 		},
 		inputs: {
-			sourceMeshHash: lr(r.sourceMeshHash),
-			effectiveMaterialHash: lr(r.effectiveMaterialHash),
-			recipeHash: lr(r.recipeHash),
-			bakedPayloadHash: lr(r.bakedPayloadHash)
+			sourceMeshHash: mr(r.sourceMeshHash),
+			effectiveMaterialHash: mr(r.effectiveMaterialHash),
+			recipeHash: mr(r.recipeHash),
+			bakedPayloadHash: mr(r.bakedPayloadHash)
 		},
 		target: {
-			meshAssetId: R(i.meshAssetId),
-			meshRevisionId: R(i.meshRevisionId),
-			meshPayloadHash: lr(i.meshPayloadHash),
-			slotId: R(i.slotId),
-			placement: a === null ? null : { componentId: R(a.componentId) }
+			meshAssetId: L(i.meshAssetId),
+			meshRevisionId: L(i.meshRevisionId),
+			meshPayloadHash: mr(i.meshPayloadHash),
+			slotId: L(i.slotId),
+			placement: a === null ? null : { componentId: L(a.componentId) }
 		}
 	};
 }
-function dr(e, t) {
+function gr(e, t) {
 	let n = e.target;
 	if (n.meshAssetId !== t.meshAssetId || n.meshRevisionId !== t.meshRevisionId || n.meshPayloadHash !== t.meshPayloadHash || n.slotId !== t.slotId || n.placement && n.placement.componentId !== t.componentId) throw Error(`Baked material target mismatch at ${t.componentId}/${t.slotId}; rebake/rebind is required.`);
 }
-var fr = "ue-painter-vertex-atlas-v1", pr = "ue-kind-single-atlas-v1", mr = "ue-kind-multi-atlas-v1", hr = "ue-scqo-kind-atlas-v1", gr = "ue-scqo-painter-atlas-v1";
-function _r(e) {
-	if (!z(e) || e.schemaVersion !== 1 || e.kind !== "PbrMaterial") throw Error("Unsupported Material schema.");
+var _r = "ue-painter-vertex-atlas-v1", vr = "ue-kind-single-atlas-v1", yr = "ue-kind-multi-atlas-v1", br = "ue-scqo-kind-atlas-v1", xr = "ue-scqo-painter-atlas-v1";
+function Sr(e) {
+	if (!R(e) || e.schemaVersion !== 1 || e.kind !== "PbrMaterial") throw Error("Unsupported Material schema.");
 	let t = (e, t, n, r = 0, i = 1) => {
 		if (!Array.isArray(e) || e.length !== t || e.some((e) => typeof e != "number" || !Number.isFinite(e) || e < r || e > i)) throw Error(`${n} is invalid.`);
 		return e;
@@ -1791,14 +1910,14 @@ function _r(e) {
 		return e;
 	}, r = e.alphaMode;
 	if (r !== "OPAQUE" && r !== "MASK" && r !== "BLEND") throw Error("alphaMode is invalid.");
-	if (typeof e.doubleSided != "boolean" || !z(e.textures)) throw Error("Material flags or textures are invalid.");
+	if (typeof e.doubleSided != "boolean" || !R(e.textures)) throw Error("Material flags or textures are invalid.");
 	for (let [t, n] of Object.entries(e.textures)) if (![
 		"baseColor-srgb",
 		"emissive-srgb",
 		"normal-linear",
 		"metallicRoughness-linear",
 		"occlusion-linear"
-	].includes(t) || !z(n) || typeof n.assetId != "string") throw Error("Material texture binding is invalid.");
+	].includes(t) || !R(n) || typeof n.assetId != "string") throw Error("Material texture binding is invalid.");
 	return structuredClone({
 		schemaVersion: 1,
 		kind: "PbrMaterial",
@@ -1815,8 +1934,8 @@ function _r(e) {
 		textures: e.textures
 	});
 }
-function vr(e) {
-	if (!z(e) || ![
+function Cr(e) {
+	if (!R(e) || ![
 		2,
 		3,
 		4,
@@ -1824,7 +1943,7 @@ function vr(e) {
 		6,
 		7
 	].includes(e.schemaVersion) || e.kind !== "WebMaskPbrMaterial") throw Error("Unsupported WebMaskPBR Material schema.");
-	if (e = e.schemaVersion === 2 ? Tr(e) : e, !z(e)) throw Error("WebMaskPBR migration failed.");
+	if (e = e.schemaVersion === 2 ? Ar(e) : e, !R(e)) throw Error("WebMaskPBR migration failed.");
 	let t = (e, t, n, r = !0) => {
 		if (!Array.isArray(e) || e.length !== t || e.some((e) => typeof e != "number" || !Number.isFinite(e) || r && (e < 0 || e > 1))) throw Error(`${n} is invalid.`);
 		return e;
@@ -1833,7 +1952,7 @@ function vr(e) {
 		return e;
 	}, r = e.alphaMode;
 	if (r !== "OPAQUE" && r !== "MASK" && r !== "BLEND") throw Error("alphaMode is invalid.");
-	if (typeof e.mappingProfileId != "string" || e.mappingProfileId.length === 0 || typeof e.doubleSided != "boolean" || !z(e.textureViews)) throw Error("WebMaskPBR flags or textureViews are invalid.");
+	if (typeof e.mappingProfileId != "string" || e.mappingProfileId.length === 0 || typeof e.doubleSided != "boolean" || !R(e.textureViews)) throw Error("WebMaskPBR flags or textureViews are invalid.");
 	let i = Object.fromEntries(Object.entries(e.textureViews).map(([e, t]) => {
 		if (![
 			"baseColor",
@@ -1843,7 +1962,7 @@ function vr(e) {
 			"occlusion",
 			"emissive"
 		].includes(e)) throw Error(`Unknown WebMaskPBR texture input ${e}.`);
-		let n = wr(t, `textureViews.${e}`);
+		let n = kr(t, `textureViews.${e}`);
 		if (!{
 			baseColor: ["rgb", "rgba"],
 			normal: ["rgb"],
@@ -1857,8 +1976,8 @@ function vr(e) {
 	}));
 	if (!Array.isArray(e.maskLayers) || e.maskLayers.length > 4) throw Error("WebMaskPBR maskLayers are invalid.");
 	let a = e.maskLayers.map((e, r) => {
-		if (!z(e) || e.operation !== "TintMultiply" && e.operation !== "ReplaceColor" || typeof e.invert != "boolean") throw Error(`maskLayers[${r}] operation is invalid.`);
-		let i = wr(e.mask, `maskLayers[${r}].mask`);
+		if (!R(e) || e.operation !== "TintMultiply" && e.operation !== "ReplaceColor" || typeof e.invert != "boolean") throw Error(`maskLayers[${r}] operation is invalid.`);
+		let i = kr(e.mask, `maskLayers[${r}].mask`);
 		if (![
 			"r",
 			"g",
@@ -1875,7 +1994,7 @@ function vr(e) {
 	});
 	if (e.unlit !== void 0 && typeof e.unlit != "boolean") throw Error("unlit is invalid.");
 	if (e.unlit === !0 && a.length) throw Error("Unlit mask layers are not supported.");
-	let o = e.vertexAtlas === void 0 ? void 0 : yr(e.vertexAtlas), s = e.mappingProfileId === hr, c = e.mappingProfileId === gr, l = e.mappingProfileId === "ue-painter-vertex-atlas-v1" || e.mappingProfileId === "ue-kind-single-atlas-v1" || e.mappingProfileId === "ue-kind-multi-atlas-v1" || s || c;
+	let o = e.vertexAtlas === void 0 ? void 0 : wr(e.vertexAtlas), s = e.mappingProfileId === br, c = e.mappingProfileId === xr, l = e.mappingProfileId === "ue-painter-vertex-atlas-v1" || e.mappingProfileId === "ue-kind-single-atlas-v1" || e.mappingProfileId === "ue-kind-multi-atlas-v1" || s || c;
 	if (o && (!l || e.unlit || a.length || e.mappingProfileId === "ue-kind-single-atlas-v1" != !!o.surfaceGated)) throw Error("Vertex Atlas cannot use an unrelated profile, unlit, or RGBA layers.");
 	if (l && !o) throw Error("Missing vertex Atlas data.");
 	if (o && ((e.mappingProfileId === "ue-kind-multi-atlas-v1" || s) !== !!o.surfaces || s !== (o.version === 3) || c !== (o.version === 4))) throw Error("Multi Kind Atlas surface profile mismatch.");
@@ -1883,7 +2002,7 @@ function vr(e) {
 		...Object.values(i),
 		...a.map((e) => e.mask),
 		...o?.masks ?? []
-	].some((e) => e.texCoord === 2 || e.anisotropy !== void 0 || e.generateMipmaps !== void 0), d = e.bakeBinding === void 0 ? void 0 : ur(e.bakeBinding);
+	].some((e) => e.texCoord === 2 || e.anisotropy !== void 0 || e.generateMipmaps !== void 0), d = e.bakeBinding === void 0 ? void 0 : hr(e.bakeBinding);
 	if (d && (e.mappingProfileId !== "u01-baked-pbr-v1" || o || a.length)) throw Error("Bake binding requires a baked-appearance-only PBR material.");
 	return structuredClone({
 		schemaVersion: e.schemaVersion === 7 || d && r === "BLEND" ? 7 : e.schemaVersion === 6 || e.ior !== void 0 || d && r === "MASK" ? 6 : e.schemaVersion === 5 || d ? 5 : e.schemaVersion === 4 || u ? 4 : 3,
@@ -1907,14 +2026,14 @@ function vr(e) {
 		...d ? { bakeBinding: d } : {}
 	});
 }
-function yr(e) {
+function wr(e) {
 	let t = (e, t, n = 0, r = 1) => {
 		if (typeof e != "number" || !Number.isFinite(e) || e < n || e > r) throw Error(`${t} is invalid.`);
 		return e;
 	};
-	if (!z(e) || e.version !== 1 && e.version !== 2 && e.version !== 3 && e.version !== 4 || !Array.isArray(e.colors) || e.colors.length < 1 || e.colors.length > 32 || !Array.isArray(e.masks) || e.masks.length !== Math.ceil(e.colors.length / 4)) throw Error("Vertex Atlas requires a supported version, 1–32 colors and one RGBA mask per four colors.");
+	if (!R(e) || e.version !== 1 && e.version !== 2 && e.version !== 3 && e.version !== 4 || !Array.isArray(e.colors) || e.colors.length < 1 || e.colors.length > 32 || !Array.isArray(e.masks) || e.masks.length !== Math.ceil(e.colors.length / 4)) throw Error("Vertex Atlas requires a supported version, 1–32 colors and one RGBA mask per four colors.");
 	if (e.version === 2 || e.version === 4 ? e.colorDetailMode !== "color" || e.surfaceGated !== void 0 || e.surfaces !== void 0 : e.colorDetailMode !== void 0) throw Error("Vertex Atlas detail mode does not match its version.");
-	let n = e.masks.map((e, t) => wr(e, `vertexAtlas.masks[${t}]`));
+	let n = e.masks.map((e, t) => kr(e, `vertexAtlas.masks[${t}]`));
 	if (n.some((e) => e.channel !== "rgba" || e.colorSpace !== "linear" || e.texCoord !== 0 || e.flipY)) throw Error("Vertex Atlas requires linear RGBA masks on UV0 without a vertical flip.");
 	let r = e.colors.map((e, n) => {
 		if (!Array.isArray(e) || e.length !== 3) throw Error("Invalid Atlas color");
@@ -1925,7 +2044,7 @@ function yr(e) {
 	if (e.surfaces !== void 0) {
 		if (e.surfaceGated || r.length < 2 && e.version !== 3 || !Array.isArray(e.surfaces) || e.surfaces.length !== r.length) throw Error("Multi Kind Atlas surface count mismatch.");
 		i = e.surfaces.map((e, n) => {
-			if (!z(e)) throw Error("Invalid Kind surface");
+			if (!R(e)) throw Error("Invalid Kind surface");
 			return {
 				roughness: t(e.roughness, `surfaces[${n}].roughness`),
 				metallic: t(e.metallic, `surfaces[${n}].metallic`)
@@ -1935,7 +2054,7 @@ function yr(e) {
 	let a;
 	if (e.version === 3 || e.version === 4) {
 		let n = e.kindIdFallback;
-		if (!z(n) || !Number.isInteger(n.previewKind) || typeof n.useVertexMaterialIds != "boolean" || Object.keys(n).some((e) => ![
+		if (!R(n) || !Number.isInteger(n.previewKind) || typeof n.useVertexMaterialIds != "boolean" || Object.keys(n).some((e) => ![
 			"previewKind",
 			"useVertexMaterialIds",
 			"enabled"
@@ -1959,20 +2078,20 @@ function yr(e) {
 		metallicReduction: t(e.metallicReduction, "vertexAtlas.metallicReduction", -1, 1)
 	};
 }
-function br(e) {
-	return z(e) && [
+function Tr(e) {
+	return R(e) && [
 		2,
 		3,
 		4,
 		5,
 		6,
 		7
-	].includes(e.schemaVersion) && e.kind === "WebMaskPbrMaterial" ? vr(e) : _r(e);
+	].includes(e.schemaVersion) && e.kind === "WebMaskPbrMaterial" ? Cr(e) : Sr(e);
 }
-async function xr(e, t) {
-	return Sr(await rt(e, typeof t == "string" ? t : t.assetId, typeof t != "string" && t.revisionPolicy === "pinned" ? t.revisionId : void 0), t);
+async function Er(e, t) {
+	return Dr(await it(e, typeof t == "string" ? t : t.assetId, typeof t != "string" && t.revisionPolicy === "pinned" ? t.revisionId : void 0), t);
 }
-function Sr(e, t) {
+function Dr(e, t) {
 	let n = typeof t == "string" ? t : t.assetId, r = e.assets.find((e) => e.id === n && e.kind === "Material");
 	if (!r) throw Error(`Unknown Material asset ${n}.`);
 	if (typeof t != "string" && !["live", "pinned"].includes(t.revisionPolicy)) throw Error("Invalid Material revision policy.");
@@ -1980,9 +2099,9 @@ function Sr(e, t) {
 	if (!i) throw Error(`Material ${n} requires a pinned revision ID.`);
 	let a = e.revisions.find((e) => e.id === i && e.assetId === n), o = e.blobs.find((e) => a?.blobKeys.includes(e.key));
 	if (!a || !o) throw Error(`Material ${n} has missing revision data.`);
-	return br(JSON.parse(new TextDecoder("utf-8", { fatal: !0 }).decode(o.bytes)));
+	return Tr(JSON.parse(new TextDecoder("utf-8", { fatal: !0 }).decode(o.bytes)));
 }
-function Cr(e) {
+function Or(e) {
 	let t = e.kind === "WebMaskPbrMaterial" ? [
 		...Object.values(e.textureViews).map((e) => e.texture),
 		...e.maskLayers.map((e) => e.mask.texture),
@@ -1990,11 +2109,11 @@ function Cr(e) {
 	] : Object.values(e.textures).filter((e) => !!e);
 	return [...new Map(t.map((e) => [e.assetId, e])).values()];
 }
-function z(e) {
+function R(e) {
 	return typeof e == "object" && !!e && !Array.isArray(e);
 }
-function wr(e, t) {
-	if (!z(e) || !z(e.texture) || typeof e.texture.assetId != "string") throw Error(`${t}.texture is invalid.`);
+function kr(e, t) {
+	if (!R(e) || !R(e.texture) || typeof e.texture.assetId != "string") throw Error(`${t}.texture is invalid.`);
 	if (e.texCoord !== 0 && e.texCoord !== 1 && e.texCoord !== 2 || !["srgb", "linear"].includes(String(e.colorSpace)) || ![
 		"r",
 		"g",
@@ -2039,8 +2158,8 @@ function wr(e, t) {
 		...e.anisotropy === void 0 ? {} : { anisotropy: e.anisotropy }
 	});
 }
-function Tr(e) {
-	let t = z(e.textures) ? e.textures : {}, n = {
+function Ar(e) {
+	let t = R(e.textures) ? e.textures : {}, n = {
 		"baseColor-srgb": ["baseColor"],
 		"emissive-srgb": ["emissive"],
 		"normal-linear": ["normal"],
@@ -2048,7 +2167,7 @@ function Tr(e) {
 		"occlusion-linear": ["occlusion"]
 	}, r = Object.fromEntries(Object.entries(t).flatMap(([e, t]) => {
 		let r = n[e];
-		return !r || !z(t) ? [] : r.map((n) => {
+		return !r || !R(t) ? [] : r.map((n) => {
 			let r = n === "occlusion" ? "r" : n === "roughness" ? "g" : n === "metallic" ? "b" : n === "baseColor" ? "rgba" : "rgb";
 			return [n, {
 				texture: t,
@@ -2066,7 +2185,7 @@ function Tr(e) {
 			}];
 		});
 	})), i = Array.isArray(e.maskLayers) ? e.maskLayers.map((e) => {
-		if (!z(e)) return e;
+		if (!R(e)) return e;
 		let { maskTexture: t, texCoord: n, uvScale: r, uvOffset: i, colorSpace: a, channel: o, wrapS: s, wrapT: c, minFilter: l, magFilter: u, flipY: d, ...f } = e;
 		return {
 			...f,
@@ -2095,41 +2214,41 @@ function Tr(e) {
 }
 //#endregion
 //#region src/assets/StaticMeshLodAsset.ts
-var Er = "static-mesh-lod-v1", Dr = 1146047556, Or = 32;
-function kr(e) {
-	return e.byteLength >= 4 && new DataView(e.buffer, e.byteOffset, e.byteLength).getUint32(0, !0) === Dr;
+var jr = "static-mesh-lod-v1", Mr = 1146047556, Nr = 32;
+function Pr(e) {
+	return e.byteLength >= 4 && new DataView(e.buffer, e.byteOffset, e.byteLength).getUint32(0, !0) === Mr;
 }
-function Ar(e) {
-	Nr(e.distanceMeters, e.hysteresis);
-	let t = Or + e.levels[0].byteLength + e.levels[1].byteLength;
-	if (t > F.singleImportBytes) throw Error("LOD asset exceeds the import byte budget.");
+function Fr(e) {
+	Rr(e.distanceMeters, e.hysteresis);
+	let t = Nr + e.levels[0].byteLength + e.levels[1].byteLength;
+	if (t > P.singleImportBytes) throw Error("LOD asset exceeds the import byte budget.");
 	let n = new Uint8Array(t), r = new DataView(n.buffer);
-	return r.setUint32(0, Dr, !0), r.setUint32(4, 1, !0), r.setFloat64(8, e.distanceMeters, !0), r.setFloat64(16, e.hysteresis, !0), r.setUint32(24, e.levels[0].byteLength, !0), r.setUint32(28, e.levels[1].byteLength, !0), n.set(e.levels[0], Or), n.set(e.levels[1], Or + e.levels[0].byteLength), n;
+	return r.setUint32(0, Mr, !0), r.setUint32(4, 1, !0), r.setFloat64(8, e.distanceMeters, !0), r.setFloat64(16, e.hysteresis, !0), r.setUint32(24, e.levels[0].byteLength, !0), r.setUint32(28, e.levels[1].byteLength, !0), n.set(e.levels[0], Nr), n.set(e.levels[1], Nr + e.levels[0].byteLength), n;
 }
-function jr(e) {
-	if (e.byteLength < Or || e.byteLength > F.singleImportBytes) throw Error("Invalid LOD payload size.");
+function Ir(e) {
+	if (e.byteLength < Nr || e.byteLength > P.singleImportBytes) throw Error("Invalid LOD payload size.");
 	let t = new DataView(e.buffer, e.byteOffset, e.byteLength);
-	if (t.getUint32(0, !0) !== Dr || t.getUint32(4, !0) !== 1) throw Error("Unsupported LOD payload version.");
+	if (t.getUint32(0, !0) !== Mr || t.getUint32(4, !0) !== 1) throw Error("Unsupported LOD payload version.");
 	let n = t.getFloat64(8, !0), r = t.getFloat64(16, !0);
-	Nr(n, r);
+	Rr(n, r);
 	let i = t.getUint32(24, !0), a = t.getUint32(28, !0);
-	if (!i || !a || Or + i + a !== e.byteLength) throw Error("LOD payload lengths do not match.");
+	if (!i || !a || Nr + i + a !== e.byteLength) throw Error("LOD payload lengths do not match.");
 	return {
 		distanceMeters: n,
 		hysteresis: r,
-		levels: [e.slice(Or, Or + i), e.slice(Or + i)]
+		levels: [e.slice(Nr, Nr + i), e.slice(Nr + i)]
 	};
 }
-function Mr(e) {
-	let t = jr(e), n = t.levels.map((e) => Yn(e)), r = n[0], i = n[1];
+function Lr(e) {
+	let t = Ir(e), n = t.levels.map((e) => er(e)), r = n[0], i = n[1];
 	if (JSON.stringify(r.materialSlots.map(({ slotId: e }) => e)) !== JSON.stringify(i.materialSlots.map(({ slotId: e }) => e))) throw Error("LOD levels must have matching mesh/primitive material slot IDs.");
 	let a = r.vertexCount + i.vertexCount, o = r.indexCount + i.indexCount;
-	if (a > F.meshVertices || o > F.meshIndices || r.nodeCount + i.nodeCount > F.modelNodes) throw Error(`Combined LOD geometry exceeds the decode budget. LOD 합계: 정점 ${a}/${F.meshVertices}, 인덱스 ${o}/${F.meshIndices}, 노드 ${r.nodeCount + i.nodeCount}/${F.modelNodes}. Unreal 가져오기에서 '2단계 LOD 준비'를 끄고 다시 시도하세요.`);
+	if (a > P.meshVertices || o > P.meshIndices || r.nodeCount + i.nodeCount > P.modelNodes) throw Error(`Combined LOD geometry exceeds the decode budget. LOD 합계: 정점 ${a}/${P.meshVertices}, 인덱스 ${o}/${P.meshIndices}, 노드 ${r.nodeCount + i.nodeCount}/${P.modelNodes}. Unreal 가져오기에서 '2단계 LOD 준비'를 끄고 다시 시도하세요.`);
 	return {
 		payload: t,
 		metadata: {
 			...r,
-			profile: Er,
+			profile: jr,
 			schemaVersion: 1,
 			boundsMin: r.boundsMin.map((e, t) => Math.min(e, i.boundsMin[t])),
 			boundsMax: r.boundsMax.map((e, t) => Math.max(e, i.boundsMax[t])),
@@ -2144,13 +2263,13 @@ function Mr(e) {
 		}
 	};
 }
-function Nr(e, t) {
+function Rr(e, t) {
 	if (!Number.isFinite(e) || e <= 0 || e > 2e3) throw Error("LOD distance must be greater than 0 and at most 2000 meters.");
 	if (!Number.isFinite(t) || t < 0 || t >= .5) throw Error("LOD hysteresis must be in [0, 0.5).");
 }
 //#endregion
 //#region src/ue-import/OptimizeStaticTextures.ts
-var Pr = {
+var zr = {
 	maxSize: 0,
 	maps: [
 		"baseColor",
@@ -2160,8 +2279,8 @@ var Pr = {
 		"emissive",
 		"specular"
 	]
-}, Fr = {
-	...Pr,
+}, Br = {
+	...zr,
 	maxSize: 512,
 	mapMaxSizes: {
 		baseColor: 512,
@@ -2172,41 +2291,41 @@ var Pr = {
 		specular: 512
 	},
 	compactBaseColor: !0
-}, Ir = [
+}, Vr = [
 	"baseColor",
 	"normal",
 	"metallicRoughness",
 	"occlusion",
 	"emissive",
 	"specular"
-], Lr = /* @__PURE__ */ new Set([
+], Hr = /* @__PURE__ */ new Set([
 	"KHR_materials_specular",
 	"KHR_materials_emissive_strength",
 	"KHR_materials_unlit",
 	"KHR_texture_transform",
 	"KHR_materials_ior"
-]), B = (e) => {
+]), z = (e) => {
 	if (!e || typeof e != "object" || Array.isArray(e)) throw Error("잘못된 GLB 텍스처 구조");
 	return e;
-}, V = (e) => e === void 0 ? [] : Array.isArray(e) ? e : (() => {
+}, B = (e) => e === void 0 ? [] : Array.isArray(e) ? e : (() => {
 	throw Error("잘못된 GLB 배열");
-})(), Rr = (e, t) => {
+})(), Ur = (e, t) => {
 	if (!Number.isSafeInteger(e) || e < 0 || e >= t) throw Error("잘못된 GLB 텍스처 참조");
 	return e;
-}, zr = (e) => e + 3 & -4;
-function Br(e) {
+}, Wr = (e) => e + 3 & -4;
+function Gr(e) {
 	if (!e || typeof e != "object") return;
 	if (Array.isArray(e)) {
-		e.forEach(Br);
+		e.forEach(Gr);
 		return;
 	}
-	let t = B(e);
+	let t = z(e);
 	if (t.extensions) {
-		for (let e of Object.keys(B(t.extensions))) if (!Lr.has(e)) throw Error(`텍스처 최적화에서 지원하지 않는 glTF 확장: ${e}`);
+		for (let e of Object.keys(z(t.extensions))) if (!Hr.has(e)) throw Error(`텍스처 최적화에서 지원하지 않는 glTF 확장: ${e}`);
 	}
-	for (let [e, n] of Object.entries(t)) e !== "extras" && Br(n);
+	for (let [e, n] of Object.entries(t)) e !== "extras" && Gr(n);
 }
-function Vr(e) {
+function Kr(e) {
 	if (!e || typeof e != "object" || ![
 		0,
 		128,
@@ -2214,9 +2333,9 @@ function Vr(e) {
 		512,
 		1024,
 		2048
-	].includes(e.maxSize) || !Array.isArray(e.maps) || new Set(e.maps).size !== e.maps.length || e.maps.some((e) => !Ir.includes(e))) throw Error("지원하지 않는 텍스처 가져오기 옵션");
+	].includes(e.maxSize) || !Array.isArray(e.maps) || new Set(e.maps).size !== e.maps.length || e.maps.some((e) => !Vr.includes(e))) throw Error("지원하지 않는 텍스처 가져오기 옵션");
 	if (e.compactBaseColor !== void 0 && typeof e.compactBaseColor != "boolean") throw Error("지원하지 않는 텍스처 포맷 옵션");
-	if (e.mapMaxSizes !== void 0 && (!e.mapMaxSizes || typeof e.mapMaxSizes != "object" || Array.isArray(e.mapMaxSizes) || Object.entries(e.mapMaxSizes).some(([e, t]) => !Ir.includes(e) || ![
+	if (e.mapMaxSizes !== void 0 && (!e.mapMaxSizes || typeof e.mapMaxSizes != "object" || Array.isArray(e.mapMaxSizes) || Object.entries(e.mapMaxSizes).some(([e, t]) => !Vr.includes(e) || ![
 		128,
 		256,
 		512,
@@ -2224,18 +2343,36 @@ function Vr(e) {
 		2048
 	].includes(t)))) throw Error("지원하지 않는 맵별 크기 옵션");
 }
-function Hr(e, t) {
+function qr(e, t) {
 	return Math.min(e.maxSize || Infinity, e.mapMaxSizes?.[t] || Infinity);
 }
-function Ur(e) {
-	return Vr(e), {
+function Jr(e) {
+	return Kr(e), {
 		...e,
 		maxSize: Math.min(e.maxSize || 512, 512),
 		maps: [...e.maps],
 		...e.mapMaxSizes ? { mapMaxSizes: Object.fromEntries(Object.entries(e.mapMaxSizes).map(([e, t]) => [e, Math.min(t, 512)])) } : {}
 	};
 }
-var Wr = async (e, t, n, r, i, a) => {
+var Yr = class extends Error {
+	constructor(e) {
+		super(`이미지 변환 실패: ${e instanceof Error ? e.message : String(e)}`, { cause: e }), this.name = "TextureConversionError";
+	}
+};
+async function Xr(e, ...t) {
+	let [, , n, r, i, a] = t;
+	a.throwIfAborted();
+	try {
+		let o = await e(...t);
+		if (a.throwIfAborted(), !i && o.mimeType !== "image/png") throw Error("Data texture derivative must be PNG");
+		let s = tr(o.bytes, o.mimeType);
+		if (s.width !== n || s.height !== r) throw Error("Invalid texture derivative dimensions · 텍스처 크기 제한 불일치");
+		return o;
+	} catch (e) {
+		throw a.throwIfAborted(), e instanceof Error && e.name === "AbortError" ? e : new Yr(e);
+	}
+}
+var Zr = async (e, t, n, r, i, a) => {
 	a.throwIfAborted();
 	let o = await createImageBitmap(new Blob([new Uint8Array(e)], { type: t }), { colorSpaceConversion: "none" });
 	try {
@@ -2272,7 +2409,7 @@ var Wr = async (e, t, n, r, i, a) => {
 		o.close();
 	}
 };
-async function Gr(e, t, n, r, i) {
+async function Qr(e, t, n, r, i) {
 	i.throwIfAborted();
 	let a = await createImageBitmap(new Blob([new Uint8Array(e)], { type: t }));
 	try {
@@ -2286,21 +2423,21 @@ async function Gr(e, t, n, r, i) {
 		a.close();
 	}
 }
-async function Kr(e, t, n, r = Gr, i = Wr) {
-	if (Vr(t), kr(e)) {
-		let { payload: a } = Mr(e), o = await Kr(a.levels[0], t, n, r, i), s = await Kr(a.levels[1], t, n, r, i);
-		return Ar({
+async function $r(e, t, n, r = Qr, i = Zr) {
+	if (Kr(t), Pr(e)) {
+		let { payload: a } = Lr(e), o = await $r(a.levels[0], t, n, r, i), s = await $r(a.levels[1], t, n, r, i);
+		return Fr({
 			...a,
 			levels: [o, s]
 		});
 	}
-	Yn(e), n.throwIfAborted();
-	let a = new DataView(e.buffer, e.byteOffset, e.byteLength), o = a.getUint32(12, !0), s = B(JSON.parse(new TextDecoder("utf-8", { fatal: !0 }).decode(e.subarray(20, 20 + o)))), c = 28 + o;
+	er(e), n.throwIfAborted();
+	let a = new DataView(e.buffer, e.byteOffset, e.byteLength), o = a.getUint32(12, !0), s = z(JSON.parse(new TextDecoder("utf-8", { fatal: !0 }).decode(e.subarray(20, 20 + o)))), c = 28 + o;
 	if (a.getUint32(24 + o, !0) !== 5130562) throw Error("텍스처 최적화에는 표준 JSON/BIN GLB가 필요합니다.");
 	let l = e.subarray(c, c + a.getUint32(20 + o, !0));
-	Br(s);
-	for (let e of V(s.extensionsUsed)) if (!Lr.has(String(e))) throw Error(`텍스처 최적화에서 지원하지 않는 glTF 확장: ${e}`);
-	let u = V(s.bufferViews).map(B), d = V(s.images).map(B), f = V(s.textures).map(B);
+	Gr(s);
+	for (let e of B(s.extensionsUsed)) if (!Hr.has(String(e))) throw Error(`텍스처 최적화에서 지원하지 않는 glTF 확장: ${e}`);
+	let u = B(s.bufferViews).map(z), d = B(s.images).map(z), f = B(s.textures).map(z);
 	if (!d.length) return e;
 	let p = new Set(t.maps), m = /* @__PURE__ */ new Set(), h = /* @__PURE__ */ new Map(), g = (e, t, n) => {
 		if (!(t in e)) return;
@@ -2308,28 +2445,28 @@ async function Kr(e, t, n, r = Gr, i = Wr) {
 			delete e[t];
 			return;
 		}
-		let r = Rr(B(e[t]).index, f.length);
+		let r = Ur(z(e[t]).index, f.length);
 		m.add(r);
 		let i = h.get(r) ?? /* @__PURE__ */ new Set();
 		i.add(n), h.set(r, i);
 	};
-	for (let e of V(s.materials)) {
-		let t = B(e), n = t.pbrMetallicRoughness ? B(t.pbrMetallicRoughness) : {};
+	for (let e of B(s.materials)) {
+		let t = z(e), n = t.pbrMetallicRoughness ? z(t.pbrMetallicRoughness) : {};
 		g(n, "baseColorTexture", "baseColor"), g(n, "metallicRoughnessTexture", "metallicRoughness"), g(t, "normalTexture", "normal"), g(t, "occlusionTexture", "occlusion"), g(t, "emissiveTexture", "emissive");
-		let r = t.extensions ? B(t.extensions) : {}, i = r.KHR_materials_specular ? B(r.KHR_materials_specular) : {};
+		let r = t.extensions ? z(t.extensions) : {}, i = r.KHR_materials_specular ? z(r.KHR_materials_specular) : {};
 		g(i, "specularTexture", "specular"), g(i, "specularColorTexture", "specular");
 	}
 	let _ = [...m].sort((e, t) => e - t), v = new Map(_.map((e, t) => [e, t])), y = [...new Set(_.map((e) => {
 		let t = f[e];
 		if (t.extensions) throw Error("확장 텍스처 소스는 최적화할 수 없습니다.");
-		return Rr(t.source, d.length);
+		return Ur(t.source, d.length);
 	}))].sort((e, t) => e - t), b = new Map(y.map((e, t) => [e, t]));
-	if (t.compactBaseColor && t.maps.length === Ir.length && y.every((e) => {
-		let n = d[e], r = u[Rr(n.bufferView, u.length)], i = Xn(l.subarray(Number(r.byteOffset ?? 0), Number(r.byteOffset ?? 0) + Number(r.byteLength)), String(n.mimeType)), a = _.filter((t) => f[t].source === e).flatMap((e) => [...h.get(e)]);
-		return Math.max(i.width, i.height) <= Math.min(...a.map((e) => Hr(t, e)));
+	if (t.compactBaseColor && t.maps.length === Vr.length && y.every((e) => {
+		let n = d[e], r = u[Ur(n.bufferView, u.length)], i = tr(l.subarray(Number(r.byteOffset ?? 0), Number(r.byteOffset ?? 0) + Number(r.byteLength)), String(n.mimeType)), a = _.filter((t) => f[t].source === e).flatMap((e) => [...h.get(e)]);
+		return Math.max(i.width, i.height) <= Math.min(...a.map((e) => qr(t, e)));
 	})) return e;
-	for (let e of V(s.materials)) {
-		let t = B(e), n = t.pbrMetallicRoughness ? B(t.pbrMetallicRoughness) : {}, r = t.extensions ? B(t.extensions) : {}, i = r.KHR_materials_specular ? B(r.KHR_materials_specular) : {};
+	for (let e of B(s.materials)) {
+		let t = z(e), n = t.pbrMetallicRoughness ? z(t.pbrMetallicRoughness) : {}, r = t.extensions ? z(t.extensions) : {}, i = r.KHR_materials_specular ? z(r.KHR_materials_specular) : {};
 		for (let [e, r] of [
 			[n, ["baseColorTexture", "metallicRoughnessTexture"]],
 			[t, [
@@ -2339,7 +2476,7 @@ async function Kr(e, t, n, r = Gr, i = Wr) {
 			]],
 			[i, ["specularTexture", "specularColorTexture"]]
 		]) for (let t of r) if (t in e) {
-			let n = B(e[t]);
+			let n = z(e[t]);
 			n.index = v.get(n.index);
 		}
 	}
@@ -2347,68 +2484,65 @@ async function Kr(e, t, n, r = Gr, i = Wr) {
 		...f[e],
 		source: b.get(f[e].source)
 	})), s.images = y.map((e) => d[e]);
-	let x = new Set(d.map((e) => Rr(e.bufferView, u.length))), ee = /* @__PURE__ */ new Map();
+	let x = new Set(d.map((e) => Ur(e.bufferView, u.length))), S = /* @__PURE__ */ new Map();
 	for (let e of y) {
 		n.throwIfAborted();
-		let a = d[e], o = Rr(a.bufferView, u.length), s = u[o];
+		let a = d[e], o = Ur(a.bufferView, u.length), s = u[o];
 		if (typeof a.mimeType != "string" || "uri" in a) throw Error("외부 또는 잘못된 GLB 이미지");
-		let c = Number(s.byteOffset ?? 0), p = Number(s.byteLength), m = l.subarray(c, c + p), g = Xn(m, a.mimeType), v = [...new Set(_.filter((t) => f[t].source === e).flatMap((e) => [...h.get(e)]))], y = Math.min(...v.map((e) => Hr(t, e))), b = m;
+		let c = Number(s.byteOffset ?? 0), p = Number(s.byteLength), m = l.subarray(c, c + p), g = tr(m, a.mimeType), v = [...new Set(_.filter((t) => f[t].source === e).flatMap((e) => [...h.get(e)]))], y = Math.min(...v.map((e) => qr(t, e))), b = m;
 		if (Math.max(g.width, g.height) > y) {
-			let e = y / Math.max(g.width, g.height), o = Math.max(1, Math.round(g.width * e)), s = Math.max(1, Math.round(g.height * e)), c = t.compactBaseColor ? await i(m, a.mimeType, o, s, v.length === 1 && v[0] === "baseColor", n) : {
-				bytes: await r(m, a.mimeType, o, s, n),
+			let e = y / Math.max(g.width, g.height), o = Math.max(1, Math.round(g.width * e)), s = Math.max(1, Math.round(g.height * e)), c = await Xr(t.compactBaseColor ? i : async (e, t, n, i, a, o) => ({
+				bytes: await r(e, t, n, i, o),
 				mimeType: "image/png"
-			};
-			if (n.throwIfAborted(), b = c.bytes, v.some((e) => e !== "baseColor") && c.mimeType !== "image/png") throw Error("수치 맵에는 PNG 파생본이 필요합니다.");
-			let l = Xn(b, c.mimeType);
-			if (l.width !== o || l.height !== s) throw Error("축소된 텍스처가 크기 제한을 초과했습니다.");
-			a.mimeType = c.mimeType;
+			}), m, a.mimeType, o, s, v.length === 1 && v[0] === "baseColor", n);
+			n.throwIfAborted(), b = c.bytes, a.mimeType = c.mimeType;
 		}
-		let x = ee.get(o);
+		let x = S.get(o);
 		if (x && (x.length !== b.length || x.some((e, t) => e !== b[t]))) throw Error("서로 다른 이미지가 GLB bufferView를 공유합니다.");
-		ee.set(o, b);
+		S.set(o, b);
 	}
-	let S = /* @__PURE__ */ new Set();
-	for (let e of V(s.accessors)) {
-		let t = B(e);
-		if (t.bufferView !== void 0 && S.add(Rr(t.bufferView, u.length)), t.sparse) {
-			let e = B(t.sparse);
-			for (let t of ["indices", "values"]) S.add(Rr(B(e[t]).bufferView, u.length));
+	let ee = /* @__PURE__ */ new Set();
+	for (let e of B(s.accessors)) {
+		let t = z(e);
+		if (t.bufferView !== void 0 && ee.add(Ur(t.bufferView, u.length)), t.sparse) {
+			let e = z(t.sparse);
+			for (let t of ["indices", "values"]) ee.add(Ur(z(e[t]).bufferView, u.length));
 		}
 	}
-	for (let e of ee.keys()) if (S.has(e)) throw Error("이미지와 메쉬가 같은 GLB bufferView를 공유합니다.");
-	let te = u.map((e, t) => t).filter((e) => !x.has(e) || ee.has(e) || S.has(e)), ne = new Map(te.map((e, t) => [e, t])), re = [], ie = 0;
-	s.bufferViews = te.map((e) => {
-		let t = u[e], n = ee.get(e) ?? l.subarray(Number(t.byteOffset ?? 0), Number(t.byteOffset ?? 0) + Number(t.byteLength));
-		ie = zr(ie);
-		let r = ie;
-		return re.push(n), ie += n.length, {
+	for (let e of S.keys()) if (ee.has(e)) throw Error("이미지와 메쉬가 같은 GLB bufferView를 공유합니다.");
+	let C = u.map((e, t) => t).filter((e) => !x.has(e) || S.has(e) || ee.has(e)), te = new Map(C.map((e, t) => [e, t])), ne = [], re = 0;
+	s.bufferViews = C.map((e) => {
+		let t = u[e], n = S.get(e) ?? l.subarray(Number(t.byteOffset ?? 0), Number(t.byteOffset ?? 0) + Number(t.byteLength));
+		re = Wr(re);
+		let r = re;
+		return ne.push(n), re += n.length, {
 			...t,
 			byteOffset: r,
 			byteLength: n.length
 		};
 	});
-	for (let e of V(s.accessors)) {
-		let t = B(e);
-		if (t.bufferView !== void 0 && (t.bufferView = ne.get(t.bufferView)), t.sparse) for (let e of ["indices", "values"]) {
-			let n = B(B(t.sparse)[e]);
-			n.bufferView = ne.get(n.bufferView);
+	for (let e of B(s.accessors)) {
+		let t = z(e);
+		if (t.bufferView !== void 0 && (t.bufferView = te.get(t.bufferView)), t.sparse) for (let e of ["indices", "values"]) {
+			let n = z(z(t.sparse)[e]);
+			n.bufferView = te.get(n.bufferView);
 		}
 	}
-	for (let e of V(s.images)) {
-		let t = B(e);
-		t.bufferView = ne.get(t.bufferView);
+	for (let e of B(s.images)) {
+		let t = z(e);
+		t.bufferView = te.get(t.bufferView);
 	}
-	B(V(s.buffers)[0]).byteLength = ie;
-	let ae = new Uint8Array(zr(ie)), oe = 0;
-	for (let e of re) oe = zr(oe), ae.set(e, oe), oe += e.length;
-	let se = new TextEncoder().encode(JSON.stringify(s)), C = new Uint8Array(zr(se.length));
-	C.fill(32), C.set(se);
-	let w = new Uint8Array(28 + C.length + ae.length), ce = new DataView(w.buffer);
-	return ce.setUint32(0, 1179937895, !0), ce.setUint32(4, 2, !0), ce.setUint32(8, w.length, !0), ce.setUint32(12, C.length, !0), ce.setUint32(16, 1313821514, !0), w.set(C, 20), ce.setUint32(20 + C.length, ae.length, !0), ce.setUint32(24 + C.length, 5130562, !0), w.set(ae, 28 + C.length), n.throwIfAborted(), Yn(w), w;
+	z(B(s.buffers)[0]).byteLength = re;
+	let ie = new Uint8Array(Wr(re)), ae = 0;
+	for (let e of ne) ae = Wr(ae), ie.set(e, ae), ae += e.length;
+	let oe = new TextEncoder().encode(JSON.stringify(s)), w = new Uint8Array(Wr(oe.length));
+	w.fill(32), w.set(oe);
+	let se = new Uint8Array(28 + w.length + ie.length), ce = new DataView(se.buffer);
+	return ce.setUint32(0, 1179937895, !0), ce.setUint32(4, 2, !0), ce.setUint32(8, se.length, !0), ce.setUint32(12, w.length, !0), ce.setUint32(16, 1313821514, !0), se.set(w, 20), ce.setUint32(20 + w.length, ie.length, !0), ce.setUint32(24 + w.length, 5130562, !0), se.set(ie, 28 + w.length), n.throwIfAborted(), er(se), se;
 }
 //#endregion
 //#region src/ue-import/CandidateMaterialDisplay.ts
-var qr = {
+var ei = {
 	baseColor: "baseColor",
 	normal: "normal",
 	metallic: "metallicRoughness",
@@ -2421,24 +2555,24 @@ var qr = {
 	"occlusion-linear": "occlusion",
 	"emissive-srgb": "emissive"
 };
-function Jr(e, t) {
+function ti(e, t) {
 	let n = /* @__PURE__ */ new Map();
 	if (!t) return n;
 	let r = (e, r, i = !1) => {
-		(i || t.maps.includes(r)) && n.set(e, Math.min(n.get(e) ?? Infinity, Hr(t, r)));
+		(i || t.maps.includes(r)) && n.set(e, Math.min(n.get(e) ?? Infinity, qr(t, r)));
 	};
 	for (let t of e.assets.filter((e) => e.kind === "Material")) {
-		let i = br(e.revisions.find((e) => e.id === t.currentRevisionId)?.metadata.material);
+		let i = Tr(e.revisions.find((e) => e.id === t.currentRevisionId)?.metadata.material);
 		if (i.kind === "WebMaskPbrMaterial") {
-			for (let [e, t] of Object.entries(i.textureViews)) r(t.texture.assetId, qr[e], e === "baseColor" && i.alphaMode !== "OPAQUE");
+			for (let [e, t] of Object.entries(i.textureViews)) r(t.texture.assetId, ei[e], e === "baseColor" && i.alphaMode !== "OPAQUE");
 			for (let e of i.maskLayers) r(e.mask.texture.assetId, "baseColor");
 			for (let e of i.vertexAtlas?.masks ?? []) r(e.texture.assetId, "baseColor"), n.has(e.texture.assetId) && n.set(e.texture.assetId, Math.min(512, n.get(e.texture.assetId)));
-		} else for (let [e, t] of Object.entries(i.textures)) r(t.assetId, qr[e], e === "baseColor-srgb" && i.alphaMode !== "OPAQUE");
+		} else for (let [e, t] of Object.entries(i.textures)) r(t.assetId, ei[e], e === "baseColor-srgb" && i.alphaMode !== "OPAQUE");
 	}
 	return n;
 }
-function Yr(e, t, n = !0) {
-	let r = (e) => n && (!t || t.maps.includes(qr[e])), i = e.alphaMode !== "OPAQUE" && !r("baseColor"), a = i ? { displayAlphaOnly: !0 } : {};
+function ni(e, t, n = !0) {
+	let r = (e) => n && (!t || t.maps.includes(ei[e])), i = e.alphaMode !== "OPAQUE" && !r("baseColor"), a = i ? { displayAlphaOnly: !0 } : {};
 	return e.kind === "WebMaskPbrMaterial" ? {
 		...e,
 		...a,
@@ -2454,14 +2588,14 @@ function Yr(e, t, n = !0) {
 		textures: Object.fromEntries(Object.entries(e.textures).filter(([e]) => r(e) || i && e === "baseColor-srgb"))
 	};
 }
-function Xr(e, t = !1) {
+function ri(e, t = !1) {
 	let n = [], r = [], i = /* @__PURE__ */ new Map(), a = (a, o, s = !1) => {
 		let c = i.get(a);
 		if (c === void 0) {
 			let r = e.assets.find((e) => e.id === a && e.kind === "Texture"), o = e.revisions.find((e) => e.id === r?.currentRevisionId && e.assetId === r?.id), s = e.blobs.find((e) => e.key === o?.blobKeys[0]);
 			if (!o || typeof o.metadata.mimeType != "string") throw Error("Missing candidate material texture");
 			let l;
-			if (s) l = Xn(s.bytes, o.metadata.mimeType);
+			if (s) l = tr(s.bytes, o.metadata.mimeType);
 			else if (t) {
 				let { width: e, height: t } = o.metadata;
 				if (typeof e != "number" || typeof t != "number" || !Number.isSafeInteger(e) || !Number.isSafeInteger(t) || e < 1 || t < 1 || e > 8192 || t > 8192 || e * t * 4 > 256 * 1024 ** 2) throw Error("Invalid published texture dimensions");
@@ -2479,19 +2613,19 @@ function Xr(e, t = !1) {
 		});
 	};
 	for (let t of e.assets.filter((e) => e.kind === "Material")) {
-		let n = br(e.revisions.find((e) => e.id === t.currentRevisionId && e.assetId === t.id)?.metadata.material);
+		let n = Tr(e.revisions.find((e) => e.id === t.currentRevisionId && e.assetId === t.id)?.metadata.material);
 		if (n.kind === "WebMaskPbrMaterial") {
-			for (let [e, t] of Object.entries(n.textureViews)) a(t.texture.assetId, qr[e], e === "baseColor" && n.alphaMode !== "OPAQUE");
+			for (let [e, t] of Object.entries(n.textureViews)) a(t.texture.assetId, ei[e], e === "baseColor" && n.alphaMode !== "OPAQUE");
 			for (let e of n.maskLayers) a(e.mask.texture.assetId, "baseColor");
 			for (let e of n.vertexAtlas?.masks ?? []) a(e.texture.assetId, "baseColor");
-		} else for (let [e, t] of Object.entries(n.textures)) a(t.assetId, qr[e], e === "baseColor-srgb" && n.alphaMode !== "OPAQUE");
+		} else for (let [e, t] of Object.entries(n.textures)) a(t.assetId, ei[e], e === "baseColor-srgb" && n.alphaMode !== "OPAQUE");
 	}
 	return {
 		dimensions: n,
 		uses: r
 	};
 }
-var H = {
+var V = {
 	schemaVersion: 1,
 	policyId: "dtwe-capacity-v1",
 	validation: "initial-guardrails-not-device-capacity",
@@ -2530,22 +2664,22 @@ var H = {
 };
 //#endregion
 //#region src/assets/CapacityPolicy.ts
-if (H.schemaVersion !== 1 || H.policyId !== "dtwe-capacity-v1") throw Error("지원하지 않는 에셋 용량 정책");
+if (V.schemaVersion !== 1 || V.policyId !== "dtwe-capacity-v1") throw Error("지원하지 않는 에셋 용량 정책");
 for (let e of [
-	H.import,
-	H.storage,
-	H.backup,
-	H.player
+	V.import,
+	V.storage,
+	V.backup,
+	V.player
 ]) {
 	if (Object.values(e).some((e) => !Number.isSafeInteger(e) || e <= 0)) throw Error("잘못된 에셋 용량 정책");
 	Object.freeze(e);
 }
-if (H.import.initialSourceAssets > H.import.sourceAssets || H.import.sourceAssetStep > H.import.sourceAssets || H.import.payloadRecords < H.import.sourceAssets || H.import.payloadFiles < H.import.payloadRecords * 2 || H.import.transferFiles < H.import.payloadFiles + 2 || H.import.progressUnits < H.import.sourceAssets * 3 || H.backup.entries >= 65535) throw Error("잘못된 자동 가져오기 용량 정책");
-var U = Object.freeze(H), Zr = U.import;
-Zr.payloadBytes + Zr.inventoryBytes + Zr.reportBytes;
+if (V.import.initialSourceAssets > V.import.sourceAssets || V.import.sourceAssetStep > V.import.sourceAssets || V.import.payloadRecords < V.import.sourceAssets || V.import.payloadFiles < V.import.payloadRecords * 2 || V.import.transferFiles < V.import.payloadFiles + 2 || V.import.progressUnits < V.import.sourceAssets * 3 || V.backup.entries >= 65535) throw Error("잘못된 자동 가져오기 용량 정책");
+var H = Object.freeze(V), ii = H.import;
+ii.payloadBytes + ii.inventoryBytes + ii.reportBytes;
 //#endregion
 //#region node_modules/.pnpm/three@0.186.0/node_modules/three/examples/jsm/utils/BufferGeometryUtils.js
-function Qr(e, t) {
+function ai(e, t) {
 	if (t === 0) return console.warn("THREE.BufferGeometryUtils.toTrianglesDrawMode(): Geometry already defined as triangles."), e;
 	if (t === 2 || t === 1) {
 		let n = e.getIndex();
@@ -2565,9 +2699,9 @@ function Qr(e, t) {
 }
 //#endregion
 //#region node_modules/.pnpm/three@0.186.0/node_modules/three/examples/jsm/utils/SkeletonUtils.js
-function $r(e) {
+function oi(e) {
 	let t = /* @__PURE__ */ new Map(), n = /* @__PURE__ */ new Map(), r = e.clone();
-	return ei(e, r, function(e, r) {
+	return si(e, r, function(e, r) {
 		t.set(r, e), n.set(e, r);
 	}), r.traverse(function(e) {
 		if (!e.isSkinnedMesh) return;
@@ -2577,18 +2711,24 @@ function $r(e) {
 		}), r.bind(r.skeleton, r.bindMatrix);
 	}), r;
 }
-function ei(e, t, n) {
+function si(e, t, n) {
 	n(e, t);
-	for (let r = 0; r < e.children.length; r++) ei(e.children[r], t.children[r], n);
+	for (let r = 0; r < e.children.length; r++) si(e.children[r], t.children[r], n);
 }
 //#endregion
 //#region node_modules/.pnpm/three@0.186.0/node_modules/three/examples/jsm/loaders/GLTFLoader.js
-var ti = class extends ge {
+var ci = class extends ge {
 	constructor(e) {
 		super(e), this.dracoLoader = null, this.ktx2Loader = null, this.meshoptDecoder = null, this.pluginCallbacks = [], this.register(function(e) {
-			return new oi(e);
+			return new pi(e);
 		}), this.register(function(e) {
-			return new si(e);
+			return new mi(e);
+		}), this.register(function(e) {
+			return new Ci(e);
+		}), this.register(function(e) {
+			return new wi(e);
+		}), this.register(function(e) {
+			return new Ti(e);
 		}), this.register(function(e) {
 			return new gi(e);
 		}), this.register(function(e) {
@@ -2596,53 +2736,47 @@ var ti = class extends ge {
 		}), this.register(function(e) {
 			return new vi(e);
 		}), this.register(function(e) {
-			return new li(e);
-		}), this.register(function(e) {
-			return new ui(e);
-		}), this.register(function(e) {
-			return new di(e);
+			return new yi(e);
 		}), this.register(function(e) {
 			return new fi(e);
 		}), this.register(function(e) {
-			return new ai(e);
-		}), this.register(function(e) {
-			return new pi(e);
-		}), this.register(function(e) {
-			return new ci(e);
+			return new bi(e);
 		}), this.register(function(e) {
 			return new hi(e);
 		}), this.register(function(e) {
-			return new mi(e);
+			return new Si(e);
 		}), this.register(function(e) {
-			return new ri(e);
+			return new xi(e);
 		}), this.register(function(e) {
-			return new yi(e, G.EXT_MESHOPT_COMPRESSION);
+			return new ui(e);
 		}), this.register(function(e) {
-			return new yi(e, G.KHR_MESHOPT_COMPRESSION);
+			return new Ei(e, W.EXT_MESHOPT_COMPRESSION);
 		}), this.register(function(e) {
-			return new bi(e);
+			return new Ei(e, W.KHR_MESHOPT_COMPRESSION);
+		}), this.register(function(e) {
+			return new Di(e);
 		});
 	}
-	load(e, t, n, i) {
+	load(e, n, r, i) {
 		let a = this, o;
 		if (this.resourcePath !== "") o = this.resourcePath;
 		else if (this.path !== "") {
-			let t = he.extractUrlBase(e);
-			o = he.resolveURL(t, this.path);
-		} else o = he.extractUrlBase(e);
+			let t = oe.extractUrlBase(e);
+			o = oe.resolveURL(t, this.path);
+		} else o = oe.extractUrlBase(e);
 		this.manager.itemStart(e);
 		let s = function(t) {
 			i ? i(t) : console.error(t), a.manager.itemError(e), a.manager.itemEnd(e);
-		}, c = new r(this.manager);
-		c.setPath(this.path), c.setResponseType("arraybuffer"), c.setRequestHeader(this.requestHeader), c.setWithCredentials(this.withCredentials), c.load(e, function(n) {
+		}, c = new t(this.manager);
+		c.setPath(this.path), c.setResponseType("arraybuffer"), c.setRequestHeader(this.requestHeader), c.setWithCredentials(this.withCredentials), c.load(e, function(t) {
 			try {
-				a.parse(n, o, function(n) {
-					t(n), a.manager.itemEnd(e);
+				a.parse(t, o, function(t) {
+					n(t), a.manager.itemEnd(e);
 				}, s);
 			} catch (e) {
 				s(e);
 			}
-		}, n, s);
+		}, r, s);
 	}
 	setDRACOLoader(e) {
 		return this.dracoLoader = e, this;
@@ -2663,21 +2797,21 @@ var ti = class extends ge {
 		let i, a = {}, o = {}, s = new TextDecoder();
 		if (typeof e == "string") i = JSON.parse(e);
 		else if (e instanceof ArrayBuffer) {
-			if (s.decode(new Uint8Array(e, 0, 4)) === xi) {
+			if (s.decode(new Uint8Array(e, 0, 4)) === Oi) {
 				try {
-					a[G.KHR_BINARY_GLTF] = new wi(e);
+					a[W.KHR_BINARY_GLTF] = new ji(e);
 				} catch (e) {
 					r && r(e);
 					return;
 				}
-				i = JSON.parse(a[G.KHR_BINARY_GLTF].content);
+				i = JSON.parse(a[W.KHR_BINARY_GLTF].content);
 			} else i = JSON.parse(s.decode(e));
 		} else i = e;
 		if (i.asset === void 0 || i.asset.version[0] < 2) {
 			r && r(/* @__PURE__ */ Error("THREE.GLTFLoader: Unsupported asset. glTF versions >=2.0 are supported."));
 			return;
 		}
-		let c = new Ji(i, {
+		let c = new ta(i, {
 			path: t || this.resourcePath || "",
 			crossOrigin: this.crossOrigin,
 			requestHeader: this.requestHeader,
@@ -2693,17 +2827,17 @@ var ti = class extends ge {
 		if (i.extensionsUsed) for (let e = 0; e < i.extensionsUsed.length; ++e) {
 			let t = i.extensionsUsed[e], n = i.extensionsRequired || [];
 			switch (t) {
-				case G.KHR_MATERIALS_UNLIT:
-					a[t] = new ii();
+				case W.KHR_MATERIALS_UNLIT:
+					a[t] = new di();
 					break;
-				case G.KHR_DRACO_MESH_COMPRESSION:
-					a[t] = new Ti(i, this.dracoLoader);
+				case W.KHR_DRACO_MESH_COMPRESSION:
+					a[t] = new Mi(i, this.dracoLoader);
 					break;
-				case G.KHR_TEXTURE_TRANSFORM:
-					a[t] = new Ei();
+				case W.KHR_TEXTURE_TRANSFORM:
+					a[t] = new Ni();
 					break;
-				case G.KHR_MESH_QUANTIZATION:
-					a[t] = new Di();
+				case W.KHR_MESH_QUANTIZATION:
+					a[t] = new Pi();
 					break;
 				default: n.indexOf(t) >= 0 && o[t] === void 0 && console.warn("THREE.GLTFLoader: Unknown extension \"" + t + "\".");
 			}
@@ -2717,7 +2851,7 @@ var ti = class extends ge {
 		});
 	}
 };
-function ni() {
+function li() {
 	let e = {};
 	return {
 		get: function(t) {
@@ -2734,11 +2868,11 @@ function ni() {
 		}
 	};
 }
-function W(e, t, n) {
+function U(e, t, n) {
 	let r = e.json.materials[t];
 	return r.extensions && r.extensions[n] ? r.extensions[n] : null;
 }
-var G = {
+var W = {
 	KHR_BINARY_GLTF: "KHR_binary_glTF",
 	KHR_DRACO_MESH_COMPRESSION: "KHR_draco_mesh_compression",
 	KHR_LIGHTS_PUNCTUAL: "KHR_lights_punctual",
@@ -2762,9 +2896,9 @@ var G = {
 	EXT_MESHOPT_COMPRESSION: "EXT_meshopt_compression",
 	KHR_MESHOPT_COMPRESSION: "KHR_meshopt_compression",
 	EXT_MESH_GPU_INSTANCING: "EXT_mesh_gpu_instancing"
-}, ri = class {
+}, ui = class {
 	constructor(e) {
-		this.parser = e, this.name = G.KHR_LIGHTS_PUNCTUAL, this.cache = {
+		this.parser = e, this.name = W.KHR_LIGHTS_PUNCTUAL, this.cache = {
 			refs: {},
 			uses: {}
 		};
@@ -2779,22 +2913,22 @@ var G = {
 	_loadLight(e) {
 		let t = this.parser, n = "light:" + e, r = t.cache.get(n);
 		if (r) return r;
-		let i = t.json, a = ((i.extensions && i.extensions[this.name] || {}).lights || [])[e], o, s = new b(16777215);
-		a.color !== void 0 && s.setRGB(a.color[0], a.color[1], a.color[2], Te);
-		let c = a.range === void 0 ? 0 : a.range;
+		let i = t.json, a = ((i.extensions && i.extensions[this.name] || {}).lights || [])[e], o, s = new x(16777215);
+		a.color !== void 0 && s.setRGB(a.color[0], a.color[1], a.color[2], be);
+		let l = a.range === void 0 ? 0 : a.range;
 		switch (a.type) {
 			case "directional":
-				o = new u(s), o.target.position.set(0, 0, -1), o.add(o.target);
+				o = new c(s), o.target.position.set(0, 0, -1), o.add(o.target);
 				break;
 			case "point":
-				o = new l(s), o.distance = c;
+				o = new te(s), o.distance = l;
 				break;
 			case "spot":
-				o = new be(s), o.distance = c, a.spot = a.spot || {}, a.spot.innerConeAngle = a.spot.innerConeAngle === void 0 ? 0 : a.spot.innerConeAngle, a.spot.outerConeAngle = a.spot.outerConeAngle === void 0 ? Math.PI / 4 : a.spot.outerConeAngle, o.angle = a.spot.outerConeAngle, o.penumbra = 1 - a.spot.innerConeAngle / a.spot.outerConeAngle, o.target.position.set(0, 0, -1), o.add(o.target);
+				o = new Te(s), o.distance = l, a.spot = a.spot || {}, a.spot.innerConeAngle = a.spot.innerConeAngle === void 0 ? 0 : a.spot.innerConeAngle, a.spot.outerConeAngle = a.spot.outerConeAngle === void 0 ? Math.PI / 4 : a.spot.outerConeAngle, o.angle = a.spot.outerConeAngle, o.penumbra = 1 - a.spot.innerConeAngle / a.spot.outerConeAngle, o.target.position.set(0, 0, -1), o.add(o.target);
 				break;
 			default: throw Error("THREE.GLTFLoader: Unexpected light type: " + a.type);
 		}
-		return o.position.set(0, 0, 0), q(o, a), a.intensity !== void 0 && (o.intensity = a.intensity), o.name = t.createUniqueName(a.name || "light_" + e), r = Promise.resolve(o), t.cache.add(n, r), r;
+		return o.position.set(0, 0, 0), K(o, a), a.intensity !== void 0 && (o.intensity = a.intensity), o.name = t.createUniqueName(a.name || "light_" + e), r = Promise.resolve(o), t.cache.add(n, r), r;
 	}
 	getDependency(e, t) {
 		if (e === "light") return this._loadLight(t);
@@ -2805,114 +2939,114 @@ var G = {
 			return n._getNodeRef(t.cache, i, e);
 		});
 	}
-}, ii = class {
+}, di = class {
 	constructor() {
-		this.name = G.KHR_MATERIALS_UNLIT;
+		this.name = W.KHR_MATERIALS_UNLIT;
 	}
 	getMaterialType() {
-		return x;
+		return i;
 	}
 	extendParams(e, t, n) {
 		let r = [];
-		e.color = new b(1, 1, 1), e.opacity = 1;
+		e.color = new x(1, 1, 1), e.opacity = 1;
 		let i = t.pbrMetallicRoughness;
 		if (i) {
 			if (Array.isArray(i.baseColorFactor)) {
 				let t = i.baseColorFactor;
-				e.color.setRGB(t[0], t[1], t[2], Te), e.opacity = t[3];
+				e.color.setRGB(t[0], t[1], t[2], be), e.opacity = t[3];
 			}
-			i.baseColorTexture !== void 0 && r.push(n.assignTexture(e, "map", i.baseColorTexture, S));
+			i.baseColorTexture !== void 0 && r.push(n.assignTexture(e, "map", i.baseColorTexture, o));
 		}
 		return Promise.all(r);
 	}
-}, ai = class {
+}, fi = class {
 	constructor(e) {
-		this.parser = e, this.name = G.KHR_MATERIALS_EMISSIVE_STRENGTH;
+		this.parser = e, this.name = W.KHR_MATERIALS_EMISSIVE_STRENGTH;
 	}
 	extendMaterialParams(e, t) {
-		let n = W(this.parser, e, this.name);
+		let n = U(this.parser, e, this.name);
 		return n === null || n.emissiveStrength !== void 0 && (t.emissiveIntensity = n.emissiveStrength), Promise.resolve();
 	}
-}, oi = class {
+}, pi = class {
 	constructor(e) {
-		this.parser = e, this.name = G.KHR_MATERIALS_CLEARCOAT;
+		this.parser = e, this.name = W.KHR_MATERIALS_CLEARCOAT;
 	}
 	getMaterialType(e) {
-		return W(this.parser, e, this.name) === null ? null : n;
+		return U(this.parser, e, this.name) === null ? null : T;
 	}
 	extendMaterialParams(e, t) {
-		let n = W(this.parser, e, this.name);
+		let n = U(this.parser, e, this.name);
 		if (n === null) return Promise.resolve();
 		let r = [];
 		if (n.clearcoatFactor !== void 0 && (t.clearcoat = n.clearcoatFactor), n.clearcoatTexture !== void 0 && r.push(this.parser.assignTexture(t, "clearcoatMap", n.clearcoatTexture)), n.clearcoatRoughnessFactor !== void 0 && (t.clearcoatRoughness = n.clearcoatRoughnessFactor), n.clearcoatRoughnessTexture !== void 0 && r.push(this.parser.assignTexture(t, "clearcoatRoughnessMap", n.clearcoatRoughnessTexture)), n.clearcoatNormalTexture !== void 0 && (r.push(this.parser.assignTexture(t, "clearcoatNormalMap", n.clearcoatNormalTexture)), n.clearcoatNormalTexture.scale !== void 0)) {
 			let e = n.clearcoatNormalTexture.scale;
-			t.clearcoatNormalScale = new C(e, e);
+			t.clearcoatNormalScale = new Pe(e, e);
 		}
 		return Promise.all(r);
 	}
-}, si = class {
+}, mi = class {
 	constructor(e) {
-		this.parser = e, this.name = G.KHR_MATERIALS_DISPERSION;
+		this.parser = e, this.name = W.KHR_MATERIALS_DISPERSION;
 	}
 	getMaterialType(e) {
-		return W(this.parser, e, this.name) === null ? null : n;
+		return U(this.parser, e, this.name) === null ? null : T;
 	}
 	extendMaterialParams(e, t) {
-		let n = W(this.parser, e, this.name);
+		let n = U(this.parser, e, this.name);
 		return n === null || (t.dispersion = n.dispersion === void 0 ? 0 : n.dispersion), Promise.resolve();
 	}
-}, ci = class {
+}, hi = class {
 	constructor(e) {
-		this.parser = e, this.name = G.KHR_MATERIALS_IRIDESCENCE;
+		this.parser = e, this.name = W.KHR_MATERIALS_IRIDESCENCE;
 	}
 	getMaterialType(e) {
-		return W(this.parser, e, this.name) === null ? null : n;
+		return U(this.parser, e, this.name) === null ? null : T;
 	}
 	extendMaterialParams(e, t) {
-		let n = W(this.parser, e, this.name);
+		let n = U(this.parser, e, this.name);
 		if (n === null) return Promise.resolve();
 		let r = [];
 		return n.iridescenceFactor !== void 0 && (t.iridescence = n.iridescenceFactor), n.iridescenceTexture !== void 0 && r.push(this.parser.assignTexture(t, "iridescenceMap", n.iridescenceTexture)), n.iridescenceIor !== void 0 && (t.iridescenceIOR = n.iridescenceIor), t.iridescenceThicknessRange === void 0 && (t.iridescenceThicknessRange = [100, 400]), n.iridescenceThicknessMinimum !== void 0 && (t.iridescenceThicknessRange[0] = n.iridescenceThicknessMinimum), n.iridescenceThicknessMaximum !== void 0 && (t.iridescenceThicknessRange[1] = n.iridescenceThicknessMaximum), n.iridescenceThicknessTexture !== void 0 && r.push(this.parser.assignTexture(t, "iridescenceThicknessMap", n.iridescenceThicknessTexture)), Promise.all(r);
 	}
-}, li = class {
+}, gi = class {
 	constructor(e) {
-		this.parser = e, this.name = G.KHR_MATERIALS_SHEEN;
+		this.parser = e, this.name = W.KHR_MATERIALS_SHEEN;
 	}
 	getMaterialType(e) {
-		return W(this.parser, e, this.name) === null ? null : n;
+		return U(this.parser, e, this.name) === null ? null : T;
 	}
 	extendMaterialParams(e, t) {
-		let n = W(this.parser, e, this.name);
+		let n = U(this.parser, e, this.name);
 		if (n === null) return Promise.resolve();
 		let r = [];
-		if (t.sheenColor = new b(0, 0, 0), t.sheenRoughness = 0, t.sheen = 1, n.sheenColorFactor !== void 0) {
+		if (t.sheenColor = new x(0, 0, 0), t.sheenRoughness = 0, t.sheen = 1, n.sheenColorFactor !== void 0) {
 			let e = n.sheenColorFactor;
-			t.sheenColor.setRGB(e[0], e[1], e[2], Te);
+			t.sheenColor.setRGB(e[0], e[1], e[2], be);
 		}
-		return n.sheenRoughnessFactor !== void 0 && (t.sheenRoughness = n.sheenRoughnessFactor), n.sheenColorTexture !== void 0 && r.push(this.parser.assignTexture(t, "sheenColorMap", n.sheenColorTexture, S)), n.sheenRoughnessTexture !== void 0 && r.push(this.parser.assignTexture(t, "sheenRoughnessMap", n.sheenRoughnessTexture)), Promise.all(r);
+		return n.sheenRoughnessFactor !== void 0 && (t.sheenRoughness = n.sheenRoughnessFactor), n.sheenColorTexture !== void 0 && r.push(this.parser.assignTexture(t, "sheenColorMap", n.sheenColorTexture, o)), n.sheenRoughnessTexture !== void 0 && r.push(this.parser.assignTexture(t, "sheenRoughnessMap", n.sheenRoughnessTexture)), Promise.all(r);
 	}
-}, ui = class {
+}, _i = class {
 	constructor(e) {
-		this.parser = e, this.name = G.KHR_MATERIALS_TRANSMISSION;
+		this.parser = e, this.name = W.KHR_MATERIALS_TRANSMISSION;
 	}
 	getMaterialType(e) {
-		return W(this.parser, e, this.name) === null ? null : n;
+		return U(this.parser, e, this.name) === null ? null : T;
 	}
 	extendMaterialParams(e, t) {
-		let n = W(this.parser, e, this.name);
+		let n = U(this.parser, e, this.name);
 		if (n === null) return Promise.resolve();
 		let r = [];
 		return n.transmissionFactor !== void 0 && (t.transmission = n.transmissionFactor), n.transmissionTexture !== void 0 && r.push(this.parser.assignTexture(t, "transmissionMap", n.transmissionTexture)), Promise.all(r);
 	}
-}, di = class {
+}, vi = class {
 	constructor(e) {
-		this.parser = e, this.name = G.KHR_MATERIALS_VOLUME;
+		this.parser = e, this.name = W.KHR_MATERIALS_VOLUME;
 	}
 	getMaterialType(e) {
-		return W(this.parser, e, this.name) === null ? null : n;
+		return U(this.parser, e, this.name) === null ? null : T;
 	}
 	extendMaterialParams(e, t) {
-		let n = W(this.parser, e, this.name);
+		let n = U(this.parser, e, this.name);
 		if (n === null) return Promise.resolve();
 		let r = [];
 		t.thickness = n.thicknessFactor === void 0 ? 0 : n.thicknessFactor, n.thicknessTexture !== void 0 && r.push(this.parser.assignTexture(t, "thicknessMap", n.thicknessTexture)), t.attenuationDistance = n.attenuationDistance || Infinity;
@@ -2921,28 +3055,28 @@ var G = {
 			1,
 			1
 		];
-		return t.attenuationColor = new b().setRGB(i[0], i[1], i[2], Te), Promise.all(r);
+		return t.attenuationColor = new x().setRGB(i[0], i[1], i[2], be), Promise.all(r);
 	}
-}, fi = class {
+}, yi = class {
 	constructor(e) {
-		this.parser = e, this.name = G.KHR_MATERIALS_IOR;
+		this.parser = e, this.name = W.KHR_MATERIALS_IOR;
 	}
 	getMaterialType(e) {
-		return W(this.parser, e, this.name) === null ? null : n;
+		return U(this.parser, e, this.name) === null ? null : T;
 	}
 	extendMaterialParams(e, t) {
-		let n = W(this.parser, e, this.name);
+		let n = U(this.parser, e, this.name);
 		return n === null ? Promise.resolve() : (t.ior = n.ior === void 0 ? 1.5 : n.ior, t.ior === 0 && (t.ior = 1e3), Promise.resolve());
 	}
-}, pi = class {
+}, bi = class {
 	constructor(e) {
-		this.parser = e, this.name = G.KHR_MATERIALS_SPECULAR;
+		this.parser = e, this.name = W.KHR_MATERIALS_SPECULAR;
 	}
 	getMaterialType(e) {
-		return W(this.parser, e, this.name) === null ? null : n;
+		return U(this.parser, e, this.name) === null ? null : T;
 	}
 	extendMaterialParams(e, t) {
-		let n = W(this.parser, e, this.name);
+		let n = U(this.parser, e, this.name);
 		if (n === null) return Promise.resolve();
 		let r = [];
 		t.specularIntensity = n.specularFactor === void 0 ? 1 : n.specularFactor, n.specularTexture !== void 0 && r.push(this.parser.assignTexture(t, "specularIntensityMap", n.specularTexture));
@@ -2951,37 +3085,37 @@ var G = {
 			1,
 			1
 		];
-		return t.specularColor = new b().setRGB(i[0], i[1], i[2], Te), n.specularColorTexture !== void 0 && r.push(this.parser.assignTexture(t, "specularColorMap", n.specularColorTexture, S)), Promise.all(r);
+		return t.specularColor = new x().setRGB(i[0], i[1], i[2], be), n.specularColorTexture !== void 0 && r.push(this.parser.assignTexture(t, "specularColorMap", n.specularColorTexture, o)), Promise.all(r);
 	}
-}, mi = class {
+}, xi = class {
 	constructor(e) {
-		this.parser = e, this.name = G.EXT_MATERIALS_BUMP;
+		this.parser = e, this.name = W.EXT_MATERIALS_BUMP;
 	}
 	getMaterialType(e) {
-		return W(this.parser, e, this.name) === null ? null : n;
+		return U(this.parser, e, this.name) === null ? null : T;
 	}
 	extendMaterialParams(e, t) {
-		let n = W(this.parser, e, this.name);
+		let n = U(this.parser, e, this.name);
 		if (n === null) return Promise.resolve();
 		let r = [];
 		return t.bumpScale = n.bumpFactor === void 0 ? 1 : n.bumpFactor, n.bumpTexture !== void 0 && r.push(this.parser.assignTexture(t, "bumpMap", n.bumpTexture)), Promise.all(r);
 	}
-}, hi = class {
+}, Si = class {
 	constructor(e) {
-		this.parser = e, this.name = G.KHR_MATERIALS_ANISOTROPY;
+		this.parser = e, this.name = W.KHR_MATERIALS_ANISOTROPY;
 	}
 	getMaterialType(e) {
-		return W(this.parser, e, this.name) === null ? null : n;
+		return U(this.parser, e, this.name) === null ? null : T;
 	}
 	extendMaterialParams(e, t) {
-		let n = W(this.parser, e, this.name);
+		let n = U(this.parser, e, this.name);
 		if (n === null) return Promise.resolve();
 		let r = [];
 		return n.anisotropyStrength !== void 0 && (t.anisotropy = n.anisotropyStrength), n.anisotropyRotation !== void 0 && (t.anisotropyRotation = n.anisotropyRotation), n.anisotropyTexture !== void 0 && r.push(this.parser.assignTexture(t, "anisotropyMap", n.anisotropyTexture)), Promise.all(r);
 	}
-}, gi = class {
+}, Ci = class {
 	constructor(e) {
-		this.parser = e, this.name = G.KHR_TEXTURE_BASISU;
+		this.parser = e, this.name = W.KHR_TEXTURE_BASISU;
 	}
 	loadTexture(e) {
 		let t = this.parser, n = t.json, r = n.textures[e];
@@ -2993,9 +3127,9 @@ var G = {
 		}
 		return t.loadTextureImage(e, i.source, a);
 	}
-}, _i = class {
+}, wi = class {
 	constructor(e) {
-		this.parser = e, this.name = G.EXT_TEXTURE_WEBP;
+		this.parser = e, this.name = W.EXT_TEXTURE_WEBP;
 	}
 	loadTexture(e) {
 		let t = this.name, n = this.parser, r = n.json, i = r.textures[e];
@@ -3007,9 +3141,9 @@ var G = {
 		}
 		return n.loadTextureImage(e, a.source, s);
 	}
-}, vi = class {
+}, Ti = class {
 	constructor(e) {
-		this.parser = e, this.name = G.EXT_TEXTURE_AVIF;
+		this.parser = e, this.name = W.EXT_TEXTURE_AVIF;
 	}
 	loadTexture(e) {
 		let t = this.name, n = this.parser, r = n.json, i = r.textures[e];
@@ -3021,7 +3155,7 @@ var G = {
 		}
 		return n.loadTextureImage(e, a.source, s);
 	}
-}, yi = class {
+}, Ei = class {
 	constructor(e, t) {
 		this.name = t, this.parser = e;
 	}
@@ -3045,89 +3179,89 @@ var G = {
 		}
 		return null;
 	}
-}, bi = class {
+}, Di = class {
 	constructor(e) {
-		this.name = G.EXT_MESH_GPU_INSTANCING, this.parser = e;
+		this.name = W.EXT_MESH_GPU_INSTANCING, this.parser = e;
 	}
 	createNodeMesh(e) {
 		let t = this.parser.json, n = t.nodes[e];
 		if (!n.extensions || !n.extensions[this.name] || n.mesh === void 0) return null;
 		let r = t.meshes[n.mesh];
-		for (let e of r.primitives) if (e.mode !== K.TRIANGLES && e.mode !== K.TRIANGLE_STRIP && e.mode !== K.TRIANGLE_FAN && e.mode !== void 0) return null;
-		let i = n.extensions[this.name].attributes, a = [], s = {};
-		for (let e in i) a.push(this.parser.getDependency("accessor", i[e]).then((t) => (s[e] = t, s[e])));
+		for (let e of r.primitives) if (e.mode !== G.TRIANGLES && e.mode !== G.TRIANGLE_STRIP && e.mode !== G.TRIANGLE_FAN && e.mode !== void 0) return null;
+		let i = n.extensions[this.name].attributes, a = [], o = {};
+		for (let e in i) a.push(this.parser.getDependency("accessor", i[e]).then((t) => (o[e] = t, o[e])));
 		return a.length < 1 ? null : (a.push(this.parser.createNodeMesh(e)), Promise.all(a).then((e) => {
 			let t = e.pop(), n = t.isGroup ? t.children : [t], r = e[0].count, i = [];
 			for (let e of n) {
-				let t = new o(), n = new E(), a = new f(), c = new E(1, 1, 1), l = new ie(e.geometry, e.material, r);
-				for (let e = 0; e < r; e++) s.TRANSLATION && n.fromBufferAttribute(s.TRANSLATION, e), s.ROTATION && a.fromBufferAttribute(s.ROTATION, e), s.SCALE && c.fromBufferAttribute(s.SCALE, e), l.setMatrixAt(e, t.compose(n, a, c));
-				let u = null;
-				for (let e in s) if (e === "_COLOR_0") {
-					let t = s[e];
-					l.instanceColor = new ne(t.array, t.itemSize, t.normalized);
+				let t = new Me(), n = new S(), a = new we(), s = new S(1, 1, 1), c = new _(e.geometry, e.material, r);
+				for (let e = 0; e < r; e++) o.TRANSLATION && n.fromBufferAttribute(o.TRANSLATION, e), o.ROTATION && a.fromBufferAttribute(o.ROTATION, e), o.SCALE && s.fromBufferAttribute(o.SCALE, e), c.setMatrixAt(e, t.compose(n, a, s));
+				let l = null;
+				for (let e in o) if (e === "_COLOR_0") {
+					let t = o[e];
+					c.instanceColor = new ie(t.array, t.itemSize, t.normalized);
 				} else if (e !== "TRANSLATION" && e !== "ROTATION" && e !== "SCALE") {
-					if (u === null) {
-						let e = l.geometry;
-						u = new oe(), u.name = e.name;
-						for (let t in e.attributes) u.setAttribute(t, e.attributes[t]);
-						for (let t in e.morphAttributes) u.morphAttributes[t] = e.morphAttributes[t];
-						e.index !== null && u.setIndex(e.index), u.morphTargetsRelative = e.morphTargetsRelative;
-						for (let t of e.groups) u.addGroup(t.start, t.count, t.materialIndex);
-						e.boundingBox !== null && (u.boundingBox = e.boundingBox.clone()), e.boundingSphere !== null && (u.boundingSphere = e.boundingSphere.clone()), u.drawRange.start = e.drawRange.start, u.drawRange.count = e.drawRange.count, u.userData = Object.assign({}, e.userData), l.geometry = u;
+					if (l === null) {
+						let e = c.geometry;
+						l = new ae(), l.name = e.name;
+						for (let t in e.attributes) l.setAttribute(t, e.attributes[t]);
+						for (let t in e.morphAttributes) l.morphAttributes[t] = e.morphAttributes[t];
+						e.index !== null && l.setIndex(e.index), l.morphTargetsRelative = e.morphTargetsRelative;
+						for (let t of e.groups) l.addGroup(t.start, t.count, t.materialIndex);
+						e.boundingBox !== null && (l.boundingBox = e.boundingBox.clone()), e.boundingSphere !== null && (l.boundingSphere = e.boundingSphere.clone()), l.drawRange.start = e.drawRange.start, l.drawRange.count = e.drawRange.count, l.userData = Object.assign({}, e.userData), c.geometry = l;
 					}
-					let t = s[e];
-					u.setAttribute(e, new ne(t.array, t.itemSize, t.normalized));
+					let t = o[e];
+					l.setAttribute(e, new ie(t.array, t.itemSize, t.normalized));
 				}
-				m.prototype.copy.call(l, e), this.parser.assignFinalMaterial(l), i.push(l);
+				b.prototype.copy.call(c, e), this.parser.assignFinalMaterial(c), i.push(c);
 			}
 			return t.isGroup ? (t.clear(), t.add(...i), t) : i[0];
 		}));
 	}
-}, xi = "glTF", Si = 12, Ci = {
+}, Oi = "glTF", ki = 12, Ai = {
 	JSON: 1313821514,
 	BIN: 5130562
-}, wi = class {
+}, ji = class {
 	constructor(e) {
-		this.name = G.KHR_BINARY_GLTF, this.content = null, this.body = null;
-		let t = new DataView(e, 0, Si), n = new TextDecoder();
+		this.name = W.KHR_BINARY_GLTF, this.content = null, this.body = null;
+		let t = new DataView(e, 0, ki), n = new TextDecoder();
 		if (this.header = {
 			magic: n.decode(new Uint8Array(e.slice(0, 4))),
 			version: t.getUint32(4, !0),
 			length: t.getUint32(8, !0)
-		}, this.header.magic !== xi) throw Error("THREE.GLTFLoader: Unsupported glTF-Binary header.");
+		}, this.header.magic !== Oi) throw Error("THREE.GLTFLoader: Unsupported glTF-Binary header.");
 		if (this.header.version < 2) throw Error("THREE.GLTFLoader: Legacy binary file detected.");
-		let r = this.header.length - Si, i = new DataView(e, Si), a = 0;
+		let r = this.header.length - ki, i = new DataView(e, ki), a = 0;
 		for (; a < r;) {
 			let t = i.getUint32(a, !0);
 			a += 4;
 			let r = i.getUint32(a, !0);
-			if (a += 4, r === Ci.JSON) {
-				let r = new Uint8Array(e, Si + a, t);
+			if (a += 4, r === Ai.JSON) {
+				let r = new Uint8Array(e, ki + a, t);
 				this.content = n.decode(r);
-			} else if (r === Ci.BIN) {
-				let n = Si + a;
+			} else if (r === Ai.BIN) {
+				let n = ki + a;
 				this.body = e.slice(n, n + t);
 			}
 			a += t;
 		}
 		if (this.content === null) throw Error("THREE.GLTFLoader: JSON content not found.");
 	}
-}, Ti = class {
+}, Mi = class {
 	constructor(e, t) {
 		if (!t) throw Error("THREE.GLTFLoader: No DRACOLoader instance provided.");
-		this.name = G.KHR_DRACO_MESH_COMPRESSION, this.json = e, this.dracoLoader = t, this.dracoLoader.preload();
+		this.name = W.KHR_DRACO_MESH_COMPRESSION, this.json = e, this.dracoLoader = t, this.dracoLoader.preload();
 	}
 	decodePrimitive(e, t) {
 		let n = this.json, r = this.dracoLoader, i = e.extensions[this.name].bufferView, a = e.extensions[this.name].attributes, o = {}, s = {}, c = {};
 		for (let e in a) {
-			let t = Fi[e] || e.toLowerCase();
+			let t = Hi[e] || e.toLowerCase();
 			o[t] = a[e];
 		}
 		for (let t in e.attributes) {
-			let r = Fi[t] || t.toLowerCase();
+			let r = Hi[t] || t.toLowerCase();
 			if (a[t] !== void 0) {
 				let i = n.accessors[e.attributes[t]];
-				c[r] = ji[i.componentType].name, s[r] = i.normalized === !0;
+				c[r] = Ri[i.componentType].name, s[r] = i.normalized === !0;
 			}
 		}
 		return t.getDependency("bufferView", i).then(function(e) {
@@ -3138,13 +3272,13 @@ var G = {
 						r !== void 0 && (n.normalized = r);
 					}
 					t(e);
-				}, o, c, Te, n);
+				}, o, c, be, n);
 			});
 		});
 	}
-}, Ei = class {
+}, Ni = class {
 	constructor() {
-		this.name = G.KHR_TEXTURE_TRANSFORM;
+		this.name = W.KHR_TEXTURE_TRANSFORM;
 	}
 	extendTexture(e, t) {
 		if ((t.texCoord === void 0 || t.texCoord === e.channel) && t.offset === void 0 && t.rotation === void 0 && t.scale === void 0) return e;
@@ -3154,11 +3288,11 @@ var G = {
 		}
 		return e.needsUpdate = !0, e;
 	}
-}, Di = class {
+}, Pi = class {
 	constructor() {
-		this.name = G.KHR_MESH_QUANTIZATION;
+		this.name = W.KHR_MESH_QUANTIZATION;
 	}
-}, Oi = class extends Ae {
+}, Fi = class extends xe {
 	constructor(e, t, n, r) {
 		super(e, t, n, r);
 	}
@@ -3175,12 +3309,12 @@ var G = {
 		}
 		return i;
 	}
-}, ki = new f(), Ai = class extends Oi {
+}, Ii = new we(), Li = class extends Fi {
 	interpolate_(e, t, n, r) {
 		let i = super.interpolate_(e, t, n, r);
-		return ki.fromArray(i).normalize().toArray(i), i;
+		return Ii.fromArray(i).normalize().toArray(i), i;
 	}
-}, K = {
+}, G = {
 	FLOAT: 5126,
 	FLOAT_MAT3: 35675,
 	FLOAT_MAT4: 35676,
@@ -3199,25 +3333,25 @@ var G = {
 	TRIANGLE_FAN: 6,
 	UNSIGNED_BYTE: 5121,
 	UNSIGNED_SHORT: 5123
-}, ji = {
+}, Ri = {
 	5120: Int8Array,
 	5121: Uint8Array,
 	5122: Int16Array,
 	5123: Uint16Array,
 	5125: Uint32Array,
 	5126: Float32Array
-}, Mi = {
+}, zi = {
 	9728: g,
-	9729: je,
-	9984: s,
-	9985: pe,
-	9986: _,
-	9987: ue
-}, Ni = {
+	9729: ue,
+	9984: l,
+	9985: Ce,
+	9986: a,
+	9987: me
+}, Bi = {
 	33071: Ne,
 	33648: h,
-	10497: p
-}, Pi = {
+	10497: y
+}, Vi = {
 	SCALAR: 1,
 	VEC2: 2,
 	VEC3: 3,
@@ -3225,7 +3359,7 @@ var G = {
 	MAT2: 4,
 	MAT3: 9,
 	MAT4: 16
-}, Fi = {
+}, Hi = {
 	POSITION: "position",
 	NORMAL: "normal",
 	TANGENT: "tangent",
@@ -3236,22 +3370,22 @@ var G = {
 	COLOR_0: "color",
 	WEIGHTS_0: "skinWeight",
 	JOINTS_0: "skinIndex"
-}, Ii = {
+}, Ui = {
 	scale: "scale",
 	translation: "position",
 	rotation: "quaternion",
 	weights: "morphTargetInfluences"
-}, Li = {
+}, Wi = {
 	CUBICSPLINE: void 0,
-	LINEAR: De,
-	STEP: xe
-}, Ri = {
+	LINEAR: ve,
+	STEP: Ee
+}, Gi = {
 	OPAQUE: "OPAQUE",
 	MASK: "MASK",
 	BLEND: "BLEND"
 };
-function zi(e) {
-	return e.DefaultMaterial === void 0 && (e.DefaultMaterial = new ve({
+function Ki(e) {
+	return e.DefaultMaterial === void 0 && (e.DefaultMaterial = new m({
 		color: 16777215,
 		emissive: 0,
 		metalness: 1,
@@ -3261,13 +3395,13 @@ function zi(e) {
 		side: 0
 	})), e.DefaultMaterial;
 }
-function Bi(e, t, n) {
+function qi(e, t, n) {
 	for (let r in n.extensions) e[r] === void 0 && (t.userData.gltfExtensions = t.userData.gltfExtensions || {}, t.userData.gltfExtensions[r] = n.extensions[r]);
 }
-function q(e, t) {
+function K(e, t) {
 	t.extras !== void 0 && (typeof t.extras == "object" ? Object.assign(e.userData, t.extras) : console.warn("THREE.GLTFLoader: Ignoring primitive type .extras, " + t.extras));
 }
-function Vi(e, t, n) {
+function Ji(e, t, n) {
 	let r = !1, i = !1, a = !1;
 	for (let e = 0, n = t.length; e < n; e++) {
 		let n = t[e];
@@ -3299,7 +3433,7 @@ function Vi(e, t, n) {
 		return r && (e.morphAttributes.position = n), i && (e.morphAttributes.normal = o), a && (e.morphAttributes.color = s), e.morphTargetsRelative = !0, e;
 	});
 }
-function Hi(e, t) {
+function Yi(e, t) {
 	if (e.updateMorphTargets(), t.weights !== void 0) for (let n = 0, r = t.weights.length; n < r; n++) e.morphTargetInfluences[n] = t.weights[n];
 	if (t.extras && Array.isArray(t.extras.targetNames)) {
 		let n = t.extras.targetNames;
@@ -3309,17 +3443,17 @@ function Hi(e, t) {
 		} else console.warn("THREE.GLTFLoader: Invalid extras.targetNames length. Ignoring names.");
 	}
 }
-function Ui(e) {
-	let t, n = e.extensions && e.extensions[G.KHR_DRACO_MESH_COMPRESSION];
-	if (t = n ? "draco:" + n.bufferView + ":" + n.indices + ":" + Wi(n.attributes) : e.indices + ":" + Wi(e.attributes) + ":" + e.mode, e.targets !== void 0) for (let n = 0, r = e.targets.length; n < r; n++) t += ":" + Wi(e.targets[n]);
+function Xi(e) {
+	let t, n = e.extensions && e.extensions[W.KHR_DRACO_MESH_COMPRESSION];
+	if (t = n ? "draco:" + n.bufferView + ":" + n.indices + ":" + Zi(n.attributes) : e.indices + ":" + Zi(e.attributes) + ":" + e.mode, e.targets !== void 0) for (let n = 0, r = e.targets.length; n < r; n++) t += ":" + Zi(e.targets[n]);
 	return t;
 }
-function Wi(e) {
+function Zi(e) {
 	let t = "", n = Object.keys(e).sort();
 	for (let r = 0, i = n.length; r < i; r++) t += n[r] + ":" + e[n[r]] + ";";
 	return t;
 }
-function Gi(e) {
+function Qi(e) {
 	switch (e) {
 		case Int8Array: return 1 / 127;
 		case Uint8Array: return 1 / 255;
@@ -3328,12 +3462,12 @@ function Gi(e) {
 		default: throw Error("THREE.GLTFLoader: Unsupported normalized accessor component type.");
 	}
 }
-function Ki(e) {
+function $i(e) {
 	return e.search(/\.jpe?g($|\?)/i) > 0 || e.search(/^data\:image\/jpeg/) === 0 ? "image/jpeg" : e.search(/\.webp($|\?)/i) > 0 || e.search(/^data\:image\/webp/) === 0 ? "image/webp" : e.search(/\.ktx2($|\?)/i) > 0 || e.search(/^data\:image\/ktx2/) === 0 ? "image/ktx2" : "image/png";
 }
-var qi = new o(), Ji = class {
-	constructor(e = {}, t = {}) {
-		this.json = e, this.extensions = {}, this.plugins = {}, this.options = t, this.cache = new ni(), this.associations = /* @__PURE__ */ new Map(), this.primitiveCache = {}, this.nodeCache = {}, this.meshCache = {
+var ea = new Me(), ta = class {
+	constructor(e = {}, n = {}) {
+		this.json = e, this.extensions = {}, this.plugins = {}, this.options = n, this.cache = new li(), this.associations = /* @__PURE__ */ new Map(), this.primitiveCache = {}, this.nodeCache = {}, this.meshCache = {
 			refs: {},
 			uses: {}
 		}, this.cameraCache = {
@@ -3343,14 +3477,14 @@ var qi = new o(), Ji = class {
 			refs: {},
 			uses: {}
 		}, this.sourceCache = {}, this.textureCache = {}, this.nodeNamesUsed = {};
-		let n = !1, i = -1, a = !1, o = -1;
+		let r = !1, i = -1, a = !1, o = -1;
 		if (typeof navigator < "u" && navigator.userAgent !== void 0) {
 			let e = navigator.userAgent;
-			n = /^((?!chrome|android).)*safari/i.test(e) === !0;
+			r = /^((?!chrome|android).)*safari/i.test(e) === !0;
 			let t = e.match(/Version\/(\d+)/);
-			i = n && t ? parseInt(t[1], 10) : -1, a = e.indexOf("Firefox") > -1, o = a ? e.match(/Firefox\/([0-9]+)\./)[1] : -1;
+			i = r && t ? parseInt(t[1], 10) : -1, a = e.indexOf("Firefox") > -1, o = a ? e.match(/Firefox\/([0-9]+)\./)[1] : -1;
 		}
-		this.textureLoader = typeof createImageBitmap > "u" || n && i < 17 || a && o < 98 ? new Oe(this.options.manager) : new re(this.options.manager), this.textureLoader.setCrossOrigin(this.options.crossOrigin), this.textureLoader.setRequestHeader(this.options.requestHeader), this.fileLoader = new r(this.options.manager), this.fileLoader.setResponseType("arraybuffer"), this.options.crossOrigin === "use-credentials" && this.fileLoader.setWithCredentials(!0);
+		this.textureLoader = typeof createImageBitmap > "u" || r && i < 17 || a && o < 98 ? new ce(this.options.manager) : new re(this.options.manager), this.textureLoader.setCrossOrigin(this.options.crossOrigin), this.textureLoader.setRequestHeader(this.options.requestHeader), this.fileLoader = new t(this.options.manager), this.fileLoader.setResponseType("arraybuffer"), this.options.crossOrigin === "use-credentials" && this.fileLoader.setWithCredentials(!0);
 	}
 	setExtensions(e) {
 		this.extensions = e;
@@ -3380,7 +3514,7 @@ var qi = new o(), Ji = class {
 				parser: n,
 				userData: {}
 			};
-			return Bi(i, a, r), q(a, r), Promise.all(n._invokeAll(function(e) {
+			return qi(i, a, r), K(a, r), Promise.all(n._invokeAll(function(e) {
 				return e.afterRoot && e.afterRoot(a);
 			})).then(function() {
 				for (let e of a.scenes) e.updateMatrixWorld();
@@ -3500,10 +3634,10 @@ var qi = new o(), Ji = class {
 	loadBuffer(e) {
 		let t = this.json.buffers[e], n = this.fileLoader;
 		if (t.type && t.type !== "arraybuffer") throw Error("THREE.GLTFLoader: " + t.type + " buffer type is not supported.");
-		if (t.uri === void 0 && e === 0) return Promise.resolve(this.extensions[G.KHR_BINARY_GLTF].body);
+		if (t.uri === void 0 && e === 0) return Promise.resolve(this.extensions[W.KHR_BINARY_GLTF].body);
 		let r = this.options;
 		return new Promise(function(e, i) {
-			n.load(he.resolveURL(t.uri, r.path), e, void 0, function() {
+			n.load(oe.resolveURL(t.uri, r.path), e, void 0, function() {
 				i(/* @__PURE__ */ Error("THREE.GLTFLoader: Failed to load buffer \"" + t.uri + "\"."));
 			});
 		});
@@ -3515,29 +3649,29 @@ var qi = new o(), Ji = class {
 			return e.slice(r, r + n);
 		});
 	}
-	loadAccessor(t) {
-		let n = this, r = this.json, i = this.json.accessors[t];
-		if (i.bufferView === void 0 && i.sparse === void 0) {
-			let e = Pi[i.type], t = ji[i.componentType], n = i.normalized === !0, r = new t(i.count * e);
-			return Promise.resolve(new me(r, e, n));
+	loadAccessor(e) {
+		let t = this, n = this.json, r = this.json.accessors[e];
+		if (r.bufferView === void 0 && r.sparse === void 0) {
+			let e = Vi[r.type], t = Ri[r.componentType], n = r.normalized === !0, i = new t(r.count * e);
+			return Promise.resolve(new he(i, e, n));
 		}
-		let a = [];
-		return i.bufferView === void 0 ? a.push(null) : a.push(this.getDependency("bufferView", i.bufferView)), i.sparse !== void 0 && (a.push(this.getDependency("bufferView", i.sparse.indices.bufferView)), a.push(this.getDependency("bufferView", i.sparse.values.bufferView))), Promise.all(a).then(function(t) {
-			let a = t[0], o = Pi[i.type], s = ji[i.componentType], c = s.BYTES_PER_ELEMENT, l = c * o, u = i.byteOffset || 0, d = i.bufferView === void 0 ? void 0 : r.bufferViews[i.bufferView].byteStride, f = i.normalized === !0, p, m;
-			if (d && d !== l) {
-				let t = Math.floor(u / d), r = "InterleavedBuffer:" + i.bufferView + ":" + i.componentType + ":" + t + ":" + i.count, l = n.cache.get(r);
-				l || (p = new s(a, t * d, i.count * d / c), l = new e(p, d / c), n.cache.add(r, l)), m = new de(l, o, u % d / c, f);
-			} else p = a === null ? new s(i.count * o) : new s(a, u, i.count * o), m = new me(p, o, f);
-			if (i.sparse !== void 0) {
-				let e = Pi.SCALAR, n = ji[i.sparse.indices.componentType], r = i.sparse.indices.byteOffset || 0, c = i.sparse.values.byteOffset || 0, l = new n(t[1], r, i.sparse.count * e), u = new s(t[2], c, i.sparse.count * o);
-				a !== null && (m = new me(m.array.slice(), m.itemSize, m.normalized)), m.normalized = !1;
+		let i = [];
+		return r.bufferView === void 0 ? i.push(null) : i.push(this.getDependency("bufferView", r.bufferView)), r.sparse !== void 0 && (i.push(this.getDependency("bufferView", r.sparse.indices.bufferView)), i.push(this.getDependency("bufferView", r.sparse.values.bufferView))), Promise.all(i).then(function(e) {
+			let i = e[0], a = Vi[r.type], o = Ri[r.componentType], s = o.BYTES_PER_ELEMENT, c = s * a, l = r.byteOffset || 0, u = r.bufferView === void 0 ? void 0 : n.bufferViews[r.bufferView].byteStride, d = r.normalized === !0, f, p;
+			if (u && u !== c) {
+				let e = Math.floor(l / u), n = "InterleavedBuffer:" + r.bufferView + ":" + r.componentType + ":" + e + ":" + r.count, c = t.cache.get(n);
+				c || (f = new o(i, e * u, r.count * u / s), c = new fe(f, u / s), t.cache.add(n, c)), p = new ke(c, a, l % u / s, d);
+			} else f = i === null ? new o(r.count * a) : new o(i, l, r.count * a), p = new he(f, a, d);
+			if (r.sparse !== void 0) {
+				let t = Vi.SCALAR, n = Ri[r.sparse.indices.componentType], s = r.sparse.indices.byteOffset || 0, c = r.sparse.values.byteOffset || 0, l = new n(e[1], s, r.sparse.count * t), u = new o(e[2], c, r.sparse.count * a);
+				i !== null && (p = new he(p.array.slice(), p.itemSize, p.normalized)), p.normalized = !1;
 				for (let e = 0, t = l.length; e < t; e++) {
 					let t = l[e];
-					if (m.setX(t, u[e * o]), o >= 2 && m.setY(t, u[e * o + 1]), o >= 3 && m.setZ(t, u[e * o + 2]), o >= 4 && m.setW(t, u[e * o + 3]), o >= 5) throw Error("THREE.GLTFLoader: Unsupported itemSize in sparse BufferAttribute.");
+					if (p.setX(t, u[e * a]), a >= 2 && p.setY(t, u[e * a + 1]), a >= 3 && p.setZ(t, u[e * a + 2]), a >= 4 && p.setW(t, u[e * a + 3]), a >= 5) throw Error("THREE.GLTFLoader: Unsupported itemSize in sparse BufferAttribute.");
 				}
-				m.normalized = f;
+				p.normalized = d;
 			}
-			return m;
+			return p;
 		});
 	}
 	loadTexture(e) {
@@ -3554,7 +3688,7 @@ var qi = new o(), Ji = class {
 		let c = this.loadImageSource(t, n).then(function(t) {
 			t.flipY = !1, t.name = a.name || o.name || "", t.name === "" && typeof o.uri == "string" && o.uri.startsWith("data:image/") === !1 && (t.name = o.uri);
 			let n = (i.samplers || {})[a.sampler] || {};
-			return t.magFilter = Mi[n.magFilter] || 1006, t.minFilter = Mi[n.minFilter] || 1008, t.wrapS = Ni[n.wrapS] || 1e3, t.wrapT = Ni[n.wrapT] || 1e3, t.generateMipmaps = !t.isCompressedTexture && t.minFilter !== 1003 && t.minFilter !== 1006, r.associations.set(t, { textures: e }), t;
+			return t.magFilter = zi[n.magFilter] || 1006, t.minFilter = zi[n.minFilter] || 1008, t.wrapS = Bi[n.wrapS] || 1e3, t.wrapT = Bi[n.wrapT] || 1e3, t.generateMipmaps = !t.isCompressedTexture && t.minFilter !== 1003 && t.minFilter !== 1006, r.associations.set(t, { textures: e }), t;
 		}).catch(function() {
 			return null;
 		});
@@ -3574,12 +3708,12 @@ var qi = new o(), Ji = class {
 			return new Promise(function(n, r) {
 				let a = n;
 				t.isImageBitmapLoader === !0 && (a = function(e) {
-					let t = new Se(e);
+					let t = new De(e);
 					t.needsUpdate = !0, n(t);
-				}), t.load(he.resolveURL(e, i.path), a, void 0, r);
+				}), t.load(oe.resolveURL(e, i.path), a, void 0, r);
 			});
 		}).then(function(e) {
-			return c === !0 && o.revokeObjectURL(s), q(e, a), e.userData.mimeType = a.mimeType || Ki(a.uri), e;
+			return c === !0 && o.revokeObjectURL(s), K(e, a), e.userData.mimeType = a.mimeType || $i(a.uri), e;
 		}).catch(function(e) {
 			throw console.error("THREE.GLTFLoader: Couldn't load texture", s), e;
 		});
@@ -3589,11 +3723,11 @@ var qi = new o(), Ji = class {
 		let i = this;
 		return this.getDependency("texture", n.index).then(function(a) {
 			if (!a) return null;
-			if (n.texCoord !== void 0 && n.texCoord > 0 && (a = a.clone(), a.channel = n.texCoord), i.extensions[G.KHR_TEXTURE_TRANSFORM]) {
-				let e = n.extensions === void 0 ? void 0 : n.extensions[G.KHR_TEXTURE_TRANSFORM];
+			if (n.texCoord !== void 0 && n.texCoord > 0 && (a = a.clone(), a.channel = n.texCoord), i.extensions[W.KHR_TEXTURE_TRANSFORM]) {
+				let e = n.extensions === void 0 ? void 0 : n.extensions[W.KHR_TEXTURE_TRANSFORM];
 				if (e) {
 					let t = i.associations.get(a);
-					a = i.extensions[G.KHR_TEXTURE_TRANSFORM].extendTexture(a, e), i.associations.set(a, t);
+					a = i.extensions[W.KHR_TEXTURE_TRANSFORM].extendTexture(a, e), i.associations.set(a, t);
 				}
 			}
 			return r !== void 0 && (a.colorSpace = r), e[t] = a, a;
@@ -3603,10 +3737,10 @@ var qi = new o(), Ji = class {
 		let t = e.geometry, n = e.material, r = t.attributes.tangent === void 0, i = t.attributes.color !== void 0, a = t.attributes.normal === void 0;
 		if (e.isPoints) {
 			let e = "PointsMaterial:" + n.uuid, t = this.cache.get(e);
-			t || (t = new te(), w.prototype.copy.call(t, n), t.color.copy(n.color), t.map = n.map, t.sizeAttenuation = !1, this.cache.add(e, t)), n = t;
+			t || (t = new s(), Fe.prototype.copy.call(t, n), t.color.copy(n.color), t.map = n.map, t.sizeAttenuation = !1, this.cache.add(e, t)), n = t;
 		} else if (e.isLine) {
 			let e = "LineBasicMaterial:" + n.uuid, t = this.cache.get(e);
-			t || (t = new ke(), w.prototype.copy.call(t, n), t.color.copy(n.color), t.map = n.map, this.cache.add(e, t)), n = t;
+			t || (t = new le(), Fe.prototype.copy.call(t, n), t.color.copy(n.color), t.map = n.map, this.cache.add(e, t)), n = t;
 		}
 		if (r || i || a) {
 			let e = "ClonedMaterial:" + n.uuid + ":";
@@ -3617,58 +3751,58 @@ var qi = new o(), Ji = class {
 		e.material = n;
 	}
 	getMaterialType() {
-		return ve;
+		return m;
 	}
 	loadMaterial(e) {
-		let t = this, n = this.json, r = this.extensions, i = n.materials[e], a, o = {}, s = i.extensions || {}, c = [];
-		if (s[G.KHR_MATERIALS_UNLIT]) {
-			let e = r[G.KHR_MATERIALS_UNLIT];
-			a = e.getMaterialType(), c.push(e.extendParams(o, i, t));
+		let t = this, n = this.json, r = this.extensions, a = n.materials[e], s, c = {}, l = a.extensions || {}, u = [];
+		if (l[W.KHR_MATERIALS_UNLIT]) {
+			let e = r[W.KHR_MATERIALS_UNLIT];
+			s = e.getMaterialType(), u.push(e.extendParams(c, a, t));
 		} else {
-			let n = i.pbrMetallicRoughness || {};
-			if (o.color = new b(1, 1, 1), o.opacity = 1, Array.isArray(n.baseColorFactor)) {
+			let n = a.pbrMetallicRoughness || {};
+			if (c.color = new x(1, 1, 1), c.opacity = 1, Array.isArray(n.baseColorFactor)) {
 				let e = n.baseColorFactor;
-				o.color.setRGB(e[0], e[1], e[2], Te), o.opacity = e[3];
+				c.color.setRGB(e[0], e[1], e[2], be), c.opacity = e[3];
 			}
-			n.baseColorTexture !== void 0 && c.push(t.assignTexture(o, "map", n.baseColorTexture, S)), o.metalness = n.metallicFactor === void 0 ? 1 : n.metallicFactor, o.roughness = n.roughnessFactor === void 0 ? 1 : n.roughnessFactor, n.metallicRoughnessTexture !== void 0 && (c.push(t.assignTexture(o, "metalnessMap", n.metallicRoughnessTexture)), c.push(t.assignTexture(o, "roughnessMap", n.metallicRoughnessTexture))), a = this._invokeOne(function(t) {
+			n.baseColorTexture !== void 0 && u.push(t.assignTexture(c, "map", n.baseColorTexture, o)), c.metalness = n.metallicFactor === void 0 ? 1 : n.metallicFactor, c.roughness = n.roughnessFactor === void 0 ? 1 : n.roughnessFactor, n.metallicRoughnessTexture !== void 0 && (u.push(t.assignTexture(c, "metalnessMap", n.metallicRoughnessTexture)), u.push(t.assignTexture(c, "roughnessMap", n.metallicRoughnessTexture))), s = this._invokeOne(function(t) {
 				return t.getMaterialType && t.getMaterialType(e);
-			}), c.push(Promise.all(this._invokeAll(function(t) {
-				return t.extendMaterialParams && t.extendMaterialParams(e, o);
+			}), u.push(Promise.all(this._invokeAll(function(t) {
+				return t.extendMaterialParams && t.extendMaterialParams(e, c);
 			})));
 		}
-		i.doubleSided === !0 && (o.side = 2);
-		let l = i.alphaMode || Ri.OPAQUE;
-		if (l === Ri.BLEND ? (o.transparent = !0, o.depthWrite = !1) : (o.transparent = !1, l === Ri.MASK && (o.alphaTest = i.alphaCutoff === void 0 ? .5 : i.alphaCutoff)), i.normalTexture !== void 0 && a !== x && (c.push(t.assignTexture(o, "normalMap", i.normalTexture)), o.normalScale = new C(1, 1), i.normalTexture.scale !== void 0)) {
-			let e = i.normalTexture.scale;
-			o.normalScale.set(e, e);
+		a.doubleSided === !0 && (c.side = 2);
+		let d = a.alphaMode || Gi.OPAQUE;
+		if (d === Gi.BLEND ? (c.transparent = !0, c.depthWrite = !1) : (c.transparent = !1, d === Gi.MASK && (c.alphaTest = a.alphaCutoff === void 0 ? .5 : a.alphaCutoff)), a.normalTexture !== void 0 && s !== i && (u.push(t.assignTexture(c, "normalMap", a.normalTexture)), c.normalScale = new Pe(1, 1), a.normalTexture.scale !== void 0)) {
+			let e = a.normalTexture.scale;
+			c.normalScale.set(e, e);
 		}
-		if (i.occlusionTexture !== void 0 && a !== x && (c.push(t.assignTexture(o, "aoMap", i.occlusionTexture)), i.occlusionTexture.strength !== void 0 && (o.aoMapIntensity = i.occlusionTexture.strength)), i.emissiveFactor !== void 0 && a !== x) {
-			let e = i.emissiveFactor;
-			o.emissive = new b().setRGB(e[0], e[1], e[2], Te);
+		if (a.occlusionTexture !== void 0 && s !== i && (u.push(t.assignTexture(c, "aoMap", a.occlusionTexture)), a.occlusionTexture.strength !== void 0 && (c.aoMapIntensity = a.occlusionTexture.strength)), a.emissiveFactor !== void 0 && s !== i) {
+			let e = a.emissiveFactor;
+			c.emissive = new x().setRGB(e[0], e[1], e[2], be);
 		}
-		return i.emissiveTexture !== void 0 && a !== x && c.push(t.assignTexture(o, "emissiveMap", i.emissiveTexture, S)), Promise.all(c).then(function() {
-			let n = new a(o);
-			return i.name && (n.name = i.name), q(n, i), t.associations.set(n, { materials: e }), i.extensions && Bi(r, n, i), n;
+		return a.emissiveTexture !== void 0 && s !== i && u.push(t.assignTexture(c, "emissiveMap", a.emissiveTexture, o)), Promise.all(u).then(function() {
+			let n = new s(c);
+			return a.name && (n.name = a.name), K(n, a), t.associations.set(n, { materials: e }), a.extensions && qi(r, n, a), n;
 		});
 	}
 	createUniqueName(e) {
-		let t = c.sanitizeNodeName(e || "");
+		let t = f.sanitizeNodeName(e || "");
 		return t in this.nodeNamesUsed ? t + "_" + ++this.nodeNamesUsed[t] : (this.nodeNamesUsed[t] = 0, t);
 	}
 	loadGeometries(e) {
 		let t = this, n = this.extensions, r = this.primitiveCache;
 		function i(e) {
-			return n[G.KHR_DRACO_MESH_COMPRESSION].decodePrimitive(e, t).then(function(n) {
-				return Xi(n, e, t);
+			return n[W.KHR_DRACO_MESH_COMPRESSION].decodePrimitive(e, t).then(function(n) {
+				return ra(n, e, t);
 			});
 		}
 		let a = [];
 		for (let n = 0, o = e.length; n < o; n++) {
-			let o = e[n], s = Ui(o), c = r[s];
+			let o = e[n], s = Xi(o), c = r[s];
 			if (c) a.push(c.promise);
 			else {
 				let e;
-				e = o.extensions && o.extensions[G.KHR_DRACO_MESH_COMPRESSION] ? i(o) : Xi(new oe(), o, t), o.mode === K.TRIANGLE_STRIP ? e = e.then((e) => Qr(e, 1)) : o.mode === K.TRIANGLE_FAN && (e = e.then((e) => Qr(e, 2))), r[s] = {
+				e = o.extensions && o.extensions[W.KHR_DRACO_MESH_COMPRESSION] ? i(o) : ra(new ae(), o, t), o.mode === G.TRIANGLE_STRIP ? e = e.then((e) => ai(e, 1)) : o.mode === G.TRIANGLE_FAN && (e = e.then((e) => ai(e, 2))), r[s] = {
 					primitive: o,
 					promise: e
 				}, a.push(e);
@@ -3676,59 +3810,59 @@ var qi = new o(), Ji = class {
 		}
 		return Promise.all(a);
 	}
-	loadMesh(e) {
-		let t = this, n = this.json, r = this.extensions, i = n.meshes[e], a = i.primitives, o = [];
-		for (let e = 0, t = a.length; e < t; e++) {
-			let t = a[e].material === void 0 ? zi(this.cache) : this.getDependency("material", a[e].material);
-			o.push(t);
+	loadMesh(t) {
+		let n = this, r = this.json, i = this.extensions, a = r.meshes[t], o = a.primitives, s = [];
+		for (let e = 0, t = o.length; e < t; e++) {
+			let t = o[e].material === void 0 ? Ki(this.cache) : this.getDependency("material", o[e].material);
+			s.push(t);
 		}
-		return o.push(t.loadGeometries(a)), Promise.all(o).then(async function(n) {
-			let o = n.slice(0, n.length - 1), s = n[n.length - 1], c = [];
-			for (let n = 0, l = s.length; n < l; n++) {
-				let l = s[n], u = a[n], d, f = o[n];
-				if (u.mode === K.TRIANGLES || u.mode === K.TRIANGLE_STRIP || u.mode === K.TRIANGLE_FAN || u.mode === void 0) {
-					let e = i.isSkinnedMesh === !0, t = l.hasAttribute("skinIndex") && l.hasAttribute("skinWeight");
-					e && t === !1 && console.warn("THREE.GLTFLoader: Missing skinIndex or skinWeight attributes. Skinning disabled."), d = e && t ? new v(l, f) : new Me(l, f), d.isSkinnedMesh === !0 && d.normalizeSkinWeights();
-				} else if (u.mode === K.LINES) d = new ye(l, f);
-				else if (u.mode === K.LINE_STRIP) d = new Ce(l, f);
-				else if (u.mode === K.LINE_LOOP) d = new le(l, f);
-				else if (u.mode === K.POINTS) d = new ee(l, f);
-				else throw Error("THREE.GLTFLoader: Primitive mode unsupported: " + u.mode);
-				Object.keys(d.geometry.morphAttributes).length > 0 && Hi(d, i), d.name = t.createUniqueName(i.name || "mesh_" + e), q(d, i), u.extensions && Bi(r, d, u), t.assignFinalMaterial(d), c.push(d);
+		return s.push(n.loadGeometries(o)), Promise.all(s).then(async function(r) {
+			let s = r.slice(0, r.length - 1), c = r[r.length - 1], l = [];
+			for (let r = 0, u = c.length; r < u; r++) {
+				let u = c[r], d = o[r], f, p = s[r];
+				if (d.mode === G.TRIANGLES || d.mode === G.TRIANGLE_STRIP || d.mode === G.TRIANGLE_FAN || d.mode === void 0) {
+					let t = a.isSkinnedMesh === !0, n = u.hasAttribute("skinIndex") && u.hasAttribute("skinWeight");
+					t && n === !1 && console.warn("THREE.GLTFLoader: Missing skinIndex or skinWeight attributes. Skinning disabled."), f = t && n ? new e(u, p) : new C(u, p), f.isSkinnedMesh === !0 && f.normalizeSkinWeights();
+				} else if (d.mode === G.LINES) f = new Ae(u, p);
+				else if (d.mode === G.LINE_STRIP) f = new Oe(u, p);
+				else if (d.mode === G.LINE_LOOP) f = new ye(u, p);
+				else if (d.mode === G.POINTS) f = new ne(u, p);
+				else throw Error("THREE.GLTFLoader: Primitive mode unsupported: " + d.mode);
+				Object.keys(f.geometry.morphAttributes).length > 0 && Yi(f, a), f.name = n.createUniqueName(a.name || "mesh_" + t), K(f, a), d.extensions && qi(i, f, d), n.assignFinalMaterial(f), l.push(f);
 			}
-			for (let n = 0, r = c.length; n < r; n++) t.associations.set(c[n], {
-				meshes: e,
-				primitives: n
+			for (let e = 0, r = l.length; e < r; e++) n.associations.set(l[e], {
+				meshes: t,
+				primitives: e
 			});
-			if (c.length === 1) return i.extensions && Bi(r, c[0], i), c[0];
-			let l = new T();
-			i.extensions && Bi(r, l, i), t.associations.set(l, { meshes: e });
-			for (let e = 0, t = c.length; e < t; e++) l.add(c[e]);
-			return l;
+			if (l.length === 1) return a.extensions && qi(i, l[0], a), l[0];
+			let d = new u();
+			a.extensions && qi(i, d, a), n.associations.set(d, { meshes: t });
+			for (let e = 0, t = l.length; e < t; e++) d.add(l[e]);
+			return d;
 		});
 	}
 	loadCamera(e) {
-		let t, n = this.json.cameras[e], r = n[n.type];
-		if (!r) {
+		let t, r = this.json.cameras[e], i = r[r.type];
+		if (!i) {
 			console.warn("THREE.GLTFLoader: Missing camera parameters.");
 			return;
 		}
-		return n.type === "perspective" ? t = new Ie(Pe.radToDeg(r.yfov), r.aspectRatio || 1, r.znear || 1, r.zfar || 2e6) : n.type === "orthographic" && (t = new y(-r.xmag, r.xmag, r.ymag, -r.ymag, r.znear, r.zfar)), n.name && (t.name = this.createUniqueName(n.name)), q(t, n), Promise.resolve(t);
+		return r.type === "perspective" ? t = new n(ee.radToDeg(i.yfov), i.aspectRatio || 1, i.znear || 1, i.zfar || 2e6) : r.type === "orthographic" && (t = new Le(-i.xmag, i.xmag, i.ymag, -i.ymag, i.znear, i.zfar)), r.name && (t.name = this.createUniqueName(r.name)), K(t, r), Promise.resolve(t);
 	}
 	loadSkin(e) {
 		let t = this.json.skins[e], n = [];
 		for (let e = 0, r = t.joints.length; e < r; e++) n.push(this._loadNodeShallow(t.joints[e]));
 		return t.inverseBindMatrices === void 0 ? n.push(null) : n.push(this.getDependency("accessor", t.inverseBindMatrices)), Promise.all(n).then(function(e) {
 			let n = e.pop(), r = e, i = [], a = [];
-			for (let e = 0, s = r.length; e < s; e++) {
-				let s = r[e];
-				if (s) {
-					i.push(s);
-					let t = new o();
+			for (let e = 0, o = r.length; e < o; e++) {
+				let o = r[e];
+				if (o) {
+					i.push(o);
+					let t = new Me();
 					n !== null && t.fromArray(n.array, e * 16), a.push(t);
 				} else console.warn("THREE.GLTFLoader: Joint \"%s\" could not be found.", t.joints[e]);
 			}
-			return new ae(i, a);
+			return new v(i, a);
 		});
 	}
 	loadAnimation(e) {
@@ -3752,8 +3886,8 @@ var qi = new o(), Ji = class {
 				let p = n._createAnimationTracks(r, i, u, d, f);
 				if (p) for (let e = 0; e < p.length; e++) l.push(p[e]);
 			}
-			let u = new ce(i, void 0, l);
-			return q(u, r), u;
+			let u = new se(i, void 0, l);
+			return K(u, r), u;
 		});
 	}
 	createNodeMesh(e) {
@@ -3776,12 +3910,12 @@ var qi = new o(), Ji = class {
 		]).then(function(e) {
 			let t = e[0], n = e[1], r = e[2];
 			r !== null && t.traverse(function(e) {
-				e.isSkinnedMesh && e.bind(r, qi);
+				e.isSkinnedMesh && e.bind(r, ea);
 			});
 			for (let e = 0, r = n.length; e < r; e++) t.add(n[e]);
 			if (t.userData.pivot !== void 0 && n.length > 0) {
 				let e = t.userData.pivot, r = n[0];
-				t.pivot = new E().fromArray(e), t.position.x -= e[0], t.position.y -= e[1], t.position.z -= e[2], r.position.set(0, 0, 0), delete t.userData.pivot;
+				t.pivot = new S().fromArray(e), t.position.x -= e[0], t.position.y -= e[1], t.position.z -= e[2], r.position.set(0, 0, 0), delete t.userData.pivot;
 			}
 			return t;
 		});
@@ -3789,43 +3923,43 @@ var qi = new o(), Ji = class {
 	_loadNodeShallow(e) {
 		let t = this.json, n = this.extensions, r = this;
 		if (this.nodeCache[e] !== void 0) return this.nodeCache[e];
-		let i = t.nodes[e], a = i.name ? r.createUniqueName(i.name) : "", s = [], c = r._invokeOne(function(t) {
+		let i = t.nodes[e], a = i.name ? r.createUniqueName(i.name) : "", o = [], s = r._invokeOne(function(t) {
 			return t.createNodeMesh && t.createNodeMesh(e);
 		});
-		return c && s.push(c), i.camera !== void 0 && s.push(r.getDependency("camera", i.camera).then(function(e) {
+		return s && o.push(s), i.camera !== void 0 && o.push(r.getDependency("camera", i.camera).then(function(e) {
 			return r._getNodeRef(r.cameraCache, i.camera, e);
 		})), r._invokeAll(function(t) {
 			return t.createNodeAttachment && t.createNodeAttachment(e);
 		}).forEach(function(e) {
-			s.push(e);
-		}), this.nodeCache[e] = Promise.all(s).then(function(t) {
-			let s;
-			if (s = i.isBone === !0 ? new fe() : t.length > 1 ? new T() : t.length === 1 ? t[0] : new m(), s !== t[0]) for (let e = 0, n = t.length; e < n; e++) s.add(t[e]);
-			if (i.name && (s.userData.name = i.name, s.name = a), q(s, i), i.extensions && Bi(n, s, i), i.matrix !== void 0) {
-				let e = new o();
-				e.fromArray(i.matrix), s.applyMatrix4(e);
-			} else i.translation !== void 0 && s.position.fromArray(i.translation), i.rotation !== void 0 && s.quaternion.fromArray(i.rotation), i.scale !== void 0 && s.scale.fromArray(i.scale);
-			if (!r.associations.has(s)) r.associations.set(s, {});
+			o.push(e);
+		}), this.nodeCache[e] = Promise.all(o).then(function(t) {
+			let o;
+			if (o = i.isBone === !0 ? new pe() : t.length > 1 ? new u() : t.length === 1 ? t[0] : new b(), o !== t[0]) for (let e = 0, n = t.length; e < n; e++) o.add(t[e]);
+			if (i.name && (o.userData.name = i.name, o.name = a), K(o, i), i.extensions && qi(n, o, i), i.matrix !== void 0) {
+				let e = new Me();
+				e.fromArray(i.matrix), o.applyMatrix4(e);
+			} else i.translation !== void 0 && o.position.fromArray(i.translation), i.rotation !== void 0 && o.quaternion.fromArray(i.rotation), i.scale !== void 0 && o.scale.fromArray(i.scale);
+			if (!r.associations.has(o)) r.associations.set(o, {});
 			else if (i.mesh !== void 0 && r.meshCache.refs[i.mesh] > 1) {
-				let e = r.associations.get(s);
-				r.associations.set(s, { ...e });
+				let e = r.associations.get(o);
+				r.associations.set(o, { ...e });
 			}
-			return r.associations.get(s).nodes = e, s;
+			return r.associations.get(o).nodes = e, o;
 		}), this.nodeCache[e];
 	}
 	loadScene(e) {
-		let t = this.extensions, n = this.json.scenes[e], r = this, i = new T();
-		n.name && (i.name = r.createUniqueName(n.name)), q(i, n), n.extensions && Bi(t, i, n);
+		let t = this.extensions, n = this.json.scenes[e], r = this, i = new u();
+		n.name && (i.name = r.createUniqueName(n.name)), K(i, n), n.extensions && qi(t, i, n);
 		let a = n.nodes || [], o = [];
 		for (let e = 0, t = a.length; e < t; e++) o.push(r.getDependency("node", a[e]));
 		return Promise.all(o).then(function(e) {
 			for (let t = 0, n = e.length; t < n; t++) {
 				let n = e[t];
-				n.parent === null ? i.add(n) : i.add($r(n));
+				n.parent === null ? i.add(n) : i.add(oi(n));
 			}
 			return r.associations = ((e) => {
 				let t = /* @__PURE__ */ new Map();
-				for (let [e, n] of r.associations) (e instanceof w || e instanceof Se) && t.set(e, n);
+				for (let [e, n] of r.associations) (e instanceof Fe || e instanceof De) && t.set(e, n);
 				return e.traverse((e) => {
 					let n = r.associations.get(e);
 					n != null && t.set(e, n);
@@ -3834,41 +3968,41 @@ var qi = new o(), Ji = class {
 		});
 	}
 	_createAnimationTracks(e, t, n, r, i) {
-		let o = [], s = e.name ? e.name : e.uuid, c = [];
-		function l(e) {
-			e.morphTargetInfluences && c.push(e.name ? e.name : e.uuid);
+		let a = [], o = e.name ? e.name : e.uuid, s = [];
+		function c(e) {
+			e.morphTargetInfluences && s.push(e.name ? e.name : e.uuid);
 		}
-		Ii[i.path] === Ii.weights ? (l(e), e.isGroup && e.children.forEach(l)) : c.push(s);
-		let u;
-		switch (Ii[i.path]) {
-			case Ii.weights:
-				u = d;
+		Ui[i.path] === Ui.weights ? (c(e), e.isGroup && e.children.forEach(c)) : s.push(o);
+		let l;
+		switch (Ui[i.path]) {
+			case Ui.weights:
+				l = p;
 				break;
-			case Ii.rotation:
-				u = Ee;
+			case Ui.rotation:
+				l = d;
 				break;
-			case Ii.translation:
-			case Ii.scale:
-				u = a;
+			case Ui.translation:
+			case Ui.scale:
+				l = je;
 				break;
 			default: switch (n.itemSize) {
 				case 1:
-					u = d;
+					l = p;
 					break;
-				default: u = a;
+				default: l = je;
 			}
 		}
-		let f = r.interpolation === void 0 ? De : Li[r.interpolation], p = this._getArrayFromAccessor(n);
-		for (let e = 0, n = c.length; e < n; e++) {
-			let n = new u(c[e] + "." + Ii[i.path], t.array, p, f);
-			r.interpolation === "CUBICSPLINE" && this._createCubicSplineTrackInterpolant(n), o.push(n);
+		let u = r.interpolation === void 0 ? ve : Wi[r.interpolation], f = this._getArrayFromAccessor(n);
+		for (let e = 0, n = s.length; e < n; e++) {
+			let n = new l(s[e] + "." + Ui[i.path], t.array, f, u);
+			r.interpolation === "CUBICSPLINE" && this._createCubicSplineTrackInterpolant(n), a.push(n);
 		}
-		return o;
+		return a;
 	}
 	_getArrayFromAccessor(e) {
 		let t = e.array;
 		if (e.normalized) {
-			let e = Gi(t.constructor), n = new Float32Array(t.length);
+			let e = Qi(t.constructor), n = new Float32Array(t.length);
 			for (let r = 0, i = t.length; r < i; r++) n[r] = t[r] * e;
 			t = n;
 		}
@@ -3876,56 +4010,56 @@ var qi = new o(), Ji = class {
 	}
 	_createCubicSplineTrackInterpolant(e) {
 		e.createInterpolant = function(e) {
-			return new (this instanceof Ee ? Ai : Oi)(this.times, this.values, this.getValueSize() / 3, e);
+			return new (this instanceof d ? Li : Fi)(this.times, this.values, this.getValueSize() / 3, e);
 		}, e.createInterpolant.isInterpolantFactoryMethodGLTFCubicSpline = !0;
 	}
 };
-function Yi(e, n, r) {
-	let i = n.attributes, a = new we();
-	if (i.POSITION !== void 0) {
-		let e = r.json.accessors[i.POSITION], t = e.min, n = e.max;
-		if (t !== void 0 && n !== void 0) {
-			if (a.set(new E(t[0], t[1], t[2]), new E(n[0], n[1], n[2])), e.normalized) {
-				let t = Gi(ji[e.componentType]);
-				a.min.multiplyScalar(t), a.max.multiplyScalar(t);
+function na(e, t, n) {
+	let r = t.attributes, i = new Se();
+	if (r.POSITION !== void 0) {
+		let e = n.json.accessors[r.POSITION], t = e.min, a = e.max;
+		if (t !== void 0 && a !== void 0) {
+			if (i.set(new S(t[0], t[1], t[2]), new S(a[0], a[1], a[2])), e.normalized) {
+				let t = Qi(Ri[e.componentType]);
+				i.min.multiplyScalar(t), i.max.multiplyScalar(t);
 			}
 		} else {
 			console.warn("THREE.GLTFLoader: Missing min/max properties for accessor POSITION.");
 			return;
 		}
 	} else return;
-	let o = n.targets;
-	if (o !== void 0) {
-		let e = new E(), t = new E();
-		for (let n = 0, i = o.length; n < i; n++) {
-			let i = o[n];
+	let a = t.targets;
+	if (a !== void 0) {
+		let e = new S(), t = new S();
+		for (let r = 0, i = a.length; r < i; r++) {
+			let i = a[r];
 			if (i.POSITION !== void 0) {
-				let n = r.json.accessors[i.POSITION], a = n.min, o = n.max;
+				let r = n.json.accessors[i.POSITION], a = r.min, o = r.max;
 				if (a !== void 0 && o !== void 0) {
-					if (t.setX(Math.max(Math.abs(a[0]), Math.abs(o[0]))), t.setY(Math.max(Math.abs(a[1]), Math.abs(o[1]))), t.setZ(Math.max(Math.abs(a[2]), Math.abs(o[2]))), n.normalized) {
-						let e = Gi(ji[n.componentType]);
+					if (t.setX(Math.max(Math.abs(a[0]), Math.abs(o[0]))), t.setY(Math.max(Math.abs(a[1]), Math.abs(o[1]))), t.setZ(Math.max(Math.abs(a[2]), Math.abs(o[2]))), r.normalized) {
+						let e = Qi(Ri[r.componentType]);
 						t.multiplyScalar(e);
 					}
 					e.max(t);
 				} else console.warn("THREE.GLTFLoader: Missing min/max properties for accessor POSITION.");
 			}
 		}
-		a.expandByVector(e);
+		i.expandByVector(e);
 	}
-	e.boundingBox = a;
-	let s = new t();
-	a.getCenter(s.center), s.radius = a.min.distanceTo(a.max) / 2, e.boundingSphere = s;
+	e.boundingBox = i;
+	let o = new de();
+	i.getCenter(o.center), o.radius = i.min.distanceTo(i.max) / 2, e.boundingSphere = o;
 }
-function Xi(e, t, n) {
-	let r = t.attributes, a = [];
+function ra(e, t, n) {
+	let i = t.attributes, a = [];
 	function o(t, r) {
 		return n.getDependency("accessor", t).then(function(t) {
 			e.setAttribute(r, t);
 		});
 	}
-	for (let t in r) {
-		let n = Fi[t] || t.toLowerCase();
-		n in e.attributes || a.push(o(r[t], n));
+	for (let t in i) {
+		let n = Hi[t] || t.toLowerCase();
+		n in e.attributes || a.push(o(i[t], n));
 	}
 	if (t.indices !== void 0 && !e.index) {
 		let r = n.getDependency("accessor", t.indices).then(function(t) {
@@ -3933,107 +4067,32 @@ function Xi(e, t, n) {
 		});
 		a.push(r);
 	}
-	return i.workingColorSpace !== "srgb-linear" && "COLOR_0" in r && console.warn(`THREE.GLTFLoader: Converting vertex colors from "srgb-linear" to "${i.workingColorSpace}" not supported.`), q(e, t), Yi(e, t, n), Promise.all(a).then(function() {
-		return t.targets === void 0 ? e : Vi(e, t.targets, n);
+	return r.workingColorSpace !== "srgb-linear" && "COLOR_0" in i && console.warn(`THREE.GLTFLoader: Converting vertex colors from "srgb-linear" to "${r.workingColorSpace}" not supported.`), K(e, t), na(e, t, n), Promise.all(a).then(function() {
+		return t.targets === void 0 ? e : Ji(e, t.targets, n);
 	});
 }
 //#endregion
-//#region src/domain/WebEffects.ts
-var Zi = {
-	schemaVersion: 1,
-	toneMapping: "none",
-	exposure: 1,
-	fog: {
-		enabled: !1,
-		color: 6649221,
-		nearMeters: 10,
-		farMeters: 100
-	},
-	particles: {
-		enabled: !1,
-		style: "steam",
-		color: 14477812,
-		count: 128,
-		originMeters: [
-			0,
-			0,
-			0
-		],
-		spreadMeters: .5,
-		speedMetersPerSecond: .5,
-		lifetimeSeconds: 3,
-		sizeMeters: .1,
-		seed: 1
-	}
-};
-function Qi(e) {
-	let t = (e, t) => {
-		if (!e || typeof e != "object" || Array.isArray(e) || Object.keys(e).sort().join(",") !== [...t].sort().join(",")) throw Error("지원하지 않는 웹 효과 형식입니다.");
-		return e;
-	}, n = (e, t, n) => {
-		if (typeof e != "number" || !Number.isFinite(e) || e < t || e > n) throw Error("웹 효과 수치가 허용 범위를 벗어났습니다.");
-	}, r = (e) => {
-		if (n(e, 0, 16777215), !Number.isInteger(e)) throw Error("웹 효과 색상은 정수여야 합니다.");
-	}, i = t(e, [
-		"schemaVersion",
-		"toneMapping",
-		"exposure",
-		"fog",
-		"particles"
-	]);
-	if (i.schemaVersion !== 1 || !["none", "aces"].includes(String(i.toneMapping))) throw Error("지원하지 않는 웹 효과 버전/톤 매핑입니다.");
-	n(i.exposure, .1, 8);
-	let a = t(i.fog, [
-		"enabled",
-		"color",
-		"nearMeters",
-		"farMeters"
-	]);
-	if (typeof a.enabled != "boolean") throw Error("잘못된 안개 활성 값");
-	if (r(a.color), n(a.nearMeters, 0, 1e5), n(a.farMeters, .01, 1e5), Number(a.nearMeters) >= Number(a.farMeters)) throw Error("안개 끝 거리는 시작 거리보다 커야 합니다.");
-	let o = t(i.particles, [
-		"enabled",
-		"style",
-		"color",
-		"count",
-		"originMeters",
-		"spreadMeters",
-		"speedMetersPerSecond",
-		"lifetimeSeconds",
-		"sizeMeters",
-		"seed"
-	]);
-	if (typeof o.enabled != "boolean" || ![
-		"steam",
-		"sparks",
-		"beacon"
-	].includes(String(o.style))) throw Error("잘못된 파티클 종류");
-	if (r(o.color), n(o.count, 1, 2048), n(o.seed, 0, 4294967295), !Number.isInteger(o.count) || !Number.isInteger(o.seed)) throw Error("파티클 개수와 seed는 정수여야 합니다.");
-	if (!Array.isArray(o.originMeters) || o.originMeters.length !== 3) throw Error("잘못된 파티클 위치");
-	o.originMeters.forEach((e) => n(e, -1e5, 1e5)), n(o.spreadMeters, 0, 100), n(o.speedMetersPerSecond, 0, 100), n(o.lifetimeSeconds, .1, 60), n(o.sizeMeters, .001, 10);
-}
-//#endregion
 //#region src/domain/EnvironmentLighting.ts
-var $i = {
+var ia = {
 	enabled: !1,
 	intensity: .2
 };
-function ea(e) {
+function aa(e) {
 	return typeof e == "number" && Number.isFinite(e) && e >= 0 && e <= 4;
 }
-function ta(e) {
-	if (!e || typeof e != "object" || Array.isArray(e) || Object.keys(e).some((e) => !["enabled", "intensity"].includes(e)) || typeof e.enabled != "boolean" || !ea(e.intensity)) throw Error("환경광 강도는 0~4 사이의 유효한 값이어야 합니다.");
+function oa(e) {
+	if (!e || typeof e != "object" || Array.isArray(e) || Object.keys(e).some((e) => !["enabled", "intensity"].includes(e)) || typeof e.enabled != "boolean" || !aa(e.intensity)) throw Error("환경광 강도는 0~4 사이의 유효한 값이어야 합니다.");
 }
 //#endregion
 //#region src/domain/BuildSettings.ts
-var na = [
+var sa = [
 	[1280, 720],
 	[1920, 1080],
 	[2560, 1440],
 	[3840, 2160]
 ];
 _e.VIEWPORT;
-function ra(e) {
+function ca(e) {
 	if (!e || typeof e != "object" || Array.isArray(e)) throw Error("잘못된 빌드 설정");
 	let t = e;
 	if (Object.keys(t).some((e) => ![
@@ -4046,13 +4105,13 @@ function ra(e) {
 		"playerStartActorId",
 		"showInstructions",
 		"showFullscreen"
-	].includes(e)) || t.version !== 1 || !se(t.renderQuality) || ![
+	].includes(e)) || t.version !== 1 || !w(t.renderQuality) || ![
 		"pc",
 		"tablet",
 		"mobile"
 	].includes(t.platform) || typeof t.showInstructions != "boolean" || typeof t.showFullscreen != "boolean" || !(t.playerStartActorId === null || typeof t.playerStartActorId == "string" && t.playerStartActorId.length > 0 && t.playerStartActorId.length <= 120)) throw Error("지원하지 않는 빌드 설정 버전 또는 값");
 	let n = t.resolution;
-	if (!n || !["fit", "fixed"].includes(n.mode) || !na.some(([e, t]) => e === n.width && t === n.height) || ![
+	if (!n || !["fit", "fixed"].includes(n.mode) || !sa.some(([e, t]) => e === n.width && t === n.height) || ![
 		.5,
 		.75,
 		1
@@ -4062,13 +4121,13 @@ function ra(e) {
 		"height",
 		"scale"
 	].includes(e))) throw Error("지원하지 않는 실행 해상도");
-	if (Vr(t.textures), t.environmentLighting !== void 0 && ta(t.environmentLighting), t.textures.maps.some((e) => Hr(t.textures, e) > (e === "baseColor" ? 1024 : 512))) throw Error("베이스는 최대 1024, 나머지는 최대 512로 설정하세요.");
+	if (Kr(t.textures), t.environmentLighting !== void 0 && oa(t.environmentLighting), t.textures.maps.some((e) => qr(t.textures, e) > (e === "baseColor" ? 1024 : 512))) throw Error("베이스는 최대 1024, 나머지는 최대 512로 설정하세요.");
 }
 //#endregion
 //#region src/domain/sceneSerialization.ts
-var J = class extends Error {}, ia = class extends Error {};
-function aa(e) {
-	if (!Y(e)) return e;
+var q = class extends Error {}, la = class extends Error {};
+function ua(e) {
+	if (!J(e)) return e;
 	let t = e.schemaVersion === 1 ? {
 		...e,
 		schemaVersion: 2,
@@ -4079,11 +4138,11 @@ function aa(e) {
 	} : e;
 	return t.schemaVersion !== 2 || !Array.isArray(t.actors) ? t : {
 		...t,
-		actors: t.actors.map((e) => !Y(e) || !Array.isArray(e.components) ? e : {
+		actors: t.actors.map((e) => !J(e) || !Array.isArray(e.components) ? e : {
 			...e,
-			components: e.components.map((e) => !Y(e) || !Array.isArray(e.materialOverrides) ? e : {
+			components: e.components.map((e) => !J(e) || !Array.isArray(e.materialOverrides) ? e : {
 				...e,
-				materialOverrides: e.materialOverrides.map((e) => Y(e) && e.tintOverrides === void 0 ? {
+				materialOverrides: e.materialOverrides.map((e) => J(e) && e.tintOverrides === void 0 ? {
 					...e,
 					tintOverrides: []
 				} : e)
@@ -4091,114 +4150,114 @@ function aa(e) {
 		})
 	};
 }
-function oa(e) {
-	if (!Y(e)) throw new J("Scene payload must be an object.");
-	if (e.schemaVersion !== 2) throw new J(`Unsupported Scene schemaVersion ${String(e.schemaVersion)}.`);
-	if (e.kind !== "Scene" || e.coordinateSystem !== "RH_Y_UP_METERS_V1") throw new J("Scene kind or coordinate system is unsupported.");
-	if (X(e.id, "Scene.id"), !Array.isArray(e.actors)) throw new J("Scene.actors must be an array.");
+function da(e) {
+	if (!J(e)) throw new q("Scene payload must be an object.");
+	if (e.schemaVersion !== 2) throw new q(`Unsupported Scene schemaVersion ${String(e.schemaVersion)}.`);
+	if (e.kind !== "Scene" || e.coordinateSystem !== "RH_Y_UP_METERS_V1") throw new q("Scene kind or coordinate system is unsupported.");
+	if (Y(e.id, "Scene.id"), !Array.isArray(e.actors)) throw new q("Scene.actors must be an array.");
 	for (let [t, n] of e.actors.entries()) {
-		if (!Y(n)) throw new J(`Actor ${t} must be an object.`);
-		if (X(n.id, `Actor ${t}.id`), X(n.name, `Actor ${t}.name`), X(n.classId, `Actor ${t}.classId`), X(n.rootComponentId, `Actor ${t}.rootComponentId`), !Array.isArray(n.tags) || !n.tags.every((e) => typeof e == "string")) throw new J(`Actor ${t}.tags must be strings.`);
-		if (!Array.isArray(n.components)) throw new J(`Actor ${t}.components must be an array.`);
-		for (let [e, r] of n.components.entries()) da(r, t, e);
+		if (!J(n)) throw new q(`Actor ${t} must be an object.`);
+		if (Y(n.id, `Actor ${t}.id`), Y(n.name, `Actor ${t}.name`), Y(n.classId, `Actor ${t}.classId`), Y(n.rootComponentId, `Actor ${t}.rootComponentId`), !Array.isArray(n.tags) || !n.tags.every((e) => typeof e == "string")) throw new q(`Actor ${t}.tags must be strings.`);
+		if (!Array.isArray(n.components)) throw new q(`Actor ${t}.components must be an array.`);
+		for (let [e, r] of n.components.entries()) ga(r, t, e);
 	}
-	if (!Y(e.authoring)) throw new J("Scene.authoring is required.");
-	if (e.authoring.webEffects !== void 0 && Qi(e.authoring.webEffects), e.authoring.buildSettings !== void 0 && ra(e.authoring.buildSettings), e.authoring.levelName !== void 0 && (typeof e.authoring.levelName != "string" || !e.authoring.levelName.trim() || e.authoring.levelName.length > 120 || [...e.authoring.levelName].some((e) => e.charCodeAt(0) < 32 || e.charCodeAt(0) === 127))) throw new J("레벨 이름은 제어 문자 없이 1~120자로 입력하세요.");
-	if (!Array.isArray(e.authoring.folders) || !Array.isArray(e.authoring.actorFolders)) throw new J("Scene.authoring collections must be arrays.");
+	if (!J(e.authoring)) throw new q("Scene.authoring is required.");
+	if (e.authoring.webEffects !== void 0 && Yn(e.authoring.webEffects), e.authoring.buildSettings !== void 0 && ca(e.authoring.buildSettings), e.authoring.levelName !== void 0 && (typeof e.authoring.levelName != "string" || !e.authoring.levelName.trim() || e.authoring.levelName.length > 120 || [...e.authoring.levelName].some((e) => e.charCodeAt(0) < 32 || e.charCodeAt(0) === 127))) throw new q("레벨 이름은 제어 문자 없이 1~120자로 입력하세요.");
+	if (!Array.isArray(e.authoring.folders) || !Array.isArray(e.authoring.actorFolders)) throw new q("Scene.authoring collections must be arrays.");
 	for (let t of e.authoring.folders) {
-		if (!Y(t)) throw new J("Outliner folder must be an object.");
-		X(t.id, "OutlinerFolder.id"), X(t.name, "OutlinerFolder.name"), fa(t.parentId, "OutlinerFolder.parentId");
+		if (!J(t)) throw new q("Outliner folder must be an object.");
+		Y(t.id, "OutlinerFolder.id"), Y(t.name, "OutlinerFolder.name"), _a(t.parentId, "OutlinerFolder.parentId");
 	}
 	for (let t of e.authoring.actorFolders) {
-		if (!Y(t)) throw new J("Actor folder membership must be an object.");
-		X(t.actorId, "ActorFolderMembership.actorId"), fa(t.folderId, "ActorFolderMembership.folderId");
+		if (!J(t)) throw new q("Actor folder membership must be an object.");
+		Y(t.actorId, "ActorFolderMembership.actorId"), _a(t.folderId, "ActorFolderMembership.folderId");
 	}
 	if (e.authoring.prefabInstances !== void 0) {
-		if (!Array.isArray(e.authoring.prefabInstances)) throw new J("Scene.authoring.prefabInstances must be an array.");
+		if (!Array.isArray(e.authoring.prefabInstances)) throw new q("Scene.authoring.prefabInstances must be an array.");
 		for (let t of e.authoring.prefabInstances) {
-			if (!Y(t)) throw new J("Prefab instance metadata must be an object.");
-			if (X(t.id, "PrefabInstance.id"), X(t.prefabAssetId, "PrefabInstance.prefabAssetId"), X(t.sourceRevisionId, "PrefabInstance.sourceRevisionId"), !Y(t.localActorIds) || !Y(t.localComponentIds) || !Array.isArray(t.overrides)) throw new J("Prefab instance mappings or overrides are invalid.");
-			if (t.inheritanceVersion !== void 0 && t.inheritanceVersion !== 1) throw new J("Unsupported Prefab inheritance version.");
-			if (t.removedComponentLocalIds !== void 0 && (!Array.isArray(t.removedComponentLocalIds) || t.removedComponentLocalIds.some((e) => typeof e != "string"))) throw new J("Invalid Prefab removed Component IDs.");
+			if (!J(t)) throw new q("Prefab instance metadata must be an object.");
+			if (Y(t.id, "PrefabInstance.id"), Y(t.prefabAssetId, "PrefabInstance.prefabAssetId"), Y(t.sourceRevisionId, "PrefabInstance.sourceRevisionId"), !J(t.localActorIds) || !J(t.localComponentIds) || !Array.isArray(t.overrides)) throw new q("Prefab instance mappings or overrides are invalid.");
+			if (t.inheritanceVersion !== void 0 && t.inheritanceVersion !== 1) throw new q("Unsupported Prefab inheritance version.");
+			if (t.removedComponentLocalIds !== void 0 && (!Array.isArray(t.removedComponentLocalIds) || t.removedComponentLocalIds.some((e) => typeof e != "string"))) throw new q("Invalid Prefab removed Component IDs.");
 		}
 	}
-	e.authoring.ueImport !== void 0 && sa(e.authoring.ueImport);
+	e.authoring.ueImport !== void 0 && fa(e.authoring.ueImport);
 }
-function sa(e) {
-	if (!Y(e)) throw new J("Scene.authoring.ueImport must be an object.");
+function fa(e) {
+	if (!J(e)) throw new q("Scene.authoring.ueImport must be an object.");
 	for (let t of [
 		"packageId",
 		"sourceProjectId",
 		"sourceSnapshotId",
 		"sourceLevelKey"
-	]) X(e[t], `ueImport.${t}`);
+	]) Y(e[t], `ueImport.${t}`);
 	for (let t of [
 		"sourceActorIds",
 		"sourceComponentIds",
 		"sourceFolderIds"
-	]) if (!Y(e[t]) || !Object.values(e[t]).every((e) => typeof e == "string")) throw new J(`ueImport.${t} must map source IDs to web IDs.`);
-	if (!Array.isArray(e.components)) throw new J("ueImport.components must be an array.");
+	]) if (!J(e[t]) || !Object.values(e[t]).every((e) => typeof e == "string")) throw new q(`ueImport.${t} must map source IDs to web IDs.`);
+	if (!Array.isArray(e.components)) throw new q("ueImport.components must be an array.");
 	for (let t of e.components) {
-		if (!Y(t)) throw new J("ueImport component must be an object.");
+		if (!J(t)) throw new q("ueImport component must be an object.");
 		for (let e of [
 			"sourceId",
 			"webId",
 			"sourceKind",
 			"sourceKey"
-		]) X(t[e], `ueImport.component.${e}`);
-		if (typeof t.visible != "boolean" || typeof t.hiddenInGame != "boolean" || !Array.isArray(t.instances)) throw new J("ueImport component visibility or instances are invalid.");
+		]) Y(t[e], `ueImport.component.${e}`);
+		if (typeof t.visible != "boolean" || typeof t.hiddenInGame != "boolean" || !Array.isArray(t.instances)) throw new q("ueImport component visibility or instances are invalid.");
 		for (let e of t.instances) {
-			if (!Y(e)) throw new J("ueImport instance must be an object.");
-			if (X(e.sourceId, "ueImport.instance.sourceId"), !Number.isInteger(e.sourceIndex) || !Y(e.transform) || !Array.isArray(e.worldMatrix) || e.worldMatrix.length !== 16) throw new J("ueImport instance fields are invalid.");
+			if (!J(e)) throw new q("ueImport instance must be an object.");
+			if (Y(e.sourceId, "ueImport.instance.sourceId"), !Number.isInteger(e.sourceIndex) || !J(e.transform) || !Array.isArray(e.worldMatrix) || e.worldMatrix.length !== 16) throw new q("ueImport instance fields are invalid.");
 		}
 	}
 }
-function ca(e) {
+function pa(e) {
 	try {
-		sn(e), kn(e);
+		cn(e), An(e);
 	} catch (e) {
-		throw new ia(e instanceof Error ? e.message : "Invalid Scene relationships.");
+		throw new la(e instanceof Error ? e.message : "Invalid Scene relationships.");
 	}
 }
-function la(e) {
-	let t = aa(e);
-	return oa(t), ca(t), t;
+function ma(e) {
+	let t = ua(e);
+	return da(t), pa(t), t;
 }
-function ua(e) {
+function ha(e) {
 	let t = structuredClone(e);
-	return oa(t), ca(t), t;
+	return da(t), pa(t), t;
 }
-function da(e, t, n) {
-	if (!Y(e)) throw new J(`Component ${t}:${n} must be an object.`);
-	if (X(e.id, "Component.id"), X(e.ownerActorId, "Component.ownerActorId"), e.type === "TestData" || e.type === "TestScript") {
+function ga(e, t, n) {
+	if (!J(e)) throw new q(`Component ${t}:${n} must be an object.`);
+	if (Y(e.id, "Component.id"), Y(e.ownerActorId, "Component.ownerActorId"), e.type === "TestData" || e.type === "TestScript") {
 		if (e.typeVersion !== 1 && (e.type !== "TestScript" || e.typeVersion !== 2 && e.typeVersion !== 3) || [
 			"localTransform",
 			"parentComponentId",
 			"attachmentParent"
-		].some((t) => t in e) || k.validate(e.type, e.typeVersion, e, "load").length) throw new J(`Invalid non-spatial ${e.type} Component.`);
-		e.type === "TestScript" && xt(e);
+		].some((t) => t in e) || O.validate(e.type, e.typeVersion, e, "load").length) throw new q(`Invalid non-spatial ${e.type} Component.`);
+		e.type === "TestScript" && St(e);
 		return;
 	}
-	if (fa(e.parentComponentId, "Component.parentComponentId"), e.attachmentParent !== null) {
-		if (!Y(e.attachmentParent)) throw new J("Component.attachmentParent is invalid.");
-		X(e.attachmentParent.actorId, "attachmentParent.actorId"), X(e.attachmentParent.componentId, "attachmentParent.componentId");
+	if (_a(e.parentComponentId, "Component.parentComponentId"), e.attachmentParent !== null) {
+		if (!J(e.attachmentParent)) throw new q("Component.attachmentParent is invalid.");
+		Y(e.attachmentParent.actorId, "attachmentParent.actorId"), Y(e.attachmentParent.componentId, "attachmentParent.componentId");
 		let t = e.attachmentParent.kind;
-		if (t !== void 0 && t !== "component" && t !== "bone" && t !== "socket") throw new J("attachmentParent.kind is invalid.");
-		if ((t === "bone" || t === "socket") && (X(e.attachmentParent.skeletonAssetId, "attachmentParent.skeletonAssetId"), X(e.attachmentParent.sourceSkeletonAssetId, "attachmentParent.sourceSkeletonAssetId"), X(e.attachmentParent.bindingSignature, "attachmentParent.bindingSignature"), X(e.attachmentParent.targetId, "attachmentParent.targetId"), !/^[0-9a-f]{64}$/u.test(e.attachmentParent.bindingSignature))) throw new J("attachmentParent.bindingSignature must be a lowercase SHA-256 value.");
+		if (t !== void 0 && t !== "component" && t !== "bone" && t !== "socket") throw new q("attachmentParent.kind is invalid.");
+		if ((t === "bone" || t === "socket") && (Y(e.attachmentParent.skeletonAssetId, "attachmentParent.skeletonAssetId"), Y(e.attachmentParent.sourceSkeletonAssetId, "attachmentParent.sourceSkeletonAssetId"), Y(e.attachmentParent.bindingSignature, "attachmentParent.bindingSignature"), Y(e.attachmentParent.targetId, "attachmentParent.targetId"), !/^[0-9a-f]{64}$/u.test(e.attachmentParent.bindingSignature))) throw new q("attachmentParent.bindingSignature must be a lowercase SHA-256 value.");
 	}
-	if (typeof e.type != "string" || typeof e.typeVersion != "number" || !k.has(e.type, e.typeVersion)) throw new J(`Unsupported Component type/version ${String(e.type)}@${String(e.typeVersion)}; payload was not modified.`);
-	if ((e.type === "PrimitiveCube" || e.type === "StaticMesh") && e.shape !== void 0 && (typeof e.shape != "string" || !Re(e.shape))) throw new J("Unsupported primitive shape; payload was not modified.");
-	let r = k.validate(e.type, e.typeVersion, e, "load");
-	if (r.length > 0) throw new J(`Invalid Component fields: ${r.map((e) => e.fieldId).join(", ")}.`);
+	if (typeof e.type != "string" || typeof e.typeVersion != "number" || !O.has(e.type, e.typeVersion)) throw new q(`Unsupported Component type/version ${String(e.type)}@${String(e.typeVersion)}; payload was not modified.`);
+	if ((e.type === "PrimitiveCube" || e.type === "StaticMesh") && e.shape !== void 0 && (typeof e.shape != "string" || !ze(e.shape))) throw new q("Unsupported primitive shape; payload was not modified.");
+	let r = O.validate(e.type, e.typeVersion, e, "load");
+	if (r.length > 0) throw new q(`Invalid Component fields: ${r.map((e) => e.fieldId).join(", ")}.`);
 }
-function Y(e) {
+function J(e) {
 	return typeof e == "object" && !!e && !Array.isArray(e);
 }
-function X(e, t) {
-	if (typeof e != "string" || e.length === 0) throw new J(`${t} must be a non-empty string.`);
+function Y(e, t) {
+	if (typeof e != "string" || e.length === 0) throw new q(`${t} must be a non-empty string.`);
 }
-function fa(e, t) {
-	if (e !== null && typeof e != "string") throw new J(`${t} must be a string or null.`);
+function _a(e, t) {
+	if (e !== null && typeof e != "string") throw new q(`${t} must be a string or null.`);
 }
 Uint32Array.from({ length: 256 }, (e, t) => {
 	for (let e = 0; e < 8; e++) t = t >>> 1 ^ (t & 1 ? 3988292384 : 0);
@@ -4206,7 +4265,7 @@ Uint32Array.from({ length: 256 }, (e, t) => {
 });
 //#endregion
 //#region src/storage/ProjectPackage.ts
-var pa = class extends Error {
+var va = class extends Error {
 	code;
 	affectedIds;
 	materialOutcome;
@@ -4214,101 +4273,101 @@ var pa = class extends Error {
 		super(t), this.code = e, this.affectedIds = n, this.materialOutcome = r, this.name = "UEPackageImportError";
 	}
 };
-function ma(e, t) {
-	let n = _a(t.bones, "skeleton.bones"), r = /* @__PURE__ */ new Map(), i = n.map((t) => {
-		let n = va(t.id, "bone.id");
-		return r.has(n) && Z("identity", `Skeleton ${e} has duplicate bone ${n}.`, [e, n]), r.set(n, t), {
+function ya(e, t) {
+	let n = Sa(t.bones, "skeleton.bones"), r = /* @__PURE__ */ new Map(), i = n.map((t) => {
+		let n = Ca(t.id, "bone.id");
+		return r.has(n) && X("identity", `Skeleton ${e} has duplicate bone ${n}.`, [e, n]), r.set(n, t), {
 			id: n,
-			name: va(t.name, "bone.name"),
-			parentId: t.parentId === null ? null : va(t.parentId, "bone.parentId"),
-			restLocal: ha(t.restLocal, "bone.restLocal")
+			name: Ca(t.name, "bone.name"),
+			parentId: t.parentId === null ? null : Ca(t.parentId, "bone.parentId"),
+			restLocal: ba(t.restLocal, "bone.restLocal")
 		};
 	});
-	for (let t of i) t.parentId !== null && !r.has(t.parentId) && Z("identity", `Skeleton ${e} bone ${t.id} has an unknown parent.`, [e, t.id]);
+	for (let t of i) t.parentId !== null && !r.has(t.parentId) && X("identity", `Skeleton ${e} bone ${t.id} has an unknown parent.`, [e, t.id]);
 	for (let t of i) {
 		let n = /* @__PURE__ */ new Set(), r = t;
-		for (; r?.parentId;) n.has(r.id) && Z("identity", `Skeleton ${e} bone tree contains a cycle.`, [e, t.id]), n.add(r.id), r = i.find((e) => e.id === r.parentId);
+		for (; r?.parentId;) n.has(r.id) && X("identity", `Skeleton ${e} bone tree contains a cycle.`, [e, t.id]), n.add(r.id), r = i.find((e) => e.id === r.parentId);
 	}
 	let a = /* @__PURE__ */ new Set();
 	return {
 		sourceAssetId: e,
 		bones: i,
-		sockets: _a(t.sockets, "skeleton.sockets").map((t) => {
-			let n = va(t.id, "socket.id"), i = va(t.boneId, "socket.boneId");
-			return a.has(n) && Z("identity", `Skeleton ${e} has duplicate socket ${n}.`, [e, n]), a.add(n), r.has(i) || Z("identity", `Skeleton ${e} socket ${n} references an unknown bone.`, [
+		sockets: Sa(t.sockets, "skeleton.sockets").map((t) => {
+			let n = Ca(t.id, "socket.id"), i = Ca(t.boneId, "socket.boneId");
+			return a.has(n) && X("identity", `Skeleton ${e} has duplicate socket ${n}.`, [e, n]), a.add(n), r.has(i) || X("identity", `Skeleton ${e} socket ${n} references an unknown bone.`, [
 				e,
 				n,
 				i
 			]), {
 				id: n,
-				name: va(t.name, "socket.name"),
+				name: Ca(t.name, "socket.name"),
 				boneId: i,
-				transform: ha(t.transform, "socket.transform")
+				transform: ba(t.transform, "socket.transform")
 			};
 		})
 	};
 }
-function ha(e, t) {
-	let n = ga(e, t);
+function ba(e, t) {
+	let n = xa(e, t);
 	return {
-		position: ya(n.position, 3, `${t}.position`),
-		rotation: ya(n.rotation, 4, `${t}.rotation`),
-		scale: ya(n.scale, 3, `${t}.scale`)
+		position: wa(n.position, 3, `${t}.position`),
+		rotation: wa(n.rotation, 4, `${t}.rotation`),
+		scale: wa(n.scale, 3, `${t}.scale`)
 	};
 }
-function ga(e, t) {
-	return (typeof e != "object" || !e || Array.isArray(e)) && Z("json", `${t} must be an object.`), e;
+function xa(e, t) {
+	return (typeof e != "object" || !e || Array.isArray(e)) && X("json", `${t} must be an object.`), e;
 }
-function _a(e, t) {
-	return Array.isArray(e) || Z("json", `${t} must be an array.`), e.map((e, n) => ga(e, `${t}[${n}]`));
+function Sa(e, t) {
+	return Array.isArray(e) || X("json", `${t} must be an array.`), e.map((e, n) => xa(e, `${t}[${n}]`));
 }
-function va(e, t) {
-	return (typeof e != "string" || !e) && Z("json", `${t} must be a non-empty string.`), e;
+function Ca(e, t) {
+	return (typeof e != "string" || !e) && X("json", `${t} must be a non-empty string.`), e;
 }
-function ya(e, t, n) {
-	return (!Array.isArray(e) || e.length !== t || !e.every(Number.isFinite)) && Z("json", `${n} must contain ${t} finite numbers.`), e;
+function wa(e, t, n) {
+	return (!Array.isArray(e) || e.length !== t || !e.every(Number.isFinite)) && X("json", `${n} must contain ${t} finite numbers.`), e;
 }
-function Z(e, t, n = [], r = null) {
-	throw new pa(e, t, n, r);
+function X(e, t, n = [], r = null) {
+	throw new va(e, t, n, r);
 }
 //#endregion
 //#region src/ue-import/staticPreviewMath.ts
-var ba = new o().set(0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, 0, 0, 0, 0, 1), xa = 1024 ** 2, Sa = 1024 ** 3, Ca = 8 * Sa, wa, Ta = 0, Ea;
-async function Da() {
+var Ta = new Me().set(0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, 0, 0, 0, 0, 1), Ea = 1024 ** 2, Da = 1024 ** 3, Oa = 8 * Da, ka, Aa = 0, ja;
+async function Ma() {
 	let e = typeof window > "u" ? void 0 : window.desktopAPI?.memoryCapacity;
 	if (!e) {
-		wa = void 0, Ta = 0;
+		ka = void 0, Aa = 0;
 		return;
 	}
-	if (Ea) return Ea;
-	if (!(Date.now() - Ta < 1e3)) return Ea = (async () => {
+	if (ja) return ja;
+	if (!(Date.now() - Aa < 1e3)) return ja = (async () => {
 		try {
 			let t = await e();
 			if (!Number.isSafeInteger(t.total) || !Number.isSafeInteger(t.available) || t.total <= 0 || t.available < 0 || t.available > t.total) throw Error("Invalid memory capacity");
-			wa = t, Ta = Date.now();
+			ka = t, Aa = Date.now();
 		} catch {
-			wa = void 0;
+			ka = void 0;
 		}
 	})().finally(() => {
-		Ea = void 0;
-	}), Ea;
+		ja = void 0;
+	}), ja;
 }
-function Oa(e = 0, t = wa) {
+function Na(e = 0, t = ka) {
 	if (!Number.isFinite(e) || e < 0) throw Error("유효하지 않은 메모리 사용량입니다.");
-	if (t) return Math.floor(Math.min(Ca, t.total * .4, e + t.available * .6));
+	if (t) return Math.floor(Math.min(Oa, t.total * .4, e + t.available * .6));
 	let n = globalThis.navigator?.deviceMemory;
-	return Math.floor(Math.min(Ca, Number.isFinite(n) && n > 0 ? n * Sa * .5 : 2 * Sa));
+	return Math.floor(Math.min(Oa, Number.isFinite(n) && n > 0 ? n * Da * .5 : 2 * Da));
 }
-function ka(e, t = 0, n = "표시") {
-	let r = Oa(t);
-	if (!Number.isFinite(e) || e < 0 || e > Ca || e > r) throw Error(`${n} 자동 메모리 예산: 필요 ${(e / xa).toFixed(1)} MiB / 현재 자동 한도 ${(r / xa).toFixed(0)} MiB. 다른 작업을 닫거나 텍스처 크기를 줄인 뒤 다시 시도하세요. 기존 데이터는 유지됩니다.`);
+function Pa(e, t = 0, n = "표시") {
+	let r = Na(t);
+	if (!Number.isFinite(e) || e < 0 || e > Oa || e > r) throw Error(`${n} 자동 메모리 예산: 필요 ${(e / Ea).toFixed(1)} MiB / 현재 자동 한도 ${(r / Ea).toFixed(0)} MiB. 다른 작업을 닫거나 텍스처 크기를 줄인 뒤 다시 시도하세요. 기존 데이터는 유지됩니다.`);
 }
-function Aa(e) {
-	if (!Number.isFinite(e) || e < 0 || e > Ca) throw Error("유효하지 않은 메모리 예산입니다.");
-	return Math.min(Ca, Math.max(128 * xa, Math.ceil(e * 1.1 / (64 * xa)) * 64 * xa));
+function Fa(e) {
+	if (!Number.isFinite(e) || e < 0 || e > Oa) throw Error("유효하지 않은 메모리 예산입니다.");
+	return Math.min(Oa, Math.max(128 * Ea, Math.ceil(e * 1.1 / (64 * Ea)) * 64 * Ea));
 }
-function ja(e, t = 0) {
-	return ka(e, t, "텍스처"), [
+function Ia(e, t = 0) {
+	return Pa(e, t, "텍스처"), [
 		128,
 		256,
 		512,
@@ -4316,27 +4375,27 @@ function ja(e, t = 0) {
 		2048,
 		4096,
 		8192
-	].map((e) => e * xa).find((t) => t >= e);
+	].map((e) => e * Ea).find((t) => t >= e);
 }
-function Ma(e, t, n = 0) {
+function La(e, t, n = 0) {
 	return typeof e == "function" ? e(t, n) : e;
 }
-var Na = /* @__PURE__ */ new Map(), Pa = class {
+var Ra = /* @__PURE__ */ new Map(), za = class {
 	closed = !1;
 	update(e, t, n, r = !1) {
 		if (this.closed) return;
 		if (![e, t].every((e) => Number.isFinite(e) && e >= 0)) throw Error("유효하지 않은 메모리 예약입니다.");
-		r && (e = Math.max(e, Na.get(this)?.peak ?? 0));
-		let i = [...Na].filter(([e]) => e !== this).map(([, e]) => e);
-		n && ka(e + i.reduce((e, t) => e + t.peak, 0), t + i.reduce((e, t) => e + t.resident, 0)), Na.set(this, {
+		r && (e = Math.max(e, Ra.get(this)?.peak ?? 0));
+		let i = [...Ra].filter(([e]) => e !== this).map(([, e]) => e);
+		n && Pa(e + i.reduce((e, t) => e + t.peak, 0), t + i.reduce((e, t) => e + t.resident, 0)), Ra.set(this, {
 			peak: e,
 			resident: t
 		});
 	}
 	dispose() {
-		this.closed = !0, Na.delete(this);
+		this.closed = !0, Ra.delete(this);
 	}
-}, Fa = 134217728, Ia = [
+}, Ba = 134217728, Va = [
 	128,
 	256,
 	512,
@@ -4345,46 +4404,46 @@ var Na = /* @__PURE__ */ new Map(), Pa = class {
 	4096,
 	8192
 ].map((e) => e * 1048576);
-function La(e) {
-	if (e !== 0 && !Ia.includes(e)) throw Error("지원하지 않는 텍스처 표시 예산입니다.");
+function Ha(e) {
+	if (e !== 0 && !Va.includes(e)) throw Error("지원하지 않는 텍스처 표시 예산입니다.");
 }
-var Ra = /* @__PURE__ */ new Set([
+var Ua = /* @__PURE__ */ new Set([
 	"KHR_materials_emissive_strength",
 	"KHR_materials_specular",
 	"KHR_materials_unlit",
 	"KHR_texture_transform",
 	"KHR_materials_ior"
-]), za = /* @__PURE__ */ new WeakMap();
-function Q(e) {
+]), Wa = /* @__PURE__ */ new WeakMap();
+function Z(e) {
 	if (!e || typeof e != "object" || Array.isArray(e)) throw Error("Invalid appearance object");
 	return e;
 }
-function Ba(e) {
+function Ga(e) {
 	if (e === void 0) return [];
 	if (!Array.isArray(e)) throw Error("Invalid appearance array");
 	return e;
 }
-function Va(e, t) {
+function Ka(e, t) {
 	if (!Number.isSafeInteger(e) || e < 0 || e >= t) throw Error("Invalid appearance index");
 	return e;
 }
-function Ha(e) {
+function qa(e) {
 	if (!e || typeof e != "object") return;
 	if (Array.isArray(e)) {
-		e.forEach(Ha);
+		e.forEach(qa);
 		return;
 	}
-	let t = Q(e);
+	let t = Z(e);
 	if (t.extensions) {
-		for (let e of Object.keys(Q(t.extensions))) if (!Ra.has(e)) throw Error(`Unsupported preview appearance extension: ${e}`);
+		for (let e of Object.keys(Z(t.extensions))) if (!Ua.has(e)) throw Error(`Unsupported preview appearance extension: ${e}`);
 	}
-	Object.entries(t).filter(([e]) => e !== "extras").forEach(([, e]) => Ha(e));
+	Object.entries(t).filter(([e]) => e !== "extras").forEach(([, e]) => qa(e));
 }
-function Ua(e) {
-	if (kr(e)) {
+function Ja(e) {
+	if (Pr(e)) {
 		let t = [], n = [];
-		for (let r of Mr(e).payload.levels) {
-			let e = Ua(r), i = t.length;
+		for (let r of Lr(e).payload.levels) {
+			let e = Ja(r), i = t.length;
 			t.push(...e.dimensions), n.push(...e.uses.map((e) => ({
 				...e,
 				source: e.source + i
@@ -4395,21 +4454,21 @@ function Ua(e) {
 			uses: n
 		};
 	}
-	Yn(e);
-	let t = new DataView(e.buffer, e.byteOffset, e.byteLength), n = t.getUint32(12, !0), r = Q(JSON.parse(new TextDecoder().decode(e.subarray(20, 20 + n))));
-	Ha(r);
+	er(e);
+	let t = new DataView(e.buffer, e.byteOffset, e.byteLength), n = t.getUint32(12, !0), r = Z(JSON.parse(new TextDecoder().decode(e.subarray(20, 20 + n))));
+	qa(r);
 	let i = /* @__PURE__ */ new Uint8Array();
 	for (let r = 20 + n; r < e.length;) {
 		let n = t.getUint32(r, !0);
 		t.getUint32(r + 4, !0) === 5130562 && (i = e.subarray(r + 8, r + 8 + n)), r += 8 + n;
 	}
-	let a = Ba(r.bufferViews), o = Ba(r.images), s = Ba(r.textures), c = o.map((e) => {
-		let t = Q(e);
+	let a = Ga(r.bufferViews), o = Ga(r.images), s = Ga(r.textures), c = o.map((e) => {
+		let t = Z(e);
 		if ("uri" in t || typeof t.mimeType != "string") throw Error("Only embedded preview images are supported");
-		let n = Q(a[Va(t.bufferView, a.length)]), r = Number(n.byteOffset ?? 0), o = Number(n.byteLength);
-		return Xn(i.subarray(r, r + o), t.mimeType);
-	}), l = Ba(r.materials), u = l.map((e) => {
-		let t = Q(e), n = t.pbrMetallicRoughness ? Q(t.pbrMetallicRoughness) : {}, r = t.extensions ? Q(t.extensions) : {}, i = r.KHR_materials_specular ? Q(r.KHR_materials_specular) : {};
+		let n = Z(a[Ka(t.bufferView, a.length)]), r = Number(n.byteOffset ?? 0), o = Number(n.byteLength);
+		return tr(i.subarray(r, r + o), t.mimeType);
+	}), l = Ga(r.materials), u = l.map((e) => {
+		let t = Z(e), n = t.pbrMetallicRoughness ? Z(t.pbrMetallicRoughness) : {}, r = t.extensions ? Z(t.extensions) : {}, i = r.KHR_materials_specular ? Z(r.KHR_materials_specular) : {};
 		return [
 			[n.baseColorTexture, "baseColor"],
 			[n.metallicRoughnessTexture, "metallicRoughness"],
@@ -4420,9 +4479,9 @@ function Ua(e) {
 			[i.specularTexture, "specular"],
 			[i.specularColorTexture, "specular"]
 		].filter(([e]) => e !== void 0).map(([e, t]) => {
-			let n = Q(e), r = Q(s[Va(n.index, s.length)]);
+			let n = Z(e), r = Z(s[Ka(n.index, s.length)]);
 			if (r.extensions) throw Error("Texture source extensions are not supported in this preview");
-			let i = Va(r.source, o.length), a = n.extensions ? Q(n.extensions) : {}, c = (a.KHR_texture_transform ? Q(a.KHR_texture_transform) : {}).texCoord ?? n.texCoord ?? 0;
+			let i = Ka(r.source, o.length), a = n.extensions ? Z(n.extensions) : {}, c = (a.KHR_texture_transform ? Z(a.KHR_texture_transform) : {}).texCoord ?? n.texCoord ?? 0;
 			if (!Number.isSafeInteger(c) || c < 0 || c > 3) throw Error("Unsupported texture UV channel");
 			return {
 				source: i,
@@ -4431,13 +4490,13 @@ function Ua(e) {
 			};
 		});
 	});
-	for (let e of Ba(r.meshes)) for (let t of Ba(Q(e).primitives)) {
-		let e = Q(t);
+	for (let e of Ga(r.meshes)) for (let t of Ga(Z(e).primitives)) {
+		let e = Z(t);
 		if (e.material === void 0) continue;
-		let n = Q(e.attributes);
-		for (let t of u[Va(e.material, l.length)]) {
+		let n = Z(e.attributes);
+		for (let t of u[Ka(e.material, l.length)]) {
 			let e = n[`TEXCOORD_${t.texCoord}`];
-			if (Q(Ba(r.accessors)[Va(e, Ba(r.accessors).length)]).type !== "VEC2") throw Error(`Missing valid UV${t.texCoord} for texture`);
+			if (Z(Ga(r.accessors)[Ka(e, Ga(r.accessors).length)]).type !== "VEC2") throw Error(`Missing valid UV${t.texCoord} for texture`);
 		}
 	}
 	return {
@@ -4445,10 +4504,10 @@ function Ua(e) {
 		uses: u.flat()
 	};
 }
-function Wa(e, t) {
-	t && Vr(t);
+function Ya(e, t) {
+	t && Kr(t);
 	let n = e.uses.filter((e) => e.required || !t || t.maps.includes(e.kind)), r = new Set(n.map((e) => e.source)), i = e.dimensions.map((e, r) => {
-		let i = t ? Math.min(...n.filter((e) => e.source === r).map((e) => Hr(t, e.kind))) : Infinity, a = Math.min(1, i / Math.max(e.width, e.height));
+		let i = t ? Math.min(...n.filter((e) => e.source === r).map((e) => qr(t, e.kind))) : Infinity, a = Math.min(1, i / Math.max(e.width, e.height));
 		return {
 			width: Math.max(1, Math.round(e.width * a)),
 			height: Math.max(1, Math.round(e.height * a))
@@ -4466,15 +4525,15 @@ function Wa(e, t) {
 		textureViewCount: n.length
 	};
 }
-function Ga(e) {
-	return Wa(Ua(e));
+function Xa(e) {
+	return Ya(Ja(e));
 }
-function Ka(e, t = []) {
+function Q(e, t = []) {
 	let n = /* @__PURE__ */ new Set(), r = /* @__PURE__ */ new Set(), i = new Set(t);
-	e.flatMap((e) => [e, ...za.get(e) ?? []]).forEach((e) => e.traverse((e) => {
-		e instanceof Me && (r.add(e.geometry), (Array.isArray(e.material) ? e.material : [e.material]).forEach((e) => {
+	e.flatMap((e) => [e, ...Wa.get(e) ?? []]).forEach((e) => e.traverse((e) => {
+		e instanceof C && (r.add(e.geometry), (Array.isArray(e.material) ? e.material : [e.material]).forEach((e) => {
 			n.add(e), Object.values(e).forEach((e) => {
-				e instanceof Se && i.add(e);
+				e instanceof De && i.add(e);
 			});
 		}));
 	}));
@@ -4485,24 +4544,24 @@ function Ka(e, t = []) {
 		e && typeof e == "object" && "close" in e && typeof e.close == "function" && e.close();
 	}), n.forEach((e) => e.dispose()), r.forEach((e) => e.dispose());
 }
-async function qa(e, t = Fa, n = !0) {
-	La(t);
-	let r = Ga(e);
-	if (t === 0 && (await Da(), t = ja(r.reservedBytes)), r.reservedBytes > t) throw Error("Preview texture budget exceeded");
-	if (kr(e)) {
-		let { payload: r } = Mr(e), i = new T();
+async function Za(e, t = Ba, n = !0) {
+	Ha(t);
+	let r = Xa(e);
+	if (t === 0 && (await Ma(), t = Ia(r.reservedBytes)), r.reservedBytes > t) throw Error("Preview texture budget exceeded");
+	if (Pr(e)) {
+		let { payload: r } = Lr(e), i = new u();
 		i.userData.staticMeshLod = {
 			distanceMeters: r.distanceMeters,
 			hysteresis: r.hysteresis
 		};
 		try {
-			for (let e of r.levels) i.add(await qa(e, t, n));
+			for (let e of r.levels) i.add(await Za(e, t, n));
 			return i.children[1].visible = !1, i;
 		} catch (e) {
-			throw Ka([i]), e;
+			throw Q([i]), e;
 		}
 	}
-	let i = [], a = [], o = [], s = !1, c = new ti();
+	let i = [], a = [], o = [], s = !1, c = new ci();
 	c.register((e) => ({
 		name: "U01_BOUNDED_APPEARANCE",
 		loadTexture: (t) => {
@@ -4518,31 +4577,31 @@ async function qa(e, t = Fa, n = !0) {
 		let t = await c.parseAsync(e.slice().buffer, "");
 		if (s) throw Error("Embedded texture decode failed; gray appearance retained");
 		t.scene.traverse((e) => {
-			if (!(e instanceof Me)) return;
+			if (!(e instanceof C)) return;
 			let n = t.parser.associations.get(e);
 			n?.meshes !== void 0 && n.primitives !== void 0 && (e.userData.materialSlotId = `mesh:${n.meshes}/primitive:${n.primitives}`);
 		});
-		let r = new T();
-		return r.matrixAutoUpdate = !1, n && r.matrix.copy(ba), r.add(t.scene), r.updateMatrixWorld(!0), za.set(r, [...t.scenes.filter((e) => e !== t.scene), ...i]), r;
+		let r = new u();
+		return r.matrixAutoUpdate = !1, n && r.matrix.copy(Ta), r.add(t.scene), r.updateMatrixWorld(!0), Wa.set(r, [...t.scenes.filter((e) => e !== t.scene), ...i]), r;
 	} catch (e) {
-		throw await Promise.allSettled(o), Ka(i, a), e;
+		throw await Promise.allSettled(o), Q(i, a), e;
 	}
 }
 //#endregion
 //#region src/ue-import/CandidateAppearanceReview.ts
-var Ja = (e) => e.trim().normalize("NFC").toLowerCase();
-function Ya(e, t) {
+var Qa = (e) => e.trim().normalize("NFC").toLowerCase();
+function $a(e, t) {
 	let n = e.trim();
 	if (!n) throw Error("이름을 입력하세요.");
-	let r = new Set(Array.from(t, Ja));
-	if (!r.has(Ja(n))) return n;
+	let r = new Set(Array.from(t, Qa));
+	if (!r.has(Qa(n))) return n;
 	let i = /^(.*)_(\d+)$/u.exec(n), a = i?.[1] || n, o = i ? BigInt(i[2]) + 1n : 1n;
-	for (; r.has(Ja(`${a}_${o}`));) o++;
+	for (; r.has(Qa(`${a}_${o}`));) o++;
 	return `${a}_${o}`;
 }
 //#endregion
 //#region src/prefab/PrefabDocument.ts
-function Xa(e) {
+function eo(e) {
 	return e.type === "PrimitiveCube" ? {
 		...e,
 		type: "StaticMesh",
@@ -4551,18 +4610,18 @@ function Xa(e) {
 		materialOverrides: []
 	} : e;
 }
-function Za(e) {
+function to(e) {
 	return {
 		...e,
 		actors: e.actors.map((e) => ({
 			...e,
-			components: e.components.map(Xa)
+			components: e.components.map(eo)
 		}))
 	};
 }
-function Qa(e) {
+function no(e) {
 	if (!e || typeof e != "object" || !Array.isArray(e.actors) || !Array.isArray(e.rootActorLocalIds) || !e.rootActorLocalIds.length) throw Error("Invalid Prefab template/root metadata.");
-	if (oa({
+	if (da({
 		schemaVersion: 2,
 		kind: "Scene",
 		coordinateSystem: "RH_Y_UP_METERS_V1",
@@ -4575,7 +4634,7 @@ function Qa(e) {
 	}), e.schemaVersion !== 1 || e.kind !== "Prefab" || e.actors.length === 0) throw Error("Unsupported or empty Prefab document.");
 	let t = /* @__PURE__ */ new Set(), n = /* @__PURE__ */ new Set();
 	for (let r of e.actors) {
-		if (Ft(r), t.has(r.id)) throw Error(`Duplicate Prefab Actor local ID ${r.id}.`);
+		if (It(r), t.has(r.id)) throw Error(`Duplicate Prefab Actor local ID ${r.id}.`);
 		t.add(r.id);
 		for (let e of r.components) {
 			if (n.has(e.id)) throw Error(`Duplicate Prefab Component local ID ${e.id}.`);
@@ -4583,7 +4642,7 @@ function Qa(e) {
 		}
 		if (!r.components.some(({ id: e }) => e === r.rootComponentId)) throw Error(`Prefab Actor ${r.id} has no root Component.`);
 	}
-	if (sn({
+	if (cn({
 		schemaVersion: 2,
 		kind: "Scene",
 		coordinateSystem: "RH_Y_UP_METERS_V1",
@@ -4594,9 +4653,9 @@ function Qa(e) {
 			actorFolders: []
 		}
 	}), e.rootActorLocalIds.some((e) => !t.has(e))) throw Error("Prefab root local ID is missing.");
-	for (let r of e.actors) for (let e of r.components) if (D(e) && e.attachmentParent && (!t.has(e.attachmentParent.actorId) || !n.has(e.attachmentParent.componentId))) throw Error("Prefab attachment must stay inside its template.");
+	for (let r of e.actors) for (let e of r.components) if (E(e) && e.attachmentParent && (!t.has(e.attachmentParent.actorId) || !n.has(e.attachmentParent.componentId))) throw Error("Prefab attachment must stay inside its template.");
 }
-function $a(e, t, n, r) {
+function ro(e, t, n, r) {
 	return e.actors.map((e) => {
 		let i = t[e.id];
 		if (!i) throw Error(`Missing Actor mapping ${e.id}.`);
@@ -4608,7 +4667,7 @@ function $a(e, t, n, r) {
 				let o = n[a.id];
 				if (!o) throw Error(`Missing Component mapping ${a.id}.`);
 				let s = {
-					...Pt(structuredClone(a), new Map(Object.entries(n))),
+					...Ft(structuredClone(a), new Map(Object.entries(n))),
 					...a.type === "TwinMetadata" ? { metadata: {
 						object: {
 							objectId: "equipment-" + o,
@@ -4625,7 +4684,7 @@ function $a(e, t, n, r) {
 					} } : {},
 					id: o,
 					ownerActorId: i,
-					...D(a) ? {
+					...E(a) ? {
 						parentComponentId: a.parentComponentId ? n[a.parentComponentId] ?? null : null,
 						attachmentParent: a.attachmentParent ? {
 							...a.attachmentParent,
@@ -4635,27 +4694,27 @@ function $a(e, t, n, r) {
 					} : {}
 				};
 				for (let e of r.filter(({ localComponentId: e }) => e === a.id)) {
-					let t = Nt(s).fields.find(({ fieldId: t }) => t === e.fieldId);
-					t && (s = to(structuredClone(s), t.path, eo(s, t.fieldId, e.value, n)));
+					let t = Pt(s).fields.find(({ fieldId: t }) => t === e.fieldId);
+					t && (s = ao(structuredClone(s), t.path, io(s, t.fieldId, e.value, n)));
 				}
 				return s;
 			})
 		};
 	});
 }
-function eo(e, t, n, r) {
-	if (e.type !== "TestScript" || Nt(e).fields.find((e) => e.fieldId === t)?.referenceKind !== "scene-object" || n === null) return n;
+function io(e, t, n, r) {
+	if (e.type !== "TestScript" || Pt(e).fields.find((e) => e.fieldId === t)?.referenceKind !== "scene-object" || n === null) return n;
 	if (typeof n != "string" || !r[n]) throw Error("TestScript Prefab target must be a template Component ID.");
 	return r[n];
 }
-function to(e, t, n) {
+function ao(e, t, n) {
 	let r = e;
 	for (let e of t.slice(0, -1)) r = r[e];
 	return r[t.at(-1)] = structuredClone(n), e;
 }
 //#endregion
 //#region src/prefab/PrefabComponentOrigins.ts
-function no(e) {
+function oo(e) {
 	let t = e.prefabComponentOrigins;
 	if (t === void 0) return [];
 	if (!t || typeof t != "object" || !("schemaVersion" in t) || t.schemaVersion !== 1 || !("entries" in t) || !Array.isArray(t.entries)) throw Error("프리팹 Component 연결 이력 형식이 올바르지 않습니다.");
@@ -4679,36 +4738,36 @@ function no(e) {
 }
 //#endregion
 //#region src/prefab/PrefabInheritance.ts
-var ro = (e) => e.type === "TwinMetadata" ? [] : Nt(e).fields.filter((e) => e.editableContexts.includes("details") && !e.fieldId.startsWith("transform.")), io = (e, t) => JSON.stringify(e) === JSON.stringify(t);
-function ao(e, t) {
+var so = (e) => e.type === "TwinMetadata" ? [] : Pt(e).fields.filter((e) => e.editableContexts.includes("details") && !e.fieldId.startsWith("transform.")), co = (e, t) => JSON.stringify(e) === JSON.stringify(t);
+function lo(e, t) {
 	return t.reduce((e, t) => e && typeof e == "object" ? e[t] : void 0, e);
 }
-function oo(e, t, n) {
+function uo(e, t, n) {
 	let r = structuredClone(e), i = r;
 	for (let e of t.slice(0, -1)) (!i[e] || typeof i[e] != "object") && (i[e] = {}), i = i[e];
 	return n === void 0 ? delete i[t.at(-1)] : i[t.at(-1)] = structuredClone(n), r;
 }
-var so = (e, t) => JSON.stringify([e, t]);
-function co(e, t, n) {
+var fo = (e, t) => JSON.stringify([e, t]);
+function po(e, t, n) {
 	return t === "scene-object" && typeof e == "string" ? Object.keys(n).find((t) => n[t] === e) ?? e : structuredClone(e);
 }
-function lo(e, t) {
-	if (!io(e.rootActorLocalIds, t.rootActorLocalIds) || !io(e.actors.map((e) => e.id).sort(), t.actors.map((e) => e.id).sort())) throw Error("상속 프리팹의 액터 추가·삭제 또는 루트 변경은 지원하지 않습니다. 새 프리팹으로 저장하세요.");
+function mo(e, t) {
+	if (!co(e.rootActorLocalIds, t.rootActorLocalIds) || !co(e.actors.map((e) => e.id).sort(), t.actors.map((e) => e.id).sort())) throw Error("상속 프리팹의 액터 추가·삭제 또는 루트 변경은 지원하지 않습니다. 새 프리팹으로 저장하세요.");
 	for (let n of e.actors) {
 		let e = t.actors.find((e) => e.id === n.id);
 		if (n.rootComponentId !== e.rootComponentId) throw Error("상속 프리팹의 루트 Component 변경은 지원하지 않습니다.");
 		for (let t of n.components) {
 			let n = e.components.find((e) => e.id === t.id);
-			if (!n || n.type !== Xa(t).type && n.type !== t.type || n.typeVersion !== t.typeVersion) throw Error("상속 중인 Component 삭제·타입 변경은 지원하지 않습니다. 새 프리팹으로 저장하세요.");
+			if (!n || n.type !== eo(t).type && n.type !== t.type || n.typeVersion !== t.typeVersion) throw Error("상속 중인 Component 삭제·타입 변경은 지원하지 않습니다. 새 프리팹으로 저장하세요.");
 			for (let e of [
 				"parentComponentId",
 				"attachmentParent",
 				"scriptPackage"
-			]) if (!io(t[e], n[e])) throw Error("상속 중인 Component 계층·Script 버전 변경은 지원하지 않습니다. 새 프리팹으로 저장하세요.");
+			]) if (!co(t[e], n[e])) throw Error("상속 중인 Component 계층·Script 버전 변경은 지원하지 않습니다. 새 프리팹으로 저장하세요.");
 		}
 	}
 }
-var uo = class {
+var ho = class {
 	catalog;
 	addedIds;
 	constructor(e, t = /* @__PURE__ */ new Map()) {
@@ -4718,16 +4777,16 @@ var uo = class {
 		let n = this.catalog.assets.find((t) => t.id === e && t.kind === "Prefab"), r = this.catalog.revisions.find((r) => r.assetId === e && r.id === (t ?? n?.currentRevisionId));
 		if (!n || !r) throw Error("프리팹 원본 또는 기준 버전을 찾을 수 없습니다: " + e);
 		let i = r.metadata.prefab;
-		return Qa(i), {
-			prefab: Za(i),
+		return no(i), {
+			prefab: to(i),
 			revisionId: r.id,
-			origins: no(r.metadata)
+			origins: oo(r.metadata)
 		};
 	}
 	resolve(e) {
 		let t = e.actors, n = e.authoring.prefabInstances?.map((n) => {
 			let r = this.source(n.prefabAssetId, n.sourceRevisionId), i = this.source(n.prefabAssetId);
-			lo(r.prefab, i.prefab);
+			mo(r.prefab, i.prefab);
 			let a = { ...n.localComponentIds }, o = /* @__PURE__ */ new Map();
 			for (let r of i.origins) {
 				if (r.documentId !== e.id || r.instanceId !== n.id || a[r.localComponentId]) continue;
@@ -4736,21 +4795,21 @@ var uo = class {
 				a[r.localComponentId] = r.componentId, o.set(r.localComponentId, r);
 			}
 			for (let e of i.prefab.actors) for (let t of e.components) if (!a[t.id]) {
-				let e = so(n.id, t.id);
+				let e = fo(n.id, t.id);
 				this.addedIds.has(e) || this.addedIds.set(e, crypto.randomUUID()), a[t.id] = this.addedIds.get(e);
 			}
-			let s = $a(i.prefab, n.localActorIds, a, []), c = $a(r.prefab, n.localActorIds, n.localComponentIds, []), l = /* @__PURE__ */ new Map();
+			let s = ro(i.prefab, n.localActorIds, a, []), c = ro(r.prefab, n.localActorIds, n.localComponentIds, []), l = /* @__PURE__ */ new Map();
 			for (let [e, t] of o) {
-				let r = $a(this.source(n.prefabAssetId, t.revisionId).prefab, n.localActorIds, a, []).flatMap((e) => e.components).find((e) => e.id === t.componentId);
+				let r = ro(this.source(n.prefabAssetId, t.revisionId).prefab, n.localActorIds, a, []).flatMap((e) => e.components).find((e) => e.id === t.componentId);
 				if (!r) throw Error("원본에 반영한 Component의 기준 버전이 없습니다.");
 				l.set(e, r);
 			}
 			let u = new Map(n.overrides.filter((e) => !e.fieldId.startsWith("transform.")).map((e) => {
-				let t = s.flatMap((e) => e.components).find((t) => t.id === a[e.localComponentId]), n = t && ro(t).find((t) => t.fieldId === e.fieldId), r = n?.referenceKind === "scene-object" ? {
+				let t = s.flatMap((e) => e.components).find((t) => t.id === a[e.localComponentId]), n = t && so(t).find((t) => t.fieldId === e.fieldId), r = n?.referenceKind === "scene-object" ? {
 					...e,
-					value: co(e.value, n.referenceKind, a)
+					value: po(e.value, n.referenceKind, a)
 				} : e;
-				return [so(e.localComponentId, e.fieldId), r];
+				return [fo(e.localComponentId, e.fieldId), r];
 			})), d = new Set(n.removedComponentLocalIds ?? []);
 			return t = t.map((e) => {
 				let t = s.find((t) => t.id === e.id);
@@ -4758,23 +4817,23 @@ var uo = class {
 				let r = c.find((t) => t.id === e.id);
 				for (let [i, a] of Object.entries(n.localComponentIds)) r?.components.some((e) => e.id === a) && !e.components.some((e) => e.id === a) && t.components.some((e) => e.id === a) && d.add(i);
 				let i = (e) => Object.keys(a).find((t) => a[t] === e), o = e.components.map((e) => {
-					let o = t.components.some((t) => t.id === e.id) ? Xa(e) : e, s = t.components.find((e) => e.id === o.id);
+					let o = t.components.some((t) => t.id === e.id) ? eo(e) : e, s = t.components.find((e) => e.id === o.id);
 					if (!s) return o;
-					if (o.type !== s.type || o.typeVersion !== s.typeVersion || o.type === "TestScript" && s.type === "TestScript" && !io(o.scriptPackage, s.scriptPackage)) throw Error("인스턴스 Component 타입·Script 버전이 원본과 다릅니다: " + o.id);
+					if (o.type !== s.type || o.typeVersion !== s.typeVersion || o.type === "TestScript" && s.type === "TestScript" && !co(o.scriptPackage, s.scriptPackage)) throw Error("인스턴스 Component 타입·Script 버전이 원본과 다릅니다: " + o.id);
 					let c = o, d = i(o.id);
-					for (let e of ro(s)) {
-						let t = so(d, e.fieldId), i = r?.components.find((e) => e.id === o.id);
-						n.inheritanceVersion !== 1 && i && !io(ao(o, e.path), ao(i, e.path)) && u.set(t, {
+					for (let e of so(s)) {
+						let t = fo(d, e.fieldId), i = r?.components.find((e) => e.id === o.id);
+						n.inheritanceVersion !== 1 && i && !co(lo(o, e.path), lo(i, e.path)) && u.set(t, {
 							localComponentId: d,
 							fieldId: e.fieldId,
-							value: co(ao(o, e.path), e.referenceKind, a)
+							value: po(lo(o, e.path), e.referenceKind, a)
 						});
 						let f = l.get(d);
-						!u.has(t) && f && !io(ao(o, e.path), ao(f, e.path)) && u.set(t, {
+						!u.has(t) && f && !co(lo(o, e.path), lo(f, e.path)) && u.set(t, {
 							localComponentId: d,
 							fieldId: e.fieldId,
-							value: co(ao(o, e.path), e.referenceKind, a)
-						}), u.has(t) || (c = oo(c, e.path, ao(s, e.path)));
+							value: po(lo(o, e.path), e.referenceKind, a)
+						}), u.has(t) || (c = uo(c, e.path, lo(s, e.path)));
 					}
 					return c;
 				});
@@ -4807,11 +4866,11 @@ var uo = class {
 				prefabInstances: n
 			}
 		};
-		return ca(r), io(r, e) ? e : r;
+		return pa(r), co(r, e) ? e : r;
 	}
 	reset(e, t, n) {
 		let r = e.authoring.prefabInstances?.find((e) => Object.values(e.localComponentIds).includes(t)), i = e.actors.flatMap((e) => e.components).find((e) => e.id === t);
-		if (!r || !i || !ro(i).some((e) => e.fieldId === n)) return null;
+		if (!r || !i || !so(i).some((e) => e.fieldId === n)) return null;
 		let a = Object.keys(r.localComponentIds).find((e) => r.localComponentIds[e] === t), o = e.authoring.prefabInstances.map((e) => e.id === r.id ? {
 			...e,
 			inheritanceVersion: 1,
@@ -4828,7 +4887,7 @@ var uo = class {
 };
 //#endregion
 //#region src/assets/ContentDeletion.ts
-function fo(e) {
+function go(e) {
 	let t = e.importSettings;
 	return !t.duplicatedFrom && [
 		"sourcePath",
@@ -4840,7 +4899,7 @@ function fo(e) {
 }
 //#endregion
 //#region src/assets/ContentFolderDeletion.ts
-function po(e, t) {
+function _o(e, t) {
 	if (!e.folders.some((e) => e.id === t)) throw Error("삭제할 폴더가 없습니다. 목록을 새로 확인하세요.");
 	let n = /* @__PURE__ */ new Set([t]), r = [t], i = /* @__PURE__ */ new Map();
 	for (let t of e.folders) t.parentId !== null && i.set(t.parentId, [...i.get(t.parentId) ?? [], t.id]);
@@ -4854,18 +4913,18 @@ function po(e, t) {
 		assets: e.assets.filter((e) => e.folderId !== null && n.has(e.folderId))
 	});
 }
-function mo(e, t, n) {
-	let r = po(e, t.folderId), i = (e) => [...e].sort((e, t) => e.id.localeCompare(t.id));
+function vo(e, t, n) {
+	let r = _o(e, t.folderId), i = (e) => [...e].sort((e, t) => e.id.localeCompare(t.id));
 	if (JSON.stringify([i(r.folders), i(r.assets)]) !== JSON.stringify([i(t.folders), i(t.assets)])) throw Error("확인 이후 폴더 내용이 변경되었습니다. 삭제를 취소하고 목록을 다시 확인하세요.");
 	let a = new Set(r.assets.map((e) => e.id));
 	for (let t of r.assets) {
-		if (fo(t)) throw Error(t.name + ": Unreal 원본 에셋은 가져오기·새로고침 복구를 위해 보존하므로 폴더를 삭제할 수 없습니다.");
+		if (go(t)) throw Error(t.name + ": Unreal 원본 에셋은 가져오기·새로고침 복구를 위해 보존하므로 폴더를 삭제할 수 없습니다.");
 		let r = [...n.filter((e) => e.assetId === t.id).flatMap((e) => e.references), ...e.assets.filter((e) => !a.has(e.id)).flatMap((e) => e.dependencies.flatMap((n, r) => n.assetId === t.id ? [{
 			ownerType: "Asset",
 			ownerId: e.id,
 			path: "dependencies[" + r + "]"
 		}] : []))];
-		if (r.length) throw new at(t.id, r);
+		if (r.length) throw new ot(t.id, r);
 	}
 	let o = e.revisions.filter((e) => a.has(e.assetId)), s = new Set(e.revisions.filter((e) => !a.has(e.assetId)).flatMap((e) => e.blobKeys));
 	return {
@@ -4877,10 +4936,10 @@ function mo(e, t, n) {
 }
 //#endregion
 //#region src/assets/AssetStorage.ts
-var ho = class extends Error {}, $ = class extends Error {}, go = class extends Error {};
-function _o(e, t, n, r) {
+var yo = class extends Error {}, $ = class extends Error {}, bo = class extends Error {};
+function xo(e, t, n, r) {
 	if (r && e.name !== r.expectedName) throw new $("에셋 이름이 다른 작업에서 변경되었습니다.");
-	let i = r?.restoreName ?? e.name, a = Ya(i, n.filter((n) => n.id !== e.id && n.folderId === t).map((e) => e.name));
+	let i = r?.restoreName ?? e.name, a = $a(i, n.filter((n) => n.id !== e.id && n.folderId === t).map((e) => e.name));
 	if (r?.restoreName !== void 0 && a !== i) throw new $("복원할 이름을 다른 에셋이 사용하고 있습니다.");
 	return {
 		...e,
@@ -4888,12 +4947,12 @@ function _o(e, t, n, r) {
 		name: a
 	};
 }
-function vo(e) {
+function So(e) {
 	let t = e.trim();
 	if (!t || t === "." || t === ".." || /[/\\]/u.test(t) || [...t].some((e) => e.charCodeAt(0) < 32)) throw new $("올바른 폴더 이름을 입력하세요.");
 	return t;
 }
-var yo = class {
+var Co = class {
 	deferredBlobs;
 	deferredSizes = [];
 	restoringBlobs;
@@ -4914,7 +4973,7 @@ var yo = class {
 			if (this.restoringBlobs) return this.restoringBlobs;
 			this.restoringBlobs = (async () => {
 				let e = await this.deferredBlobs();
-				if (bo(e), JSON.stringify(e.assets) !== JSON.stringify([...this.assets.values()]) || JSON.stringify(e.revisions) !== JSON.stringify([...this.revisions.values()]) || JSON.stringify(e.folders) !== JSON.stringify([...this.folders.values()]) || e.blobs.length !== this.deferredSizes.length || this.deferredSizes.some((t) => !e.blobs.some((e) => e.key === t.key && e.bytes.byteLength === t.byteLength))) throw Error("Deferred registry revision mismatch");
+				if (wo(e), JSON.stringify(e.assets) !== JSON.stringify([...this.assets.values()]) || JSON.stringify(e.revisions) !== JSON.stringify([...this.revisions.values()]) || JSON.stringify(e.folders) !== JSON.stringify([...this.folders.values()]) || e.blobs.length !== this.deferredSizes.length || this.deferredSizes.some((t) => !e.blobs.some((e) => e.key === t.key && e.bytes.byteLength === t.byteLength))) throw Error("Deferred registry revision mismatch");
 				this.blobs = new Map(e.blobs.map((e) => [e.key, e])), this.deferredBlobs = void 0, this.deferredSizes = [];
 			})();
 			try {
@@ -4960,22 +5019,22 @@ var yo = class {
 		this.failure = e;
 	}
 	async commitImport(e) {
-		let t = ct(e), n = {
+		let t = lt(e), n = {
 			...t,
 			asset: {
 				...t.asset,
-				name: Ya(t.asset.name, [...this.assets.values()].filter((e) => e.folderId === t.asset.folderId).map((e) => e.name))
+				name: $a(t.asset.name, [...this.assets.values()].filter((e) => e.folderId === t.asset.folderId).map((e) => e.name))
 			}
 		};
-		if (this.assets.has(n.asset.id) || this.revisions.has(n.revision.id)) throw new ho("Asset or revision UUID already exists.");
+		if (this.assets.has(n.asset.id) || this.revisions.has(n.revision.id)) throw new yo("Asset or revision UUID already exists.");
 		if (n.asset.folderId !== null && !this.folders.has(n.asset.folderId)) throw new $("에셋을 넣을 폴더가 없습니다. 폴더를 다시 선택하세요.");
 		let r = new Map(this.assets), i = new Map(this.revisions), a = new Map(this.blobs);
 		return a.set(n.blob.key, n.blob), this.failIfInjected("after-blob"), i.set(n.revision.id, n.revision), this.failIfInjected("after-revision"), r.set(n.asset.id, n.asset), this.assets = r, this.revisions = i, this.blobs = a, structuredClone(n.asset);
 	}
 	async commitRevision(e, t, n, r, i) {
 		let a = this.requireAsset(e);
-		if (i !== void 0 && a.currentRevisionId !== i) throw new ho("다른 창에서 에셋이 변경되었습니다. 다시 불러온 뒤 편집하세요.");
-		if (t.assetId !== e || this.revisions.has(t.id)) throw new ho("Revision identity is invalid or already exists.");
+		if (i !== void 0 && a.currentRevisionId !== i) throw new yo("다른 창에서 에셋이 변경되었습니다. 다시 불러온 뒤 편집하세요.");
+		if (t.assetId !== e || this.revisions.has(t.id)) throw new yo("Revision identity is invalid or already exists.");
 		let o = new Map(this.assets), s = new Map(this.revisions), c = new Map(this.blobs);
 		c.set(n.key, {
 			key: n.key,
@@ -4987,12 +5046,12 @@ var yo = class {
 		}), this.assets = o, this.revisions = s, this.blobs = c;
 	}
 	async commitRevisions(e) {
-		let t = nt(e);
+		let t = rt(e);
 		this.hasDeferredBlobs() && await this.restoreBlobs();
 		let n = new Map(this.assets), r = new Map(this.revisions), i = new Map(this.blobs);
 		for (let e of t) {
 			let t = this.requireAsset(e.assetId);
-			if (t.currentRevisionId !== e.expectedRevisionId || r.has(e.revision.id)) throw new ho("다른 창에서 에셋이 변경되었습니다. 다시 불러온 뒤 편집하세요.");
+			if (t.currentRevisionId !== e.expectedRevisionId || r.has(e.revision.id)) throw new yo("다른 창에서 에셋이 변경되었습니다. 다시 불러온 뒤 편집하세요.");
 			i.set(e.blob.key, e.blob), this.failIfInjected("after-blob"), r.set(e.revision.id, e.revision), this.failIfInjected("after-revision"), n.set(e.assetId, {
 				...t,
 				currentRevisionId: e.revision.id,
@@ -5003,7 +5062,7 @@ var yo = class {
 	}
 	async setCurrentRevision(e, t) {
 		let n = this.requireAsset(e), r = this.revisions.get(t);
-		if (!r || r.assetId !== e) throw new ho("Rollback revision does not belong to the asset.");
+		if (!r || r.assetId !== e) throw new yo("Rollback revision does not belong to the asset.");
 		this.assets.set(e, {
 			...n,
 			currentRevisionId: t
@@ -5018,7 +5077,7 @@ var yo = class {
 		});
 	}
 	async importSnapshot(e) {
-		if (bo(e), this.assets.size || this.revisions.size || this.blobs.size || this.folders.size) throw new go("Asset namespace must be empty before package restore.");
+		if (wo(e), this.assets.size || this.revisions.size || this.blobs.size || this.folders.size) throw new bo("Asset namespace must be empty before package restore.");
 		this.assets = new Map(e.assets.map((e) => [e.id, structuredClone(e)])), this.revisions = new Map(e.revisions.map((e) => [e.id, structuredClone(e)])), this.blobs = new Map(e.blobs.map((e) => [e.key, {
 			key: e.key,
 			bytes: e.bytes.slice()
@@ -5035,7 +5094,7 @@ var yo = class {
 		});
 	}
 	async renameFolder(e, t, n) {
-		let r = vo(t), i = this.folders.get(e);
+		let r = So(t), i = this.folders.get(e);
 		if (!i || n !== void 0 && i.name !== n) throw new $("폴더가 없거나 다른 작업에서 이름이 변경되었습니다.");
 		this.folders.set(e, {
 			...i,
@@ -5044,10 +5103,10 @@ var yo = class {
 	}
 	async renameAsset(e, t) {
 		let n = this.requireAsset(e), r = t.trim();
-		if (!r) throw new ho("Asset name is required.");
+		if (!r) throw new yo("Asset name is required.");
 		let i = {
 			...n,
-			name: Ya(r, [...this.assets.values()].filter((t) => t.id !== e && t.folderId === n.folderId).map((e) => e.name))
+			name: $a(r, [...this.assets.values()].filter((t) => t.id !== e && t.folderId === n.folderId).map((e) => e.name))
 		};
 		return this.assets.set(e, i), structuredClone(i);
 	}
@@ -5055,7 +5114,7 @@ var yo = class {
 		let i = this.requireAsset(e);
 		if (n !== void 0 && i.folderId !== n) throw new $("에셋 폴더가 다른 작업에서 변경되었습니다. 목록을 새로 확인하세요.");
 		if (t !== null && !this.folders.has(t)) throw new $(`Unknown asset folder ${t}.`);
-		let a = _o(i, t, [...this.assets.values()], r);
+		let a = xo(i, t, [...this.assets.values()], r);
 		return this.assets.set(e, a), structuredClone(a);
 	}
 	async deleteAsset(e, t = []) {
@@ -5065,14 +5124,14 @@ var yo = class {
 			ownerId: t.id,
 			path: `dependencies[${n}]`
 		}))), r = [...t, ...n];
-		if (r.length > 0) throw new at(e, r);
+		if (r.length > 0) throw new ot(e, r);
 		let i = [...this.revisions.values()].filter((t) => t.assetId === e);
 		i.forEach((e) => this.revisions.delete(e.id));
 		let a = new Set([...this.revisions.values()].flatMap((e) => e.blobKeys));
 		i.flatMap((e) => e.blobKeys).filter((e) => !a.has(e)).forEach((e) => this.blobs.delete(e)), this.assets.delete(e);
 	}
 	async deleteFolder(e, t) {
-		let n = mo({
+		let n = vo({
 			assets: [...this.assets.values()],
 			revisions: [...this.revisions.values()],
 			folders: [...this.folders.values()]
@@ -5081,80 +5140,80 @@ var yo = class {
 	}
 	requireAsset(e) {
 		let t = this.assets.get(e);
-		if (!t) throw new it(`Unknown asset ${e}.`);
+		if (!t) throw new at(`Unknown asset ${e}.`);
 		return t;
 	}
 	failIfInjected(e) {
 		if (this.failure === e) throw this.failure = null, new DOMException("Transaction aborted.", "AbortError");
 	}
 };
-function bo(e) {
+function wo(e) {
 	let t = (e, t) => {
-		if (new Set(e).size !== e.length) throw new go(`Duplicate ${t} identity.`);
+		if (new Set(e).size !== e.length) throw new bo(`Duplicate ${t} identity.`);
 	};
 	t(e.assets.map((e) => e.id), "asset"), t(e.revisions.map((e) => e.id), "revision"), t(e.blobs.map((e) => e.key), "blob"), t(e.folders.map((e) => e.id), "folder");
 	let n = new Map(e.revisions.map((e) => [e.id, e])), r = new Set(e.blobs.map((e) => e.key)), i = new Set(e.assets.map((e) => e.id)), a = new Set(e.folders.map((e) => e.id));
 	for (let t of e.assets) {
 		let e = n.get(t.currentRevisionId);
-		if (!e || e.assetId !== t.id) throw new go(`Asset ${t.id} has an invalid current revision.`);
-		if (t.folderId && !a.has(t.folderId)) throw new go(`Asset ${t.id} has an invalid folder.`);
-		if (t.dependencies.some((e) => !i.has(e.assetId))) throw new go(`Asset ${t.id} has a missing dependency.`);
+		if (!e || e.assetId !== t.id) throw new bo(`Asset ${t.id} has an invalid current revision.`);
+		if (t.folderId && !a.has(t.folderId)) throw new bo(`Asset ${t.id} has an invalid folder.`);
+		if (t.dependencies.some((e) => !i.has(e.assetId))) throw new bo(`Asset ${t.id} has a missing dependency.`);
 	}
-	for (let t of e.revisions) if (!i.has(t.assetId) || t.blobKeys.some((e) => !r.has(e))) throw new go(`Revision ${t.id} has an invalid asset or blob reference.`);
+	for (let t of e.revisions) if (!i.has(t.assetId) || t.blobKeys.some((e) => !r.has(e))) throw new bo(`Revision ${t.id} has an invalid asset or blob reference.`);
 }
 //#endregion
 //#region src/render/StaticBatchMaterial.ts
-var xo = /* @__PURE__ */ new WeakMap();
-function So(e, t) {
-	xo.set(e, t);
+var To = /* @__PURE__ */ new WeakMap();
+function Eo(e, t) {
+	To.set(e, t);
 }
-function Co(e) {
-	return xo.get(e);
+function Do(e) {
+	return To.get(e);
 }
 //#endregion
 //#region src/render/CompositionBatchMaterial.ts
-var wo = /* @__PURE__ */ new WeakSet(), To = /* @__PURE__ */ new WeakSet();
-function Eo(e, t = !0) {
-	wo.add(e), t && To.add(e);
+var Oo = /* @__PURE__ */ new WeakSet(), ko = /* @__PURE__ */ new WeakSet();
+function Ao(e, t = !0) {
+	Oo.add(e), t && ko.add(e);
 }
-function Do(e) {
-	return To.has(e);
+function jo(e) {
+	return ko.has(e);
 }
-function Oo(e, t, n, r = !1) {
-	wo.has(t) && (Mo(e, t, n), r && So(e, JSON.stringify([
+function Mo(e, t, n, r = !1) {
+	Oo.has(t) && (Io(e, t, n), r && Eo(e, JSON.stringify([
 		"delivery-frozen",
-		Ao.get(t),
+		Po.get(t),
 		n
 	])));
 }
-var ko = /* @__PURE__ */ new WeakMap(), Ao = /* @__PURE__ */ new WeakMap(), jo = 0;
-function Mo(e, t, n) {
-	Ao.has(t) || Ao.set(t, ++jo), ko.set(e, {
-		namespace: Ao.get(t),
+var No = /* @__PURE__ */ new WeakMap(), Po = /* @__PURE__ */ new WeakMap(), Fo = 0;
+function Io(e, t, n) {
+	Po.has(t) || Po.set(t, ++Fo), No.set(e, {
+		namespace: Po.get(t),
 		document: structuredClone(n),
 		hooks: [
 			e.onBeforeCompile,
 			e.onBeforeRender,
 			e.customProgramCacheKey
 		],
-		sources: new Map(Object.entries(e).flatMap(([e, t]) => t instanceof Se ? [[e, t.source]] : []))
+		sources: new Map(Object.entries(e).flatMap(([e, t]) => t instanceof De ? [[e, t.source]] : []))
 	});
 }
-function No(e) {
+function Lo(e) {
 	if (e === null || typeof e == "string" || typeof e == "boolean") return e;
 	if (typeof e == "number") {
 		if (!Number.isFinite(e)) throw Error("non-finite state");
 		return e;
 	}
-	if (Array.isArray(e)) return e.map(No);
+	if (Array.isArray(e)) return e.map(Lo);
 	if (e && typeof e == "object") {
-		if ("toArray" in e && typeof e.toArray == "function") return No(e.toArray());
+		if ("toArray" in e && typeof e.toArray == "function") return Lo(e.toArray());
 		if (Object.getPrototypeOf(e) !== Object.prototype) throw Error("unknown object state");
-		return Object.fromEntries(Object.entries(e).filter(([, e]) => e !== void 0).sort(([e], [t]) => e < t ? -1 : +(e > t)).map(([e, t]) => [e, No(t)]));
+		return Object.fromEntries(Object.entries(e).filter(([, e]) => e !== void 0).sort(([e], [t]) => e < t ? -1 : +(e > t)).map(([e, t]) => [e, Lo(t)]));
 	}
 	throw Error("unknown state");
 }
-function Po(e, t) {
+function Ro(e, t) {
 	if (e.mipmaps.length || e.isRenderTargetTexture || e.onUpdate) throw Error("dynamic or custom texture");
 	let n = e.image;
 	return {
@@ -5185,16 +5244,16 @@ function Po(e, t) {
 		colorSpace: e.colorSpace
 	};
 }
-function Fo(e) {
-	if (!(e instanceof ve) || e.type !== "MeshStandardMaterial") return { reason: "unsupported material type" };
+function zo(e) {
+	if (!(e instanceof m) || e.type !== "MeshStandardMaterial") return { reason: "unsupported material type" };
 	if (e.transparent) return { reason: "transparent sorting" };
-	let t = ko.get(e), n = Object.entries(e).filter(([, e]) => e instanceof Se);
+	let t = No.get(e), n = Object.entries(e).filter(([, e]) => e instanceof De);
 	if (t && (t.hooks.some((t, n) => t !== [
 		e.onBeforeCompile,
 		e.onBeforeRender,
 		e.customProgramCacheKey
 	][n]) || t.sources.size !== n.length || n.some(([e, n]) => t.sources.get(e) !== n.source))) return { reason: "changed captured material" };
-	if (!t && (e.onBeforeCompile !== w.prototype.onBeforeCompile || e.onBeforeRender !== w.prototype.onBeforeRender || e.customProgramCacheKey !== w.prototype.customProgramCacheKey)) return { reason: "untracked shader closure" };
+	if (!t && (e.onBeforeCompile !== Fe.prototype.onBeforeCompile || e.onBeforeRender !== Fe.prototype.onBeforeRender || e.customProgramCacheKey !== Fe.prototype.customProgramCacheKey)) return { reason: "untracked shader closure" };
 	try {
 		let n = Object.fromEntries(Object.entries(e).filter(([e]) => ![
 			"uuid",
@@ -5205,8 +5264,8 @@ function Fo(e) {
 			"onBeforeCompile",
 			"onBeforeRender",
 			"customProgramCacheKey"
-		].includes(e)).filter(([, e]) => e !== void 0).map(([e, n]) => [e, n instanceof Se ? Po(n, !!t) : No(n)]));
-		return { key: JSON.stringify(No({
+		].includes(e)).filter(([, e]) => e !== void 0).map(([e, n]) => [e, n instanceof De ? Ro(n, !!t) : Lo(n)]));
+		return { key: JSON.stringify(Lo({
 			recipe: t ? {
 				namespace: t.namespace,
 				document: t.document
@@ -5217,17 +5276,17 @@ function Fo(e) {
 		return { reason: String(e) };
 	}
 }
-function Io(e) {
-	return ko.has(e);
+function Bo(e) {
+	return No.has(e);
 }
 //#endregion
 //#region src/render/TextureViewRendering.ts
-function Lo(e, t) {
+function Vo(e, t) {
 	let n = e.clone();
-	return Ro(n, t), n;
+	return Ho(n, t), n;
 }
-function Ro(e, t) {
-	e.colorSpace = t.colorSpace === "srgb" ? S : "", e.channel = t.texCoord, e.repeat.set(t.uvScale[0], t.uvScale[1]), e.offset.set(t.uvOffset[0], t.uvOffset[1]), e.wrapS = zo(t.wrapS), e.wrapT = zo(t.wrapT), e.minFilter = t.minFilter === "nearest" ? g : t.minFilter === "linear-mipmap-linear" ? ue : je, e.magFilter = t.magFilter === "nearest" ? g : je, e.flipY = t.flipY, e.generateMipmaps = t.generateMipmaps ?? !0, e.anisotropy = t.anisotropy ?? 1, e.matrixAutoUpdate = !0, e.updateMatrix(), e.userData.textureView = {
+function Ho(e, t) {
+	e.colorSpace = t.colorSpace === "srgb" ? o : "", e.channel = t.texCoord, e.repeat.set(t.uvScale[0], t.uvScale[1]), e.offset.set(t.uvOffset[0], t.uvOffset[1]), e.wrapS = Uo(t.wrapS), e.wrapT = Uo(t.wrapT), e.minFilter = t.minFilter === "nearest" ? g : t.minFilter === "linear-mipmap-linear" ? me : ue, e.magFilter = t.magFilter === "nearest" ? g : ue, e.flipY = t.flipY, e.generateMipmaps = t.generateMipmaps ?? !0, e.anisotropy = t.anisotropy ?? 1, e.matrixAutoUpdate = !0, e.updateMatrix(), e.userData.textureView = {
 		assetId: t.texture.assetId,
 		texCoord: t.texCoord,
 		uvScale: [...t.uvScale],
@@ -5245,12 +5304,12 @@ function Ro(e, t) {
 		alphaTransfer: "linear-unmodified"
 	}, e.needsUpdate = !0;
 }
-function zo(e) {
-	return e === "mirror" ? h : e === "clamp" ? Ne : p;
+function Uo(e) {
+	return e === "mirror" ? h : e === "clamp" ? Ne : y;
 }
 //#endregion
 //#region src/render/WebMaskPbrRendering.ts
-function Bo(e, t, n) {
+function Wo(e, t, n) {
 	if (t.length !== n.length) throw Error("WebMaskPBR layer and texture counts differ.");
 	if (t.length === 0) return;
 	let r = !1;
@@ -5289,7 +5348,7 @@ function Bo(e, t, n) {
 		}).join("\n");
 		if (!e.fragmentShader.includes("#include <common>") || !e.fragmentShader.includes("#include <color_fragment>") || !e.vertexShader.includes("#include <common>") || !e.vertexShader.includes("#include <uv_vertex>")) throw Error("Three MeshStandardMaterial shader layout is incompatible with WebMaskPBR texture views.");
 		e.vertexShader = e.vertexShader.replace("#include <common>", `#include <common>\n${t.map((e, t) => `varying vec2 webMaskUv${t};`).join("\n")}`).replace("#include <uv_vertex>", `#include <uv_vertex>\n${t.map((e, t) => `webMaskUv${t} = ${e.mask.texCoord === 0 ? "uv" : `uv${e.mask.texCoord}`};`).join("\n")}`), e.fragmentShader = e.fragmentShader.replace("#include <common>", `#include <common>\n${r}`).replace("#include <color_fragment>", `#include <color_fragment>\n${i}`), t.forEach((t, r) => {
-			e.uniforms[`webMaskTexture${r}`] = { value: n[r] }, e.uniforms[`webMaskUvScale${r}`] = { value: new C(...t.mask.uvScale) }, e.uniforms[`webMaskUvOffset${r}`] = { value: new C(...t.mask.uvOffset) }, e.uniforms[`webMaskTint${r}`] = { value: new E(...t.tintLinear) }, e.uniforms[`webMaskStrength${r}`] = { value: t.strength }, e.uniforms[`webMaskInvert${r}`] = { value: +!!t.invert };
+			e.uniforms[`webMaskTexture${r}`] = { value: n[r] }, e.uniforms[`webMaskUvScale${r}`] = { value: new Pe(...t.mask.uvScale) }, e.uniforms[`webMaskUvOffset${r}`] = { value: new Pe(...t.mask.uvOffset) }, e.uniforms[`webMaskTint${r}`] = { value: new S(...t.tintLinear) }, e.uniforms[`webMaskStrength${r}`] = { value: t.strength }, e.uniforms[`webMaskInvert${r}`] = { value: +!!t.invert };
 		});
 	}, e.userData.webMaskPbr = {
 		formulaVersion: 1,
@@ -5300,12 +5359,12 @@ function Bo(e, t, n) {
 }
 //#endregion
 //#region src/render/VertexAtlasRendering.ts
-var Vo = [
+var Go = [
 	.2126390039920807,
 	.7151686549186707,
 	.07219231873750687
 ];
-function Ho(e, t, n, r = !1) {
+function Ko(e, t, n, r = !1) {
 	if (n.length !== t.masks.length || n.length !== Math.ceil(t.colors.length / 4)) throw Error("Atlas mask views must match its colors");
 	e.vertexColors = !1, e.onBeforeRender = (e, n, r, i) => {
 		if (!i.hasAttribute("color") && t.kindIdFallback?.useVertexMaterialIds !== !1 || !i.hasAttribute("uv")) throw Error("Atlas requires source vertex color IDs and UV0");
@@ -5334,9 +5393,9 @@ function Ho(e, t, n, r = !1) {
           dtweColor += dtweW${n} * dtweAtlasColors[${n}]; dtweWeight += dtweW${n};
           ${t.surfaces ? `dtweRoughness += dtweW${n} * dtweKindRoughness[${n}]; dtweMetallic += dtweW${n} * dtweKindMetallic[${n}];` : ""}`).join("\n")}
         diffuseColor.rgb *= dtweColor / max(dtweWeight, 0.0000009999999974752427)
-          * ${t.colorDetailMode === "color" ? "mix(vec3(1.0), dtwePainterBase, dtweAtlasDetail)" : `mix(1.0, dot(dtwePainterBase, vec3(${Vo.join(",")})), dtweAtlasDetail)`};
-      `).replace("#include <roughnessmap_fragment>", `#include <roughnessmap_fragment>\nroughnessFactor = clamp(roughnessFactor ${t.surfaces ? "* (dtweRoughness / max(dtweWeight, 0.0000009999999974752427))" : t.surfaceGated ? "* (dtweWeight / max(dtweWeight, 0.0000009999999974752427))" : ""} + dtweAtlasRoughnessOffset, 0.0, 1.0);`).replace("#include <metalnessmap_fragment>", `#include <metalnessmap_fragment>\nmetalnessFactor = clamp(metalnessFactor ${t.surfaces ? "* (dtweMetallic / max(dtweWeight, 0.0000009999999974752427))" : t.surfaceGated ? "* (dtweWeight / max(dtweWeight, 0.0000009999999974752427))" : ""} - dtweAtlasMetallicReduction, 0.0, 1.0);`), t.surfaces && (e.uniforms.dtweKindRoughness = { value: t.surfaces.map((e) => e.roughness) }, e.uniforms.dtweKindMetallic = { value: t.surfaces.map((e) => e.metallic) }), t.kindIdFallback && (e.uniforms.dtweAtlasPreviewKind = { value: t.kindIdFallback.previewKind }, e.uniforms.dtweAtlasEnabled = { value: t.kindIdFallback.enabled.map((e) => +!!e) }), e.uniforms.dtweAtlasColors = { value: r ? new Float32Array(t.colors.flat()) : t.colors.map((e) => new E(...e)) }, e.uniforms.dtweAtlasDetail = { value: t.colorDetail }, e.uniforms.dtweAtlasRoughnessOffset = { value: t.roughnessOffset }, e.uniforms.dtweAtlasMetallicReduction = { value: t.metallicReduction }, n.forEach((n, r) => {
-			e.uniforms[`dtweAtlasMask${r}`] = { value: n }, e.uniforms[`dtweAtlasScale${r}`] = { value: new C(...t.masks[r].uvScale) }, e.uniforms[`dtweAtlasOffset${r}`] = { value: new C(...t.masks[r].uvOffset) };
+          * ${t.colorDetailMode === "color" ? "mix(vec3(1.0), dtwePainterBase, dtweAtlasDetail)" : `mix(1.0, dot(dtwePainterBase, vec3(${Go.join(",")})), dtweAtlasDetail)`};
+      `).replace("#include <roughnessmap_fragment>", `#include <roughnessmap_fragment>\nroughnessFactor = clamp(roughnessFactor ${t.surfaces ? "* (dtweRoughness / max(dtweWeight, 0.0000009999999974752427))" : t.surfaceGated ? "* (dtweWeight / max(dtweWeight, 0.0000009999999974752427))" : ""} + dtweAtlasRoughnessOffset, 0.0, 1.0);`).replace("#include <metalnessmap_fragment>", `#include <metalnessmap_fragment>\nmetalnessFactor = clamp(metalnessFactor ${t.surfaces ? "* (dtweMetallic / max(dtweWeight, 0.0000009999999974752427))" : t.surfaceGated ? "* (dtweWeight / max(dtweWeight, 0.0000009999999974752427))" : ""} - dtweAtlasMetallicReduction, 0.0, 1.0);`), t.surfaces && (e.uniforms.dtweKindRoughness = { value: t.surfaces.map((e) => e.roughness) }, e.uniforms.dtweKindMetallic = { value: t.surfaces.map((e) => e.metallic) }), t.kindIdFallback && (e.uniforms.dtweAtlasPreviewKind = { value: t.kindIdFallback.previewKind }, e.uniforms.dtweAtlasEnabled = { value: t.kindIdFallback.enabled.map((e) => +!!e) }), e.uniforms.dtweAtlasColors = { value: r ? new Float32Array(t.colors.flat()) : t.colors.map((e) => new S(...e)) }, e.uniforms.dtweAtlasDetail = { value: t.colorDetail }, e.uniforms.dtweAtlasRoughnessOffset = { value: t.roughnessOffset }, e.uniforms.dtweAtlasMetallicReduction = { value: t.metallicReduction }, n.forEach((n, r) => {
+			e.uniforms[`dtweAtlasMask${r}`] = { value: n }, e.uniforms[`dtweAtlasScale${r}`] = { value: new Pe(...t.masks[r].uvScale) }, e.uniforms[`dtweAtlasOffset${r}`] = { value: new Pe(...t.masks[r].uvOffset) };
 		});
 	}, e.userData.vertexAtlas = {
 		version: t.version,
@@ -5346,15 +5405,15 @@ function Ho(e, t, n, r = !1) {
 }
 //#endregion
 //#region src/render/LeasedTextureResolver.ts
-function Uo(e, t = Wo, n = 0, r) {
+function qo(e, t = Jo, n = 0, r) {
 	let i = /* @__PURE__ */ new Map();
 	return async (a, o) => {
 		let s = [...i.keys()].some((e) => e.startsWith(a.assetId + "@")), c = Math.min(n || Infinity, r?.get(a.assetId) ?? Infinity), l = Number.isFinite(c) ? c : 0, u = (e) => `${a.assetId}@${e}:${l}:${o?.flipY ? "flip" : "original"}`, d = s ? e.currentRevisionId?.(a.assetId) : void 0, f = d ? u(d) : "", p = i.get(f);
 		if (!p) {
-			let n = s && e.snapshotCatalog ? await e.snapshotCatalog() : await rt(e, a.assetId), r = n.assets.find((e) => e.id === a.assetId && e.kind === "Texture"), c = n.revisions.find((e) => e.id === r?.currentRevisionId && e.assetId === r?.id);
+			let n = s && e.snapshotCatalog ? await e.snapshotCatalog() : await it(e, a.assetId), r = n.assets.find((e) => e.id === a.assetId && e.kind === "Texture"), c = n.revisions.find((e) => e.id === r?.currentRevisionId && e.assetId === r?.id);
 			if (!r || !c || typeof c.metadata.mimeType != "string") throw Error("Incomplete texture asset");
 			if (f = u(c.id), p = i.get(f), !p) {
-				let a = "blobs" in n ? n : await rt(e, r.id, c.id), s = a.revisions.find((e) => e.id === c.id && e.assetId === r.id), u = a.blobs.find((e) => e.key === c.blobKeys[0]);
+				let a = "blobs" in n ? n : await it(e, r.id, c.id), s = a.revisions.find((e) => e.id === c.id && e.assetId === r.id), u = a.blobs.find((e) => e.key === c.blobKeys[0]);
 				if (!s || s.contentHash !== c.contentHash || s.metadata.mimeType !== c.metadata.mimeType || JSON.stringify(s.blobKeys) !== JSON.stringify(c.blobKeys) || !u) throw Error("Incomplete texture asset");
 				p = i.get(f), p || (p = {
 					users: 0,
@@ -5379,9 +5438,9 @@ function Uo(e, t = Wo, n = 0, r) {
 		}), h;
 	};
 }
-async function Wo(e, t, n, r) {
+async function Jo(e, t, n, r) {
 	if (typeof createImageBitmap != "function") throw Error("ImageBitmap decoding is unavailable");
-	let { width: i, height: a } = Xn(e, t), o = n ? Math.min(1, n / Math.max(i, a)) : 1, s = new Fe(await createImageBitmap(new Blob([e.slice().buffer], { type: t }), {
+	let { width: i, height: a } = tr(e, t), o = n ? Math.min(1, n / Math.max(i, a)) : 1, s = new Ie(await createImageBitmap(new Blob([e.slice().buffer], { type: t }), {
 		imageOrientation: r ? "flipY" : "none",
 		premultiplyAlpha: "none",
 		colorSpaceConversion: "none",
@@ -5395,7 +5454,7 @@ async function Wo(e, t, n, r) {
 }
 //#endregion
 //#region src/assets/MaterialDiagnostics.ts
-var Go = class extends Error {
+var Yo = class extends Error {
 	diagnostic;
 	constructor(e, t, n, r) {
 		super(t), this.name = "MaterialFailure", this.diagnostic = r ?? {
@@ -5407,55 +5466,55 @@ var Go = class extends Error {
 };
 //#endregion
 //#region src/render/MaterialDeviceLimits.ts
-function Ko(e, t, n) {
-	if (!Object.values(t).every((e) => Number.isFinite(e) && e >= 1)) throw new Go("device-limit", "장치의 WebGL 텍스처 한도를 확인할 수 없습니다.", n);
-	if (e.anisotropy > t.maxAnisotropy) throw new Go("device-limit", `anisotropy ${e.anisotropy} 필요 · 장치 지원 ${t.maxAnisotropy}`, n);
-	if (e.textures > t.maxTextures) throw new Go("device-limit", `재질 텍스처 ${e.textures}개 필요 · 장치 지원 ${t.maxTextures}개`, n);
+function Xo(e, t, n) {
+	if (!Object.values(t).every((e) => Number.isFinite(e) && e >= 1)) throw new Yo("device-limit", "장치의 WebGL 텍스처 한도를 확인할 수 없습니다.", n);
+	if (e.anisotropy > t.maxAnisotropy) throw new Yo("device-limit", `anisotropy ${e.anisotropy} 필요 · 장치 지원 ${t.maxAnisotropy}`, n);
+	if (e.textures > t.maxTextures) throw new Yo("device-limit", `재질 텍스처 ${e.textures}개 필요 · 장치 지원 ${t.maxTextures}개`, n);
 	let r = Math.max(0, ...e.dimensions.flatMap((e) => [e.width, e.height]));
-	if (r > t.maxTextureSize) throw new Go("device-limit", `텍스처 최대 변 ${r}px 필요 · 장치 지원 ${t.maxTextureSize}px`, n);
+	if (r > t.maxTextureSize) throw new Yo("device-limit", `텍스처 최대 변 ${r}px 필요 · 장치 지원 ${t.maxTextureSize}px`, n);
 }
 //#endregion
 //#region src/render/MaterialRendering.ts
-var qo = /* @__PURE__ */ new WeakMap();
-function Jo(e) {
-	return qo.get(e) ?? /* @__PURE__ */ new Set();
+var Zo = /* @__PURE__ */ new WeakMap();
+function Qo(e) {
+	return Zo.get(e) ?? /* @__PURE__ */ new Set();
 }
-function Yo(e, t, n = {}) {
-	let r = t ?? Uo(e, void 0, n.textureMaxSize, n.textureMapLimits), i = async (e) => {
+function $o(e, t, n = {}) {
+	let r = t ?? qo(e, void 0, n.textureMaxSize, n.textureMapLimits), i = async (e) => {
 		let n = await r(e.texture, e);
-		return t ? Lo(n, e) : (Ro(n, e), n);
+		return t ? Vo(n, e) : (Ho(n, e), n);
 	};
 	return async (a, o) => {
-		let s = await xr(e, a), c = s.kind === "WebMaskPbrMaterial" ? {
+		let s = await Er(e, a), c = s.kind === "WebMaskPbrMaterial" ? {
 			...s,
-			maskLayers: Xo(s.maskLayers, o?.tintOverrides ?? [])
-		} : s, l = n.transformDocument?.(c) ?? c, u = Zo(l), d = /* @__PURE__ */ new Set(), f = /* @__PURE__ */ new Set(), p = !1;
-		qo.set(u, d), u.addEventListener("dispose", () => {
+			maskLayers: es(s.maskLayers, o?.tintOverrides ?? [])
+		} : s, l = n.transformDocument?.(c) ?? c, u = ts(l), d = /* @__PURE__ */ new Set(), f = /* @__PURE__ */ new Set(), p = !1;
+		Zo.set(u, d), u.addEventListener("dispose", () => {
 			p || (p = !0, d.forEach((e) => e.dispose()));
 		});
 		try {
 			if (l.kind === "WebMaskPbrMaterial") {
 				for (let [e, t] of Object.entries(l.textureViews)) {
 					let n = await i(t);
-					d.add(n), f.add(n), e === "baseColor" && (u.map = n), e === "emissive" && (u.emissiveMap = n), e === "normal" && (u.normalMap = n, es(u, t.normalGreen === "invert")), e === "metallic" && (u.metalnessMap = n), e === "roughness" && (u.roughnessMap = n), e === "occlusion" && (u.aoMap = n);
+					d.add(n), f.add(n), e === "baseColor" && (u.map = n), e === "emissive" && (u.emissiveMap = n), e === "normal" && (u.normalMap = n, is(u, t.normalGreen === "invert")), e === "metallic" && (u.metalnessMap = n), e === "roughness" && (u.roughnessMap = n), e === "occlusion" && (u.aoMap = n);
 				}
 				let t = l.maskLayers, n = [];
 				for (let e of t) {
 					let t = await i(e.mask);
 					d.add(t), f.add(t), n.push(t);
 				}
-				if (Bo(u, t, n), n.forEach((e) => d.delete(e)), l.vertexAtlas) {
+				if (Wo(u, t, n), n.forEach((e) => d.delete(e)), l.vertexAtlas) {
 					let t = [];
 					for (let e of l.vertexAtlas.masks) {
 						let n = await i(e);
 						d.add(n), f.add(n), t.push(n);
 					}
-					Ho(u, l.vertexAtlas, t, Do(e));
+					Ko(u, l.vertexAtlas, t, jo(e));
 				}
 				u.userData.materialInstance = { tintOverrides: structuredClone(o?.tintOverrides ?? []) };
 			} else for (let [e, n] of Object.entries(l.textures)) {
 				let i = await r(n), a = t ? i.clone() : i;
-				d.add(a), $o(a, e), e === "baseColor-srgb" && (u.map = a), e === "emissive-srgb" && (u.emissiveMap = a), e === "normal-linear" && (u.normalMap = a), e === "metallicRoughness-linear" && (u.metalnessMap = a, u.roughnessMap = a), e === "occlusion-linear" && (u.aoMap = a);
+				d.add(a), rs(a, e), e === "baseColor-srgb" && (u.map = a), e === "emissive-srgb" && (u.emissiveMap = a), e === "normal-linear" && (u.normalMap = a), e === "metallicRoughness-linear" && (u.metalnessMap = a, u.roughnessMap = a), e === "occlusion-linear" && (u.aoMap = a);
 			}
 			if ("displayAlphaOnly" in l && l.displayAlphaOnly === !0) {
 				let e = u.onBeforeCompile, t = u.customProgramCacheKey;
@@ -5481,7 +5540,7 @@ function Yo(e, t, n = {}) {
 						let t = Math.min(r.get(e), g);
 						e.anisotropy !== t && (e.anisotropy = t, e.needsUpdate = !0);
 					}
-					Ko({
+					Xo({
 						anisotropy: Math.min(t, g),
 						textures: f.size,
 						dimensions: n
@@ -5492,18 +5551,18 @@ function Yo(e, t, n = {}) {
 					}, a.assetId);
 					for (let t of e) {
 						let e = t.texCoord === 0 ? "uv" : `uv${t.texCoord}`;
-						if (!p.hasAttribute(e)) throw new Go("uv", `Material requires ${e}; UV0 fallback is forbidden.`, a.assetId);
+						if (!p.hasAttribute(e)) throw new Yo("uv", `Material requires ${e}; UV0 fallback is forbidden.`, a.assetId);
 					}
 					l.mappingProfileId === "u01-baked-pbr-v1" && u.normalMap && (u.normalScale.y = p.hasAttribute("tangent") ? o : -o), i.call(u, s, c, d, p, m, h);
 				};
 			}
-			return Oo(u, e, l, n.frozenInstancing), u;
+			return Mo(u, e, l, n.frozenInstancing), u;
 		} catch (e) {
 			throw u.dispose(), e;
 		}
 	};
 }
-function Xo(e, t) {
+function es(e, t) {
 	let n = /* @__PURE__ */ new Set(), r = new Map(t.map((t) => {
 		if (!Number.isInteger(t.layerIndex) || t.layerIndex < 0 || t.layerIndex >= e.length) throw Error(`Material tint layer ${t.layerIndex} does not exist.`);
 		if (n.has(t.layerIndex)) throw Error(`Material tint layer ${t.layerIndex} is overridden more than once.`);
@@ -5520,47 +5579,47 @@ function Xo(e, t) {
 		} : e;
 	});
 }
-function Zo(e) {
-	let t = e.kind === "WebMaskPbrMaterial" ? e.ior : void 0, r = new (t === void 0 ? ve : n)({
-		color: new b().setRGB(e.baseColorFactor[0], e.baseColorFactor[1], e.baseColorFactor[2]),
+function ts(e) {
+	let t = e.kind === "WebMaskPbrMaterial" ? e.ior : void 0, n = new (t === void 0 ? m : T)({
+		color: new x().setRGB(e.baseColorFactor[0], e.baseColorFactor[1], e.baseColorFactor[2]),
 		opacity: e.baseColorFactor[3],
 		metalness: e.metallic,
 		roughness: e.roughness,
-		emissive: new b().setRGB(...e.emissiveFactor),
+		emissive: new x().setRGB(...e.emissiveFactor),
 		emissiveIntensity: e.emissiveIntensity ?? 1,
-		normalScale: new C(e.normalScale, e.normalScale),
+		normalScale: new Pe(e.normalScale, e.normalScale),
 		aoMapIntensity: e.occlusionStrength ?? 1,
 		alphaTest: e.alphaMode === "MASK" ? e.alphaCutoff : 0,
 		transparent: e.alphaMode === "BLEND",
 		depthWrite: e.alphaMode !== "BLEND",
 		side: e.doubleSided ? 2 : 0
 	});
-	return r instanceof n && t !== void 0 && (r.ior = t), r.userData.materialContract = {
+	return n instanceof T && t !== void 0 && (n.ior = t), n.userData.materialContract = {
 		alphaMode: e.alphaMode,
 		outputTransform: "renderer-srgb-once"
-	}, e.kind === "WebMaskPbrMaterial" && e.unlit && (r.onBeforeCompile = (e) => {
+	}, e.kind === "WebMaskPbrMaterial" && e.unlit && (n.onBeforeCompile = (e) => {
 		if (!e.fragmentShader.includes("#include <opaque_fragment>")) throw Error("Unlit material shader layout is incompatible.");
 		e.fragmentShader = e.fragmentShader.replace("#include <opaque_fragment>", "outgoingLight = diffuseColor.rgb;\n#include <opaque_fragment>");
-	}, r.customProgramCacheKey = () => "u01-khr-materials-unlit-v1", r.userData.unlit = !0), r;
+	}, n.customProgramCacheKey = () => "u01-khr-materials-unlit-v1", n.userData.unlit = !0), n;
 }
-function Qo(e, t) {
+function ns(e, t) {
 	e.material = t, e.userData.materialProfile = "pbr-metallic-roughness-webmask-v1";
 }
-function $o(e, t) {
-	e.colorSpace = t === "baseColor-srgb" || t === "emissive-srgb" ? S : "", e.userData.textureSemantic = t;
+function rs(e, t) {
+	e.colorSpace = t === "baseColor-srgb" || t === "emissive-srgb" ? o : "", e.userData.textureSemantic = t;
 }
-function es(e, t) {
+function is(e, t) {
 	let n = Math.abs(e.normalScale.y);
 	e.normalScale.y = t ? -n : n, e.userData.normalConvention = t ? "directx-green-inverted" : "gltf-opengl";
 }
 //#endregion
 //#region src/assets/StaticMeshProjection.ts
-function ts(e) {
+function as(e) {
 	if (e == null) return null;
 	if (!Array.isArray(e) || e.length !== 16 || !e.every(Number.isFinite)) throw Error("Invalid static payloadToAsset matrix.");
-	return an(e), new o().set(...e);
+	return on(e), new Me().set(...e);
 }
-function ns(e) {
+function os(e) {
 	return Array.isArray(e) ? e.flatMap((e) => {
 		if (!e || e.defaultMaterialId === void 0 || e.defaultMaterialId === null) return [];
 		if (typeof e.slotId != "string" || typeof e.defaultMaterialId != "string" || !e.defaultMaterialId) throw Error("Invalid static default material binding.");
@@ -5575,45 +5634,45 @@ function ns(e) {
 		}];
 	}) : [];
 }
-U.backup.archiveBytes / 1024 ** 3, U.backup.entries, new TextEncoder(), new TextDecoder("utf-8", { fatal: !0 }), Object.freeze({
-	bytes: U.backup.archiveBytes,
-	entries: U.backup.entries,
-	entryBytes: U.import.singlePayloadBytes
+H.backup.archiveBytes / 1024 ** 3, H.backup.entries, new TextEncoder(), new TextDecoder("utf-8", { fatal: !0 }), Object.freeze({
+	bytes: H.backup.archiveBytes,
+	entries: H.backup.entries,
+	entryBytes: H.import.singlePayloadBytes
 });
-var rs = /* @__PURE__ */ new WeakMap(), is = /* @__PURE__ */ new WeakSet();
-function as(e) {
+var ss = /* @__PURE__ */ new WeakMap(), cs = /* @__PURE__ */ new WeakSet();
+function ls(e) {
 	let t = /* @__PURE__ */ new Set();
 	return e.traverse((e) => {
-		e instanceof Me && t.add(e.geometry);
+		e instanceof C && t.add(e.geometry);
 	}), t;
 }
-function os(e) {
-	return [...as(e)].some((e) => !!rs.get(e));
+function us(e) {
+	return [...ls(e)].some((e) => !!ss.get(e));
 }
-function ss(e) {
-	let t = as(e), n = !1;
+function ds(e) {
+	let t = ls(e), n = !1;
 	return t.forEach((e) => {
-		rs.set(e, (rs.get(e) ?? 0) + 1), is.delete(e);
+		ss.set(e, (ss.get(e) ?? 0) + 1), cs.delete(e);
 	}), () => {
-		n || (n = !0, t.forEach((e) => rs.set(e, rs.get(e) - 1)));
+		n || (n = !0, t.forEach((e) => ss.set(e, ss.get(e) - 1)));
 	};
 }
-function cs(e) {
-	for (let t of e) for (let e of as(t)) !rs.get(e) && !is.has(e) && (e.dispose(), is.add(e));
+function fs(e) {
+	for (let t of e) for (let e of ls(t)) !ss.get(e) && !cs.has(e) && (e.dispose(), cs.add(e));
 }
 //#endregion
 //#region src/ue-import/PreviewTemplateResidency.ts
-var ls = /* @__PURE__ */ new WeakMap();
-function us(e) {
-	let t = ls.get(e);
+var ps = /* @__PURE__ */ new WeakMap();
+function ms(e) {
+	let t = ps.get(e);
 	return t || (t = {
 		epoch: 0,
 		leases: /* @__PURE__ */ new Map(),
 		pending: /* @__PURE__ */ new Map()
-	}, ls.set(e, t)), t;
+	}, ps.set(e, t)), t;
 }
-async function ds(e, t, n, r) {
-	let i = us(e);
+async function hs(e, t, n, r) {
+	let i = ms(e);
 	i.leases.set(t, (i.leases.get(t) ?? 0) + 1);
 	let a = !1, o = () => {
 		a || (a = !0, i.leases.set(t, i.leases.get(t) - 1));
@@ -5626,7 +5685,7 @@ async function ds(e, t, n, r) {
 			if (!o) {
 				let a = i.epoch;
 				o = r(n).then((n) => {
-					if (a !== i.epoch) throw Ka([n]), Error("Retired preview decode");
+					if (a !== i.epoch) throw Q([n]), Error("Retired preview decode");
 					return e.set(t, n), n;
 				}).finally(() => {
 					i.pending.get(t) === o && i.pending.delete(t);
@@ -5642,24 +5701,24 @@ async function ds(e, t, n, r) {
 		throw o(), e;
 	}
 }
-function fs(e, t) {
-	let n = us(e);
-	for (let [r, i] of e) !n.leases.get(r) && !os(i) && (t.has(r) ? (e.delete(r), Ka([i])) : cs([i]));
+function gs(e, t) {
+	let n = ms(e);
+	for (let [r, i] of e) !n.leases.get(r) && !us(i) && (t.has(r) ? (e.delete(r), Q([i])) : fs([i]));
 }
-function ps(e) {
-	let t = us(e);
-	t.epoch++, t.pending.clear(), Ka([...e.values()]), e.clear();
+function _s(e) {
+	let t = ms(e);
+	t.epoch++, t.pending.clear(), Q([...e.values()]), e.clear();
 }
 //#endregion
 //#region src/assets/StaticMeshResourceCache.ts
-var ms = class {
+var vs = class {
 	storage;
 	loadTemplate;
 	typedMaterialGeometry;
 	entries = /* @__PURE__ */ new Map();
 	aliases = /* @__PURE__ */ new Map();
 	pendingResolutions = /* @__PURE__ */ new Map();
-	constructor(e, t = hs, n = !1) {
+	constructor(e, t = ys, n = !1) {
 		this.storage = e, this.loadTemplate = t, this.typedMaterialGeometry = n;
 	}
 	async acquire(e) {
@@ -5684,7 +5743,7 @@ var ms = class {
 		return () => void 0;
 	}
 	async resolve(e) {
-		let t = await rt(this.storage, e.assetId, e.revisionPolicy === "pinned" ? e.revisionId : void 0), n = t.assets.find((t) => t.id === e.assetId);
+		let t = await it(this.storage, e.assetId, e.revisionPolicy === "pinned" ? e.revisionId : void 0), n = t.assets.find((t) => t.id === e.assetId);
 		if (!n || n.kind !== "StaticMesh") throw Error(`Unknown StaticMesh asset ${e.assetId}.`);
 		let r = e.revisionPolicy === "pinned" ? e.revisionId : n.currentRevisionId;
 		if (!r) throw Error(`Asset ${e.assetId} has no resolvable revision.`);
@@ -5692,30 +5751,30 @@ var ms = class {
 		if (!i) throw Error(`Unknown revision ${r} for asset ${n.id}.`);
 		let a = t.blobs.find((e) => e.key === i.blobKeys[0]);
 		if (!a) throw Error(`Missing blob for asset ${n.id} revision ${i.id}.`);
-		return ts(i.metadata.payloadToAsset), {
+		return as(i.metadata.payloadToAsset), {
 			metadata: i.metadata,
 			assetId: n.id,
 			revisionId: i.id,
 			bytes: a.bytes,
-			materialSlotIds: vs(i.metadata.materialSlots),
-			lod: i.metadata.profile === Er
+			materialSlotIds: Ss(i.metadata.materialSlots),
+			lod: i.metadata.profile === jr
 		};
 	}
 	async acquireEntry(e, t) {
 		let n = this.entries.get(e);
 		if (!n) {
 			if (!t) throw Error(`Resource cache alias ${e} has no live entry.`);
-			let r = this.typedMaterialGeometry === "geometry-only" || this.typedMaterialGeometry && t.metadata.candidateTypedMaterials === !0 && ns(t.metadata.materialSlots).length === t.materialSlotIds.length ? (e) => hs(e, !0) : this.loadTemplate, i = (t.lod ? this.loadLodTemplate(t.bytes, t.materialSlotIds, r) : r(t.bytes)).then((n) => {
-				let r = ts(t.metadata.payloadToAsset);
+			let r = this.typedMaterialGeometry === "geometry-only" || this.typedMaterialGeometry && t.metadata.candidateTypedMaterials === !0 && os(t.metadata.materialSlots).length === t.materialSlotIds.length ? (e) => ys(e, !0) : this.loadTemplate, i = (t.lod ? this.loadLodTemplate(t.bytes, t.materialSlotIds, r) : r(t.bytes)).then((n) => {
+				let r = as(t.metadata.payloadToAsset);
 				if (r) {
 					if (t.lod) n.matrixAutoUpdate = !1, n.matrix.copy(r), n.matrixWorldNeedsUpdate = !0;
 					else {
-						let e = new T();
+						let e = new u();
 						e.matrixAutoUpdate = !1, e.matrix.copy(r), e.matrixWorldNeedsUpdate = !0, e.add(n), n = e;
 					}
 				}
-				n.userData.defaultMaterialSlots = ns(t.metadata.materialSlots);
-				let i = gs(n), a = this.entries.get(e);
+				n.userData.defaultMaterialSlots = os(t.metadata.materialSlots);
+				let i = bs(n), a = this.entries.get(e);
 				return a && (a.resource = i), (!a || a.leases === 0) && (i.dispose(), this.entries.delete(e)), i;
 			}).catch((t) => {
 				this.entries.delete(e);
@@ -5734,25 +5793,25 @@ var ms = class {
 		return {
 			assetId: a,
 			revisionId: o,
-			instantiate: () => ys(_s(r.object), n.materialSlotIds),
+			instantiate: () => Cs(xs(r.object), n.materialSlotIds),
 			release: () => {
 				s || (s = !0, this.release(e));
 			}
 		};
 	}
 	async loadLodTemplate(e, t, n = this.loadTemplate) {
-		let { payload: r } = Mr(e), i = new T();
+		let { payload: r } = Lr(e), i = new u();
 		i.userData.staticMeshLod = {
 			distanceMeters: r.distanceMeters,
 			hysteresis: r.hysteresis
 		};
 		try {
-			for (let e of r.levels) i.add(ys(await n(e), t));
+			for (let e of r.levels) i.add(Cs(await n(e), t));
 			return i.children.forEach((e, t) => {
 				e.visible = t === 0;
 			}), i;
 		} catch (e) {
-			throw gs(i).dispose(), e;
+			throw bs(i).dispose(), e;
 		}
 	}
 	release(e) {
@@ -5763,22 +5822,22 @@ var ms = class {
 		}
 	}
 };
-async function hs(e, t = !1) {
-	let n = new ti();
+async function ys(e, t = !1) {
+	let n = new ci();
 	t && n.register(() => ({
 		name: "DT_TYPED_GEOMETRY",
-		loadMaterial: async () => new ve()
+		loadMaterial: async () => new m()
 	}));
 	let r = e.slice().buffer;
 	return (await n.parseAsync(r, "")).scene;
 }
-function gs(e) {
+function bs(e) {
 	return {
 		object: e,
 		dispose: () => {
 			let t = /* @__PURE__ */ new Set(), n = /* @__PURE__ */ new Set(), r = /* @__PURE__ */ new Set();
 			e.traverse((e) => {
-				e instanceof Me && (t.add(e.geometry), (Array.isArray(e.material) ? e.material : [e.material]).forEach((e) => {
+				e instanceof C && (t.add(e.geometry), (Array.isArray(e.material) ? e.material : [e.material]).forEach((e) => {
 					n.add(e), Object.values(e).forEach((e) => {
 						e && typeof e == "object" && "isTexture" in e && r.add(e);
 					});
@@ -5787,31 +5846,31 @@ function gs(e) {
 		}
 	};
 }
-function _s(e) {
+function xs(e) {
 	let t = e.clone(!0);
 	return t.traverse((e) => {
-		e instanceof Me && (Array.isArray(e.material) || (e.userData.staticBatchMaterialId = e.material.uuid), e.material = Array.isArray(e.material) ? e.material.map((e) => e.clone()) : e.material.clone());
+		e instanceof C && (Array.isArray(e.material) || (e.userData.staticBatchMaterialId = e.material.uuid), e.material = Array.isArray(e.material) ? e.material.map((e) => e.clone()) : e.material.clone());
 	}), t;
 }
-function vs(e) {
+function Ss(e) {
 	return Array.isArray(e) ? e.flatMap((e) => typeof e == "object" && e && typeof e.slotId == "string" ? [e.slotId] : []) : [];
 }
-function ys(e, t) {
-	if (e.userData.staticMeshLod) return e.children.forEach((e) => ys(e, t)), e;
+function Cs(e, t) {
+	if (e.userData.staticMeshLod) return e.children.forEach((e) => Cs(e, t)), e;
 	let n = 0;
 	return e.traverse((e) => {
-		e instanceof Me && (e.userData.materialSlotId = t[n] ?? `mesh:0/primitive:${n}`, n += 1);
+		e instanceof C && (e.userData.materialSlotId = t[n] ?? `mesh:0/primitive:${n}`, n += 1);
 	}), e;
 }
-function bs(e) {
+function ws(e) {
 	let t = /* @__PURE__ */ new Set();
 	e.traverse((e) => {
-		e instanceof Me && (Array.isArray(e.material) ? e.material : [e.material]).forEach((e) => t.add(e));
+		e instanceof C && (Array.isArray(e.material) ? e.material : [e.material]).forEach((e) => t.add(e));
 	}), t.forEach((e) => e.dispose());
 }
 //#endregion
 //#region src/ue-import/TextureDisplaySession.ts
-var xs = class {
+var Ts = class {
 	layouts;
 	prepare;
 	publish;
@@ -5820,22 +5879,22 @@ var xs = class {
 		maxSize: 128,
 		maps: []
 	};
-	budgetBytes = Fa;
+	budgetBytes = Ba;
 	pending = null;
 	closed = !1;
-	memory = new Pa();
+	memory = new za();
 	constructor(e, t, n) {
 		this.layouts = e, this.prepare = t, this.publish = n;
 	}
 	estimate(e) {
-		let t = Ur(e);
-		return this.layouts.reduce((e, n) => e + Wa(n, t).reservedBytes, 0);
+		let t = Jr(e);
+		return this.layouts.reduce((e, n) => e + Ya(n, t).reservedBytes, 0);
 	}
 	async apply(e, t, n, r) {
 		if (this.closed) throw Error("닫힌 레벨의 텍스처 설정은 적용할 수 없습니다.");
 		if (this.pending) throw Error("텍스처 적용이 진행 중입니다.");
-		La(t);
-		let i = Ur(e), a = this.estimate(i), o = a + (this.current?.reservedBytes ?? 0);
+		Ha(t);
+		let i = Jr(e), a = this.estimate(i), o = a + (this.current?.reservedBytes ?? 0);
 		if (t !== 0 && a > 0 && o > t) throw Error(`텍스처 교체 중 예약 추정 ${(o / 1048576).toFixed(1)} MiB가 예산을 초과합니다. 자동 예산을 선택하거나 크기를 줄이세요.`);
 		let s = new AbortController();
 		this.pending = s;
@@ -5843,9 +5902,9 @@ var xs = class {
 		n.addEventListener("abort", c, { once: !0 }), n.aborted && s.abort();
 		let l = null;
 		try {
-			t === 0 && await Da(), s.signal.throwIfAborted(), this.memory.update(a > 0 ? o : this.current?.reservedBytes ?? 0, this.current?.reservedBytes ?? 0, t === 0 && a > 0);
-			let e = t === 0 ? ja(a > 0 ? o : 0, this.current?.reservedBytes ?? 0) : t;
-			l = await this.prepare(i, e, s.signal, r, t === 0), s.signal.throwIfAborted(), t === 0 && l.reservedBytes > 0 && ja(l.reservedBytes + (this.current?.reservedBytes ?? 0), this.current?.reservedBytes ?? 0), this.memory.update(l.reservedBytes + (this.current?.reservedBytes ?? 0), this.current?.reservedBytes ?? 0, t === 0 && l.reservedBytes > 0, !0);
+			t === 0 && await Ma(), s.signal.throwIfAborted(), this.memory.update(a > 0 ? o : this.current?.reservedBytes ?? 0, this.current?.reservedBytes ?? 0, t === 0 && a > 0);
+			let e = t === 0 ? Ia(a > 0 ? o : 0, this.current?.reservedBytes ?? 0) : t;
+			l = await this.prepare(i, e, s.signal, r, t === 0), s.signal.throwIfAborted(), t === 0 && l.reservedBytes > 0 && Ia(l.reservedBytes + (this.current?.reservedBytes ?? 0), this.current?.reservedBytes ?? 0), this.memory.update(l.reservedBytes + (this.current?.reservedBytes ?? 0), this.current?.reservedBytes ?? 0, t === 0 && l.reservedBytes > 0, !0);
 			let n = this.current, c = this.options, u = this.budgetBytes;
 			this.current = l, this.options = i, this.budgetBytes = t;
 			try {
@@ -5864,7 +5923,7 @@ var xs = class {
 };
 //#endregion
 //#region src/assets/SceneAssetSelection.ts
-function Ss(e, t, n = e.actors) {
+function Es(e, t, n = e.actors) {
 	let r = /* @__PURE__ */ new Set([
 		"SceneNode",
 		"PrimitiveCube",
@@ -5887,8 +5946,8 @@ function Ss(e, t, n = e.actors) {
 		}
 		o.set(t.id, r.id);
 		for (let e of t.dependencies) c(e);
-		if (t.kind === "Material") for (let e of Cr(br(r.metadata.material))) c(e);
-		if (t.kind === "StaticMesh" || t.kind === "SkeletalMesh") for (let e of ns(r.metadata.materialSlots)) c(e.materialAsset);
+		if (t.kind === "Material") for (let e of Or(Tr(r.metadata.material))) c(e);
+		if (t.kind === "StaticMesh" || t.kind === "SkeletalMesh") for (let e of os(r.metadata.materialSlots)) c(e.materialAsset);
 	};
 	for (let e of n) for (let t of e.components) if (t.type === "StaticMesh" || t.type === "SkeletalMesh") {
 		t.meshAsset && c(t.meshAsset);
@@ -5899,8 +5958,8 @@ function Ss(e, t, n = e.actors) {
 }
 //#endregion
 //#region src/ue-import/PreviewAssetSelection.ts
-function Cs(e, t, n) {
-	let r = Ss(e, t);
+function Ds(e, t, n) {
+	let r = Es(e, t);
 	if (!r) return {
 		assets: t,
 		recipe: n
@@ -5924,29 +5983,29 @@ function Cs(e, t, n) {
 }
 //#endregion
 //#region src/ue-import/prepareStaticEditorPreview.ts
-var ws = class extends Error {
+var Os = class extends Error {
 	requiredBytes;
 	budgetBytes;
 	textureLayouts;
-	constructor(e, t = Fa) {
+	constructor(e, t = Ba) {
 		super(`전체 에셋 텍스처 예약 추정 ${(e / 1048576).toFixed(1)} MiB가 표시 예산 ${(t / 1048576).toFixed(0)} MiB를 초과합니다. 예산을 늘리거나 텍스처 크기·맵을 줄이세요.`), this.requiredBytes = e, this.budgetBytes = t;
 	}
-}, Ts = class extends Error {
+}, ks = class extends Error {
 	textureLayouts;
 	constructor(e) {
 		super(`전체 에셋 텍스처 적용 실패: ${e}`);
 	}
 };
-function Es(e, t) {
+function As(e, t) {
 	try {
-		e.textureLayouts = [...t.values()].map(Ua);
+		e.textureLayouts = [...t.values()].map(Ja);
 	} catch {}
 	return e;
 }
-function Ds(e) {
+function js(e) {
 	let t = [], n = 0;
 	for (let [r, i] of e) {
-		let e = Ga(i);
+		let e = Xa(i);
 		t.push(r), n += e.reservedBytes;
 	}
 	return {
@@ -5954,7 +6013,7 @@ function Ds(e) {
 		reservedBytes: n
 	};
 }
-async function Os(e, t, n, r) {
+async function Ms(e, t, n, r) {
 	try {
 		for (let i = 0; i < t.length; i++) {
 			r?.throwIfAborted();
@@ -5968,10 +6027,10 @@ async function Os(e, t, n, r) {
 		}
 		r?.throwIfAborted();
 	} catch (t) {
-		throw e.clearAppearances(), r?.aborted ? t : new Ts(t instanceof Error ? t.message : String(t));
+		throw e.clearAppearances(), r?.aborted ? t : new ks(t instanceof Error ? t.message : String(t));
 	}
 }
-var ks = class extends ms {
+var Ns = class extends vs {
 	previewStorage;
 	templates;
 	payloads;
@@ -5993,8 +6052,8 @@ var ks = class extends ms {
 	disposed = !1;
 	appearanceListeners = /* @__PURE__ */ new Set();
 	invalidationListeners = /* @__PURE__ */ new Set();
-	constructor(e, t, n = /* @__PURE__ */ new Map(), r = qa, i = Fa, a = /* @__PURE__ */ new Map(), o = /* @__PURE__ */ new Map(), s = /* @__PURE__ */ new Set()) {
-		super(e), this.previewStorage = e, this.templates = t, this.payloads = n, this.loadAppearance = r, this.budgetBytes = i, this.defaultMaterials = a, this.deferredAppearances = s, La(i), this.deferredPayloads = new Map(o);
+	constructor(e, t, n = /* @__PURE__ */ new Map(), r = Za, i = Ba, a = /* @__PURE__ */ new Map(), o = /* @__PURE__ */ new Map(), s = /* @__PURE__ */ new Set()) {
+		super(e), this.previewStorage = e, this.templates = t, this.payloads = n, this.loadAppearance = r, this.budgetBytes = i, this.defaultMaterials = a, this.deferredAppearances = s, Ha(i), this.deferredPayloads = new Map(o);
 	}
 	supportsAppearance(e) {
 		return !!(e && e.revisionPolicy === "pinned" && e.revisionId === `${e.assetId}:preview` && (this.payloads.has(e.assetId) || this.deferredPayloads.has(e.assetId)));
@@ -6050,7 +6109,7 @@ var ks = class extends ms {
 		}
 		if (this.disposed) throw Error("Retired preview resources");
 		if (this.appearances.has(n)) throw Error("이미 로딩/표시/해제 중인 에셋입니다.");
-		let i = Ga(r);
+		let i = Xa(r);
 		if (i.reservedBytes + this.appearanceStatus().reservedBytes > this.budgetBytes) {
 			let e = i.reservedBytes > this.budgetBytes ? "이 에셋 하나만으로도 표시 예산을 초과합니다." : "다른 외형을 해제한 후 다시 시도하세요.";
 			throw Error(`텍스처 예산 초과: 이 에셋 예약 추정 ${(i.reservedBytes / 1048576).toFixed(1)} MiB. ${e} 자동 축소하지 않습니다.`);
@@ -6087,7 +6146,7 @@ var ks = class extends ms {
 	}
 	collectAppearance(e) {
 		let t = this.appearances.get(e);
-		t?.cancelled && t.object && t.leases === 0 && (Ka([t.object]), this.appearances.delete(e), this.notifyAppearance());
+		t?.cancelled && t.object && t.leases === 0 && (Q([t.object]), this.appearances.delete(e), this.notifyAppearance());
 	}
 	async acquire(e) {
 		if (this.disposed) throw Error("Retired preview resources");
@@ -6115,13 +6174,13 @@ var ks = class extends ms {
 			}
 			let n = this.appearances.get(e.assetId), r = n && !n.cancelled ? n.object : null;
 			r && n.leases++;
-			let i = r ? void 0 : await ds(this.templates, e.assetId, this.payloads.get(e.assetId), js), a = r ?? i.object, o = ss(a), s = !1;
+			let i = r ? void 0 : await hs(this.templates, e.assetId, this.payloads.get(e.assetId), Fs), a = r ?? i.object, o = ds(a), s = !1;
 			return {
 				assetId: e.assetId,
 				revisionId: `${e.assetId}:preview`,
 				instantiate: () => {
 					if (s) throw Error("Released preview lease");
-					let t = _s(a);
+					let t = xs(a);
 					return t.userData.defaultMaterialSlots = this.defaultMaterials.get(e.assetId) ?? [], t;
 				},
 				release: () => {
@@ -6136,12 +6195,12 @@ var ks = class extends ms {
 		this.textureDisplay?.dispose(), this.clearAppearances(), this.retainedMaterials.splice(0).forEach((e) => e.dispose());
 	}
 	trimUnusedGeometry() {
-		this.textureDisplay?.current?.resources.trimUnusedGeometry(), fs(this.templates, this.payloads);
-		for (let [e, t] of this.appearances) t.object && !t.leases && !t.cancelled && !this.acquiring.get(e) && (Ka([t.object]), this.appearances.delete(e));
+		this.textureDisplay?.current?.resources.trimUnusedGeometry(), gs(this.templates, this.payloads);
+		for (let [e, t] of this.appearances) t.object && !t.leases && !t.cancelled && !this.acquiring.get(e) && (Q([t.object]), this.appearances.delete(e));
 		this.retainedMaterials.splice(0).forEach((e) => e.dispose()), this.notifyAppearance();
 	}
 	disposeAll() {
-		this.disposed = !0, this.disposeDisplay(), ps(this.templates), this.payloads.clear(), this.appearanceListeners.clear(), this.invalidationListeners.clear(), this.deferredPayloads.clear(), this.loadingPayloads.clear(), this.textureDisplay = void 0, this.materialResolver = void 0, this.sceneDocument = void 0;
+		this.disposed = !0, this.disposeDisplay(), _s(this.templates), this.payloads.clear(), this.appearanceListeners.clear(), this.invalidationListeners.clear(), this.deferredPayloads.clear(), this.loadingPayloads.clear(), this.textureDisplay = void 0, this.materialResolver = void 0, this.sceneDocument = void 0;
 	}
 	retainedState() {
 		return {
@@ -6166,73 +6225,76 @@ var ks = class extends ms {
 		this.payloads.forEach((e, t) => this.invalidationListeners.forEach((e) => e(t)));
 	}
 };
-async function As(e, t, n, r = { showTextures: !1 }, i, a = !0) {
+async function Ps(e, t, n, r = { showTextures: !1 }, i, a = !0) {
 	let o = r.budgetBytes ?? 0;
-	La(o), o === 0 && await Da();
-	let s = i ?? /* @__PURE__ */ new Map(), c = /* @__PURE__ */ new Map(), l = Cs(e.envelope.payload, e.assets, e.recipe);
-	t.setReadAheadScope?.(l.assets.assets.map((e) => e.id));
-	let u = new Set(e.assets.revisions.filter((e) => e.metadata.candidateTypedMaterials).map((e) => e.assetId)), d = new Map(l.assets.blobs.map((e) => [e.key, e])), f = /* @__PURE__ */ new Map(), p = 0, m = async (i, a, o, s, c = e.assets, l = r.signal) => {
+	Ha(o), o === 0 && await Ma();
+	let s = i ?? /* @__PURE__ */ new Map(), c = /* @__PURE__ */ new Map(), l = Ds(e.envelope.payload, e.assets, e.recipe), u = new Set(e.assets.assets.filter((e) => e.kind === "StaticMesh").map((e) => e.id));
+	l.recipe = {
+		...l.recipe,
+		payloads: l.recipe.payloads.filter((e) => u.has(e.assetId))
+	}, t.setReadAheadScope?.(l.assets.assets.map((e) => e.id));
+	let d = new Set(e.assets.revisions.filter((e) => e.metadata.candidateTypedMaterials).map((e) => e.assetId)), f = new Map(l.assets.blobs.map((e) => [e.key, e])), p = /* @__PURE__ */ new Map(), m = 0, h = async (i, a, o, s, c = e.assets, l = r.signal) => {
 		l?.throwIfAborted();
 		let u = c.revisions.find((e) => e.id === a && e.assetId === i);
 		if (!u || !u.blobKeys.includes(o) || u.contentHash !== s) throw Error(`Candidate revision mismatch: ${i}`);
-		let m = d.get(o);
-		if (!m) {
+		let d = f.get(o);
+		if (!d) {
 			if (!t.snapshotAsset) throw Error(`Missing candidate payload: ${i}`);
-			n(`저장 에셋 읽기 ${++p} · ${e.assets.assets.find((e) => e.id === i)?.name ?? i}`);
+			n(`저장 에셋 읽기 ${++m} · ${e.assets.assets.find((e) => e.id === i)?.name ?? i}`);
 			let r = await t.snapshotAsset(i, a);
 			l?.throwIfAborted();
 			let c = r.revisions.find((e) => e.id === a && e.assetId === i);
 			if (!c || c.contentHash !== u.contentHash || JSON.stringify(c.blobKeys) !== JSON.stringify(u.blobKeys)) throw Error(`Candidate revision mismatch: ${i}`);
-			if (m = r.blobs.find((e) => e.key === o), !m || m.bytes.byteLength > Zr.singlePayloadBytes) throw Error(`Missing candidate payload: ${i}`);
-			let h = await st(m.bytes);
+			if (d = r.blobs.find((e) => e.key === o), !d || d.bytes.byteLength > ii.singlePayloadBytes) throw Error(`Missing candidate payload: ${i}`);
+			let h = await ct(d.bytes);
 			if (h !== s) throw Error(`Candidate payload hash mismatch: ${i}`);
-			f.set(o, h), d.set(o, m);
+			p.set(o, h), f.set(o, d);
 		}
-		if (f.has(o) && f.get(o) !== s) throw Error(`Candidate payload hash mismatch: ${i}`);
-		return f.set(o, s), m;
+		if (p.has(o) && p.get(o) !== s) throw Error(`Candidate payload hash mismatch: ${i}`);
+		return p.set(o, s), d;
 	};
 	for (let e of l.recipe.payloads) {
-		let t = await m(e.assetId, e.revisionId, e.blobKey, e.blobKey);
+		let t = await h(e.assetId, e.revisionId, e.blobKey, e.blobKey);
 		c.set(e.assetId, t.bytes);
 	}
-	if (u.size) for (let e of Jr(l.assets, Pr).keys()) {
+	if (d.size) for (let e of ti(l.assets, zr).keys()) {
 		let t = l.assets.assets.find((t) => t.id === e && t.kind === "Texture"), n = l.assets.revisions.find((n) => n.id === t?.currentRevisionId && n.assetId === e);
 		if (!n?.blobKeys[0]) throw Error(`Missing candidate material texture: ${e}`);
-		await m(e, n.id, n.blobKeys[0], n.contentHash);
+		await h(e, n.id, n.blobKeys[0], n.contentHash);
 	}
 	if (r.optimize) {
 		let e = 0;
-		for (let [t, i] of c) u.has(t) || (r.signal?.throwIfAborted(), n(`열기 전 텍스처 최적화 ${++e}/${c.size}`), c.set(t, await Kr(i, r.optimize, r.signal ?? new AbortController().signal)));
+		for (let [t, i] of c) d.has(t) || (r.signal?.throwIfAborted(), n(`열기 전 텍스처 최적화 ${++e}/${c.size}`), c.set(t, await $r(i, r.optimize, r.signal ?? new AbortController().signal)));
 	}
-	let h, g = new Map([...c].filter(([e]) => !u.has(e))), _ = u.size ? Xr({
+	let g, _ = new Map([...c].filter(([e]) => !d.has(e))), v = d.size ? ri({
 		...l.assets,
-		blobs: [...d.values()]
+		blobs: [...f.values()]
 	}) : {
 		dimensions: [],
 		uses: []
 	};
 	try {
-		h = r.showTextures === !1 ? {
+		g = r.showTextures === !1 ? {
 			textured: [],
 			reservedBytes: 0
-		} : Ds(g);
-		let e = h.reservedBytes + Wa(_, r.showTextures === !1 ? {
+		} : js(_);
+		let e = g.reservedBytes + Ya(v, r.showTextures === !1 ? {
 			...r.optimize,
 			maxSize: r.optimize?.maxSize ?? 1024,
 			maps: []
 		} : r.optimize).reservedBytes;
-		if (o === 0 && (o = ja(e)), e > o) {
-			let t = new ws(e, o);
-			throw t.textureLayouts = [...g.values()].map(Ua).concat(_), t;
+		if (o === 0 && (o = Ia(e)), e > o) {
+			let t = new Os(e, o);
+			throw t.textureLayouts = [..._.values()].map(Ja).concat(v), t;
 		}
 	} catch (e) {
-		throw e instanceof ws ? e : new Ts(e instanceof Error ? e.message : String(e));
+		throw e instanceof Os ? e : new ks(e instanceof Error ? e.message : String(e));
 	}
-	for (let [e, t] of c) r.signal?.throwIfAborted(), n(`저장 레벨 복원 ${s.size}/${c.size}`), s.has(e) || s.set(e, await js(t));
-	let v = /* @__PURE__ */ new Map();
+	for (let [e, t] of c) r.signal?.throwIfAborted(), n(`저장 레벨 복원 ${s.size}/${c.size}`), s.has(e) || s.set(e, await Fs(t));
+	let y = /* @__PURE__ */ new Map();
 	for (let t of e.recipe.payloads) {
 		let n = e.assets.revisions.find((e) => e.id === t.revisionId).metadata;
-		n.candidateTypedMaterials && v.set(t.assetId, n.materialSlots.map((e) => ({
+		n.candidateTypedMaterials && y.set(t.assetId, n.materialSlots.map((e) => ({
 			slotId: e.slotId,
 			materialAsset: {
 				kind: "asset",
@@ -6242,24 +6304,24 @@ async function As(e, t, n, r = { showTextures: !1 }, i, a = !0) {
 			tintOverrides: []
 		})));
 	}
-	let y = new Map(e.recipe.payloads.map((e) => [e.assetId, async () => {
-		let t = (await m(e.assetId, e.revisionId, e.blobKey, e.blobKey)).bytes;
-		return r.optimize && !u.has(e.assetId) && (t = await Kr(t, r.optimize, r.signal ?? new AbortController().signal)), t;
-	}])), b = new ks(t, s, c, qa, o, v, y, new Set(r.showTextures === !1 ? [] : e.recipe.payloads.filter((e) => !u.has(e.assetId)).map((e) => e.assetId)));
-	b.materialResolver = Yo(t, void 0, {
+	let b = new Map(e.recipe.payloads.map((e) => [e.assetId, async () => {
+		let t = (await h(e.assetId, e.revisionId, e.blobKey, e.blobKey)).bytes;
+		return r.optimize && !d.has(e.assetId) && (t = await $r(t, r.optimize, r.signal ?? new AbortController().signal)), t;
+	}])), x = new Ns(t, s, c, Za, o, y, b, new Set(r.showTextures === !1 ? [] : e.recipe.payloads.filter((e) => !d.has(e.assetId)).map((e) => e.assetId)));
+	x.materialResolver = $o(t, void 0, {
 		textureMaxSize: r.optimize?.maxSize,
-		textureMapLimits: Jr(e.assets, r.optimize),
-		transformDocument: (e) => Yr(e, r.optimize, r.showTextures !== !1)
+		textureMapLimits: ti(e.assets, r.optimize),
+		transformDocument: (e) => ni(e, r.optimize, r.showTextures !== !1)
 	});
 	try {
-		await Os(b, h.textured, n, r.signal);
+		await Ms(x, g.textured, n, r.signal);
 	} catch (e) {
-		throw e instanceof Ts ? Es(e, c) : e;
+		throw e instanceof ks ? As(e, c) : e;
 	}
 	if (a) {
-		let n = [...g.values()].map(Ua).concat(_), r = b.materialResolver;
-		b.textureDisplay = new xs(n, async (n, r, i, a, o) => {
-			let c = b.sceneDocument?.() ?? e.envelope.payload, l;
+		let n = [..._.values()].map(Ja).concat(v), r = x.materialResolver;
+		x.textureDisplay = new Ts(n, async (n, r, i, a, o) => {
+			let c = x.sceneDocument?.() ?? e.envelope.payload, l;
 			if (t.snapshotCatalog) {
 				let n = await t.snapshotCatalog();
 				i.throwIfAborted(), l = {
@@ -6268,27 +6330,27 @@ async function As(e, t, n, r = { showTextures: !1 }, i, a = !0) {
 					folders: n.folders,
 					blobs: []
 				};
-				let r = Cs(c, l, e.recipe);
+				let r = Ds(c, l, e.recipe);
 				t.setReadAheadScope?.(r.assets.assets.map((e) => e.id));
-				for (let e of r.recipe.payloads) await m(e.assetId, e.revisionId, e.blobKey, e.blobKey, l, i);
-				for (let e of Jr(r.assets, Pr).keys()) {
+				for (let e of r.recipe.payloads) await h(e.assetId, e.revisionId, e.blobKey, e.blobKey, l, i);
+				for (let e of ti(r.assets, zr).keys()) {
 					let t = r.assets.assets.find((t) => t.id === e && t.kind === "Texture"), n = r.assets.revisions.find((n) => n.id === t?.currentRevisionId && n.assetId === e);
 					if (!n?.blobKeys[0]) throw Error(`Missing candidate material texture: ${e}`);
-					await m(e, n.id, n.blobKeys[0], n.contentHash, l, i);
+					await h(e, n.id, n.blobKeys[0], n.contentHash, l, i);
 				}
 				l = {
 					...l,
-					blobs: [...d.values()]
+					blobs: [...f.values()]
 				};
 			} else l = await t.snapshot();
 			i.throwIfAborted();
-			let f = Cs(c, l, e.recipe), p = Xr(f.assets), h = f.recipe.payloads.filter((e) => !u.has(e.assetId)).map((e) => {
+			let u = Ds(c, l, e.recipe), p = ri(u.assets), m = u.recipe.payloads.filter((e) => !d.has(e.assetId)).map((e) => {
 				let t = l.blobs.find((t) => t.key === e.blobKey);
 				if (!t) throw Error(`Missing candidate payload: ${e.assetId}`);
-				return Ua(t.bytes);
-			}).concat(p).reduce((e, t) => e + Wa(t, n).reservedBytes, 0);
-			if (o && (r = ja(h > 0 ? h + (b.textureDisplay.current?.reservedBytes ?? 0) : 0, b.textureDisplay.current?.reservedBytes ?? 0)), h > 0 && h + (b.textureDisplay.current?.reservedBytes ?? 0) > r) throw Error("변경된 에셋의 텍스처 교체 예산을 초과합니다. 먼저 모든 맵을 끄고 적용하세요.");
-			let g = await As({
+				return Ja(t.bytes);
+			}).concat(p).reduce((e, t) => e + Ya(t, n).reservedBytes, 0);
+			if (o && (r = Ia(m > 0 ? m + (x.textureDisplay.current?.reservedBytes ?? 0) : 0, x.textureDisplay.current?.reservedBytes ?? 0)), m > 0 && m + (x.textureDisplay.current?.reservedBytes ?? 0) > r) throw Error("변경된 에셋의 텍스처 교체 예산을 초과합니다. 먼저 모든 맵을 끄고 적용하세요.");
+			let g = await Ps({
 				...e,
 				envelope: {
 					...e.envelope,
@@ -6302,42 +6364,42 @@ async function As(e, t, n, r = { showTextures: !1 }, i, a = !0) {
 				signal: i
 			}, s, !1);
 			try {
-				g.sceneDocument = b.sceneDocument, await g.warmMaterials(f.assets, i, a);
+				g.sceneDocument = x.sceneDocument, await g.warmMaterials(u.assets, i, a);
 				let n = (e) => JSON.stringify(e.assets.map((e) => [e.id, e.currentRevisionId])), r = t.snapshotCatalog ? await t.snapshotCatalog() : await t.snapshot();
 				if (n(l) !== n(r)) throw Error("적용 중 에셋이 변경되었습니다. 기존 표시를 유지합니다. 다시 적용하세요.");
-				if ((b.sceneDocument?.() ?? e.envelope.payload) !== c) throw Error("적용 중 레벨이 변경되었습니다. 기존 표시를 유지합니다. 다시 적용하세요.");
+				if ((x.sceneDocument?.() ?? e.envelope.payload) !== c) throw Error("적용 중 레벨이 변경되었습니다. 기존 표시를 유지합니다. 다시 적용하세요.");
 				return i.throwIfAborted(), {
 					resources: g,
-					reservedBytes: h,
+					reservedBytes: m,
 					dispose: () => g.disposeDisplay()
 				};
 			} catch (e) {
 				throw g.disposeDisplay(), e;
 			}
-		}, () => b.publishDisplay()), b.materialResolver = (e, t) => (b.textureDisplay?.current?.resources.materialResolver ?? r)(e, t);
+		}, () => x.publishDisplay()), x.materialResolver = (e, t) => (x.textureDisplay?.current?.resources.materialResolver ?? r)(e, t);
 	}
-	return b;
+	return x;
 }
-async function js(e) {
-	if (kr(e)) {
-		Mr(e);
-		let t = jr(e), n = new T();
+async function Fs(e) {
+	if (Pr(e)) {
+		Lr(e);
+		let t = Ir(e), n = new u();
 		n.userData.staticMeshLod = {
 			distanceMeters: t.distanceMeters,
 			hysteresis: t.hysteresis
 		};
 		try {
-			for (let e of t.levels) n.add(await js(e));
+			for (let e of t.levels) n.add(await Fs(e));
 			return n.children[1].visible = !1, n;
 		} catch (e) {
-			throw Ka([n]), e;
+			throw Q([n]), e;
 		}
 	}
-	Yn(e);
-	let t = new ti();
+	er(e);
+	let t = new ci();
 	t.register(() => ({
 		name: "U01_EDITOR_GEOMETRY",
-		loadMaterial: async () => new ve({
+		loadMaterial: async () => new m({
 			color: 11188678,
 			roughness: .8,
 			side: 2
@@ -6348,9 +6410,9 @@ async function js(e) {
 		let t = n.parser.associations.get(e);
 		t?.meshes !== void 0 && t.primitives !== void 0 && (e.userData.materialSlotId = `mesh:${t.meshes}/primitive:${t.primitives}`);
 	});
-	let r = new T();
-	return r.matrixAutoUpdate = !1, r.matrix.copy(ba), r.add(n.scene), r.updateMatrixWorld(!0), r;
+	let r = new u();
+	return r.matrixAutoUpdate = !1, r.matrix.copy(Ta), r.add(n.scene), r.updateMatrixWorld(!0), r;
 }
-U.storage.priorVersions, U.storage.historyMetadataBytes;
+H.storage.priorVersions, H.storage.historyMetadataBytes;
 //#endregion
-export { gr as $, la as A, rt as At, U as B, Pa as C, bt as Ct, Aa as D, _t as Dt, Da as E, ht as Et, ea as F, Ke as Ft, Fr as G, Jr as H, Zi as I, qe as It, Mr as J, Ur as K, Qi as L, Be as Lt, oa as M, Qe as Mt, ca as N, $e as Nt, Ma as O, dt as Ot, $i as P, He as Pt, hr as Q, ti as R, D as Rt, Ca as S, k as St, Oa as T, xt as Tt, Yr as U, Xr as V, Pr as W, pr as X, kr as Y, mr as Z, Ia as _, Kt as _t, ts as a, Yn as at, Ua as b, qt as bt, Yo as c, cn as ct, Eo as d, tn as dt, fr as et, Io as f, nn as ft, uo as g, Qt as gt, bo as h, Gt as ht, ns as i, Jn as it, ua as j, st as jt, ma as k, mt as kt, Jo as l, ln as lt, yo as m, rn as mt, ms as n, br as nt, Xo as o, Xn as ot, Co as p, an as pt, Vr as q, bs as r, dr as rt, Qo as s, jn as st, As as t, Cr as tt, Fo as u, dn as ut, Ka as v, Wt as vt, xa as w, Ct as wt, La as x, Lt as xt, Wa as y, $t as yt, $r as z, ze as zt };
+export { Or as $, ma as A, ht as At, ti as B, Be as Bt, za as C, O as Ct, Fa as D, gt as Dt, Ma as E, St as Et, aa as F, Ue as Ft, Kr as G, zr as H, ci as I, qe as It, vr as J, Lr as K, oi as L, Je as Lt, da as M, ct as Mt, pa as N, $e as Nt, La as O, vt as Ot, ia as P, et as Pt, _r as Q, H as R, Ve as Rt, Oa as S, Rt as St, Na as T, wt as Tt, Br as U, ni as V, Jr as W, br as X, yr as Y, xr as Z, Va as _, $t as _t, as as a, Jn as at, Ja as b, en as bt, $o as c, Mn as ct, Ao as d, fn as dt, Tr as et, Bo as f, nn as ft, ho as g, Kt as gt, wo as h, an as ht, os as i, tr as it, ha as j, it as jt, ya as k, ft as kt, Qo as l, ln as lt, Co as m, on as mt, vs as n, $n as nt, es as o, Yn as ot, Do as p, rn as pt, Pr as q, ws as r, er as rt, ns as s, Kn as st, Ps as t, gr as tt, zo as u, un as ut, Q as v, qt as vt, Ea as w, xt as wt, Ha as x, Jt as xt, Ya as y, Gt as yt, ri as z, E as zt };

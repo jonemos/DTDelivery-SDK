@@ -21,7 +21,7 @@ export interface RenderQualitySettings {
     readonly environmentSize: number;
     readonly exposureMultiplier: number;
     readonly shadowSize: number;
-    readonly smaa: boolean;
+    readonly postProcessing: boolean;
     readonly maxPostProcessPixels: number;
     readonly ao: {
         readonly resolutionScale: number;

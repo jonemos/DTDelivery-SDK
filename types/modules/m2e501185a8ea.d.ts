@@ -40,7 +40,7 @@ interface SourcePayload {
     sourcePath: string;
     path: string;
     sha256: string;
-    kind?: 'StaticMesh' | 'Material';
+    kind?: 'StaticMesh' | 'SkeletalMesh' | 'Material';
 }
 export declare function applyAppearanceDecisions(bytes: Uint8Array, p: SourcePayload, decisions: readonly AppearanceDecision[], uvTargets?: readonly MaterialUvTarget[]): Uint8Array;
 /** Complete, hash-bound preflight. Reads only authenticated candidate files; no storage or image decode. */

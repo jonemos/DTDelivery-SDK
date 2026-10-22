@@ -1,4 +1,4 @@
-import { Lt as e, Mt as t, Nt as n, St as r } from "./StaticPreviewPersistence-DVsi8wqY.js";
+import { Ct as e, Nt as t, Pt as n, Rt as r } from "./StaticPreviewPersistence-DQS788wL.js";
 //#region src/composition/CompositionObjects.ts
 var i = [
 	"Empty",
@@ -22,18 +22,18 @@ var i = [
 	"localTransform",
 	"shape"
 ]);
-function o(t) {
-	let n = e(t.kind, t.id, t.componentId);
+function o(e) {
+	let t = r(e.kind, e.id, e.componentId);
 	return {
-		...n,
-		name: t.name,
+		...t,
+		name: e.name,
 		components: [{
-			...n.components[0],
-			...t.properties,
+			...t.components[0],
+			...e.properties,
 			localTransform: {
-				positionMeters: t.position,
-				rotationXyzw: t.rotation,
-				scale: t.scale
+				positionMeters: e.position,
+				rotationXyzw: e.rotation,
+				scale: e.scale
 			}
 		}]
 	};
@@ -54,10 +54,10 @@ function s(t) {
 	let s = t, c = /^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/i;
 	if (!c.test(s.id) || !c.test(s.componentId) || s.id === s.componentId || !i.includes(s.kind) || typeof s.name != "string" || !s.name.trim() || s.name.length > 150 || typeof s.visible != "boolean") throw Error("잘못된 통합 객체입니다.");
 	if (!s.properties || typeof s.properties != "object" || Array.isArray(s.properties)) throw Error("잘못된 객체 속성입니다.");
-	let l = e(s.kind, s.id, s.componentId).components[0], u = Object.keys(l).filter((e) => !a.has(e)).sort();
+	let l = r(s.kind, s.id, s.componentId).components[0], u = Object.keys(l).filter((e) => !a.has(e)).sort();
 	if (Object.keys(s.properties).sort().join() !== u.join()) throw Error("지원하지 않는 객체 속성입니다.");
 	if (!Array.isArray(s.rotation) || Math.abs(Math.hypot(...s.rotation) - 1) > 1e-5) throw Error("잘못된 객체 회전입니다.");
-	let d = r.validate(l.type, 1, o(s).components[0], "load");
+	let d = e.validate(l.type, 1, o(s).components[0], "load");
 	if (d.length) throw Error("잘못된 객체 속성: " + d.map((e) => e.fieldId).join(", "));
 	if (s.kind === "Camera" && Number(s.properties.horizontalFovDegrees) >= 180 || s.kind === "SpotLight" && (Number(s.properties.innerConeDegrees) > Number(s.properties.outerConeDegrees) || Number(s.properties.outerConeDegrees) > 90)) throw Error("카메라/스팟 라이트 각도가 유효하지 않습니다.");
 }

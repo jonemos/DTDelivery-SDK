@@ -17,10 +17,12 @@
 | viewer.cameraSettings | 현재 값을 읽은 새 객체 |
 | horizontalFovDegrees | 수평 FOV degree,1–179. 원근 화면에서 사용 |
 | orthographicWidthMeters | 직교 화면 폭 m, 최소0.1 |
-| nearMeters / farMeters | clip 거리 m, near≥0.001, far>near |
+| nearMeters / farMeters | clip 거리 m, Near 기본 0.1, near≥0.001, far>near |
 | viewer.setCameraSettings(partial) | 위 값을 부분 변경. 유효하지 않은 조합은 throw |
 
 방향의 top/bottom은 내부Y축 위/아래이며 front/back은 내부Z축 ± 방향, left/right는 내부X축 ± 방향입니다. UI의 Unreal-facing 좌표 표기와 내부 좌표를 혼동하지 않습니다. 방향 변경은 viewer가 직교 카메라/회전 가능 여부/aspect를 처리합니다. 전체 맞춤/Actor 초점은 프레이밍을 위해 clip/직교 폭을 바꿀 수 있으므로 이후 설정을 다시 읽으세요.
+
+Near 0.1m이면 카메라 앞 10cm 이내는 잘립니다. 명시적으로 지정한 clip 값은 유지됩니다. 지원 GPU의 Reverse-Z/32비트 깊이는 원거리에서 가까운 두 면을 구분하도록 돕지만 완전히 같은 면의 표시 순서를 보장하지 않습니다. 기본 표시 경로에는 float 색상·깊이 버퍼와 화면 합성 비용이 추가됩니다.
 
 ## 카메라와 표시 버튼
 
@@ -33,7 +35,7 @@ export function configureInspection(sdk: DeliveryClient) {
   sdk.viewport.navigation.setSpeed(4);
   sdk.viewport.setCameraSettings({
     horizontalFovDegrees: 70,
-    nearMeters: 0.05,
+    nearMeters: 0.1,
     farMeters: 5000,
   });
   sdk.viewport.environment = true;

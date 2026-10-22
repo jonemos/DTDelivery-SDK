@@ -1,9 +1,10 @@
 import { AnimationMixer, SkinnedMesh, type AnimationClip, type Object3D } from 'three';
 export interface SkeletalAnimationGlbMetadata {
-    readonly profile: 'self-contained-skeletal-animation-glb-v1';
+    readonly profile: 'self-contained-skeletal-animation-glb-v1' | 'self-contained-skeletal-bind-pose-glb-v1';
     readonly gltfVersion: '2.0';
     readonly skinCount: 1;
     readonly skinnedMeshNodeCount: number;
+    readonly skinnedPrimitiveCount: number;
     readonly jointCount: number;
     readonly jointNodeIndices: readonly number[];
     readonly inverseBindMatrices: readonly (readonly number[])[];
@@ -39,3 +40,7 @@ export declare function importSkeletalAnimationGlb(bytes: Uint8Array): Promise<S
 export declare function inspectInstalledThreeSkinningPath(): ThreeSkinningPathEvidence;
 export declare function evaluateSkeletalDeformation(bytes: Uint8Array, request: SkeletalDeformationSampleRequest): Promise<readonly (readonly [number, number, number])[]>;
 export declare function validateSkeletalAnimationGlb(bytes: Uint8Array): SkeletalAnimationGlbMetadata;
+/** Explicit clipless profile; the animation-only validator retains its stricter contract. */
+export declare function validateSkeletalMeshGlb(bytes: Uint8Array): SkeletalAnimationGlbMetadata;
+/** Validation/material inspection view only. Never stored or rendered as mesh geometry. */
+export declare function skeletalMaterialView(bytes: Uint8Array): Uint8Array;

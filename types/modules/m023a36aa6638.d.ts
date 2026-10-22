@@ -6,6 +6,7 @@ import type { ImportProgress } from './m5389db5360c3.js';
 import { type CompatibilityBake } from './m1fc4eeaffa28.js';
 import { type PartialImportRecord } from './m97ad32a3f8ae.js';
 import { type AppearanceDecision } from './m2e501185a8ea.js';
+import { type CandidateAnimationBinding, type CandidateSkeletalMaterialBindings } from './m3252499527a8.js';
 export interface CandidateFile {
     readonly name: string;
     readonly webkitRelativePath: string;
@@ -20,8 +21,11 @@ interface Payload {
     path: string;
     sha256: string;
     byteLength: number;
-    kind?: 'StaticMesh' | 'Material';
+    kind?: 'StaticMesh' | 'SkeletalMesh' | 'Material';
     materialSlotIndices?: number[];
+    evaluatedMaterialAssetIds?: string[];
+    animationBindings?: CandidateAnimationBinding[];
+    skeletalMaterialBindings?: CandidateSkeletalMaterialBindings;
     lod?: {
         version: 1;
         origin: 'existing' | 'generated-transient';

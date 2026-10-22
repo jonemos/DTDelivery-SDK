@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.3.24
+
+Preserve input ownership per physical control, consume UI input before gameplay actions, and clear pending input on context changes. Reuse a separate Actor lookup for each mounted Delivery view during runtime ticks and stop restoration, including repeated source Actor IDs in different mounts.
+
+Rewrite the current-release README around the no-install test page, storage selection, rendering defaults, host integration and SDK updates. Align installation examples and API guides with this release. This release also publishes the sunlight, FXAA and reverse-depth changes documented in 0.3.22 and 0.3.23. Native Unreal import tools are distributed with the editor separately from the browser SDK.
+
+## 0.3.23
+
+Default new camera near clipping to 0.1 meters in the editor, composition, Play, Player and SDK while retaining explicit saved settings. Enable reverse depth on supported WebGL2 devices and resolve direct and post-processed content visibility with float32 depth. Preserve helper colors and batching draw order; adapt AO, reflections, selection depth and 2D PCF shadow bias. Retain the existing renderer when the required extensions are absent. No source mesh, material, UV or saved-level migration.
+
+## 0.3.22
+
+Use the same compact Render Quality controls in editor, composition and SDK: remove fog controls and add sunlight brightness, color temperature, time of day, direction, shadows and shadow strength. New editor levels use sunlight instead of a default DirectionalLight actor; existing authored lights and saved fog data remain readable. Export SunlightSettings and ScreenSettings for hosts.
+
+Make anti-aliasing an independent, default-off FXAA toggle for every quality preset and view mode. Remove always-on MSAA/SMAA, retain shadow and helper depth, and reuse the existing post-processing buffers for High/Ultra. Normal uses direct drawing without an unnecessary composer. Direct views allocate their FXAA target only when enabled and release it when disabled.
+
 ## 0.3.21
 
 Set SDK viewport defaults and rewrite the beginner README with a searchable 26-example class and API guide.

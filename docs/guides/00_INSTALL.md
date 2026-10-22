@@ -12,7 +12,7 @@
 mkdir delivery-viewer
 Set-Location delivery-viewer
 pnpm.cmd init
-pnpm.cmd add @dt/delivery-sdk@github:jonemos/DTDelivery-SDK#v0.3.2 --ignore-scripts
+pnpm.cmd add @dt/delivery-sdk@github:jonemos/DTDelivery-SDK#v0.3.24 --ignore-scripts
 pnpm.cmd add -D typescript@6.0.2 vite@8.3.0 --ignore-scripts
 ```
 

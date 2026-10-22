@@ -10,6 +10,7 @@ import { type TextureImportOptions } from './mae043aea4362.js';
 import { type CandidateComponentHierarchy } from './m276860a0375e.js';
 import { type MaterialResolver } from './m4f696d79727f.js';
 import { TextureDisplaySession } from './m629d7ac5d41a.js';
+import type { CandidateSkeletalBinding } from './m3252499527a8.js';
 export declare class PreviewTextureBudgetError extends Error {
     readonly requiredBytes: number;
     readonly budgetBytes: number;
@@ -50,6 +51,7 @@ export interface Inventory {
         sourcePath: string;
         sourceClass: string;
         meshAssetId: string | null;
+        skeletalBinding?: CandidateSkeletalBinding;
         visible: boolean;
         worldTransform: SourceTransform;
         instances: {

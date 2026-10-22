@@ -11,6 +11,7 @@ export declare class WebEffectsProjection {
     private readonly originalFog;
     private readonly originalToneMapping;
     private readonly originalExposure;
+    private sunlight;
     constructor(scene: Scene, renderer: Pick<WebGLRenderer, 'toneMapping' | 'toneMappingExposure'>);
     get animated(): boolean;
     configure(value: WebEffects | undefined): void;
