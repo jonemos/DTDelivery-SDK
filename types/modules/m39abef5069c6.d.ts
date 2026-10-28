@@ -1,4 +1,4 @@
-import type { AssetReference } from './mcec497bf55e6.js';
+import type { AssetReference, MaterialSlotOverride } from './mcec497bf55e6.js';
 import { type AssetRegistryStorage } from './m5e4e772c2f57.js';
 import type { ResolvedAnimationClipBinding } from './m8230ac8a635f.js';
 import { type SkeletalAnimationAsset } from './mabd3fd64764e.js';
@@ -8,6 +8,7 @@ export interface SkeletalMeshResourceLease {
     readonly revisionId: string;
     readonly blobKey: string;
     readonly materialSlotIds: readonly string[];
+    readonly defaultMaterialSlots: readonly MaterialSlotOverride[];
     readonly attachmentProfile: SkeletalAttachmentProfile | null;
     readonly asset: SkeletalAnimationAsset;
     release(): void;

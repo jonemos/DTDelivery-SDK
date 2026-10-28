@@ -1022,14 +1022,10 @@ function on(e, t = 1e-6) {
 }
 //#endregion
 //#region src/domain/sceneHierarchy.ts
-function sn(e, t) {
-	let n = Be(mn(e, t));
-	if (!n) throw Error(`Actor ${t} has no root component.`);
-	return n.attachmentParent;
-}
-function cn(e) {
+function sn(e) {
 	let t = new Set(e.actors.map((e) => e.id));
 	if (t.size !== e.actors.length) throw Error("Duplicate Actor ID.");
+	let n = new Map(e.actors.map((e) => [e.id, e]));
 	for (let n of e.actors) {
 		Be(n);
 		for (let e of n.components) {
@@ -1042,75 +1038,78 @@ function cn(e) {
 			}
 		}
 	}
-	let n = /* @__PURE__ */ new Set();
+	let r = /* @__PURE__ */ new Set();
 	for (let t of e.authoring.folders) {
-		if (n.has(t.id)) throw Error(`Duplicate Outliner folder ${t.id}.`);
-		n.add(t.id);
+		if (r.has(t.id)) throw Error(`Duplicate Outliner folder ${t.id}.`);
+		r.add(t.id);
 	}
-	for (let t of e.authoring.folders) if (t.parentId !== null && !n.has(t.parentId)) throw Error(`Unknown parent folder ${t.parentId}.`);
-	let r = new Map(e.authoring.folders.map((e) => [e.id, e.parentId])), i = /* @__PURE__ */ new Set();
+	for (let t of e.authoring.folders) if (t.parentId !== null && !r.has(t.parentId)) throw Error(`Unknown parent folder ${t.parentId}.`);
+	let i = new Map(e.authoring.folders.map((e) => [e.id, e.parentId])), a = /* @__PURE__ */ new Set();
 	for (let t of e.authoring.folders) {
 		let e = /* @__PURE__ */ new Set(), n = t.id;
-		for (; n !== null && !i.has(n);) {
+		for (; n !== null && !a.has(n);) {
 			if (e.has(n)) throw Error("Outliner folder cycle: 자신 또는 하위 폴더로 이동할 수 없습니다.");
-			e.add(n), n = r.get(n) ?? null;
+			e.add(n), n = i.get(n) ?? null;
 		}
-		e.forEach((e) => i.add(e));
+		e.forEach((e) => a.add(e));
 	}
-	let a = /* @__PURE__ */ new Set();
+	let o = /* @__PURE__ */ new Set();
 	for (let t of e.authoring.actorFolders) {
-		if (mn(e, t.actorId), a.has(t.actorId)) throw Error(`Duplicate folder membership for Actor ${t.actorId}.`);
-		if (a.add(t.actorId), t.folderId !== null && !n.has(t.folderId)) throw Error(`Unknown Outliner folder ${t.folderId}.`);
+		if (mn(e, t.actorId, n), o.has(t.actorId)) throw Error(`Duplicate folder membership for Actor ${t.actorId}.`);
+		if (o.add(t.actorId), t.folderId !== null && !r.has(t.folderId)) throw Error(`Unknown Outliner folder ${t.folderId}.`);
 	}
-	for (let t of e.actors) dn(e, t), It(t);
-	for (let t of e.actors) for (let n of t.components.filter(E)) fn(e, {
+	for (let t of e.actors) un(e, t, n), It(t);
+	for (let t of e.actors) for (let r of t.components.filter(E)) fn(e, {
 		actorId: t.id,
-		componentId: n.id
-	});
+		componentId: r.id
+	}, /* @__PURE__ */ new Set(), n);
 }
-function ln(e, t) {
-	return fn(e, {
+function cn(e, t) {
+	return dn(e, {
 		actorId: t,
 		componentId: mn(e, t).rootComponentId
 	}, /* @__PURE__ */ new Set());
 }
-function un(e, t) {
-	return on(ln(e, t));
+function ln(e, t) {
+	return on(cn(e, t));
 }
-function dn(e, t) {
+function un(e, t, n) {
 	for (let e of t.components.filter(E)) if (e.id !== t.rootComponentId && e.attachmentParent !== null) throw Error(`Only root Component ${t.rootComponentId} may have an external attachment.`);
-	let n = sn(e, t.id);
-	if (!n) return;
-	let r = mn(e, n.actorId).components.find((e) => e.id === n.componentId);
-	if (!r || !E(r)) throw Error(`Unknown spatial attachment Component ${n.componentId}.`);
-	if (n.kind === "bone" || n.kind === "socket") {
-		if (r.type !== "SkeletalMesh") throw Error(`Skeletal attachment target ${n.componentId} is not a SkeletalMesh.`);
-		if (r.skinBinding.skeletonAsset.assetId !== n.skeletonAssetId || r.sourceBinding.sourceSkeletonAssetId !== n.sourceSkeletonAssetId || r.skinBinding.bindingSignature !== n.bindingSignature) throw Error(`Skeletal attachment identity does not match Component ${n.componentId}.`);
+	let r = Be(t).attachmentParent;
+	if (!r) return;
+	let i = mn(e, r.actorId, n).components.find((e) => e.id === r.componentId);
+	if (!i || !E(i)) throw Error(`Unknown spatial attachment Component ${r.componentId}.`);
+	if (r.kind === "bone" || r.kind === "socket") {
+		if (i.type !== "SkeletalMesh") throw Error(`Skeletal attachment target ${r.componentId} is not a SkeletalMesh.`);
+		if (i.skinBinding.skeletonAsset.assetId !== r.skeletonAssetId || i.sourceBinding.sourceSkeletonAssetId !== r.sourceSkeletonAssetId || i.skinBinding.bindingSignature !== r.bindingSignature) throw Error(`Skeletal attachment identity does not match Component ${r.componentId}.`);
 	}
 }
-function fn(e, t, n = /* @__PURE__ */ new Set()) {
-	let r = `${t.actorId}:${t.componentId}`;
-	if (n.has(r)) throw Error("Reparent failed: attachment cycle detected.");
-	let i = new Set(n);
-	i.add(r);
-	let { actor: a, component: o } = pn(e, t), s = nn;
-	return o.id === a.rootComponentId ? o.attachmentParent && (s = fn(e, o.attachmentParent, i)) : o.parentComponentId && (s = fn(e, {
-		actorId: a.id,
-		componentId: o.parentComponentId
-	}, i)), an(s, rn(o.localTransform));
+function dn(e, t, n = /* @__PURE__ */ new Set()) {
+	return fn(e, t, n);
 }
-function pn(e, t) {
-	let n = mn(e, t.actorId), r = n.components.find((e) => e.id === t.componentId);
-	if (!r || !E(r)) throw Error(`Unknown spatial attachment Component ${t.componentId}.`);
+function fn(e, t, n, r) {
+	let i = `${t.actorId}:${t.componentId}`;
+	if (n.has(i)) throw Error("Reparent failed: attachment cycle detected.");
+	let a = new Set(n);
+	a.add(i);
+	let { actor: o, component: s } = pn(e, t, r), c = nn;
+	return s.id === o.rootComponentId ? s.attachmentParent && (c = fn(e, s.attachmentParent, a, r)) : s.parentComponentId && (c = fn(e, {
+		actorId: o.id,
+		componentId: s.parentComponentId
+	}, a, r)), an(c, rn(s.localTransform));
+}
+function pn(e, t, n) {
+	let r = mn(e, t.actorId, n), i = r.components.find((e) => e.id === t.componentId);
+	if (!i || !E(i)) throw Error(`Unknown spatial attachment Component ${t.componentId}.`);
 	return {
-		actor: n,
-		component: r
+		actor: r,
+		component: i
 	};
 }
-function mn(e, t) {
-	let n = e.actors.find((e) => e.id === t);
-	if (!n) throw Error(`Unknown Actor ${t}.`);
-	return n;
+function mn(e, t, n) {
+	let r = n ? n.get(t) : e.actors.find((e) => e.id === t);
+	if (!r) throw Error(`Unknown Actor ${t}.`);
+	return r;
 }
 //#endregion
 //#region src/domain/TwinExport.ts
@@ -1435,8 +1434,7 @@ var Nn = [
 	].includes(String(t.rootMotionMode))) ? null : "requires_animation_playback");
 }, Hn = (e) => {
 	if (typeof e != "object" || !e) return M("requires_imported_source_binding");
-	let t = e;
-	return M([
+	let t = e, n = [
 		"packageId",
 		"sourceProjectId",
 		"sourceSnapshotId",
@@ -1444,7 +1442,8 @@ var Nn = [
 		"sourceComponentKey",
 		"sourceMeshAssetId",
 		"sourceSkeletonAssetId"
-	].every((e) => typeof t[e] == "string" && String(t[e]).length > 0) && (t.sourceAnimationAssetId === null || typeof t.sourceAnimationAssetId == "string" && t.sourceAnimationAssetId.length > 0) ? null : "requires_imported_source_binding");
+	], r = t.unavailableAnimation;
+	return M(n.every((e) => typeof t[e] == "string" && String(t[e]).length > 0) && (r === void 0 || r !== null && r.profile === "reference-pose-v1" && t.sourceAnimationAssetId === null && typeof r.mode == "string" && r.mode.length > 0 && typeof r.classPath == "string" && typeof r.reason == "string" && r.reason.length > 0) && (t.sourceAnimationAssetId === null || typeof t.sourceAnimationAssetId == "string" && t.sourceAnimationAssetId.length > 0) ? null : "requires_imported_source_binding");
 }, Un = O.get("PrimitiveCube", 1).fields.filter((e) => e.fieldId.startsWith("transform.")), N = (e, t, n, r, i, a, o = null) => ({
 	fieldId: e,
 	path: t,
@@ -1941,7 +1940,10 @@ function Cr(e) {
 		4,
 		5,
 		6,
-		7
+		7,
+		8,
+		9,
+		10
 	].includes(e.schemaVersion) || e.kind !== "WebMaskPbrMaterial") throw Error("Unsupported WebMaskPBR Material schema.");
 	if (e = e.schemaVersion === 2 ? Ar(e) : e, !R(e)) throw Error("WebMaskPBR migration failed.");
 	let t = (e, t, n, r = !0) => {
@@ -1960,7 +1962,15 @@ function Cr(e) {
 			"metallic",
 			"roughness",
 			"occlusion",
-			"emissive"
+			"emissive",
+			"clearcoat",
+			"clearcoatRoughness",
+			"clearcoatNormal",
+			"specular",
+			"specularColor",
+			"transmission",
+			"sheenColor",
+			"sheenRoughness"
 		].includes(e)) throw Error(`Unknown WebMaskPBR texture input ${e}.`);
 		let n = kr(t, `textureViews.${e}`);
 		if (!{
@@ -1969,9 +1979,23 @@ function Cr(e) {
 			metallic: ["b"],
 			roughness: ["g"],
 			occlusion: ["r"],
-			emissive: ["rgb"]
+			emissive: ["rgb"],
+			clearcoat: ["r"],
+			clearcoatRoughness: ["g"],
+			clearcoatNormal: ["rgb"],
+			specular: ["a"],
+			specularColor: ["rgb"],
+			transmission: ["r"],
+			sheenColor: ["rgb"],
+			sheenRoughness: ["a"]
 		}[e].includes(n.channel)) throw Error(`textureViews.${e}.channel is not supported.`);
-		if (!["baseColor", "emissive"].includes(e) && n.colorSpace !== "linear") throw Error(`textureViews.${e}.colorSpace must be linear.`);
+		if (![
+			"baseColor",
+			"emissive",
+			"specularColor",
+			"sheenColor"
+		].includes(e) && n.colorSpace !== "linear") throw Error(`textureViews.${e}.colorSpace must be linear.`);
+		if ((e === "specularColor" || e === "sheenColor") && n.colorSpace !== "srgb") throw Error("textureViews.specularColor.colorSpace must be srgb.");
 		return [e, n];
 	}));
 	if (!Array.isArray(e.maskLayers) || e.maskLayers.length > 4) throw Error("WebMaskPBR maskLayers are invalid.");
@@ -1994,22 +2018,53 @@ function Cr(e) {
 	});
 	if (e.unlit !== void 0 && typeof e.unlit != "boolean") throw Error("unlit is invalid.");
 	if (e.unlit === !0 && a.length) throw Error("Unlit mask layers are not supported.");
-	let o = e.vertexAtlas === void 0 ? void 0 : wr(e.vertexAtlas), s = e.mappingProfileId === br, c = e.mappingProfileId === xr, l = e.mappingProfileId === "ue-painter-vertex-atlas-v1" || e.mappingProfileId === "ue-kind-single-atlas-v1" || e.mappingProfileId === "ue-kind-multi-atlas-v1" || s || c;
-	if (o && (!l || e.unlit || a.length || e.mappingProfileId === "ue-kind-single-atlas-v1" != !!o.surfaceGated)) throw Error("Vertex Atlas cannot use an unrelated profile, unlit, or RGBA layers.");
-	if (l && !o) throw Error("Missing vertex Atlas data.");
-	if (o && ((e.mappingProfileId === "ue-kind-multi-atlas-v1" || s) !== !!o.surfaces || s !== (o.version === 3) || c !== (o.version === 4))) throw Error("Multi Kind Atlas surface profile mismatch.");
-	let u = [
+	let o = e.clearcoat, s = e.specular, c = e.transmission, l = e.sheen;
+	if (l !== void 0 && (!R(l) || Object.keys(l).some((e) => !["colorFactor", "roughnessFactor"].includes(e)))) throw Error("sheen is invalid.");
+	if (l !== void 0 && e.unlit) throw Error("Unlit cannot use sheen.");
+	if ((i.sheenColor || i.sheenRoughness) && l === void 0) throw Error("Missing sheen extension for texture views.");
+	if (c !== void 0 && (!R(c) || Object.keys(c).some((e) => e !== "factor"))) throw Error("transmission is invalid.");
+	if (c !== void 0 && e.unlit) throw Error("Unlit cannot use transmission.");
+	if (i.transmission && c === void 0) throw Error("Missing transmission extension for texture view.");
+	if (o !== void 0 && (!R(o) || Object.keys(o).some((e) => ![
+		"factor",
+		"roughnessFactor",
+		"normalScale"
+	].includes(e)))) throw Error("clearcoat is invalid.");
+	if (s !== void 0 && (!R(s) || Object.keys(s).some((e) => !["factor", "colorFactor"].includes(e)))) throw Error("specular is invalid.");
+	if (e.unlit && (o !== void 0 || s !== void 0)) throw Error("Unlit cannot use clearcoat or specular.");
+	for (let e of Object.keys(i)) if (e.startsWith("clearcoat") && o === void 0 || e.startsWith("specular") && s === void 0) throw Error(`Missing physical extension for textureViews.${e}.`);
+	let u = e.vertexAtlas === void 0 ? void 0 : wr(e.vertexAtlas);
+	if (u && (o !== void 0 || s !== void 0 || c !== void 0 || l !== void 0)) throw Error("Physical extensions require a separately registered Atlas profile.");
+	let d = e.mappingProfileId === br, f = e.mappingProfileId === xr, p = e.mappingProfileId === "ue-painter-vertex-atlas-v1" || e.mappingProfileId === "ue-kind-single-atlas-v1" || e.mappingProfileId === "ue-kind-multi-atlas-v1" || d || f;
+	if (u && (!p || e.unlit || a.length || e.mappingProfileId === "ue-kind-single-atlas-v1" != !!u.surfaceGated)) throw Error("Vertex Atlas cannot use an unrelated profile, unlit, or RGBA layers.");
+	if (p && !u) throw Error("Missing vertex Atlas data.");
+	if (u && ((e.mappingProfileId === "ue-kind-multi-atlas-v1" || d) !== !!u.surfaces || d !== (u.version === 3) || f !== (u.version === 4))) throw Error("Multi Kind Atlas surface profile mismatch.");
+	let m = [
 		...Object.values(i),
 		...a.map((e) => e.mask),
-		...o?.masks ?? []
-	].some((e) => e.texCoord === 2 || e.anisotropy !== void 0 || e.generateMipmaps !== void 0), d = e.bakeBinding === void 0 ? void 0 : hr(e.bakeBinding);
-	if (d && (e.mappingProfileId !== "u01-baked-pbr-v1" || o || a.length)) throw Error("Bake binding requires a baked-appearance-only PBR material.");
+		...u?.masks ?? []
+	].some((e) => e.texCoord === 2 || e.anisotropy !== void 0 || e.generateMipmaps !== void 0), h = e.bakeBinding === void 0 ? void 0 : hr(e.bakeBinding);
+	if (h && (e.mappingProfileId !== "u01-baked-pbr-v1" || u || a.length)) throw Error("Bake binding requires a baked-appearance-only PBR material.");
 	return structuredClone({
-		schemaVersion: e.schemaVersion === 7 || d && r === "BLEND" ? 7 : e.schemaVersion === 6 || e.ior !== void 0 || d && r === "MASK" ? 6 : e.schemaVersion === 5 || d ? 5 : e.schemaVersion === 4 || u ? 4 : 3,
+		schemaVersion: e.schemaVersion === 10 || l !== void 0 ? 10 : e.schemaVersion === 9 || c !== void 0 ? 9 : e.schemaVersion === 8 || o !== void 0 || s !== void 0 ? 8 : e.schemaVersion === 7 || h && r === "BLEND" ? 7 : e.schemaVersion === 6 || e.ior !== void 0 || h && r === "MASK" ? 6 : e.schemaVersion === 5 || h ? 5 : e.schemaVersion === 4 || m ? 4 : 3,
 		kind: "WebMaskPbrMaterial",
 		mappingProfileId: e.mappingProfileId,
 		...e.unlit === void 0 ? {} : { unlit: e.unlit },
 		...e.ior === void 0 ? {} : { ior: n(e.ior, "ior", 1, 2.333) },
+		...R(o) ? { clearcoat: {
+			factor: n(o.factor, "clearcoat.factor"),
+			roughnessFactor: n(o.roughnessFactor, "clearcoat.roughnessFactor"),
+			normalScale: n(o.normalScale, "clearcoat.normalScale", -8, 8)
+		} } : {},
+		...R(s) ? { specular: {
+			factor: n(s.factor, "specular.factor"),
+			colorFactor: t(s.colorFactor, 3, "specular.colorFactor", !1).map((e) => n(e, "specular.colorFactor", 0, Number.MAX_VALUE))
+		} } : {},
+		...R(c) ? { transmission: { factor: n(c.factor, "transmission.factor") } } : {},
+		...R(l) ? { sheen: {
+			colorFactor: t(l.colorFactor, 3, "sheen.colorFactor"),
+			roughnessFactor: n(l.roughnessFactor, "sheen.roughnessFactor")
+		} } : {},
 		baseColorFactor: t(e.baseColorFactor, 4, "baseColorFactor"),
 		metallic: n(e.metallic, "metallic"),
 		roughness: n(e.roughness, "roughness"),
@@ -2022,8 +2077,8 @@ function Cr(e) {
 		doubleSided: e.doubleSided,
 		textureViews: i,
 		maskLayers: a,
-		...o ? { vertexAtlas: o } : {},
-		...d ? { bakeBinding: d } : {}
+		...u ? { vertexAtlas: u } : {},
+		...h ? { bakeBinding: h } : {}
 	});
 }
 function wr(e) {
@@ -2085,7 +2140,10 @@ function Tr(e) {
 		4,
 		5,
 		6,
-		7
+		7,
+		8,
+		9,
+		10
 	].includes(e.schemaVersion) && e.kind === "WebMaskPbrMaterial" ? Cr(e) : Sr(e);
 }
 async function Er(e, t) {
@@ -2277,7 +2335,10 @@ var zr = {
 		"metallicRoughness",
 		"occlusion",
 		"emissive",
-		"specular"
+		"specular",
+		"clearcoat",
+		"transmission",
+		"sheen"
 	]
 }, Br = {
 	...zr,
@@ -2288,7 +2349,10 @@ var zr = {
 		metallicRoughness: 512,
 		occlusion: 512,
 		emissive: 512,
-		specular: 512
+		specular: 512,
+		clearcoat: 512,
+		transmission: 512,
+		sheen: 512
 	},
 	compactBaseColor: !0
 }, Vr = [
@@ -2297,9 +2361,15 @@ var zr = {
 	"metallicRoughness",
 	"occlusion",
 	"emissive",
-	"specular"
+	"specular",
+	"clearcoat",
+	"transmission",
+	"sheen"
 ], Hr = /* @__PURE__ */ new Set([
 	"KHR_materials_specular",
+	"KHR_materials_sheen",
+	"KHR_materials_transmission",
+	"KHR_materials_clearcoat",
 	"KHR_materials_emissive_strength",
 	"KHR_materials_unlit",
 	"KHR_texture_transform",
@@ -2455,6 +2525,8 @@ async function $r(e, t, n, r = Qr, i = Zr) {
 		g(n, "baseColorTexture", "baseColor"), g(n, "metallicRoughnessTexture", "metallicRoughness"), g(t, "normalTexture", "normal"), g(t, "occlusionTexture", "occlusion"), g(t, "emissiveTexture", "emissive");
 		let r = t.extensions ? z(t.extensions) : {}, i = r.KHR_materials_specular ? z(r.KHR_materials_specular) : {};
 		g(i, "specularTexture", "specular"), g(i, "specularColorTexture", "specular");
+		let a = r.KHR_materials_clearcoat ? z(r.KHR_materials_clearcoat) : {};
+		g(a, "clearcoatTexture", "clearcoat"), g(a, "clearcoatRoughnessTexture", "clearcoat"), g(a, "clearcoatNormalTexture", "clearcoat"), r.KHR_materials_sheen && (g(z(r.KHR_materials_sheen), "sheenColorTexture", "sheen"), g(z(r.KHR_materials_sheen), "sheenRoughnessTexture", "sheen")), r.KHR_materials_transmission && g(z(r.KHR_materials_transmission), "transmissionTexture", "transmission");
 	}
 	let _ = [...m].sort((e, t) => e - t), v = new Map(_.map((e, t) => [e, t])), y = [...new Set(_.map((e) => {
 		let t = f[e];
@@ -2467,15 +2539,22 @@ async function $r(e, t, n, r = Qr, i = Zr) {
 	})) return e;
 	for (let e of B(s.materials)) {
 		let t = z(e), n = t.pbrMetallicRoughness ? z(t.pbrMetallicRoughness) : {}, r = t.extensions ? z(t.extensions) : {}, i = r.KHR_materials_specular ? z(r.KHR_materials_specular) : {};
-		for (let [e, r] of [
+		for (let [e, a] of [
 			[n, ["baseColorTexture", "metallicRoughnessTexture"]],
 			[t, [
 				"normalTexture",
 				"occlusionTexture",
 				"emissiveTexture"
 			]],
-			[i, ["specularTexture", "specularColorTexture"]]
-		]) for (let t of r) if (t in e) {
+			[i, ["specularTexture", "specularColorTexture"]],
+			[r.KHR_materials_sheen ? z(r.KHR_materials_sheen) : {}, ["sheenColorTexture", "sheenRoughnessTexture"]],
+			[r.KHR_materials_transmission ? z(r.KHR_materials_transmission) : {}, ["transmissionTexture"]],
+			[r.KHR_materials_clearcoat ? z(r.KHR_materials_clearcoat) : {}, [
+				"clearcoatTexture",
+				"clearcoatRoughnessTexture",
+				"clearcoatNormalTexture"
+			]]
+		]) for (let t of a) if (t in e) {
 			let n = z(e[t]);
 			n.index = v.get(n.index);
 		}
@@ -2549,6 +2628,14 @@ var ei = {
 	roughness: "metallicRoughness",
 	occlusion: "occlusion",
 	emissive: "emissive",
+	clearcoat: "clearcoat",
+	clearcoatRoughness: "clearcoat",
+	clearcoatNormal: "clearcoat",
+	specular: "specular",
+	specularColor: "specular",
+	transmission: "transmission",
+	sheenColor: "sheen",
+	sheenRoughness: "sheen",
 	"baseColor-srgb": "baseColor",
 	"normal-linear": "normal",
 	"metallicRoughness-linear": "metallicRoughness",
@@ -4214,7 +4301,7 @@ function fa(e) {
 }
 function pa(e) {
 	try {
-		cn(e), An(e);
+		sn(e), An(e);
 	} catch (e) {
 		throw new la(e instanceof Error ? e.message : "Invalid Scene relationships.");
 	}
@@ -4410,6 +4497,9 @@ function Ha(e) {
 var Ua = /* @__PURE__ */ new Set([
 	"KHR_materials_emissive_strength",
 	"KHR_materials_specular",
+	"KHR_materials_sheen",
+	"KHR_materials_transmission",
+	"KHR_materials_clearcoat",
 	"KHR_materials_unlit",
 	"KHR_texture_transform",
 	"KHR_materials_ior"
@@ -4468,7 +4558,7 @@ function Ja(e) {
 		let n = Z(a[Ka(t.bufferView, a.length)]), r = Number(n.byteOffset ?? 0), o = Number(n.byteLength);
 		return tr(i.subarray(r, r + o), t.mimeType);
 	}), l = Ga(r.materials), u = l.map((e) => {
-		let t = Z(e), n = t.pbrMetallicRoughness ? Z(t.pbrMetallicRoughness) : {}, r = t.extensions ? Z(t.extensions) : {}, i = r.KHR_materials_specular ? Z(r.KHR_materials_specular) : {};
+		let t = Z(e), n = t.pbrMetallicRoughness ? Z(t.pbrMetallicRoughness) : {}, r = t.extensions ? Z(t.extensions) : {}, i = r.KHR_materials_specular ? Z(r.KHR_materials_specular) : {}, a = r.KHR_materials_clearcoat ? Z(r.KHR_materials_clearcoat) : {};
 		return [
 			[n.baseColorTexture, "baseColor"],
 			[n.metallicRoughnessTexture, "metallicRoughness"],
@@ -4477,7 +4567,13 @@ function Ja(e) {
 			[t.occlusionTexture, "occlusion"],
 			[t.emissiveTexture, "emissive"],
 			[i.specularTexture, "specular"],
-			[i.specularColorTexture, "specular"]
+			[i.specularColorTexture, "specular"],
+			[a.clearcoatTexture, "clearcoat"],
+			[a.clearcoatRoughnessTexture, "clearcoat"],
+			[a.clearcoatNormalTexture, "clearcoat"],
+			[r.KHR_materials_sheen ? Z(r.KHR_materials_sheen).sheenColorTexture : void 0, "sheen"],
+			[r.KHR_materials_sheen ? Z(r.KHR_materials_sheen).sheenRoughnessTexture : void 0, "sheen"],
+			[r.KHR_materials_transmission ? Z(r.KHR_materials_transmission).transmissionTexture : void 0, "transmission"]
 		].filter(([e]) => e !== void 0).map(([e, t]) => {
 			let n = Z(e), r = Z(s[Ka(n.index, s.length)]);
 			if (r.extensions) throw Error("Texture source extensions are not supported in this preview");
@@ -4642,7 +4738,7 @@ function no(e) {
 		}
 		if (!r.components.some(({ id: e }) => e === r.rootComponentId)) throw Error(`Prefab Actor ${r.id} has no root Component.`);
 	}
-	if (cn({
+	if (sn({
 		schemaVersion: 2,
 		kind: "Scene",
 		coordinateSystem: "RH_Y_UP_METERS_V1",
@@ -5496,7 +5592,7 @@ function $o(e, t, n = {}) {
 			if (l.kind === "WebMaskPbrMaterial") {
 				for (let [e, t] of Object.entries(l.textureViews)) {
 					let n = await i(t);
-					d.add(n), f.add(n), e === "baseColor" && (u.map = n), e === "emissive" && (u.emissiveMap = n), e === "normal" && (u.normalMap = n, is(u, t.normalGreen === "invert")), e === "metallic" && (u.metalnessMap = n), e === "roughness" && (u.roughnessMap = n), e === "occlusion" && (u.aoMap = n);
+					d.add(n), f.add(n), e === "baseColor" && (u.map = n), e === "emissive" && (u.emissiveMap = n), e === "normal" && (u.normalMap = n, is(u, t.normalGreen === "invert")), e === "metallic" && (u.metalnessMap = n), e === "roughness" && (u.roughnessMap = n), e === "occlusion" && (u.aoMap = n), u instanceof T && (e === "clearcoat" && (u.clearcoatMap = n), e === "clearcoatRoughness" && (u.clearcoatRoughnessMap = n), e === "clearcoatNormal" && (u.clearcoatNormalMap = n, u.clearcoatNormalScale.y = u.clearcoatNormalScale.x * (t.normalGreen === "invert" ? -1 : 1)), e === "specular" && (u.specularIntensityMap = n), e === "specularColor" && (u.specularColorMap = n), e === "transmission" && (u.transmissionMap = n), e === "sheenColor" && (u.sheenColorMap = n), e === "sheenRoughness" && (u.sheenRoughnessMap = n));
 				}
 				let t = l.maskLayers, n = [];
 				for (let e of t) {
@@ -5533,27 +5629,27 @@ function $o(e, t, n = {}) {
 						width: t?.width ?? 0,
 						height: t?.height ?? 0
 					};
-				}), r = new Map([...f].map((e) => [e, e.anisotropy])), i = u.onBeforeRender, o = u.normalScale.y;
-				u.onBeforeRender = (s, c, d, p, m, h) => {
-					let g = Math.max(1, s.capabilities.getMaxAnisotropy());
+				}), r = new Map([...f].map((e) => [e, e.anisotropy])), i = u.onBeforeRender, o = u.normalScale.y, s = u instanceof T ? u.clearcoatNormalScale.y : 1;
+				u.onBeforeRender = (c, d, p, m, h, g) => {
+					let _ = Math.max(1, c.capabilities.getMaxAnisotropy());
 					for (let e of f) {
-						let t = Math.min(r.get(e), g);
+						let t = Math.min(r.get(e), _);
 						e.anisotropy !== t && (e.anisotropy = t, e.needsUpdate = !0);
 					}
 					Xo({
-						anisotropy: Math.min(t, g),
-						textures: f.size,
+						anisotropy: Math.min(t, _),
+						textures: f.size + +(u instanceof T && u.transmission > 0),
 						dimensions: n
 					}, {
-						maxAnisotropy: g,
-						maxTextures: s.capabilities.maxTextures,
-						maxTextureSize: s.capabilities.maxTextureSize
+						maxAnisotropy: _,
+						maxTextures: c.capabilities.maxTextures,
+						maxTextureSize: c.capabilities.maxTextureSize
 					}, a.assetId);
 					for (let t of e) {
 						let e = t.texCoord === 0 ? "uv" : `uv${t.texCoord}`;
-						if (!p.hasAttribute(e)) throw new Yo("uv", `Material requires ${e}; UV0 fallback is forbidden.`, a.assetId);
+						if (!m.hasAttribute(e)) throw new Yo("uv", `Material requires ${e}; UV0 fallback is forbidden.`, a.assetId);
 					}
-					l.mappingProfileId === "u01-baked-pbr-v1" && u.normalMap && (u.normalScale.y = p.hasAttribute("tangent") ? o : -o), i.call(u, s, c, d, p, m, h);
+					l.mappingProfileId === "u01-baked-pbr-v1" && u.normalMap && (u.normalScale.y = m.hasAttribute("tangent") ? o : -o), l.mappingProfileId === "u01-baked-pbr-v1" && u instanceof T && u.clearcoatNormalMap && (u.clearcoatNormalScale.y = m.hasAttribute("tangent") ? s : -s), i.call(u, c, d, p, m, h, g);
 				};
 			}
 			return Mo(u, e, l, n.frozenInstancing), u;
@@ -5580,7 +5676,7 @@ function es(e, t) {
 	});
 }
 function ts(e) {
-	let t = e.kind === "WebMaskPbrMaterial" ? e.ior : void 0, n = new (t === void 0 ? m : T)({
+	let t = e.kind === "WebMaskPbrMaterial" ? e.ior : void 0, n = e.kind === "WebMaskPbrMaterial" ? e.clearcoat : void 0, r = e.kind === "WebMaskPbrMaterial" ? e.specular : void 0, i = e.kind === "WebMaskPbrMaterial" ? e.transmission : void 0, a = e.kind === "WebMaskPbrMaterial" ? e.sheen : void 0, o = new (t === void 0 && !n && !r && !i && !a ? m : T)({
 		color: new x().setRGB(e.baseColorFactor[0], e.baseColorFactor[1], e.baseColorFactor[2]),
 		opacity: e.baseColorFactor[3],
 		metalness: e.metallic,
@@ -5594,13 +5690,13 @@ function ts(e) {
 		depthWrite: e.alphaMode !== "BLEND",
 		side: e.doubleSided ? 2 : 0
 	});
-	return n instanceof T && t !== void 0 && (n.ior = t), n.userData.materialContract = {
+	return o instanceof T && t !== void 0 && (o.ior = t), o instanceof T && i && (o.transmission = i.factor), o instanceof T && a && (o.sheen = 1, o.sheenColor.setRGB(...a.colorFactor), o.sheenRoughness = a.roughnessFactor), o instanceof T && n && (o.clearcoat = n.factor, o.clearcoatRoughness = n.roughnessFactor, o.clearcoatNormalScale.set(n.normalScale, n.normalScale)), o instanceof T && r && (o.specularIntensity = r.factor, o.specularColor.setRGB(...r.colorFactor)), o.userData.materialContract = {
 		alphaMode: e.alphaMode,
 		outputTransform: "renderer-srgb-once"
-	}, e.kind === "WebMaskPbrMaterial" && e.unlit && (n.onBeforeCompile = (e) => {
+	}, e.kind === "WebMaskPbrMaterial" && e.unlit && (o.onBeforeCompile = (e) => {
 		if (!e.fragmentShader.includes("#include <opaque_fragment>")) throw Error("Unlit material shader layout is incompatible.");
 		e.fragmentShader = e.fragmentShader.replace("#include <opaque_fragment>", "outgoingLight = diffuseColor.rgb;\n#include <opaque_fragment>");
-	}, n.customProgramCacheKey = () => "u01-khr-materials-unlit-v1", n.userData.unlit = !0), n;
+	}, o.customProgramCacheKey = () => "u01-khr-materials-unlit-v1", o.userData.unlit = !0), o;
 }
 function ns(e, t) {
 	e.material = t, e.userData.materialProfile = "pbr-metallic-roughness-webmask-v1";
@@ -6222,7 +6318,7 @@ var Ns = class extends vs {
 		t?.throwIfAborted();
 	}
 	publishDisplay() {
-		this.payloads.forEach((e, t) => this.invalidationListeners.forEach((e) => e(t)));
+		(/* @__PURE__ */ new Set([...this.payloads.keys(), ...this.defaultMaterials.keys()])).forEach((e) => this.invalidationListeners.forEach((t) => t(e)));
 	}
 };
 async function Ps(e, t, n, r = { showTextures: !1 }, i, a = !0) {
@@ -6233,25 +6329,25 @@ async function Ps(e, t, n, r = { showTextures: !1 }, i, a = !0) {
 		...l.recipe,
 		payloads: l.recipe.payloads.filter((e) => u.has(e.assetId))
 	}, t.setReadAheadScope?.(l.assets.assets.map((e) => e.id));
-	let d = new Set(e.assets.revisions.filter((e) => e.metadata.candidateTypedMaterials).map((e) => e.assetId)), f = new Map(l.assets.blobs.map((e) => [e.key, e])), p = /* @__PURE__ */ new Map(), m = 0, h = async (i, a, o, s, c = e.assets, l = r.signal) => {
+	let d = new Set(e.assets.revisions.filter((e) => e.metadata.candidateTypedMaterials).map((e) => e.assetId)), f = new Map(l.assets.blobs.map((e) => [e.key, e])), p = /* @__PURE__ */ new Map(), m = 0, h = async (i, a, o, s, c = e.assets, l = r.signal, u = n) => {
 		l?.throwIfAborted();
-		let u = c.revisions.find((e) => e.id === a && e.assetId === i);
-		if (!u || !u.blobKeys.includes(o) || u.contentHash !== s) throw Error(`Candidate revision mismatch: ${i}`);
-		let d = f.get(o);
-		if (!d) {
+		let d = c.revisions.find((e) => e.id === a && e.assetId === i);
+		if (!d || !d.blobKeys.includes(o) || d.contentHash !== s) throw Error(`Candidate revision mismatch: ${i}`);
+		let h = s.replace(/^sha256:/, ""), g = f.get(o);
+		if (!g) {
 			if (!t.snapshotAsset) throw Error(`Missing candidate payload: ${i}`);
-			n(`저장 에셋 읽기 ${++m} · ${e.assets.assets.find((e) => e.id === i)?.name ?? i}`);
-			let r = await t.snapshotAsset(i, a);
+			u(`저장 에셋 읽기 ${++m} · ${e.assets.assets.find((e) => e.id === i)?.name ?? i}`);
+			let n = await t.snapshotAsset(i, a);
 			l?.throwIfAborted();
-			let c = r.revisions.find((e) => e.id === a && e.assetId === i);
-			if (!c || c.contentHash !== u.contentHash || JSON.stringify(c.blobKeys) !== JSON.stringify(u.blobKeys)) throw Error(`Candidate revision mismatch: ${i}`);
-			if (d = r.blobs.find((e) => e.key === o), !d || d.bytes.byteLength > ii.singlePayloadBytes) throw Error(`Missing candidate payload: ${i}`);
-			let h = await ct(d.bytes);
-			if (h !== s) throw Error(`Candidate payload hash mismatch: ${i}`);
-			p.set(o, h), f.set(o, d);
+			let r = n.revisions.find((e) => e.id === a && e.assetId === i);
+			if (!r || r.contentHash !== d.contentHash || JSON.stringify(r.blobKeys) !== JSON.stringify(d.blobKeys)) throw Error(`Candidate revision mismatch: ${i}`);
+			if (g = n.blobs.find((e) => e.key === o), !g || g.bytes.byteLength > ii.singlePayloadBytes) throw Error(`Missing candidate payload: ${i}`);
+			let s = await ct(g.bytes);
+			if (s !== h) throw Error(`Candidate payload hash mismatch: ${i}`);
+			p.set(o, s), f.set(o, g);
 		}
-		if (p.has(o) && p.get(o) !== s) throw Error(`Candidate payload hash mismatch: ${i}`);
-		return p.set(o, s), d;
+		if (p.has(o) && p.get(o) !== h) throw Error(`Candidate payload hash mismatch: ${i}`);
+		return p.set(o, h), g;
 	};
 	for (let e of l.recipe.payloads) {
 		let t = await h(e.assetId, e.revisionId, e.blobKey, e.blobKey);
@@ -6304,9 +6400,9 @@ async function Ps(e, t, n, r = { showTextures: !1 }, i, a = !0) {
 			tintOverrides: []
 		})));
 	}
-	let b = new Map(e.recipe.payloads.map((e) => [e.assetId, async () => {
-		let t = (await h(e.assetId, e.revisionId, e.blobKey, e.blobKey)).bytes;
-		return r.optimize && !d.has(e.assetId) && (t = await $r(t, r.optimize, r.signal ?? new AbortController().signal)), t;
+	let b = new Map(e.recipe.payloads.map((t) => [t.assetId, async () => {
+		let n = (await h(t.assetId, t.revisionId, t.blobKey, t.blobKey, e.assets, r.signal, () => {})).bytes;
+		return r.optimize && !d.has(t.assetId) && (n = await $r(n, r.optimize, r.signal ?? new AbortController().signal)), n;
 	}])), x = new Ns(t, s, c, Za, o, y, b, new Set(r.showTextures === !1 ? [] : e.recipe.payloads.filter((e) => !d.has(e.assetId)).map((e) => e.assetId)));
 	x.materialResolver = $o(t, void 0, {
 		textureMaxSize: r.optimize?.maxSize,
@@ -6332,11 +6428,11 @@ async function Ps(e, t, n, r = { showTextures: !1 }, i, a = !0) {
 				};
 				let r = Ds(c, l, e.recipe);
 				t.setReadAheadScope?.(r.assets.assets.map((e) => e.id));
-				for (let e of r.recipe.payloads) await h(e.assetId, e.revisionId, e.blobKey, e.blobKey, l, i);
+				for (let e of r.recipe.payloads) await h(e.assetId, e.revisionId, e.blobKey, e.blobKey, l, i, a);
 				for (let e of ti(r.assets, zr).keys()) {
 					let t = r.assets.assets.find((t) => t.id === e && t.kind === "Texture"), n = r.assets.revisions.find((n) => n.id === t?.currentRevisionId && n.assetId === e);
 					if (!n?.blobKeys[0]) throw Error(`Missing candidate material texture: ${e}`);
-					await h(e, n.id, n.blobKeys[0], n.contentHash, l, i);
+					await h(e, n.id, n.blobKeys[0], n.contentHash, l, i, a);
 				}
 				l = {
 					...l,
@@ -6415,4 +6511,4 @@ async function Fs(e) {
 }
 H.storage.priorVersions, H.storage.historyMetadataBytes;
 //#endregion
-export { Or as $, ma as A, ht as At, ti as B, Be as Bt, za as C, O as Ct, Fa as D, gt as Dt, Ma as E, St as Et, aa as F, Ue as Ft, Kr as G, zr as H, ci as I, qe as It, vr as J, Lr as K, oi as L, Je as Lt, da as M, ct as Mt, pa as N, $e as Nt, La as O, vt as Ot, ia as P, et as Pt, _r as Q, H as R, Ve as Rt, Oa as S, Rt as St, Na as T, wt as Tt, Br as U, ni as V, Jr as W, br as X, yr as Y, xr as Z, Va as _, $t as _t, as as a, Jn as at, Ja as b, en as bt, $o as c, Mn as ct, Ao as d, fn as dt, Tr as et, Bo as f, nn as ft, ho as g, Kt as gt, wo as h, an as ht, os as i, tr as it, ha as j, it as jt, ya as k, ft as kt, Qo as l, ln as lt, Co as m, on as mt, vs as n, $n as nt, es as o, Yn as ot, Do as p, rn as pt, Pr as q, ws as r, er as rt, ns as s, Kn as st, Ps as t, gr as tt, zo as u, un as ut, Q as v, qt as vt, Ea as w, xt as wt, Ha as x, Jt as xt, Ya as y, Gt as yt, ri as z, E as zt };
+export { Or as $, ma as A, ht as At, ti as B, Be as Bt, za as C, O as Ct, Fa as D, gt as Dt, Ma as E, St as Et, aa as F, Ue as Ft, Kr as G, zr as H, ci as I, qe as It, vr as J, Lr as K, oi as L, Je as Lt, da as M, ct as Mt, pa as N, $e as Nt, La as O, vt as Ot, ia as P, et as Pt, _r as Q, H as R, Ve as Rt, Oa as S, Rt as St, Na as T, wt as Tt, Br as U, ni as V, Jr as W, br as X, yr as Y, xr as Z, Va as _, $t as _t, as as a, Jn as at, Ja as b, en as bt, $o as c, Mn as ct, Ao as d, dn as dt, Tr as et, Bo as f, nn as ft, ho as g, Kt as gt, wo as h, an as ht, os as i, tr as it, ha as j, it as jt, ya as k, ft as kt, Qo as l, cn as lt, Co as m, on as mt, vs as n, $n as nt, es as o, Yn as ot, Do as p, rn as pt, Pr as q, ws as r, er as rt, ns as s, Kn as st, Ps as t, gr as tt, zo as u, ln as ut, Q as v, qt as vt, Ea as w, xt as wt, Ha as x, Jt as xt, Ya as y, Gt as yt, ri as z, E as zt };

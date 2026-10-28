@@ -1,5 +1,5 @@
 export interface ImportIssue {
-    outcome: 'material-fallback' | 'excluded';
+    outcome: 'material-fallback' | 'excluded' | 'animation-unavailable';
     actorIds: string[];
     sourceId: string;
     sourcePath: string;
@@ -24,6 +24,9 @@ export interface PartialImportRecord {
     succeededComponentIds?: string[];
 }
 export declare function readPartialImport(value: unknown): PartialImportRecord;
+export declare function isIgnoredImportIssue(issue: ImportIssue): boolean;
+export declare function activeImportIssues(record: PartialImportRecord): ImportIssue[];
+export declare function retryableImportIssues(record: PartialImportRecord): ImportIssue[];
 export declare function retryImportComponentIds(record: PartialImportRecord): string[] | undefined;
 export declare function retryImportActorIds(record: PartialImportRecord): string[];
 export declare function mergePartialImport(current: PartialImportRecord | undefined, incoming: PartialImportRecord): PartialImportRecord;

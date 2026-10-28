@@ -26,7 +26,7 @@ export interface AppearanceDecision extends AppearanceIssue {
     readonly action: AppearanceAction;
 }
 export interface AppearanceReviewRecord {
-    readonly version: 1;
+    readonly version: 1 | 2 | 3 | 4;
     readonly outcome: 'user-selected-approximation';
     readonly decisions: readonly AppearanceDecision[];
 }
@@ -44,7 +44,7 @@ interface SourcePayload {
 }
 export declare function applyAppearanceDecisions(bytes: Uint8Array, p: SourcePayload, decisions: readonly AppearanceDecision[], uvTargets?: readonly MaterialUvTarget[]): Uint8Array;
 /** Complete, hash-bound preflight. Reads only authenticated candidate files; no storage or image decode. */
-export declare function inspectCandidateAppearance(selection: CandidateSelection, signal: AbortSignal, progress?: (message: string) => void): Promise<readonly AppearanceIssue[]>;
+export declare function inspectCandidateAppearance(selection: CandidateSelection, signal: AbortSignal, progress?: (message: string) => void, onFailure?: (assetId: string, error: unknown) => void): Promise<readonly AppearanceIssue[]>;
 export declare function requireAppearanceDecisions(issues: readonly AppearanceIssue[], decisions: readonly AppearanceDecision[]): void;
 /** Validate saved choices against the preserved source payload and original export report, including refresh namespaces. */
 export declare function validateAppearanceReview(record: AppearanceReviewRecord, assets: AssetRegistrySnapshot, exportReportJson: string, requireRevisionReference?: boolean): void;

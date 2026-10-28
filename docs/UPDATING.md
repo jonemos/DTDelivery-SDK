@@ -44,7 +44,7 @@ Git을 쓰지 않는 PC에서는 [최신 전체 ZIP](https://github.com/jonemos/
 **SDK 폴더를 업데이트해도 다른 프로젝트의 node_modules나 이미 배포한 앱이 자동으로 바뀌지는 않습니다.** 외부 프로젝트에 설치하는 현재 버전은 다음과 같습니다. 이후에는 전달받은 새 릴리스 태그로 바꿉니다.
 
 ```powershell
-pnpm add '@dt/delivery-sdk@github:jonemos/DTDelivery-SDK#v0.3.24'
+pnpm add '@dt/delivery-sdk@github:jonemos/DTDelivery-SDK#v0.3.25'
 ```
 
 ## 검사·백업·복구

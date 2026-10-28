@@ -62,6 +62,7 @@ export type RouteResult = {
 };
 export declare const DEFAULT_EDITOR_SHORTCUTS: readonly ShortcutBinding[];
 export declare function resolvePointerGesture(input: PointerGestureInput): PointerGesture | null;
+export declare function isRotationGesture(gesture: PointerGesture | null): boolean;
 export declare function classifyInputTarget(target: EventTarget | null): InputTargetKind;
 export declare class InputRouter {
     private editorShortcuts;

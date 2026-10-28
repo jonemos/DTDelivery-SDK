@@ -15,6 +15,8 @@ export interface ProjectedActor {
     update(actor: Actor): void;
     /** Refresh live slots using this material while keeping geometry, pose and other slots. */
     refreshMaterial?(assetId: string | readonly string[]): Promise<boolean>;
+    /** Re-resolve display settings for matching skeletal meshes, including pinned slots; keep their pose. */
+    refreshMaterialDisplay?(meshAssetIds: ReadonlySet<string>): Promise<boolean>;
     setSelected(selected: boolean): void;
     setHelpersVisible?(visible: boolean): void;
     setIconPresentation?(visible: boolean, scale: number): void;

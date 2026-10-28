@@ -6,6 +6,10 @@ export interface RenderQualityViewOptions {
     readonly environmentIntensity?: number;
     /** Opt-in light inventory cache; caller must bump after scene light add/remove/reparent. */
     readonly shadowLightGeneration?: number;
+    /** Opt-in static content revision; bump for membership/visibility/geometry/world-pose changes. */
+    readonly shadowContentGeneration?: number;
+    /** Static single-perspective Viewport scope; also versions material/resource changes. */
+    readonly shadowMapGeneration?: number;
 }
 export interface RenderQualityBackend {
     render(camera: Camera, width: number, height: number, directRender: () => void, options?: RenderQualityViewOptions): void;

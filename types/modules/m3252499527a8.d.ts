@@ -9,6 +9,10 @@ export interface CandidateSkeletalBinding {
     initialTimeSeconds?: number;
     loop?: 'once' | 'repeat';
     sourcePlaying?: boolean;
+    referencePoseOnly?: true;
+    unsupportedAnimation?: string;
+    animationMode?: string;
+    sourceAnimationClassPath?: string;
 }
 export interface CandidateAnimationBinding {
     sourceAnimationAssetId: string;
@@ -67,6 +71,12 @@ export declare function candidateSkeletalComponent(projectId: string, snapshotId
         rootMotionMode: "in_bone" | null;
     };
     sourceBinding: {
+        unavailableAnimation?: {
+            profile: "reference-pose-v1";
+            mode: string;
+            classPath: string;
+            reason: string;
+        } | undefined;
         packageId: string;
         sourceProjectId: string;
         sourceSnapshotId: string;

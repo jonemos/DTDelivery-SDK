@@ -117,6 +117,12 @@ export interface ImportedSkeletalSourceBinding {
     readonly sourceMeshAssetId: string;
     readonly sourceSkeletonAssetId: string;
     readonly sourceAnimationAssetId: string | null;
+    readonly unavailableAnimation?: {
+        readonly profile: 'reference-pose-v1';
+        readonly mode: string;
+        readonly classPath: string;
+        readonly reason: string;
+    };
 }
 export interface SkeletalMeshComponent extends SceneComponentBase {
     readonly type: 'SkeletalMesh';

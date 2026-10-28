@@ -1,4 +1,4 @@
-# 공개 함수·타입 명세 · SDK 0.3.24
+# 공개 함수·타입 명세 · SDK 0.3.25
 
 뷰포트 기본값은 `NORMAL`, 환경광 `true`/강도 `1`, 톤 매핑 `aces`, 그리드·에디터 도우미 `false`, 안티앨리어싱 `false`, 카메라 Near `0.1m`입니다. 지원 GPU에서는 Reverse-Z와 32비트 부동소수 깊이로 장면을 표시하고 미지원 기기는 기존 경로를 사용합니다. `viewport.screenSettings`는 현재 화면·태양광 설정의 복사본을 반환하며 `viewport.setScreenEffects(settings)`로 검증·적용합니다. 호스트에서 변경해도 뷰포트 컨트롤이 갱신됩니다. 안개 UI는 제공하지 않으며 기존 `fog` 데이터는 왕복 보존합니다.
 

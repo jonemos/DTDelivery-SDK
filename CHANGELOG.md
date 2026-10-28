@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.25
+
+Use the editor's camera math, pointer sampling and actual Pointer Lock for right-button look and Alt-left orbit across SDK viewers. Continue rotation beyond viewport and screen boundaries while locked, rebase cursor recentering without a jump, and retain bounded capture when lock is denied. Clear held movement and release owned input on button release, Escape, focus loss, cancellation and disposal. Preserve plain selection, orthographic controls, immutable releases and model data.
+
 ## 0.3.24
 
 Preserve input ownership per physical control, consume UI input before gameplay actions, and clear pending input on context changes. Reuse a separate Actor lookup for each mounted Delivery view during runtime ticks and stop restoration, including repeated source Actor IDs in different mounts.

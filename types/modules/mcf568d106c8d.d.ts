@@ -11,7 +11,7 @@ export type WebMaskMinFilter = 'nearest' | 'linear' | 'linear-mipmap-linear';
 export type WebMaskMagFilter = 'nearest' | 'linear';
 export type TextureViewColorSpace = 'srgb' | 'linear';
 export type TextureViewChannel = WebMaskChannel | 'rgb' | 'rgba';
-export type MaterialTextureInput = 'baseColor' | 'normal' | 'metallic' | 'roughness' | 'occlusion' | 'emissive';
+export type MaterialTextureInput = 'baseColor' | 'normal' | 'metallic' | 'roughness' | 'occlusion' | 'emissive' | 'clearcoat' | 'clearcoatRoughness' | 'clearcoatNormal' | 'specular' | 'specularColor' | 'transmission' | 'sheenColor' | 'sheenRoughness';
 export interface PbrMaterialDocument {
     readonly schemaVersion: 1;
     readonly kind: 'PbrMaterial';
@@ -55,12 +55,31 @@ export interface WebMaskLayerDocument {
     readonly invert: boolean;
 }
 export interface WebMaskPbrMaterialDocument {
-    readonly schemaVersion: 3 | 4 | 5 | 6 | 7;
+    readonly schemaVersion: 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
     readonly kind: 'WebMaskPbrMaterial';
     readonly mappingProfileId: string;
     readonly unlit?: boolean;
     /** v6 preserves explicit dielectric IOR and bound MASK bakes; older readers reject it. */
     readonly ior?: number;
+    /** v8 keeps glTF physical lobes and their independently sampled texture views. */
+    readonly clearcoat?: {
+        readonly factor: number;
+        readonly roughnessFactor: number;
+        readonly normalScale: number;
+    };
+    readonly specular?: {
+        readonly factor: number;
+        readonly colorFactor: readonly [number, number, number];
+    };
+    /** v9: optical transmission is independent of alpha coverage. */
+    readonly transmission?: {
+        readonly factor: number;
+    };
+    /** v10: sheen RGB is sRGB-sampled; roughness is linear alpha. */
+    readonly sheen?: {
+        readonly colorFactor: readonly [number, number, number];
+        readonly roughnessFactor: number;
+    };
     readonly baseColorFactor: readonly [number, number, number, number];
     readonly metallic: number;
     readonly roughness: number;

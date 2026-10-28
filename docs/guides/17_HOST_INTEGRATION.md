@@ -7,7 +7,7 @@ SDK 0.3.17는 미리 빌드된 브라우저 모듈과 TypeScript 선언을 제�
 프로젝트 루트의 터미널에서 실행합니다. Git 주소로 설치하므로 개발 PC에 Git과 프로젝트의 Node.js·패키지 관리자가 필요합니다. 수신자가 미리 빌드한 테스트 페이지만 실행한다면 이 설치는 필요 없습니다.
 
 ```powershell
-pnpm add '@dt/delivery-sdk@github:jonemos/DTDelivery-SDK#v0.3.24'
+pnpm add '@dt/delivery-sdk@github:jonemos/DTDelivery-SDK#v0.3.25'
 ```
 
 생성된 package.json과 lockfile을 함께 버전 관리합니다. 운영 배포는 검증한 태그에 고정하고 SDK 업데이트와 모델 게시본 업데이트를 별도로 관리하세요. 기존 프레임워크·개발 서버를 유지하며 SDK 예제 프로젝트를 앱 전체 위에 덮어쓰지 않습니다.

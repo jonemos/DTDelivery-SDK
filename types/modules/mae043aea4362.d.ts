@@ -1,4 +1,4 @@
-export type TextureMapKind = 'baseColor' | 'normal' | 'metallicRoughness' | 'occlusion' | 'emissive' | 'specular';
+export type TextureMapKind = 'baseColor' | 'normal' | 'metallicRoughness' | 'occlusion' | 'emissive' | 'specular' | 'clearcoat' | 'transmission' | 'sheen';
 export interface TextureImportOptions {
     maxSize: 0 | 128 | 256 | 512 | 1024 | 2048;
     maps: readonly TextureMapKind[];
